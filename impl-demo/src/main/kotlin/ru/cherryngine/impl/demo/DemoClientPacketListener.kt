@@ -20,8 +20,10 @@ import net.minestom.server.registry.Registries
 import org.intellij.lang.annotations.Language
 import ru.cherryngine.engine.core.server.ClientConnection
 import ru.cherryngine.engine.core.server.ClientPacketListener
-import ru.cherryngine.engine.scenes.modules.client.*
-import ru.cherryngine.engine.scenes.modules.physics.collider.CuboidCollider
+import ru.cherryngine.engine.scenes.modules.client.ClientModule
+import ru.cherryngine.engine.scenes.modules.client.FocusCamera
+import ru.cherryngine.engine.scenes.modules.client.ThirdPersonController
+import ru.cherryngine.engine.scenes.modules.physics.CuboidCollider
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Vec3D
 
@@ -31,6 +33,7 @@ class DemoClientPacketListener(
     private val tagManager: TagManager,
     private val demo: Demo,
 ) : ClientPacketListener {
+    @SuppressWarnings("unstableApiUsage")
     val defaultTagsPacket: CachedPacket by lazy { CachedPacket(tagManager.packet(registries)) }
 
     data class StatusResponse(

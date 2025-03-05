@@ -9,14 +9,11 @@ import net.minestom.server.network.packet.server.play.*
 import ru.cherryngine.engine.core.minestomPos
 import ru.cherryngine.engine.core.server.ClientConnection
 import ru.cherryngine.engine.scenes.GameObject
-import ru.cherryngine.engine.scenes.Module
-import ru.cherryngine.engine.scenes.ModulePrototype
+import ru.cherryngine.engine.scenes.api.Module
+import ru.cherryngine.engine.scenes.api.ModulePrototype
 import ru.cherryngine.engine.scenes.event.Event
 import ru.cherryngine.engine.scenes.event.impl.DisconnectEvent
-import ru.cherryngine.engine.scenes.view.Viewable
 import ru.cherryngine.engine.scenes.view.Viewer
-import ru.cherryngine.lib.math.Vec3D
-import ru.cherryngine.lib.math.View
 
 @ModulePrototype
 class ClientModule(
@@ -30,7 +27,7 @@ class ClientModule(
         spawn()
     }
 
-    private fun spawn() {
+    fun spawn() {
         val position = gameObject.transform.translation.minestomPos()
 
         val packets: MutableList<ServerPacket.Play> = ArrayList()
@@ -59,21 +56,8 @@ class ClientModule(
         when (event) {
             is DisconnectEvent -> {
                 if (event.clientConnection != this.connection) return
-                onDisconnect()
+                gameObject.destroy()
             }
         }
     }
-
-    fun onDisconnect() {
-        gameObject.destroy()
-    }
-
-    override fun show(viewable: Viewable): Boolean {
-        return true
-    }
-
-    override fun hide(viewable: Viewable): Boolean {
-        return true
-    }
-
 }

@@ -17,6 +17,7 @@ dependencies {
 
     ksp(libs.micronaut.serde.processor)
 
+    implementation(kotlin("reflect"))
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("org.yaml:snakeyaml")
 }

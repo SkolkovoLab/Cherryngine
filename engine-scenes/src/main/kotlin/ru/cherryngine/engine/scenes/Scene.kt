@@ -4,6 +4,7 @@ import io.micronaut.context.ApplicationContext
 import org.jgrapht.Graph
 import org.jgrapht.graph.DefaultEdge
 import org.jgrapht.graph.DirectedAcyclicGraph
+import ru.cherryngine.engine.scenes.api.Module
 import ru.cherryngine.engine.scenes.event.Event
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue

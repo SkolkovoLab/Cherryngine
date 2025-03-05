@@ -1,6 +1,7 @@
 pluginManagement {
     repositories {
         mavenCentral()
+        mavenLocal()
         gradlePluginPortal()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
@@ -15,13 +16,6 @@ include(
 
     "impl-demo",
 
-    "lib-jackson",
+    "lib-kotlinx",
     "lib-math",
 )
-
-includeBuild("lib-minestom") {
-    dependencySubstitution {
-        substitute(module("net.minestom:minestom-local")).using(project(":"))
-        substitute(module("com.github.Minestom:Minestom")).using(project(":"))
-    }
-}

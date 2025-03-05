@@ -47,7 +47,7 @@ class Server(
         stopped.set(true)
     }
 
-    private fun listenConnections() {
+    fun listenConnections() {
         while (running) {
             try {
                 val channel = server.accept()
@@ -69,10 +69,9 @@ class Server(
         }
     }
 
-    private fun playerReadLoop(clientConnection: ClientConnection) {
+    fun playerReadLoop(clientConnection: ClientConnection) {
         while (running) {
             try {
-                // Чтение и обработка пакетов
                 clientConnection.read(packetParser)
             } catch (_: EOFException) {
                 clientConnection.disconnect()
@@ -86,7 +85,7 @@ class Server(
         }
     }
 
-    private fun playerWriteLoop(clientConnection: ClientConnection) {
+    fun playerWriteLoop(clientConnection: ClientConnection) {
         while (running) {
             try {
                 clientConnection.flushSync()
@@ -106,18 +105,15 @@ class Server(
                     clientConnection.channel.close()
                     break
                 } catch (_: IOException) {
-                    // Отключение
                     break
                 }
             }
         }
     }
 
-    private fun playerKeepAliveLoop(clientConnection: ClientConnection) {
+    fun playerKeepAliveLoop(clientConnection: ClientConnection) {
         while (running) {
             if (!clientConnection.online) break
-            // KeepAlive нужен только в состоянии CONFIGURATION и PLAY
-            // Если клиент находится в STATUS, то можно обрывать цикл
             when (clientConnection.connectionState) {
                 ConnectionState.HANDSHAKE, ConnectionState.LOGIN -> Unit
                 ConnectionState.STATUS -> break

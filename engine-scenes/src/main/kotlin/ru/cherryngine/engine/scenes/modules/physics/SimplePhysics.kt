@@ -2,8 +2,9 @@ package ru.cherryngine.engine.scenes.modules.physics
 
 import io.micronaut.context.annotation.Parameter
 import ru.cherryngine.engine.scenes.GameObject
-import ru.cherryngine.engine.scenes.ModulePrototype
-import ru.cherryngine.engine.scenes.modules.physics.collider.Collider
+import ru.cherryngine.engine.scenes.api.ModulePrototype
+import ru.cherryngine.engine.scenes.modules.physics.api.Collider
+import ru.cherryngine.engine.scenes.modules.physics.api.Physics
 
 @ModulePrototype(tickPriority = ModulePrototype.Priority.LAST)
 class SimplePhysics(

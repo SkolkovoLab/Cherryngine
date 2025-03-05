@@ -4,20 +4,18 @@ import io.micronaut.context.annotation.Parameter
 import net.minestom.server.coordinate.Vec
 import net.minestom.server.entity.RelativeFlags
 import net.minestom.server.network.packet.client.play.ClientPlayerPositionAndRotationPacket
-import net.minestom.server.network.packet.client.play.ClientPlayerPositionPacket
 import net.minestom.server.network.packet.client.play.ClientPlayerRotationPacket
 import net.minestom.server.network.packet.server.play.PlayerPositionAndLookPacket
-import net.minestom.server.network.packet.server.play.PlayerRotationPacket
 import ru.cherryngine.engine.core.asQRot
-import ru.cherryngine.engine.core.asVec3D
 import ru.cherryngine.engine.core.minestomPos
 import ru.cherryngine.engine.scenes.GameObject
-import ru.cherryngine.engine.scenes.Module
-import ru.cherryngine.engine.scenes.ModulePrototype
 import ru.cherryngine.engine.scenes.Scene
+import ru.cherryngine.engine.scenes.api.Module
+import ru.cherryngine.engine.scenes.api.ModulePrototype
 import ru.cherryngine.engine.scenes.event.Event
 import ru.cherryngine.engine.scenes.event.impl.ClientPacketEvent
-import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.engine.scenes.modules.client.api.Camera
+import ru.cherryngine.engine.scenes.modules.client.api.Controller
 import ru.cherryngine.lib.math.View
 import ru.cherryngine.lib.math.rotation.QRot
 
@@ -32,9 +30,9 @@ class FocusCamera(
 
     val onPacket: (ClientPacketEvent) -> Unit = {
         when (it.packet) {
-            is ClientPlayerPositionPacket -> setPos(it.packet.position.asVec3D())
+            // is ClientPlayerPositionPacket -> setPos(it.packet.position.asVec3D())
             is ClientPlayerPositionAndRotationPacket -> {
-                setPos(it.packet.position.asVec3D())
+                // setPos(it.packet.position.asVec3D())
                 setRot(it.packet.position.asQRot())
             }
             is ClientPlayerRotationPacket -> {
@@ -43,9 +41,6 @@ class FocusCamera(
         }
     }
 
-    fun setPos(vec: Vec3D) {
-
-    }
 
     fun setRot(rot: QRot) {
         gameObject.transform.rotation = rot

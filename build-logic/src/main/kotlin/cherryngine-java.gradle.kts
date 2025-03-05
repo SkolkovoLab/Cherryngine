@@ -8,6 +8,7 @@ java {
 
 repositories {
     mavenCentral()
+    mavenLocal()
     google() // Compose-Multiplatform
     maven("https://jitpack.io/")
     maven("https://repo.unnamed.team/repository/unnamed-public/")

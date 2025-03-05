@@ -8,11 +8,7 @@ import net.minestom.server.instance.block.banner.BannerPattern
 import net.minestom.server.instance.block.jukebox.JukeboxSong
 import net.minestom.server.item.armor.TrimMaterial
 import net.minestom.server.item.armor.TrimPattern
-import net.minestom.server.item.enchant.Enchantment
-import net.minestom.server.item.enchant.EntityEffect
-import net.minestom.server.item.enchant.LevelBasedValue
-import net.minestom.server.item.enchant.LocationEffect
-import net.minestom.server.item.enchant.ValueEffect
+import net.minestom.server.item.enchant.*
 import net.minestom.server.item.instrument.Instrument
 import net.minestom.server.message.ChatType
 import net.minestom.server.registry.DynamicRegistry
@@ -21,6 +17,7 @@ import net.minestom.server.utils.nbt.BinaryTagSerializer
 import net.minestom.server.world.DimensionType
 import net.minestom.server.world.biome.Biome
 
+// Need to refactor
 @Singleton
 class RegistriesImpl : Registries {
     private val enchantmentLevelBasedValues: DynamicRegistry<BinaryTagSerializer<out LevelBasedValue>> =

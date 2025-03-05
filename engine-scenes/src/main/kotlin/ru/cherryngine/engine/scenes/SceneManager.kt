@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package ru.cherryngine.engine.scenes
 
 import io.micronaut.context.ApplicationContext
@@ -8,6 +10,8 @@ import org.jgrapht.Graph
 import org.jgrapht.graph.DefaultEdge
 import org.jgrapht.graph.DirectedAcyclicGraph
 import org.jgrapht.traverse.TopologicalOrderIterator
+import ru.cherryngine.engine.scenes.api.Module
+import ru.cherryngine.engine.scenes.api.ModulePrototype
 import ru.cherryngine.engine.scenes.event.Event
 import java.util.*
 import kotlin.reflect.KClass

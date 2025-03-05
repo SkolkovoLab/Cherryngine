@@ -5,32 +5,39 @@ import net.minestom.server.entity.EntityType
 import net.minestom.server.entity.MetadataDef
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
-import ru.cherryngine.engine.core.minestomVec
-import ru.cherryngine.engine.core.world.entity.EngineEntity
+import ru.cherryngine.engine.core.entity.EngineEntity
+import ru.cherryngine.engine.core.ext.minestomVec
 import ru.cherryngine.engine.scenes.GameObject
-import ru.cherryngine.engine.scenes.ModulePrototype
 import ru.cherryngine.engine.scenes.Scene
+import ru.cherryngine.engine.scenes.api.ModulePrototype
 import ru.cherryngine.engine.scenes.event.Event
-import ru.cherryngine.engine.scenes.modules.client.ClientModule
-import ru.cherryngine.engine.scenes.view.Viewable
-import ru.cherryngine.engine.scenes.view.Viewer
+import ru.cherryngine.engine.scenes.models.Models
+import ru.cherryngine.engine.scenes.models.builder.free
+import ru.cherryngine.engine.scenes.modules.ModelRenderer
 import ru.cherryngine.lib.math.Vec3D
 
 @ModulePrototype
 class PlayerModelRenderer(
     @Parameter override val gameObject: GameObject
-) : Viewable {
-
-    val head = EngineEntity(EntityType.ITEM_DISPLAY).apply {
-        editEntityMeta {
-            it.set(MetadataDef.ItemDisplay.DISPLAYED_ITEM, ItemStack.of(Material.OBSERVER))
-        }
+) : ModelRenderer(gameObject) {
+    override val model: Models = free {
+        entity("head", EngineEntity(EntityType.ITEM_DISPLAY).apply {
+            editEntityMeta {
+                it.set(MetadataDef.ItemDisplay.DISPLAYED_ITEM, ItemStack.of(Material.OBSERVER))
+            }
+        })
+        entity("body", EngineEntity(EntityType.ITEM_DISPLAY).apply {
+            editEntityMeta {
+                it.set(MetadataDef.ItemDisplay.DISPLAYED_ITEM, ItemStack.of(Material.MELON))
+            }
+        })
     }
 
-    val body = EngineEntity(EntityType.ITEM_DISPLAY).apply {
-        editEntityMeta {
-            it.set(MetadataDef.ItemDisplay.DISPLAYED_ITEM, ItemStack.of(Material.MELON))
-        }
+    val head get() = model.getPart("head")?.first()
+    val body get() = model.getPart("body")?.first()
+
+    override fun whenShow() {
+        onUpdate()
     }
 
     override fun onEvent(event: Event) {
@@ -44,8 +51,8 @@ class PlayerModelRenderer(
     fun onUpdate() {
         gameObject.transform.global.apply {
             val bodyScale = scale.times(1.0, .75, 1.0)
-            body.updatePositionAndRotation(translation + bodyScale.times(.0, .5, .0))
-            body.editEntityMeta {
+            body?.updatePositionAndRotation(translation + bodyScale.times(.0, .5, .0))
+            body?.editEntityMeta {
                 it.set(
                     MetadataDef.ItemDisplay.SCALE,
                     bodyScale.minestomVec()
@@ -53,8 +60,8 @@ class PlayerModelRenderer(
             }
 
             val headScale = Vec3D(1.0, 1.0, 1.0)
-            head.updatePositionAndRotation(translation + bodyScale.times(.0, 1.0, .0) + headScale.times(.0, .5, .0) - Vec3D(0.0, .1, .0))
-            head.editEntityMeta {
+            head?.updatePositionAndRotation(translation + bodyScale.times(.0, 1.0, .0) + headScale.times(.0, .5, .0) - Vec3D(0.0, .1, .0))
+            head?.editEntityMeta {
                 it.set(
                     MetadataDef.ItemDisplay.SCALE,
                     headScale.minestomVec()
@@ -67,29 +74,4 @@ class PlayerModelRenderer(
             }
         }
     }
-
-
-    override fun showFor(viewer: Viewer): Boolean {
-        return when (viewer) {
-            is ClientModule -> {
-                onUpdate()
-                head.show(viewer.connection)
-                body.show(viewer.connection)
-                true
-            }
-            else -> viewer.show(this)
-        }
-    }
-
-    override fun hideFor(viewer: Viewer): Boolean {
-        return when (viewer) {
-            is ClientModule -> {
-                head.hide(viewer.connection)
-                body.hide(viewer.connection)
-                true
-            }
-            else -> viewer.show(this)
-        }
-    }
-
 }

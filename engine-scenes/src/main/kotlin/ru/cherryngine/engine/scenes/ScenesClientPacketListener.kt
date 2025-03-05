@@ -9,7 +9,7 @@ import ru.cherryngine.engine.scenes.event.impl.DisconnectEvent
 
 @Singleton
 class ScenesClientPacketListener(
-    private val sceneManager: SceneManager,
+    val sceneManager: SceneManager,
 ) : ClientPacketListener {
     override fun onPacketReceived(
         clientConnection: ClientConnection,

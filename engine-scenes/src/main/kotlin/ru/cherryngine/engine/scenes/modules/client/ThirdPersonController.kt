@@ -2,20 +2,16 @@ package ru.cherryngine.engine.scenes.modules.client
 
 import io.micronaut.context.annotation.Parameter
 import net.minestom.server.network.packet.client.play.ClientInputPacket
-import net.minestom.server.network.packet.client.play.ClientPlayerPositionAndRotationPacket
-import net.minestom.server.network.packet.client.play.ClientPlayerPositionPacket
-import net.minestom.server.network.packet.client.play.ClientPlayerRotationPacket
-import ru.cherryngine.engine.core.asQRot
-import ru.cherryngine.engine.core.asVec3D
 import ru.cherryngine.engine.scenes.GameObject
-import ru.cherryngine.engine.scenes.Module
-import ru.cherryngine.engine.scenes.ModulePrototype
 import ru.cherryngine.engine.scenes.Scene
+import ru.cherryngine.engine.scenes.api.Module
+import ru.cherryngine.engine.scenes.api.ModulePrototype
 import ru.cherryngine.engine.scenes.event.Event
 import ru.cherryngine.engine.scenes.event.impl.ClientPacketEvent
+import ru.cherryngine.engine.scenes.modules.client.api.Camera
+import ru.cherryngine.engine.scenes.modules.client.api.Controller
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.View
-import ru.cherryngine.lib.math.rotation.QRot
 import kotlin.math.cos
 import kotlin.math.sin
 

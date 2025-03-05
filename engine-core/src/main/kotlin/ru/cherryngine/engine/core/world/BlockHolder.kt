@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package ru.cherryngine.engine.core.world
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap
@@ -11,14 +13,13 @@ import net.minestom.server.network.packet.server.play.ChunkDataPacket
 import net.minestom.server.network.packet.server.play.data.ChunkData
 import net.minestom.server.network.packet.server.play.data.LightData
 import net.minestom.server.world.DimensionType
+import ru.cherryngine.engine.core.world.api.Chunk
+import ru.cherryngine.engine.core.world.api.ChunkSupplier
 import java.util.*
 
 
-/**
- * Basic structure to hold blocks and create chunk data packets.
- */
 open class BlockHolder(
-    val dimensionType: DimensionType,
+    dimensionType: DimensionType,
     val chunkSupplier: ChunkSupplier,
 ) : Block.Getter, Block.Setter {
     val minSection = dimensionType.minY() / Chunk.CHUNK_SECTION_SIZE

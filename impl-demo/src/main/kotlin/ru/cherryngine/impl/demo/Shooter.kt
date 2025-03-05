@@ -4,12 +4,12 @@ import io.micronaut.context.annotation.Parameter
 import net.minestom.server.network.packet.client.play.ClientAnimationPacket
 import ru.cherryngine.engine.core.server.ClientConnection
 import ru.cherryngine.engine.scenes.GameObject
-import ru.cherryngine.engine.scenes.Module
-import ru.cherryngine.engine.scenes.ModulePrototype
+import ru.cherryngine.engine.scenes.api.Module
+import ru.cherryngine.engine.scenes.api.ModulePrototype
 import ru.cherryngine.engine.scenes.event.Event
 import ru.cherryngine.engine.scenes.event.impl.ClientPacketEvent
 import ru.cherryngine.engine.scenes.modules.client.ClientModule
-import ru.cherryngine.engine.scenes.modules.physics.collider.CuboidCollider
+import ru.cherryngine.engine.scenes.modules.physics.CuboidCollider
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Vec3D
 
@@ -22,7 +22,7 @@ class Shooter(
     override fun onEvent(event: Event) {
         when (event) {
             is ClientPacketEvent -> {
-                when (val packet = event.packet) {
+                when (event.packet) {
                     is ClientAnimationPacket -> {
                         shoot(event.clientConnection)
                     }

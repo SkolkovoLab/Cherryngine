@@ -4,8 +4,8 @@ import io.micronaut.context.annotation.Parameter
 import net.kyori.adventure.text.Component
 import net.minestom.server.network.packet.server.play.SystemChatPacket
 import ru.cherryngine.engine.scenes.GameObject
-import ru.cherryngine.engine.scenes.Module
-import ru.cherryngine.engine.scenes.ModulePrototype
+import ru.cherryngine.engine.scenes.api.Module
+import ru.cherryngine.engine.scenes.api.ModulePrototype
 import ru.cherryngine.engine.scenes.Scene
 import ru.cherryngine.engine.scenes.event.Event
 import ru.cherryngine.engine.scenes.modules.client.ClientModule

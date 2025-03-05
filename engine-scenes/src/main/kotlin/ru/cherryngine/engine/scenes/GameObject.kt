@@ -1,6 +1,9 @@
+@file:Suppress("unused")
+
 package ru.cherryngine.engine.scenes
 
 import io.micronaut.context.ApplicationContext
+import ru.cherryngine.engine.scenes.api.Module
 import ru.cherryngine.engine.scenes.event.Event
 import ru.cherryngine.engine.scenes.modules.TransformModule
 import java.util.*

@@ -9,7 +9,6 @@ import ru.cherryngine.engine.scenes.Scene
 import ru.cherryngine.engine.scenes.SceneManager
 import ru.cherryngine.engine.scenes.modules.BlockHolderModule
 import ru.cherryngine.engine.scenes.modules.ViewSynchronizer
-import ru.cherryngine.engine.scenes.modules.physics.Physics
 import ru.cherryngine.engine.scenes.modules.physics.SimplePhysics
 
 @Singleton

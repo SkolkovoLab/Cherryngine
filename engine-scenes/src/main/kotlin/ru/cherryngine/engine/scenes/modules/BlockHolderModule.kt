@@ -5,8 +5,8 @@ import net.minestom.server.coordinate.ChunkRange
 import ru.cherryngine.engine.core.minestomPos
 import ru.cherryngine.engine.core.world.BlockHolder
 import ru.cherryngine.engine.scenes.GameObject
-import ru.cherryngine.engine.scenes.Module
-import ru.cherryngine.engine.scenes.ModulePrototype
+import ru.cherryngine.engine.scenes.api.Module
+import ru.cherryngine.engine.scenes.api.ModulePrototype
 import ru.cherryngine.engine.scenes.modules.client.ClientModule
 import ru.cherryngine.engine.scenes.view.Viewable
 import ru.cherryngine.engine.scenes.view.Viewer

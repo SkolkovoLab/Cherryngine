@@ -11,8 +11,11 @@ import net.minestom.server.utils.NamespaceID
 import net.minestom.server.world.biome.Biome
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import ru.cherryngine.engine.core.world.api.Chunk
+import ru.cherryngine.engine.core.world.api.ChunkSupplier
 import java.util.concurrent.ConcurrentHashMap
 
+// Need to refactor
 class PolarChunkSupplier(
     data: ByteArray,
     private val registries: Registries,

@@ -2,8 +2,8 @@ package ru.cherryngine.impl.demo
 
 import io.micronaut.context.annotation.Parameter
 import ru.cherryngine.engine.scenes.GameObject
-import ru.cherryngine.engine.scenes.Module
-import ru.cherryngine.engine.scenes.ModulePrototype
+import ru.cherryngine.engine.scenes.api.Module
+import ru.cherryngine.engine.scenes.api.ModulePrototype
 import ru.cherryngine.engine.scenes.modules.client.ClientModule
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.View
