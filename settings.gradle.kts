@@ -1,0 +1,19 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    }
+    includeBuild("build-logic")
+}
+
+rootProject.name = "Cherryngine"
+
+include(
+    "engine-core",
+
+    "impl-demo",
+
+    "lib-jackson",
+    "lib-math",
+)

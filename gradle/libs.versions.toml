@@ -1,0 +1,92 @@
+[versions]
+
+# main
+kotlin = "2.1.0"
+kotlinx-coroutines = "1.9.0"
+ksp = "2.1.0-1.0.29"
+micronaut = "4.7.2"
+micronaut-plugin = "4.4.4"
+shadow = "8.3.5"
+typetools = "0.6.3"
+jline = "3.28.0"
+jgrapht = "1.5.2"
+guava = "33.3.1-jre"
+
+# data
+jackson = "2.18.2"
+
+# Minecraft
+minestom = "dev"
+kyori-adventure = "4.17.0"
+cloud = "2.0.0"
+creative = "1.7.3"
+hollowcube-schem = "1.2.0"
+hollowcube-polar = "1.12.0"
+
+# Other
+libbulletjme = "21.2.1"
+compose-plugin = "1.7.1"
+ffmpeg-jaffree = "1.0.0"
+sentry = "7.19.0"
+
+[libraries]
+
+# main
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "kotlinx-coroutines" }
+
+micronaut-bom = { module = "io.micronaut:micronaut-core-bom", version.ref = "micronaut" }
+micronaut-kotlin-runtime = { module = "io.micronaut.kotlin:micronaut-kotlin-runtime" }
+micronaut-serde-jackson = { module = "io.micronaut.serde:micronaut-serde-jackson" }
+micronaut-serde-processor = { module = "io.micronaut.serde:micronaut-serde-processor" }
+
+typetools = { module = "net.jodah:typetools", version.ref = "typetools" }
+jline = { module = "org.jline:jline", version.ref = "jline" }
+
+jgrapht-core = { module = "org.jgrapht:jgrapht-core", version.ref = "jgrapht" }
+jgrapht-io = { module = "org.jgrapht:jgrapht-io", version.ref = "jgrapht" }
+
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+
+# data
+
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
+jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
+
+# minecraft
+
+minestom = { module = "net.minestom:minestom-local", version.ref = "minestom" }
+
+kyori-adventure-api = { module = "net.kyori:adventure-api", version.ref = "kyori-adventure" }
+kyori-adventure-text-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "kyori-adventure" }
+kyori-adventure-text-serializer-ansi = { module = "net.kyori:adventure-text-serializer-ansi", version.ref = "kyori-adventure" }
+cloud-core = { module = "org.incendo:cloud-core", version.ref = "cloud" }
+cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud" }
+cloud-kotlin-coroutines = { module = "org.incendo:cloud-kotlin-coroutines", version.ref = "cloud" }
+cloud-kotlin-coroutines-annotations = { module = "org.incendo:cloud-kotlin-coroutines-annotations", version.ref = "cloud" }
+cloud-kotlin-extensions = { module = "org.incendo:cloud-kotlin-extensions", version.ref = "cloud" }
+creative-api = { module = "team.unnamed:creative-api", version.ref = "creative" }
+creative-serializer-minecraft = { module = "team.unnamed:creative-serializer-minecraft", version.ref = "creative" }
+creative-server = { module = "team.unnamed:creative-server", version.ref = "creative" }
+
+hollowcube-schem = { module = "dev.hollowcube:schem", version.ref = "hollowcube-schem" }
+hollowcube-polar = { module = "dev.hollowcube:polar", version.ref = "hollowcube-polar" }
+
+# Other
+
+apache-commons-geometry-euclidean = { module = "org.apache.commons:commons-geometry-euclidean", version = "1.0" }
+
+libbulletjme = { module = "com.github.stephengold:Libbulletjme", version.ref = "libbulletjme" }
+ffmpeg-jaffree = { module = "io.v47.jaffree:jaffree", version.ref = "ffmpeg-jaffree" }
+
+sentry = { module = "io.sentry:sentry", version.ref = "sentry" }
+sentry-logback = { module = "io.sentry:sentry-logback", version.ref = "sentry" }
+
+[bundles]
+jackson = ["jackson-core", "jackson-databind", "jackson-module-kotlin", "jackson-dataformat-yaml"]
+
+[plugins]
+compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

@@ -1,0 +1,9 @@
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.ogg filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+*.aac filter=lfs diff=lfs merge=lfs -text
+
+*.png filter=lfs diff=lfs merge=lfs -text
+
+*.polar filter=lfs diff=lfs merge=lfs -text
+*.schem filter=lfs diff=lfs merge=lfs -text
