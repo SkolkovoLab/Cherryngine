@@ -12,5 +12,7 @@ dependencies {
 
     api("io.github.dockyardmc:Dockyard")
 
+    implementation("com.github.luben:zstd-jni:1.5.5-3")
+
     implementation("org.jctools:jctools-core:4.0.3")
 }
