@@ -10,10 +10,7 @@ dependencies {
     api(libs.kotlinx.coroutines.jdk8)
     api(libs.guava)
 
-    implementation("io.github.dockyardmc:dockyard:0.9.3")
-
-    api(libs.hollowcube.polar)
-
+    api("io.github.dockyardmc:Dockyard")
 
     implementation("org.jctools:jctools-core:4.0.3")
 }

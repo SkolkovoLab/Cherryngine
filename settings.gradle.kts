@@ -17,3 +17,5 @@ include(
     "lib-jackson",
     "lib-math",
 )
+
+includeBuild("lib-dockyard")
