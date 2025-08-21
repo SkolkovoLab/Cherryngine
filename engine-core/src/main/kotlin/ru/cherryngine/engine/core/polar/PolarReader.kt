@@ -6,7 +6,7 @@ import io.github.dockyardmc.protocol.readOptional
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import net.kyori.adventure.key.Key
-import org.jglrxavpok.hephaistos.nbt.NBTCompound
+import net.kyori.adventure.nbt.CompoundBinaryTag
 import kotlin.math.ceil
 import kotlin.math.ln
 
@@ -208,9 +208,9 @@ object PolarReader {
         val posIndex = buffer.readInt()
         var id = buffer.readOptional(ByteBuf::readString)
 
-        var nbt: NBTCompound? = NBTCompound.EMPTY
+        var nbt: CompoundBinaryTag? = CompoundBinaryTag.empty()
         if (version <= PolarWorld.VERSION_USERDATA_OPT_BLOCK_ENT_NBT || buffer.readBoolean()) {
-            nbt = buffer.readNBT() as NBTCompound
+            nbt = buffer.readNBTCompound()
         }
 
         if (dataVersion < dataConverter.dataVersion()) {
@@ -222,8 +222,8 @@ object PolarReader {
             )
             id = converted.key
             if (id!!.isEmpty()) id = null
-            nbt = converted.value as NBTCompound?
-            if (nbt!!.size == 0) nbt = null
+            nbt = converted.value as CompoundBinaryTag?
+            if (nbt!!.size() == 0) nbt = null
         }
 
         return PolarChunk.BlockEntity(

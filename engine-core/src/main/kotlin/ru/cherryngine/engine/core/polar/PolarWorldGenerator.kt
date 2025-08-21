@@ -1,13 +1,15 @@
 package ru.cherryngine.engine.core.polar
 
-import io.github.dockyardmc.protocol.writeList
+import io.github.dockyardmc.protocol.types.writeList
 import io.github.dockyardmc.registry.Biomes
 import io.github.dockyardmc.registry.registries.Biome
 import io.github.dockyardmc.registry.registries.BiomeRegistry
 import io.github.dockyardmc.registry.registries.BlockRegistry
 import io.github.dockyardmc.world.World
 import io.github.dockyardmc.world.block.Block
+import io.github.dockyardmc.world.chunk.ChunkSection
 import io.github.dockyardmc.world.generators.WorldGenerator
+import io.github.dockyardmc.world.palette.Palette
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import org.slf4j.LoggerFactory
@@ -28,13 +30,15 @@ class PolarWorldGenerator(
                 val chunk = world.getOrGenerateChunk(polarChunk.x, polarChunk.z)
                 for (i in 0 until min(polarChunk.sections.size, chunk.sections.size)) {
                     val polarSection = polarChunk.sections[i]
-                    val section = chunk.sections[i]
-                    section.blockPalette.setAll { x, y, z ->
+                    val blockPalette = Palette.blocks()
+                    blockPalette.setAll { x, y, z ->
                         getBlockId(polarSection, x, y, z).getProtocolId()
                     }
-                    section.biomePalette.setAll { x, y, z ->
+                    val biomePalette = Palette.biomes()
+                    biomePalette.setAll { x, y, z ->
                         getBiomeId(polarSection, x, y, z).getProtocolId()
                     }
+                    chunk.sections[i] = ChunkSection(blockPalette, biomePalette)
                 }
                 val blockLight = getLightData(polarChunk) { it.blockLight() }
                 chunk.light.blockMask = blockLight.mask

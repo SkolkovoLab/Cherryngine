@@ -1,6 +1,6 @@
 package ru.cherryngine.engine.core.polar
 
-import org.jglrxavpok.hephaistos.nbt.NBT
+import net.kyori.adventure.nbt.CompoundBinaryTag
 
 /**
  * A Java type representing the latest version of the chunk format.
@@ -22,7 +22,7 @@ data class PolarChunk(
         val y: Int,
         val z: Int,
         val id: String?,
-        val data: NBT?,
+        val data: CompoundBinaryTag?,
     )
 
     companion object {

@@ -22,6 +22,7 @@ repositories {
     maven("https://repo.plasmoverse.com/snapshots/") // PlasmoVoice Snapshots
     maven("https://repo.plo.su/") // PlasmoVoice Opus
     maven("https://maven.enginehub.org/repo/") // WorldEdit
+    maven("https://maven.noxcrew.com/public")
 }
 
 configurations.all {

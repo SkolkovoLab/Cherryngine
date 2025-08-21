@@ -1,6 +1,6 @@
 package ru.cherryngine.engine.core.polar
 
-import org.jglrxavpok.hephaistos.nbt.NBT
+import net.kyori.adventure.nbt.CompoundBinaryTag
 import java.util.Map
 
 /**
@@ -35,10 +35,10 @@ interface PolarDataConverter {
     }
 
     fun convertBlockEntityData(
-        id: String, data: NBT,
+        id: String, data: CompoundBinaryTag,
         fromVersion: Int, toVersion: Int
-    ): MutableMap.MutableEntry<String?, NBT?> {
-        return Map.entry<String?, NBT?>(id, data)
+    ): MutableMap.MutableEntry<String?, CompoundBinaryTag?> {
+        return Map.entry<String?, CompoundBinaryTag?>(id, data)
     }
 
     companion object {
