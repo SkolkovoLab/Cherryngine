@@ -10,11 +10,9 @@ class DockyardModule(
 ) {
     @Singleton
     fun getDockyardServer(): DockyardServer {
-        return DockyardServer {
-            ip = engineCoreConfig.address
-            port = engineCoreConfig.port
-            useMojangAuth = engineCoreConfig.mojangAuth
-            networkCompressionThreshold = engineCoreConfig.compressionThreshold
-        }
+        return DockyardServer(
+            engineCoreConfig.address,
+            engineCoreConfig.port
+        )
     }
 }
