@@ -1,7 +1,7 @@
 package ru.cherryngine.impl.demo
 
-import io.github.dockyardmc.server.Connection
 import jakarta.inject.Singleton
+import ru.cherryngine.lib.minecraft.server.Connection
 
 @Singleton
 class PlayerManager {

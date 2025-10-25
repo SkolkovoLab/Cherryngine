@@ -1,8 +1,8 @@
 package ru.cherryngine.engine.core
 
-import io.github.dockyardmc.DockyardServer
 import io.micronaut.context.annotation.Factory
 import jakarta.inject.Singleton
+import ru.cherryngine.lib.minecraft.DockyardServer
 
 @Factory
 class DockyardModule(

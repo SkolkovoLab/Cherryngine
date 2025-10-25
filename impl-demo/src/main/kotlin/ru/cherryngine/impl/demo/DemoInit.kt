@@ -1,7 +1,7 @@
 package ru.cherryngine.impl.demo
 
-import io.github.dockyardmc.DockyardServer
 import jakarta.inject.Singleton
+import ru.cherryngine.lib.minecraft.DockyardServer
 
 @Singleton
 class DemoInit(

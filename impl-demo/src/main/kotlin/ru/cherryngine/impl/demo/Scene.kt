@@ -1,6 +1,6 @@
 package ru.cherryngine.impl.demo
 
-import io.github.dockyardmc.protocol.packets.ServerboundPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 
 abstract class Scene {
     private val players = mutableSetOf<Player>()

@@ -1,10 +1,10 @@
 package ru.cherryngine.impl.demo
 
-import io.github.dockyardmc.protocol.packets.ClientboundPacket
-import io.github.dockyardmc.protocol.types.ChunkPos
-import io.github.dockyardmc.server.Connection
-import io.github.dockyardmc.utils.ChunkUtils
 import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
+import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.server.Connection
+import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 
 class Player(
     val connection: Connection,

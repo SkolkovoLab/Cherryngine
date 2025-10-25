@@ -1,7 +1,7 @@
 package ru.cherryngine.impl.demo
 
-import io.github.dockyardmc.protocol.packets.ServerboundPacket
 import jakarta.inject.Singleton
+import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 
 @Singleton
 class MainScene : Scene() {

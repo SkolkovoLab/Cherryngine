@@ -16,5 +16,5 @@ include(
 
     "lib-jackson",
     "lib-math",
-    "lib-protocol",
+    "lib-minecraft",
 )

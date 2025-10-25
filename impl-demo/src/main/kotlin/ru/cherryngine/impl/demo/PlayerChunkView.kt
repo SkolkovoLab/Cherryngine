@@ -1,12 +1,12 @@
 package ru.cherryngine.impl.demo
 
-import io.github.dockyardmc.protocol.packets.play.clientbound.ClientboundForgetLevelChunkPacket
-import io.github.dockyardmc.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
-import io.github.dockyardmc.protocol.packets.play.clientbound.ClientboundSetChunkCacheCenterPacket
-import io.github.dockyardmc.protocol.types.ChunkPos
-import io.github.dockyardmc.utils.ChunkUtils
-import io.github.dockyardmc.world.test.Chunk
-import io.github.dockyardmc.world.test.World
+import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundForgetLevelChunkPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundSetChunkCacheCenterPacket
+import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.utils.ChunkUtils
+import ru.cherryngine.lib.minecraft.world.test.Chunk
+import ru.cherryngine.lib.minecraft.world.test.World
 import kotlin.math.floor
 import kotlin.math.sqrt
 
