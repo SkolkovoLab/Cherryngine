@@ -1,6 +1,8 @@
 package ru.cherryngine.impl.demo
 
 import io.github.dockyardmc.PacketHandler
+import io.github.dockyardmc.cherry.math.Vec3D
+import io.github.dockyardmc.cherry.math.View
 import io.github.dockyardmc.protocol.packets.ProtocolState
 import io.github.dockyardmc.protocol.packets.ServerboundPacket
 import io.github.dockyardmc.protocol.packets.common.ClientboundPongResponsePacket
@@ -17,12 +19,13 @@ import io.github.dockyardmc.protocol.packets.play.clientbound.ClientboundGameEve
 import io.github.dockyardmc.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
 import io.github.dockyardmc.protocol.packets.play.clientbound.ClientboundLoginPacket
 import io.github.dockyardmc.protocol.packets.play.clientbound.ClientboundSetChunkCacheCenterPacket
-import io.github.dockyardmc.protocol.packets.play.serverbound.ServerboundPlayerLoadedPacket
+import io.github.dockyardmc.protocol.packets.play.serverbound.*
 import io.github.dockyardmc.protocol.packets.status.ClientboundStatusResponsePacket
 import io.github.dockyardmc.protocol.packets.status.ServerboundStatusRequestPacket
 import io.github.dockyardmc.protocol.types.ChunkPos
 import io.github.dockyardmc.protocol.types.GameMode
 import io.github.dockyardmc.protocol.types.GameProfile
+import io.github.dockyardmc.protocol.types.MovePlayerFlags
 import io.github.dockyardmc.registry.DimensionTypes
 import io.github.dockyardmc.registry.RegistryManager
 import io.github.dockyardmc.registry.registries.tags.*
@@ -82,7 +85,7 @@ class TestPacketHandler(
             is ServerboundLoginAcknowledgedPacket -> {
                 connection.state = ProtocolState.CONFIGURATION
 
-                playerManager.map[connection] = Player(connection, mainScene)
+                playerManager.map[connection] = Player(connection)
 
                 val cachedTagPacket = ClientboundUpdateTagsPacket(
                     listOf(
@@ -135,29 +138,36 @@ class TestPacketHandler(
                     )
                 )
 
-                connection.sendPacket(
-                    ClientboundSetChunkCacheCenterPacket(
-                        ChunkPos.ZERO
-                    )
-                )
+                val player = playerManager.map[connection] ?: return
 
-                val emptyChunk = Chunk(ChunkData(mapOf(), listOf(), listOf()), Light())
-                for (x in -8..8) for (z in -8..8) {
-                    val packed = ChunkPos.pack(x, z)
-                    val chunk = testWorldShit.world.chunks[packed] ?: emptyChunk
-                    connection.sendPacket(
-                        ClientboundLevelChunkWithLightPacket(
-                            ChunkPos(x, z),
-                            chunk.chunkData,
-                            chunk.light
-                        )
-                    )
-                }
+                val playerChunkView = PlayerChunkView(player, testWorldShit.world)
+                player.playerChunkView = playerChunkView
+
+                playerChunkView.init()
             }
 
             is ServerboundPlayerLoadedPacket -> {
                 println("player loaded!")
             }
+
+            is ServerboundMovePlayerPosPacket -> onMove(connection, packet.pos, null, packet.flags)
+            is ServerboundMovePlayerPosRotPacket -> onMove(connection, packet.pos, packet.view, packet.flags)
+            is ServerboundMovePlayerRotPacket -> onMove(connection, null, packet.view, packet.flags)
+            is ServerboundMovePlayerStatusOnlyPacket -> onMove(connection, null, null, packet.flags)
+
+            is ServerboundClientTickEndPacket -> {
+                playerManager.map[connection]?.tick()
+            }
         }
+    }
+
+    fun onMove(
+        connection: Connection,
+        pos: Vec3D?,
+        view: View?,
+        flags: MovePlayerFlags,
+    ) {
+        val player = playerManager.map[connection] ?: return
+        if (pos != null) player.lastPosition = pos
     }
 }
