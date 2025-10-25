@@ -16,6 +16,5 @@ include(
 
     "lib-jackson",
     "lib-math",
+    "lib-protocol",
 )
-
-includeBuild("lib-dockyard")
