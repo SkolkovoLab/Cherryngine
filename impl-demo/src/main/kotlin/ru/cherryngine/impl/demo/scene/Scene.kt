@@ -1,5 +1,6 @@
-package ru.cherryngine.impl.demo
+package ru.cherryngine.impl.demo.scene
 
+import ru.cherryngine.impl.demo.player.Player
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 
 abstract class Scene {

@@ -1,12 +1,12 @@
-package ru.cherryngine.impl.demo
+package ru.cherryngine.impl.demo.world
 
+import ru.cherryngine.impl.demo.player.Player
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundForgetLevelChunkPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundSetChunkCacheCenterPacket
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
-import ru.cherryngine.lib.minecraft.world.test.Chunk
-import ru.cherryngine.lib.minecraft.world.test.World
+import kotlin.collections.forEach
 import kotlin.math.floor
 import kotlin.math.sqrt
 
@@ -18,7 +18,7 @@ class PlayerChunkView(
         const val DEFAULT_RENDER_DISTANCE = 3
     }
 
-    private var previousChunkPos = ChunkPos.ZERO
+    private var previousChunkPos = ChunkPos.Companion.ZERO
 
     fun init() {
         val currentChunkPos = player.clientChunkPos
@@ -66,7 +66,7 @@ class PlayerChunkView(
     }
 
     fun loadChunk(pos: ChunkPos) {
-        val chunk = world.chunks[pos.pack()] ?: Chunk.EMPTY
+        val chunk = world.chunks[pos.pack()] ?: Chunk.Companion.EMPTY
         player.sendPacket(ClientboundLevelChunkWithLightPacket(pos, chunk.chunkData, chunk.light))
     }
 
@@ -106,7 +106,7 @@ class PlayerChunkView(
             1 -> ChunkPos(radius + xOffset, a % en - radius + zOffset)
             2 -> ChunkPos(radius - a % en + xOffset, radius + zOffset)
             3 -> ChunkPos(-radius + xOffset, radius - a % en + zOffset)
-            else -> ChunkPos.ZERO
+            else -> ChunkPos.Companion.ZERO
         }
     }
 }

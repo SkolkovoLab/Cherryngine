@@ -1,4 +1,4 @@
-package ru.cherryngine.lib.minecraft.world.polar
+package ru.cherryngine.impl.demo.world.polar
 
 import kotlin.math.ceil
 import kotlin.math.floor

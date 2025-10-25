@@ -1,4 +1,4 @@
-package ru.cherryngine.lib.minecraft.world.polar
+package ru.cherryngine.impl.demo.world.polar
 
 import io.netty.buffer.Unpooled
 import org.slf4j.LoggerFactory
@@ -14,8 +14,8 @@ import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 import ru.cherryngine.lib.minecraft.world.palette.Palette
-import ru.cherryngine.lib.minecraft.world.test.Chunk
-import ru.cherryngine.lib.minecraft.world.test.World
+import ru.cherryngine.impl.demo.world.Chunk
+import ru.cherryngine.impl.demo.world.World
 import java.util.*
 
 object PolarWorldGenerator {

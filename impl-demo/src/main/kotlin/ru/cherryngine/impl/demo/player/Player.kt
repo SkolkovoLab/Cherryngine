@@ -1,5 +1,6 @@
-package ru.cherryngine.impl.demo
+package ru.cherryngine.impl.demo.player
 
+import ru.cherryngine.impl.demo.world.PlayerChunkView
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos

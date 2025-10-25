@@ -1,6 +1,10 @@
 package ru.cherryngine.impl.demo
 
 import jakarta.inject.Singleton
+import ru.cherryngine.impl.demo.player.Player
+import ru.cherryngine.impl.demo.player.PlayerManager
+import ru.cherryngine.impl.demo.world.PlayerChunkView
+import ru.cherryngine.impl.demo.world.TestWorldShit
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.View
 import ru.cherryngine.lib.minecraft.PacketHandler
@@ -33,7 +37,6 @@ import ru.cherryngine.lib.minecraft.server.Connection
 class TestPacketHandler(
     val testWorldShit: TestWorldShit,
     val playerManager: PlayerManager,
-    val mainScene: MainScene,
 ) : PacketHandler {
     override fun onPacket(connection: Connection, packet: ServerboundPacket) {
         when (packet) {

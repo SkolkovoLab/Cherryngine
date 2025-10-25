@@ -1,6 +1,7 @@
-package ru.cherryngine.impl.demo
+package ru.cherryngine.impl.demo.scene
 
 import jakarta.inject.Singleton
+import ru.cherryngine.impl.demo.player.Player
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 
 @Singleton

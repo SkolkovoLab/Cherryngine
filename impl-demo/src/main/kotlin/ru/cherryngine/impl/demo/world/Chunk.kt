@@ -1,4 +1,4 @@
-package ru.cherryngine.lib.minecraft.world.test
+package ru.cherryngine.impl.demo.world
 
 import ru.cherryngine.lib.minecraft.world.Light
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData

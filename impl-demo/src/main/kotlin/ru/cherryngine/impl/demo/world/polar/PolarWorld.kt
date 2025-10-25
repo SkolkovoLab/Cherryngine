@@ -1,4 +1,4 @@
-package ru.cherryngine.lib.minecraft.world.polar
+package ru.cherryngine.impl.demo.world.polar
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap

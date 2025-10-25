@@ -1,4 +1,4 @@
-package ru.cherryngine.impl.demo
+package ru.cherryngine.impl.demo.player
 
 import jakarta.inject.Singleton
 import ru.cherryngine.lib.minecraft.server.Connection

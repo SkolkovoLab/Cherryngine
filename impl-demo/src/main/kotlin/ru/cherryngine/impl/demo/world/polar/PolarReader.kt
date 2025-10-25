@@ -1,4 +1,4 @@
-package ru.cherryngine.lib.minecraft.world.polar
+package ru.cherryngine.impl.demo.world.polar
 
 import com.github.luben.zstd.Zstd
 import io.netty.buffer.ByteBuf

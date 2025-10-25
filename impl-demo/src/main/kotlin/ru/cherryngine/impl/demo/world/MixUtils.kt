@@ -1,10 +1,8 @@
-package ru.cherryngine.lib.minecraft.world
+package ru.cherryngine.impl.demo.world
 
 import ru.cherryngine.lib.minecraft.registry.Blocks
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
-import ru.cherryngine.lib.minecraft.world.test.Chunk
-import ru.cherryngine.lib.minecraft.world.test.World
 
 fun mixWorld(world: World, layers: List<World>): World {
     val newChunks: Map<Long, Chunk> = world.chunks.mapValues { (chunkPos, chunk) ->

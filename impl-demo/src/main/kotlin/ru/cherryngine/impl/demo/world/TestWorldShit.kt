@@ -1,8 +1,8 @@
-package ru.cherryngine.impl.demo
+package ru.cherryngine.impl.demo.world
 
 import jakarta.inject.Singleton
 import ru.cherryngine.lib.minecraft.registry.DimensionTypes
-import ru.cherryngine.lib.minecraft.world.polar.PolarWorldGenerator
+import ru.cherryngine.impl.demo.world.polar.PolarWorldGenerator
 
 @Singleton
 class TestWorldShit {

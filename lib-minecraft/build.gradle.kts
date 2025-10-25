@@ -29,5 +29,4 @@ dependencies {
     // Other
     implementation("com.google.code.gson:gson:2.10.1")
     api("it.unimi.dsi:fastutil:8.5.13")
-    implementation("com.github.luben:zstd-jni:1.5.5-3") // for polar
 }
