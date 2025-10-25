@@ -1,6 +1,6 @@
 package io.github.dockyardmc.protocol.types
 
-import io.github.dockyardmc.cherry.math.Vec3I
+import ru.cherryngine.lib.math.Vec3I
 import io.github.dockyardmc.codec.LocationCodecs
 import io.github.dockyardmc.data.CRC32CHasher
 import io.github.dockyardmc.data.HashHolder

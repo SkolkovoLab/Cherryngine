@@ -1,6 +1,6 @@
 //package io.github.dockyardmc.protocol.packets.play.clientbound
 //
-//import io.github.dockyardmc.cherry.math.Vec3D
+//import ru.cherryngine.lib.math.Vec3D
 //import io.github.dockyardmc.extentions.writeRegistryEntry
 //import io.github.dockyardmc.location.Location
 //import io.github.dockyardmc.location.writeLocation

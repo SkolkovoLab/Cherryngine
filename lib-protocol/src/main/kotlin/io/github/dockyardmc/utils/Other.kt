@@ -1,8 +1,8 @@
 package io.github.dockyardmc.utils
 
-import io.github.dockyardmc.cherry.math.Vec3D
-import io.github.dockyardmc.cherry.math.Vec3I
-import io.github.dockyardmc.cherry.math.View
+import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.lib.math.Vec3I
+import ru.cherryngine.lib.math.View
 import io.github.dockyardmc.protocol.types.SoundEvent
 import io.netty.buffer.ByteBuf
 import net.kyori.adventure.nbt.BinaryTag

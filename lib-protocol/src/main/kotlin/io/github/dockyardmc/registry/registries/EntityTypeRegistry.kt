@@ -1,8 +1,10 @@
 package io.github.dockyardmc.registry.registries
 
-import io.github.dockyardmc.cherry.math.Vec3D
+import ru.cherryngine.lib.math.Vec3D
 import io.github.dockyardmc.registry.DataDrivenRegistry
 import io.github.dockyardmc.registry.RegistryEntry
+import io.github.dockyardmc.utils.kotlinx.Vec3DListToJsonSerializer
+import io.github.dockyardmc.utils.kotlinx.Vec3DToJsonSerializer
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.nbt.CompoundBinaryTag
 
@@ -42,8 +44,12 @@ data class EntityDimensions(
     val fixed: Boolean,
     val height: Float,
     val width: Float,
+    @Serializable(with = Vec3DToJsonSerializer::class)
     val nameTagLocation: Vec3D?,
+    @Serializable(with = Vec3DListToJsonSerializer::class)
     val passengerLocations: List<Vec3D>?,
+    @Serializable(with = Vec3DToJsonSerializer::class)
     val vehicleLocation: Vec3D?,
+    @Serializable(with = Vec3DToJsonSerializer::class)
     val wardenChestLocation: Vec3D?
 )

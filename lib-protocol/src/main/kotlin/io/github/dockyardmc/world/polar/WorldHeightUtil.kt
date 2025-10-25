@@ -1,4 +1,4 @@
-package io.github.dockyardmc.cherry.polar
+package io.github.dockyardmc.world.polar
 
 object WorldHeightUtil {
     fun updateWorldHeight(world: PolarWorld, minSection: Byte, maxSection: Byte): PolarWorld {

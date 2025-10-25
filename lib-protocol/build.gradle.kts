@@ -4,6 +4,8 @@ plugins {
 }
 
 dependencies {
+    api(project(":lib-math"))
+
     // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-reflect:2.1.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")

@@ -1,4 +1,4 @@
-package io.github.dockyardmc.cherry.polar
+package io.github.dockyardmc.world.polar
 
 import kotlin.math.ceil
 import kotlin.math.floor

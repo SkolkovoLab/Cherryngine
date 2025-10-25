@@ -1,7 +1,7 @@
 package io.github.dockyardmc.protocol.packets.play.clientbound
 
-import io.github.dockyardmc.cherry.math.Vec3D
-import io.github.dockyardmc.cherry.math.View
+import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.lib.math.View
 import io.github.dockyardmc.codec.LocationCodecs
 import io.github.dockyardmc.protocol.packets.ClientboundPacket
 import io.github.dockyardmc.tide.stream.StreamCodec

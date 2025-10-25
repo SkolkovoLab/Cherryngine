@@ -1,6 +1,6 @@
 package io.github.dockyardmc.data
 
-import io.github.dockyardmc.cherry.math.Vec3I
+import ru.cherryngine.lib.math.Vec3I
 import io.github.dockyardmc.tide.codec.Codec
 import io.github.dockyardmc.tide.stream.StreamCodec
 

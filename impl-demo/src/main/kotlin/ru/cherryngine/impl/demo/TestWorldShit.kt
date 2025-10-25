@@ -1,7 +1,7 @@
 package ru.cherryngine.impl.demo
 
-import io.github.dockyardmc.cherry.polar.PolarWorldGenerator
 import io.github.dockyardmc.registry.DimensionTypes
+import io.github.dockyardmc.world.polar.PolarWorldGenerator
 import jakarta.inject.Singleton
 
 @Singleton

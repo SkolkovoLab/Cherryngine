@@ -1,8 +1,8 @@
 package io.github.dockyardmc.codec
 
-import io.github.dockyardmc.cherry.math.Vec3D
-import io.github.dockyardmc.cherry.math.Vec3I
-import io.github.dockyardmc.cherry.math.View
+import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.lib.math.Vec3I
+import ru.cherryngine.lib.math.View
 import io.github.dockyardmc.tide.stream.StreamCodec
 import io.github.dockyardmc.utils.clamp
 import io.netty.buffer.ByteBuf

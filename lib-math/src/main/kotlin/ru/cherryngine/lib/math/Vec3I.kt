@@ -1,8 +1,5 @@
-package io.github.dockyardmc.cherry.math
+package ru.cherryngine.lib.math
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class Vec3I(
     val x: Int,
     val y: Int,

@@ -1,4 +1,4 @@
-package io.github.dockyardmc.cherry.polar
+package io.github.dockyardmc.world.polar
 
 /**
  * Representation of the latest version of the section format.

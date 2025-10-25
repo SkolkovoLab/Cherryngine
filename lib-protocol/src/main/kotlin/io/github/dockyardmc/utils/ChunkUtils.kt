@@ -1,7 +1,7 @@
 package io.github.dockyardmc.utils
 
-import io.github.dockyardmc.cherry.math.Vec3D
-import io.github.dockyardmc.cherry.math.Vec3I
+import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.lib.math.Vec3I
 import io.github.dockyardmc.protocol.types.ChunkPos
 import kotlin.math.abs
 import kotlin.math.floor

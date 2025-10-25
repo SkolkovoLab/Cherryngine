@@ -1,4 +1,4 @@
-package io.github.dockyardmc.cherry.polar
+package io.github.dockyardmc.world.polar
 
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import java.util.Map

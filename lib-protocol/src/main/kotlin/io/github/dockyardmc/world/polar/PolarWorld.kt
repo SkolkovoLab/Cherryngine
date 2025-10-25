@@ -1,4 +1,4 @@
-package io.github.dockyardmc.cherry.polar
+package io.github.dockyardmc.world.polar
 
 import io.github.dockyardmc.protocol.types.ChunkPos
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap

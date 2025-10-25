@@ -1,4 +1,4 @@
-package io.github.dockyardmc.cherry.polar
+package io.github.dockyardmc.world.polar
 
 import com.github.luben.zstd.Zstd
 import io.github.dockyardmc.codec.StreamCodecNBT
