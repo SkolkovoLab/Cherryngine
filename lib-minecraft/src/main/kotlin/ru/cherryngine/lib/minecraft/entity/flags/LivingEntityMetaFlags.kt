@@ -1,8 +1,6 @@
-package ru.cherryngine.lib.minecraft.entity.types
+package ru.cherryngine.lib.minecraft.entity.flags
 
-import ru.cherryngine.lib.minecraft.entity.Metadata
 import ru.cherryngine.lib.minecraft.protocol.types.PlayerHand
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 data class LivingEntityMetaFlags(
     val isHandActive: Boolean = false,
@@ -12,19 +10,21 @@ data class LivingEntityMetaFlags(
     companion object {
         val DEFAULT = LivingEntityMetaFlags()
 
-        val STREAM_CODEC = StreamCodec.byteFlags(
-            0x01, LivingEntityMetaFlags::isHandActive,
-            0x02, { it.activeHand == PlayerHand.OFF_HAND },
-            0x04, LivingEntityMetaFlags::isInRiptideSpinAttack
-        ) { isHandActive, activeHand, isInRiptideSpinAttack ->
-            LivingEntityMetaFlags(
-                isHandActive,
-                if (activeHand) PlayerHand.OFF_HAND else PlayerHand.MAIN_HAND,
-                isInRiptideSpinAttack
-            )
+        fun toByte(flags: LivingEntityMetaFlags): Byte {
+            var byte = 0
+            if (flags.isHandActive) byte = byte or 0x01
+            if (flags.activeHand == PlayerHand.OFF_HAND) byte = byte or 0x02
+            if (flags.isInRiptideSpinAttack) byte = byte or 0x04
+            return byte.toByte()
         }
 
-        fun metaEntry(value: LivingEntityMetaFlags): Metadata.Entry<LivingEntityMetaFlags> =
-            Metadata.Entry(Metadata.TYPE_BYTE, value, STREAM_CODEC)
+        fun fromByte(byte: Byte): LivingEntityMetaFlags {
+            val byte = byte.toInt()
+            return LivingEntityMetaFlags(
+                isHandActive = (byte and 0x01) != 0,
+                activeHand = if ((byte and 0x02) != 0) PlayerHand.OFF_HAND else PlayerHand.MAIN_HAND,
+                isInRiptideSpinAttack = (byte and 0x04) != 0,
+            )
+        }
     }
 }

@@ -1,8 +1,5 @@
 package ru.cherryngine.lib.minecraft.entity.flags
 
-import ru.cherryngine.lib.minecraft.entity.Metadata
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
-
 data class FoxMetaFlags(
     val isSitting: Boolean = false,
     val isCrouching: Boolean = false,
@@ -15,19 +12,29 @@ data class FoxMetaFlags(
     companion object {
         val DEFAULT = FoxMetaFlags()
 
-        val STREAM_CODEC = StreamCodec.byteFlags(
-            0x01, FoxMetaFlags::isSitting,
-            // 0x02 unused
-            0x04, FoxMetaFlags::isCrouching,
-            0x08, FoxMetaFlags::isInterested,
-            0x10, FoxMetaFlags::isPouncing,
-            0x20, FoxMetaFlags::isSleeping,
-            0x40, FoxMetaFlags::isFaceplanted,
-            0x80, FoxMetaFlags::isDefending,
-            ::FoxMetaFlags
-        )
+        fun toByte(flags: FoxMetaFlags): Byte {
+            var byte = 0
+            if (flags.isSitting) byte = byte or 0x01
+            if (flags.isCrouching) byte = byte or 0x04
+            if (flags.isInterested) byte = byte or 0x08
+            if (flags.isPouncing) byte = byte or 0x10
+            if (flags.isSleeping) byte = byte or 0x20
+            if (flags.isFaceplanted) byte = byte or 0x40
+            if (flags.isDefending) byte = byte or 0x80
+            return byte.toByte()
+        }
 
-        fun metaEntry(value: FoxMetaFlags): Metadata.Entry<FoxMetaFlags> =
-            Metadata.Entry(Metadata.TYPE_BYTE, value, STREAM_CODEC)
+        fun fromByte(byte: Byte): FoxMetaFlags {
+            val byte = byte.toInt()
+            return FoxMetaFlags(
+                isSitting = (byte and 0x01) != 0,
+                isCrouching = (byte and 0x04) != 0,
+                isInterested = (byte and 0x08) != 0,
+                isPouncing = (byte and 0x10) != 0,
+                isSleeping = (byte and 0x20) != 0,
+                isFaceplanted = (byte and 0x40) != 0,
+                isDefending = (byte and 0x80) != 0,
+            )
+        }
     }
 }

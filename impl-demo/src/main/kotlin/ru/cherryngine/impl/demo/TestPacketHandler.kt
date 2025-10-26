@@ -8,7 +8,7 @@ import ru.cherryngine.impl.demo.world.TestWorldShit
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.View
 import ru.cherryngine.lib.minecraft.PacketHandler
-import ru.cherryngine.lib.minecraft.entity.MetaContainer
+import ru.cherryngine.lib.minecraft.entity.MetadataContainer
 import ru.cherryngine.lib.minecraft.entity.MetadataDef
 import ru.cherryngine.lib.minecraft.entity.flags.EntityMetaFlags
 import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
@@ -179,15 +179,15 @@ class TestPacketHandler(
                             )
                         )
 
-                        val metaContainer = MetaContainer()
-                        metaContainer[MetadataDef.Entity.ENTITY_FLAGS] = EntityMetaFlags(hasGlowingEffects = true)
-                        metaContainer[MetadataDef.Entity.HAS_NO_GRAVITY] = true
-                        metaContainer[MetadataDef.Cat.VARIANT] = CatVariants.RED
+                        val metadataContainer = MetadataContainer()
+                        metadataContainer[MetadataDef.Cat.ENTITY_FLAGS] = EntityMetaFlags(hasGlowingEffects = true)
+                        metadataContainer[MetadataDef.Cat.HAS_NO_GRAVITY] = true
+                        metadataContainer[MetadataDef.Cat.VARIANT] = CatVariants.RED
 
                         connection.sendPacket(
                             ClientboundSetEntityDataPacket(
                                 228,
-                                metaContainer.entries
+                                metadataContainer.entries
                             )
                         )
                     }

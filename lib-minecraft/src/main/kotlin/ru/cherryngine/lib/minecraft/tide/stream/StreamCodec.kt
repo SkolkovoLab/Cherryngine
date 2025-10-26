@@ -6,8 +6,6 @@ import net.kyori.adventure.key.Key
 import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils
 import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils.toByteArraySafe
 import java.util.*
-import kotlin.experimental.and
-import kotlin.experimental.or
 import java.util.UUID as JavaUUID
 
 interface StreamCodec<T> {
@@ -217,6 +215,16 @@ interface StreamCodec<T> {
         val UUID_STRING = STRING.transform<JavaUUID>(JavaUUID::fromString, JavaUUID::toString)
         val BIT_SET = LONG_ARRAY.transform<BitSet>(BitSet::valueOf, BitSet::toLongArray)
         val INSTANT = LONG.transform<Instant>(Instant::fromEpochMilliseconds, Instant::toEpochMilliseconds)
+        val OPT_VAR_INT = object : StreamCodec<Int?> {
+            override fun write(buffer: ByteBuf, value: Int?) {
+                VAR_INT.write(buffer, (value ?: -1) + 1)
+            }
+
+            override fun read(buffer: ByteBuf): Int? {
+                val value = VAR_INT.read(buffer) - 1
+                return value.takeIf { it >= 0 }
+            }
+        }
 
         inline fun <reified E : Enum<E>> enum(): StreamCodec<E> {
             return EnumStreamCodec<E>(E::class)

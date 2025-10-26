@@ -1,20 +1,22 @@
 package ru.cherryngine.lib.minecraft.entity.flags
 
-import ru.cherryngine.lib.minecraft.entity.Metadata
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
-
 data class SpiderMetaFlags(
     val isClimbing: Boolean = false,
 ) {
     companion object {
         val DEFAULT = SpiderMetaFlags()
 
-        val STREAM_CODEC = StreamCodec.byteFlags(
-            0x01, SpiderMetaFlags::isClimbing,
-            ::SpiderMetaFlags
-        )
+        fun toByte(flags: SpiderMetaFlags): Byte {
+            var byte = 0
+            if (flags.isClimbing) byte = byte or 0x01
+            return byte.toByte()
+        }
 
-        fun metaEntry(value: SpiderMetaFlags): Metadata.Entry<SpiderMetaFlags> =
-            Metadata.Entry(Metadata.TYPE_BYTE, value, STREAM_CODEC)
+        fun fromByte(byte: Byte): SpiderMetaFlags {
+            val byte = byte.toInt()
+            return SpiderMetaFlags(
+                isClimbing = (byte and 0x01) != 0,
+            )
+        }
     }
 }

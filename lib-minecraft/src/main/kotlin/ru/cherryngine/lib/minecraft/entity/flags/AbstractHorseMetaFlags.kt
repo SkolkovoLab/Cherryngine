@@ -1,8 +1,5 @@
 package ru.cherryngine.lib.minecraft.entity.flags
 
-import ru.cherryngine.lib.minecraft.entity.Metadata
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
-
 data class AbstractHorseMetaFlags(
     val isTame: Boolean = false,
     val hasBred: Boolean = false,
@@ -13,18 +10,25 @@ data class AbstractHorseMetaFlags(
     companion object {
         val DEFAULT = AbstractHorseMetaFlags()
 
-        val STREAM_CODEC = StreamCodec.byteFlags(
-            // 0x01 unused
-            0x02, AbstractHorseMetaFlags::isTame,
-            // 0x04 unused (previously is saddled)
-            0x08, AbstractHorseMetaFlags::hasBred,
-            0x10, AbstractHorseMetaFlags::isEating,
-            0x20, AbstractHorseMetaFlags::isRearing,
-            0x40, AbstractHorseMetaFlags::isMouthOpen,
-            ::AbstractHorseMetaFlags
-        )
+        fun toByte(flags: AbstractHorseMetaFlags): Byte {
+            var byte = 0
+            if (flags.isTame) byte = byte or 0x02
+            if (flags.hasBred) byte = byte or 0x08
+            if (flags.isEating) byte = byte or 0x10
+            if (flags.isRearing) byte = byte or 0x20
+            if (flags.isMouthOpen) byte = byte or 0x40
+            return byte.toByte()
+        }
 
-        fun metaEntry(value: AbstractHorseMetaFlags): Metadata.Entry<AbstractHorseMetaFlags> =
-            Metadata.Entry(Metadata.TYPE_BYTE, value, STREAM_CODEC)
+        fun fromByte(byte: Byte): AbstractHorseMetaFlags {
+            val byte = byte.toInt()
+            return AbstractHorseMetaFlags(
+                isTame = (byte and 0x02) != 0,
+                hasBred = (byte and 0x08) != 0,
+                isEating = (byte and 0x10) != 0,
+                isRearing = (byte and 0x20) != 0,
+                isMouthOpen = (byte and 0x40) != 0,
+            )
+        }
     }
 }

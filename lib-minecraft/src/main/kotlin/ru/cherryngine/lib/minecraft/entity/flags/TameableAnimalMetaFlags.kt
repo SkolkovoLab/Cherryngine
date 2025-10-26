@@ -1,23 +1,25 @@
 package ru.cherryngine.lib.minecraft.entity.flags
 
-import ru.cherryngine.lib.minecraft.entity.Metadata
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
-
 data class TameableAnimalMetaFlags(
     val isSitting: Boolean = false,
-    val isTamed : Boolean = false,
+    val isTamed: Boolean = false,
 ) {
     companion object {
         val DEFAULT = TameableAnimalMetaFlags()
 
-        val STREAM_CODEC = StreamCodec.byteFlags(
-            0x01, TameableAnimalMetaFlags::isSitting,
-            // 0x02 unused
-            0x04, TameableAnimalMetaFlags::isTamed,
-            ::TameableAnimalMetaFlags
-        )
+        fun toByte(flags: TameableAnimalMetaFlags): Byte {
+            var byte = 0
+            if (flags.isSitting) byte = byte or 0x01
+            if (flags.isTamed) byte = byte or 0x04
+            return byte.toByte()
+        }
 
-        fun metaEntry(value: TameableAnimalMetaFlags): Metadata.Entry<TameableAnimalMetaFlags> =
-            Metadata.Entry(Metadata.TYPE_BYTE, value, STREAM_CODEC)
+        fun fromByte(byte: Byte): TameableAnimalMetaFlags {
+            val byte = byte.toInt()
+            return TameableAnimalMetaFlags(
+                isSitting = (byte and 0x01) != 0,
+                isTamed = (byte and 0x04) != 0,
+            )
+        }
     }
 }

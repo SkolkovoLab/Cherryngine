@@ -1,20 +1,22 @@
 package ru.cherryngine.lib.minecraft.entity.flags
 
-import ru.cherryngine.lib.minecraft.entity.Metadata
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
-
 data class BatMetaFlags(
     val isHanging: Boolean = false,
 ) {
     companion object {
         val DEFAULT = BatMetaFlags()
 
-        val STREAM_CODEC = StreamCodec.byteFlags(
-            0x01, BatMetaFlags::isHanging,
-            ::BatMetaFlags
-        )
+        fun toByte(flags: BatMetaFlags): Byte {
+            var byte = 0
+            if (flags.isHanging) byte = byte or 0x01
+            return byte.toByte()
+        }
 
-        fun metaEntry(value: BatMetaFlags): Metadata.Entry<BatMetaFlags> =
-            Metadata.Entry(Metadata.TYPE_BYTE, value, STREAM_CODEC)
+        fun fromByte(byte: Byte): BatMetaFlags {
+            val byte = byte.toInt()
+            return BatMetaFlags(
+                isHanging = (byte and 0x01) != 0,
+            )
+        }
     }
 }

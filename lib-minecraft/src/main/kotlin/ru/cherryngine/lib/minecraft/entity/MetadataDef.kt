@@ -1,6 +1,5 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import net.kyori.adventure.nbt.BinaryTag
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import net.kyori.adventure.text.Component
 import ru.cherryngine.lib.math.Vec3D
@@ -10,9 +9,7 @@ import ru.cherryngine.lib.minecraft.entity.flags.*
 import ru.cherryngine.lib.minecraft.item.ItemStack
 import ru.cherryngine.lib.minecraft.protocol.types.*
 import ru.cherryngine.lib.minecraft.registry.*
-import ru.cherryngine.lib.minecraft.registry.registries.*
 import ru.cherryngine.lib.minecraft.world.block.Block
-import java.util.*
 
 /**
  * List of all entity metadata.
@@ -20,744 +17,821 @@ import java.util.*
  * Classes must be used (and not interfaces) to enforce loading order.
  */
 @Suppress("unused")
-abstract class MetadataDef {
-    abstract val parent: MetadataDef?
-    private var size = 0
+sealed class MetadataDef {
+    private var lastIndex = 0
 
     fun <T> index(
-        index: Int,
-        function: (T) -> Metadata.Entry<T>,
+        function: MetadataEntry.Type<T>,
         defaultValue: T,
-    ): MetaField<T> {
-        val parentSize = parent?.size ?: 0
-        val realIndex = parentSize + index
-        size = maxOf(size, realIndex + 1)
-        return MetaField(realIndex, function, defaultValue)
+    ): MetaField<T, T> {
+        return MetaField(lastIndex++, function, defaultValue, { it }, { it })
     }
 
-    class MetaField<T>(
+    fun <T, K> index(
+        function: MetadataEntry.Type<T>,
+        defaultValue: K,
+        mapper1: (T) -> K,
+        mapper2: (K) -> T,
+    ): MetaField<T, K> {
+        return MetaField(lastIndex++, function, defaultValue, mapper1, mapper2)
+    }
+
+    class MetaField<T, K>(
         val index: Int,
-        val function: (T) -> Metadata.Entry<T>,
-        val defaultValue: T,
+        val function: MetadataEntry.Type<T>,
+        val defaultValue: K,
+        val mapper1: (T) -> K,
+        val mapper2: (K) -> T,
     )
 
-    object Entity : MetadataDef() {
-        override val parent = null
+    sealed class Entity: MetadataDef() {
+        companion object : Entity()
 
-        val ENTITY_FLAGS: MetaField<EntityMetaFlags> = index(0, EntityMetaFlags::metaEntry, EntityMetaFlags.DEFAULT)
-        val AIR_TICKS: MetaField<Int> = index(1, Metadata::varInt, 300)
-        val CUSTOM_NAME: MetaField<Component?> = index(2, Metadata::optChat, null)
-        val CUSTOM_NAME_VISIBLE: MetaField<Boolean> = index(3, Metadata::boolean, false)
-        val IS_SILENT: MetaField<Boolean> = index(4, Metadata::boolean, false)
-        val HAS_NO_GRAVITY: MetaField<Boolean> = index(5, Metadata::boolean, false)
-        val POSE: MetaField<EntityPose> = index(6, Metadata::pose, EntityPose.STANDING)
-        val TICKS_FROZEN: MetaField<Int> = index(7, Metadata::varInt, 0)
+        val ENTITY_FLAGS =
+            index(MetadataEntry.Type.BYTE, EntityMetaFlags.DEFAULT, EntityMetaFlags::fromByte, EntityMetaFlags::toByte)
+        val AIR_TICKS = index(MetadataEntry.Type.VAR_INT, 300)
+        val CUSTOM_NAME = index(MetadataEntry.Type.OPT_COMPONENT, null)
+        val CUSTOM_NAME_VISIBLE = index(MetadataEntry.Type.BOOLEAN, false)
+        val IS_SILENT = index(MetadataEntry.Type.BOOLEAN, false)
+        val HAS_NO_GRAVITY = index(MetadataEntry.Type.BOOLEAN, false)
+        val POSE = index(MetadataEntry.Type.ENTITY_POSE, EntityPose.STANDING)
+        val TICKS_FROZEN = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object Interaction : MetadataDef() {
-        override val parent = Entity
+    sealed class Interaction : Entity() {
+        companion object : Interaction()
 
-        val WIDTH: MetaField<Float> = index(0, Metadata::float, 1f)
-        val HEIGHT: MetaField<Float> = index(1, Metadata::float, 1f)
-        val RESPONSIVE: MetaField<Boolean> = index(2, Metadata::boolean, false)
+        val WIDTH = index(MetadataEntry.Type.FLOAT, 1f)
+        val HEIGHT = index(MetadataEntry.Type.FLOAT, 1f)
+        val RESPONSIVE = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Display : MetadataDef() {
-        override val parent = Entity
+    sealed class Display : Entity() {
+        companion object : Display()
 
-        val INTERPOLATION_DELAY: MetaField<Int> = index(0, Metadata::varInt, 0)
-        val TRANSFORMATION_INTERPOLATION_DURATION: MetaField<Int> = index(1, Metadata::varInt, 0)
-        val POSITION_ROTATION_INTERPOLATION_DURATION: MetaField<Int> = index(2, Metadata::varInt, 0)
-        val TRANSLATION: MetaField<Vec3D> = index(3, Metadata::vector3, Vec3D.ZERO)
-        val SCALE: MetaField<Vec3D> = index(4, Metadata::vector3, Vec3D.ONE)
-        val ROTATION_LEFT: MetaField<QRot> = index(5, Metadata::quaternion, QRot.IDENTITY)
-        val ROTATION_RIGHT: MetaField<QRot> = index(6, Metadata::quaternion, QRot.IDENTITY)
-        val BILLBOARD_CONSTRAINTS: MetaField<Byte> = index(7, Metadata::byte, 0)
-        val BRIGHTNESS_OVERRIDE: MetaField<Int> = index(8, Metadata::varInt, -1)
-        val VIEW_RANGE: MetaField<Float> = index(9, Metadata::float, 1f)
-        val SHADOW_RADIUS: MetaField<Float> = index(10, Metadata::float, 0f)
-        val SHADOW_STRENGTH: MetaField<Float> = index(11, Metadata::float, 1f)
-        val WIDTH: MetaField<Float> = index(12, Metadata::float, 0f)
-        val HEIGHT: MetaField<Float> = index(13, Metadata::float, 0f)
-        val GLOW_COLOR_OVERRIDE: MetaField<Int> = index(14, Metadata::varInt, -1)
+        val INTERPOLATION_DELAY = index(MetadataEntry.Type.VAR_INT, 0)
+        val TRANSFORMATION_INTERPOLATION_DURATION = index(MetadataEntry.Type.VAR_INT, 0)
+        val POSITION_ROTATION_INTERPOLATION_DURATION = index(MetadataEntry.Type.VAR_INT, 0)
+        val TRANSLATION = index(MetadataEntry.Type.VECTOR3, Vec3D.ZERO)
+        val SCALE = index(MetadataEntry.Type.VECTOR3, Vec3D.ONE)
+        val ROTATION_LEFT = index(MetadataEntry.Type.QUATERNION, QRot.IDENTITY)
+        val ROTATION_RIGHT = index(MetadataEntry.Type.QUATERNION, QRot.IDENTITY)
+        val BILLBOARD_CONSTRAINTS = index(MetadataEntry.Type.BYTE, 0)
+        val BRIGHTNESS_OVERRIDE = index(MetadataEntry.Type.VAR_INT, -1)
+        val VIEW_RANGE = index(MetadataEntry.Type.FLOAT, 1f)
+        val SHADOW_RADIUS = index(MetadataEntry.Type.FLOAT, 0f)
+        val SHADOW_STRENGTH = index(MetadataEntry.Type.FLOAT, 1f)
+        val WIDTH = index(MetadataEntry.Type.FLOAT, 0f)
+        val HEIGHT = index(MetadataEntry.Type.FLOAT, 0f)
+        val GLOW_COLOR_OVERRIDE = index(MetadataEntry.Type.VAR_INT, -1)
     }
 
-    object BlockDisplay : MetadataDef() {
-        override val parent = Display
+    sealed class BlockDisplay : Display() {
+        companion object : BlockDisplay()
 
-        val DISPLAYED_BLOCK_STATE: MetaField<Block> = index(0, Metadata::blockState, Block.AIR)
+        val DISPLAYED_BLOCK_STATE = index(MetadataEntry.Type.BLOCK_STATE, Block.AIR)
     }
 
-    object ItemDisplay : MetadataDef() {
-        override val parent = Display
+    sealed class ItemDisplay : Display() {
+        companion object : ItemDisplay()
 
-        val DISPLAYED_ITEM: MetaField<ItemStack> = index(0, Metadata::itemStack, ItemStack.AIR)
-        val DISPLAY_TYPE: MetaField<ItemDisplayType> = index(1, Metadata::byteEnum, ItemDisplayType.NONE)
+        val DISPLAYED_ITEM = index(MetadataEntry.Type.ITEM_STACK, ItemStack.AIR)
+        val DISPLAY_TYPE = index(
+            MetadataEntry.Type.BYTE,
+            ItemDisplayType.NONE,
+            { ItemDisplayType.entries[it.toInt()] }
+        ) { it.ordinal.toByte() }
     }
 
-    object TextDisplay : MetadataDef() {
-        override val parent = Display
+    sealed class TextDisplay : Display() {
+        companion object : TextDisplay()
 
-        val TEXT: MetaField<Component> = index(0, Metadata::chat, Component.empty())
-        val LINE_WIDTH: MetaField<Int> = index(1, Metadata::varInt, 200)
-        val BACKGROUND_COLOR: MetaField<Int> = index(2, Metadata::varInt, 0x40000000)
-        val TEXT_OPACITY: MetaField<Byte> = index(3, Metadata::byte, -1)
-        val TEXT_DISPLAY_FLAGS: MetaField<TextDisplayMetaFlags> = index(4, TextDisplayMetaFlags::metaEntry, TextDisplayMetaFlags.DEFAULT)
+        val TEXT = index(MetadataEntry.Type.COMPONENT, Component.empty())
+        val LINE_WIDTH = index(MetadataEntry.Type.VAR_INT, 200)
+        val BACKGROUND_COLOR = index(MetadataEntry.Type.VAR_INT, 0x40000000)
+        val TEXT_OPACITY = index(MetadataEntry.Type.BYTE, -1)
+        val TEXT_DISPLAY_FLAGS = index(
+            MetadataEntry.Type.BYTE,
+            TextDisplayMetaFlags.DEFAULT,
+            TextDisplayMetaFlags::fromByte,
+            TextDisplayMetaFlags::toByte
+        )
     }
 
-    object ExperienceOrb : MetadataDef() {
-        override val parent = Entity
+    sealed class ExperienceOrb : Entity() {
+        companion object : ExperienceOrb()
 
-        val VALUE: MetaField<Int> = index(0, Metadata::varInt, 0)
+        val VALUE = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object ThrownItemProjectile : MetadataDef() {
-        override val parent = Entity
+    sealed class ThrownItemProjectile : Entity() {
+        companion object : ThrownItemProjectile()
 
-        val ITEM: MetaField<ItemStack> = index(0, Metadata::itemStack, ItemStack.AIR)
+        val ITEM = index(MetadataEntry.Type.ITEM_STACK, ItemStack.AIR)
     }
 
-    object EyeOfEnder : MetadataDef() {
-        override val parent = Entity
+    sealed class EyeOfEnder : Entity() {
+        companion object : EyeOfEnder()
 
-        val ITEM: MetaField<ItemStack> = index(0, Metadata::itemStack, ItemStack.AIR)
+        val ITEM = index(MetadataEntry.Type.ITEM_STACK, ItemStack.AIR)
     }
 
-    object FallingBlock : MetadataDef() {
-        override val parent = Entity
+    sealed class FallingBlock : Entity() {
+        companion object : FallingBlock()
 
-        val SPAWN_POSITION: MetaField<Vec3I> = index(0, Metadata::blockPosition, Vec3I.ZERO)
+        val SPAWN_POSITION = index(MetadataEntry.Type.BLOCK_POSITION, Vec3I.ZERO)
     }
 
-    object AreaEffectCloud : MetadataDef() {
-        override val parent = Entity
+    sealed class AreaEffectCloud : Entity() {
+        companion object : AreaEffectCloud()
 
-        val RADIUS: MetaField<Float> = index(0, Metadata::float, 0.5f)
-        val COLOR: MetaField<Int> = index(1, Metadata::varInt, 0)
-        val IGNORE_RADIUS_AND_SINGLE_POINT: MetaField<Boolean> = index(2, Metadata::boolean, false)
-        val PARTICLE: MetaField<Particle> = index(3, Metadata::particle, Particles.EFFECT)
+        val RADIUS = index(MetadataEntry.Type.FLOAT, 0.5f)
+        val COLOR = index(MetadataEntry.Type.VAR_INT, 0)
+        val IGNORE_RADIUS_AND_SINGLE_POINT = index(MetadataEntry.Type.BOOLEAN, false)
+        val PARTICLE = index(MetadataEntry.Type.PARTICLE, Particles.EFFECT)
     }
 
-    object FishingHook : MetadataDef() {
-        override val parent = Entity
+    sealed class FishingHook : Entity() {
+        companion object : FishingHook()
 
-        val HOOKED: MetaField<Int> = index(0, Metadata::varInt, 0)
-        val IS_CATCHABLE: MetaField<Boolean> = index(1, Metadata::boolean, false)
+        val HOOKED = index(MetadataEntry.Type.VAR_INT, 0)
+        val IS_CATCHABLE = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object AbstractArrow : MetadataDef() {
-        override val parent = Entity
+    sealed class AbstractArrow : Entity() {
+        companion object : AbstractArrow()
 
-        val ARROW_FLAGS: MetaField<ArrowMetaFlags> = index(0, ArrowMetaFlags::metaEntry, ArrowMetaFlags.DEFAULT)
-        val PIERCING_LEVEL: MetaField<Byte> = index(1, Metadata::byte, 0)
-        val IN_GROUND: MetaField<Boolean> = index(2, Metadata::boolean, false)
+        val ARROW_FLAGS =
+            index(MetadataEntry.Type.BYTE, ArrowMetaFlags.DEFAULT, ArrowMetaFlags::fromByte, ArrowMetaFlags::toByte)
+        val PIERCING_LEVEL = index(MetadataEntry.Type.BYTE, 0)
+        val IN_GROUND = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Arrow : MetadataDef() {
-        override val parent = AbstractArrow
+    sealed class Arrow : AbstractArrow() {
+        companion object : Arrow()
 
-        val COLOR: MetaField<Int> = index(0, Metadata::varInt, -1)
+        val COLOR = index(MetadataEntry.Type.VAR_INT, -1)
     }
 
-    object ThrownTrident : MetadataDef() {
-        override val parent = AbstractArrow
+    sealed class ThrownTrident : AbstractArrow() {
+        companion object : ThrownTrident()
 
-        val LOYALTY_LEVEL: MetaField<Byte> = index(0, Metadata::byte, 0)
-        val HAS_ENCHANTMENT_GLINT: MetaField<Boolean> = index(1, Metadata::boolean, false)
+        val LOYALTY_LEVEL = index(MetadataEntry.Type.BYTE, 0)
+        val HAS_ENCHANTMENT_GLINT = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object AbstractVehicle : MetadataDef() {
-        override val parent = Entity
+    sealed class AbstractVehicle : Entity() {
+        companion object : AbstractVehicle()
 
-        val SHAKING_POWER: MetaField<Int> = index(0, Metadata::varInt, 0)
-        val SHAKING_DIRECTION: MetaField<Int> = index(1, Metadata::varInt, 1)
-        val SHAKING_MULTIPLIER: MetaField<Float> = index(2, Metadata::float, 0f)
+        val SHAKING_POWER = index(MetadataEntry.Type.VAR_INT, 0)
+        val SHAKING_DIRECTION = index(MetadataEntry.Type.VAR_INT, 1)
+        val SHAKING_MULTIPLIER = index(MetadataEntry.Type.FLOAT, 0f)
     }
 
-    object Boat : MetadataDef() {
-        override val parent = AbstractVehicle
+    sealed class Boat : AbstractVehicle() {
+        companion object : Boat()
 
-        val IS_LEFT_PADDLE_TURNING: MetaField<Boolean> = index(0, Metadata::boolean, false)
-        val IS_RIGHT_PADDLE_TURNING: MetaField<Boolean> = index(1, Metadata::boolean, false)
-        val SPLASH_TIMER: MetaField<Int> = index(2, Metadata::varInt, 0)
+        val IS_LEFT_PADDLE_TURNING = index(MetadataEntry.Type.BOOLEAN, false)
+        val IS_RIGHT_PADDLE_TURNING = index(MetadataEntry.Type.BOOLEAN, false)
+        val SPLASH_TIMER = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object AbstractMinecart : MetadataDef() {
-        override val parent = AbstractVehicle
+    sealed class AbstractMinecart : AbstractVehicle() {
+        companion object : AbstractMinecart()
 
-        val CUSTOM_BLOCK_ID_AND_DAMAGE: MetaField<Block> = index(0, Metadata::optBlockState, Block.AIR)
-        val CUSTOM_BLOCK_Y_POSITION: MetaField<Int> = index(1, Metadata::varInt, 6)
-        val SHOW_CUSTOM_BLOCK: MetaField<Boolean> = index(2, Metadata::boolean, false)
+        val CUSTOM_BLOCK_ID_AND_DAMAGE = index(MetadataEntry.Type.OPT_BLOCK_STATE, Block.AIR)
+        val CUSTOM_BLOCK_Y_POSITION = index(MetadataEntry.Type.VAR_INT, 6)
+        val SHOW_CUSTOM_BLOCK = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object MinecartFurnace : MetadataDef() {
-        override val parent = AbstractMinecart
+    sealed class MinecartFurnace : AbstractMinecart() {
+        companion object : MinecartFurnace()
 
-        val HAS_FUEL: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val HAS_FUEL = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object MinecartCommandBlock : MetadataDef() {
-        override val parent = AbstractMinecart
+    sealed class MinecartCommandBlock : AbstractMinecart() {
+        companion object : MinecartCommandBlock()
 
-        val COMMAND: MetaField<String> = index(0, Metadata::string, "false")
-        val LAST_OUTPUT: MetaField<Component> = index(1, Metadata::chat, Component.empty())
+        val COMMAND = index(MetadataEntry.Type.STRING, "")
+        val LAST_OUTPUT = index(MetadataEntry.Type.COMPONENT, Component.empty())
     }
 
-    object EndCrystal : MetadataDef() {
-        override val parent = Entity
+    sealed class EndCrystal : Entity() {
+        companion object : EndCrystal()
 
-        val BEAM_TARGET: MetaField<Vec3I?> = index(0, Metadata::optBlockPosition, null)
-        val SHOW_BOTTOM: MetaField<Boolean> = index(1, Metadata::boolean, true)
+        val BEAM_TARGET = index(MetadataEntry.Type.OPT_BLOCK_POSITION, null)
+        val SHOW_BOTTOM = index(MetadataEntry.Type.BOOLEAN, true)
     }
 
-    object SmartFireball : MetadataDef() {
-        override val parent = Entity
+    sealed class SmartFireball : Entity() {
+        companion object : SmartFireball()
 
-        val ITEM: MetaField<ItemStack> = index(0, Metadata::itemStack, ItemStack.AIR)
+        val ITEM = index(MetadataEntry.Type.ITEM_STACK, ItemStack.AIR)
     }
 
-    object Fireball : MetadataDef() {
-        override val parent = Entity
+    sealed class Fireball : Entity() {
+        companion object : Fireball()
 
-        val ITEM: MetaField<ItemStack> = index(0, Metadata::itemStack, ItemStack.AIR)
+        val ITEM = index(MetadataEntry.Type.ITEM_STACK, ItemStack.AIR)
     }
 
-    object WitherSkull : MetadataDef() {
-        override val parent = Entity
+    sealed class WitherSkull : Entity() {
+        companion object : WitherSkull()
 
-        val IS_INVULNERABLE: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val IS_INVULNERABLE = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object FireworkRocketEntity : MetadataDef() {
-        override val parent = Entity
+    sealed class FireworkRocketEntity : Entity() {
+        companion object : FireworkRocketEntity()
 
-        val ITEM: MetaField<ItemStack> = index(0, Metadata::itemStack, ItemStack.AIR)
-        val SHOOTER_ENTITY_ID: MetaField<Int?> = index(1, Metadata::optVarInt, null)
-        val IS_SHOT_AT_ANGLE: MetaField<Boolean> = index(2, Metadata::boolean, false)
+        val ITEM = index(MetadataEntry.Type.ITEM_STACK, ItemStack.AIR)
+        val SHOOTER_ENTITY_ID = index(MetadataEntry.Type.OPT_VAR_INT, null)
+        val IS_SHOT_AT_ANGLE = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Hanging : MetadataDef() {
-        override val parent = Entity
+    sealed class Hanging : Entity() {
+        companion object : Hanging()
 
-        val DIRECTION: MetaField<Direction> = index(0, Metadata::direction, Direction.SOUTH)
+        val DIRECTION = index(MetadataEntry.Type.DIRECTION, Direction.SOUTH)
     }
 
-    object ItemFrame : MetadataDef() {
-        override val parent = Hanging
+    sealed class ItemFrame : Hanging() {
+        companion object : ItemFrame()
 
-        val ITEM: MetaField<ItemStack> = index(0, Metadata::itemStack, ItemStack.AIR)
-        val ROTATION: MetaField<Int> = index(1, Metadata::varInt, 0)
+        val ITEM = index(MetadataEntry.Type.ITEM_STACK, ItemStack.AIR)
+        val ROTATION = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object Painting : MetadataDef() {
-        override val parent = Hanging
+    sealed class Painting : Hanging() {
+        companion object : Painting()
 
-        val VARIANT: MetaField<PaintingVariant> = index(0, Metadata::paintingVariant, PaintingVariants.KEBAB)
+        val VARIANT = index(MetadataEntry.Type.PAINTING_VARIANT, PaintingVariants.KEBAB)
     }
 
-    object ItemEntity : MetadataDef() {
-        override val parent = Entity
+    sealed class ItemEntity : Entity() {
+        companion object : ItemEntity()
 
-        val ITEM: MetaField<ItemStack> = index(0, Metadata::itemStack, ItemStack.AIR)
+        val ITEM = index(MetadataEntry.Type.ITEM_STACK, ItemStack.AIR)
     }
 
-    object LivingEntity : MetadataDef() {
-        override val parent = Entity
+    sealed class LivingEntity : Entity() {
+        companion object : LivingEntity()
 
-        val LIVING_ENTITY_FLAGS: MetaField<LivingEntityMetaFlags> = index(0, LivingEntityMetaFlags::metaEntry, LivingEntityMetaFlags.DEFAULT)
-        val HEALTH: MetaField<Float> = index(1, Metadata::float, 1f)
-        val POTION_EFFECT_PARTICLES: MetaField<List<Particle>> = index(2, Metadata::particleList, listOf())
-        val IS_POTION_EFFECT_AMBIANT: MetaField<Boolean> = index(3, Metadata::boolean, false)
-        val NUMBER_OF_ARROWS: MetaField<Int> = index(4, Metadata::varInt, 0)
-        val NUMBER_OF_BEE_STINGERS: MetaField<Int> = index(5, Metadata::varInt, 0)
-        val LOCATION_OF_BED: MetaField<Vec3I?> = index(6, Metadata::optBlockPosition, null)
+        val LIVING_ENTITY_FLAGS = index(
+            MetadataEntry.Type.BYTE,
+            LivingEntityMetaFlags.DEFAULT,
+            LivingEntityMetaFlags::fromByte,
+            LivingEntityMetaFlags::toByte
+        )
+        val HEALTH = index(MetadataEntry.Type.FLOAT, 1f)
+        val POTION_EFFECT_PARTICLES = index(MetadataEntry.Type.PARTICLE_LIST, listOf())
+        val IS_POTION_EFFECT_AMBIANT = index(MetadataEntry.Type.BOOLEAN, false)
+        val NUMBER_OF_ARROWS = index(MetadataEntry.Type.VAR_INT, 0)
+        val NUMBER_OF_BEE_STINGERS = index(MetadataEntry.Type.VAR_INT, 0)
+        val LOCATION_OF_BED = index(MetadataEntry.Type.OPT_BLOCK_POSITION, null)
     }
 
-    object Player : MetadataDef() {
-        override val parent = LivingEntity
+    sealed class Player : LivingEntity() {
+        companion object : Player()
 
-        val ADDITIONAL_HEARTS: MetaField<Float> = index(0, Metadata::float, 0f)
-        val SCORE: MetaField<Int> = index(1, Metadata::varInt, 0)
-        val DISPLAYED_SKIN_PARTS: MetaField<DisplayedSkinParts> = index(2, Metadata::displayedSkinParts, DisplayedSkinParts.NONE)
-        val MAIN_HAND: MetaField<Byte> = index(3, Metadata::byte, 1)
-        val LEFT_SHOULDER_ENTITY_DATA: MetaField<BinaryTag> = index(4, Metadata::nbt, CompoundBinaryTag.empty())
-        val RIGHT_SHOULDER_ENTITY_DATA: MetaField<BinaryTag> = index(5, Metadata::nbt, CompoundBinaryTag.empty())
+        val ADDITIONAL_HEARTS = index(MetadataEntry.Type.FLOAT, 0f)
+        val SCORE = index(MetadataEntry.Type.VAR_INT, 0)
+        val DISPLAYED_SKIN_PARTS = index(
+            MetadataEntry.Type.BYTE,
+            DisplayedSkinParts.NONE,
+            DisplayedSkinParts::fromByte,
+            DisplayedSkinParts::toByte
+        )
+        val MAIN_HAND = index(MetadataEntry.Type.BYTE, 1)
+        val LEFT_SHOULDER_ENTITY_DATA = index(MetadataEntry.Type.NBT, CompoundBinaryTag.empty())
+        val RIGHT_SHOULDER_ENTITY_DATA = index(MetadataEntry.Type.NBT, CompoundBinaryTag.empty())
     }
 
-    object ArmorStand : MetadataDef() {
-        override val parent = LivingEntity
+    sealed class ArmorStand : LivingEntity() {
+        companion object : ArmorStand()
 
-        val ARMOR_STAND_FLAGS: MetaField<ArmorStandMetaFlags> = index(0, ArmorStandMetaFlags::metaEntry, ArmorStandMetaFlags.DEFAULT)
-        val HEAD_ROTATION: MetaField<Vec3D> = index(1, Metadata::rotation, Vec3D.ZERO)
-        val BODY_ROTATION: MetaField<Vec3D> = index(2, Metadata::rotation, Vec3D.ZERO)
-        val LEFT_ARM_ROTATION: MetaField<Vec3D> = index(3, Metadata::rotation, Vec3D(-10.0, 0.0, -10.0))
-        val RIGHT_ARM_ROTATION: MetaField<Vec3D> = index(4, Metadata::rotation, Vec3D(-15.0, 0.0, 10.0))
-        val LEFT_LEG_ROTATION: MetaField<Vec3D> = index(5, Metadata::rotation, Vec3D(-1.0, 0.0, -1.0))
-        val RIGHT_LEG_ROTATION: MetaField<Vec3D> = index(6, Metadata::rotation, Vec3D(1.0, 0.0, 1.0))
+        val ARMOR_STAND_FLAGS = index(
+            MetadataEntry.Type.BYTE,
+            ArmorStandMetaFlags.DEFAULT,
+            ArmorStandMetaFlags::fromByte,
+            ArmorStandMetaFlags::toByte
+        )
+        val HEAD_ROTATION = index(MetadataEntry.Type.ROTATION, Vec3D.ZERO)
+        val BODY_ROTATION = index(MetadataEntry.Type.ROTATION, Vec3D.ZERO)
+        val LEFT_ARM_ROTATION = index(MetadataEntry.Type.ROTATION, Vec3D(-10.0, 0.0, -10.0))
+        val RIGHT_ARM_ROTATION = index(MetadataEntry.Type.ROTATION, Vec3D(-15.0, 0.0, 10.0))
+        val LEFT_LEG_ROTATION = index(MetadataEntry.Type.ROTATION, Vec3D(-1.0, 0.0, -1.0))
+        val RIGHT_LEG_ROTATION = index(MetadataEntry.Type.ROTATION, Vec3D(1.0, 0.0, 1.0))
     }
 
-    object Mob : MetadataDef() {
-        override val parent = LivingEntity
+    sealed class Mob : LivingEntity() {
+        companion object : Mob()
 
-        val MOB_FLAGS: MetaField<MobMetaFlags> = index(0, MobMetaFlags::metaEntry, MobMetaFlags.DEFAULT)
+        val MOB_FLAGS =
+            index(MetadataEntry.Type.BYTE, MobMetaFlags.DEFAULT, MobMetaFlags::fromByte, MobMetaFlags::toByte)
     }
 
-    object Allay : MetadataDef() {
-        override val parent = Mob
+    sealed class Allay : Mob() {
+        companion object : Allay()
 
-        val IS_DANCING: MetaField<Boolean> = index(0, Metadata::boolean, false)
-        val CAN_DUPLICATE: MetaField<Boolean> = index(1, Metadata::boolean, true)
+        val IS_DANCING = index(MetadataEntry.Type.BOOLEAN, false)
+        val CAN_DUPLICATE = index(MetadataEntry.Type.BOOLEAN, true)
     }
 
-    object Armadillo : MetadataDef() {
-        override val parent = Mob
+    sealed class Armadillo : Mob() {
+        companion object : Armadillo()
 
-        val STATE: MetaField<ArmadilloState> = index(0, Metadata::armadilloState, ArmadilloState.IDLE)
+        val STATE = index(MetadataEntry.Type.ARMADILLO_STATE, ArmadilloState.IDLE)
     }
 
-    object Bat : MetadataDef() {
-        override val parent = Mob
+    sealed class Bat : Mob() {
+        companion object : Bat()
 
-        val BAT_FLAGS: MetaField<BatMetaFlags> = index(0, BatMetaFlags::metaEntry, BatMetaFlags.DEFAULT)
+        val BAT_FLAGS =
+            index(MetadataEntry.Type.BYTE, BatMetaFlags.DEFAULT, BatMetaFlags::fromByte, BatMetaFlags::toByte)
     }
 
-    object Dolphin : MetadataDef() {
-        override val parent = Mob
+    sealed class Dolphin : Mob() {
+        companion object : Dolphin()
 
-        val TREASURE_POSITION: MetaField<Vec3I> = index(0, Metadata::blockPosition, Vec3I.ZERO)
-        val HAS_FISH: MetaField<Boolean> = index(1, Metadata::boolean, false)
-        val MOISTURE_LEVEL: MetaField<Int> = index(2, Metadata::varInt, 2400)
+        val TREASURE_POSITION = index(MetadataEntry.Type.BLOCK_POSITION, Vec3I.ZERO)
+        val HAS_FISH = index(MetadataEntry.Type.BOOLEAN, false)
+        val MOISTURE_LEVEL = index(MetadataEntry.Type.VAR_INT, 2400)
     }
 
-    object AbstractFish : MetadataDef() {
-        override val parent = Mob
+    sealed class AbstractFish : Mob() {
+        companion object : AbstractFish()
 
-        val FROM_BUCKET: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val FROM_BUCKET = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object PufferFish : MetadataDef() {
-        override val parent = AbstractFish
+    sealed class PufferFish : AbstractFish() {
+        companion object : PufferFish()
 
-        val PUFF_STATE: MetaField<Int> = index(0, Metadata::varInt, 0)
+        val PUFF_STATE = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object Salmon : MetadataDef() {
-        override val parent = AbstractFish
+    sealed class Salmon : AbstractFish() {
+        companion object : Salmon()
 
-        val SIZE: MetaField<Int> = index(0, Metadata::varInt, 0)
+        val SIZE = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object TropicalFish : MetadataDef() {
-        override val parent = AbstractFish
+    sealed class TropicalFish : AbstractFish() {
+        companion object : TropicalFish()
 
-        val VARIANT: MetaField<Int> = index(0, Metadata::varInt, 0)
+        val VARIANT = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object AgeableMob : MetadataDef() {
-        override val parent = Mob
+    sealed class AgeableMob : Mob() {
+        companion object : AgeableMob()
 
-        val IS_BABY: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val IS_BABY = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Sniffer : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Sniffer : AgeableMob() {
+        companion object : Sniffer()
 
-        val STATE: MetaField<SnifferState> = index(0, Metadata::snifferState, SnifferState.IDLING)
-        val DROP_SEED_AT_TICK: MetaField<Int> = index(1, Metadata::varInt, 0)
+        val STATE = index(MetadataEntry.Type.SNIFFER_STATE, SnifferState.IDLING)
+        val DROP_SEED_AT_TICK = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object AbstractHorse : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class AbstractHorse : AgeableMob() {
+        companion object : AbstractHorse()
 
-        val ABSTRACT_HORSE_FLAGS: MetaField<AbstractHorseMetaFlags> = index(0, AbstractHorseMetaFlags::metaEntry, AbstractHorseMetaFlags.DEFAULT)
+        val ABSTRACT_HORSE_FLAGS = index(
+            MetadataEntry.Type.BYTE,
+            AbstractHorseMetaFlags.DEFAULT,
+            AbstractHorseMetaFlags::fromByte,
+            AbstractHorseMetaFlags::toByte
+        )
     }
 
-    object Horse : MetadataDef() {
-        override val parent = AbstractHorse
+    sealed class Horse : AbstractHorse() {
+        companion object : Horse()
 
-        val VARIANT: MetaField<Int> = index(0, Metadata::varInt, 0)
+        val VARIANT = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object Camel : MetadataDef() {
-        override val parent = AbstractHorse
+    sealed class Camel : AbstractHorse() {
+        companion object : Camel()
 
-        val DASHING: MetaField<Boolean> = index(0, Metadata::boolean, false)
-        val LAST_POSE_CHANGE_TICK: MetaField<Long> = index(1, Metadata::varLong, 0L)
+        val DASHING = index(MetadataEntry.Type.BOOLEAN, false)
+        val LAST_POSE_CHANGE_TICK = index(MetadataEntry.Type.VAR_LONG, 0L)
     }
 
-    object ChestedHorse : MetadataDef() {
-        override val parent = AbstractHorse
+    sealed class ChestedHorse : AbstractHorse() {
+        companion object : ChestedHorse()
 
-        val HAS_CHEST: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val HAS_CHEST = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Llama : MetadataDef() {
-        override val parent = ChestedHorse
+    sealed class Llama : ChestedHorse() {
+        companion object : Llama()
 
-        val STRENGTH: MetaField<Int> = index(0, Metadata::varInt, 0)
-        val CARPET_COLOR: MetaField<Int> = index(0, Metadata::varInt, -1)
-        val VARIANT: MetaField<Int> = index(0, Metadata::varInt, 0)
+        val STRENGTH = index(MetadataEntry.Type.VAR_INT, 0)
+        val CARPET_COLOR = index(MetadataEntry.Type.VAR_INT, -1)
+        val VARIANT = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object Axolotl : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Axolotl : AgeableMob() {
+        companion object : Axolotl()
 
-        val VARIANT: MetaField<Int> = index(0, Metadata::varInt, 0)
-        val IS_PLAYING_DEAD: MetaField<Boolean> = index(1, Metadata::boolean, false)
-        val IS_FROM_BUCKET: MetaField<Boolean> = index(2, Metadata::boolean, false)
+        val VARIANT = index(MetadataEntry.Type.VAR_INT, 0)
+        val IS_PLAYING_DEAD = index(MetadataEntry.Type.BOOLEAN, false)
+        val IS_FROM_BUCKET = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Bee : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Bee : AgeableMob() {
+        companion object : Bee()
 
-        val BEE_FLAGS: MetaField<BeeMetaFlags> = index(0, BeeMetaFlags::metaEntry, BeeMetaFlags.DEFAULT)
-        val ANGER_TIME_TICKS: MetaField<Int> = index(1, Metadata::varInt, 0)
+        val BEE_FLAGS =
+            index(MetadataEntry.Type.BYTE, BeeMetaFlags.DEFAULT, BeeMetaFlags::fromByte, BeeMetaFlags::toByte)
+        val ANGER_TIME_TICKS = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object GlowSquid : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class GlowSquid : AgeableMob() {
+        companion object : GlowSquid()
 
-        val DARK_TICKS_REMAINING: MetaField<Int> = index(0, Metadata::varInt, 0)
+        val DARK_TICKS_REMAINING = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object Fox : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Fox : AgeableMob() {
+        companion object : Fox()
 
-        val VARIANT: MetaField<Int> = index(0, Metadata::varInt, 0)
-        val FOX_FLAGS: MetaField<FoxMetaFlags> = index(1, FoxMetaFlags::metaEntry, FoxMetaFlags.DEFAULT)
-        val FIRST_UUID: MetaField<UUID?> = index(2, Metadata::optUuid, null)
-        val SECOND_UUID: MetaField<UUID?> = index(3, Metadata::optUuid, null)
+        val VARIANT = index(MetadataEntry.Type.VAR_INT, 0)
+        val FOX_FLAGS =
+            index(MetadataEntry.Type.BYTE, FoxMetaFlags.DEFAULT, FoxMetaFlags::fromByte, FoxMetaFlags::toByte)
+        val FIRST_UUID = index(MetadataEntry.Type.OPT_UUID, null)
+        val SECOND_UUID = index(MetadataEntry.Type.OPT_UUID, null)
     }
 
-    object Frog : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Frog : AgeableMob() {
+        companion object : Frog()
 
-        val VARIANT: MetaField<FrogVariant> = index(0, Metadata::frogVariant, FrogVariants.TEMPERATE)
-        val TONGUE_TARGET: MetaField<Int?> = index(1, Metadata::optVarInt, 0)
+        val VARIANT = index(MetadataEntry.Type.FROG_VARIANT, FrogVariants.TEMPERATE)
+        val TONGUE_TARGET = index(MetadataEntry.Type.OPT_VAR_INT, 0)
     }
 
-    object Ocelot : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Ocelot : AgeableMob() {
+        companion object : Ocelot()
 
-        val IS_TRUSTING: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val IS_TRUSTING = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Panda : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Panda : AgeableMob() {
+        companion object : Panda()
 
-        val BREED_TIMER: MetaField<Int> = index(0, Metadata::varInt, 0)
-        val SNEEZE_TIMER: MetaField<Int> = index(1, Metadata::varInt, 0)
-        val EAT_TIMER: MetaField<Int> = index(2, Metadata::varInt, 0)
-        val MAIN_GENE: MetaField<Byte> = index(3, Metadata::byte, 0)
-        val HIDDEN_GENE: MetaField<Byte> = index(4, Metadata::byte, 0)
-        val PANDA_FLAGS: MetaField<PandaMetaFlags> = index(5, PandaMetaFlags::metaEntry, PandaMetaFlags.DEFAULT)
+        val BREED_TIMER = index(MetadataEntry.Type.VAR_INT, 0)
+        val SNEEZE_TIMER = index(MetadataEntry.Type.VAR_INT, 0)
+        val EAT_TIMER = index(MetadataEntry.Type.VAR_INT, 0)
+        val MAIN_GENE = index(MetadataEntry.Type.BYTE, 0)
+        val HIDDEN_GENE = index(MetadataEntry.Type.BYTE, 0)
+        val PANDA_FLAGS =
+            index(MetadataEntry.Type.BYTE, PandaMetaFlags.DEFAULT, PandaMetaFlags::fromByte, PandaMetaFlags::toByte)
     }
 
-    object Chicken : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Chicken : AgeableMob() {
+        companion object : Chicken()
 
-        val VARIANT: MetaField<ChickenVariant> = index(0, Metadata::chickenVariant, ChickenVariants.TEMPERATE)
+        val VARIANT = index(MetadataEntry.Type.CHICKEN_VARIANT, ChickenVariants.TEMPERATE)
     }
 
-    object Cow : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Cow : AgeableMob() {
+        companion object : Cow()
 
-        val VARIANT: MetaField<CowVariant> = index(0, Metadata::cowVariant, CowVariants.TEMPERATE)
+        val VARIANT = index(MetadataEntry.Type.COW_VARIANT, CowVariants.TEMPERATE)
     }
 
-    object Pig : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Pig : AgeableMob() {
+        companion object : Pig()
 
-        val BOOST_TIME: MetaField<Int> = index(0, Metadata::varInt, 0)
-        val VARIANT: MetaField<PigVariant> = index(1, Metadata::pigVariant, PigVariants.TEMPERATE)
+        val BOOST_TIME = index(MetadataEntry.Type.VAR_INT, 0)
+        val VARIANT = index(MetadataEntry.Type.PIG_VARIANT, PigVariants.TEMPERATE)
     }
 
-    object Rabbit : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Rabbit : AgeableMob() {
+        companion object : Rabbit()
 
-        val TYPE: MetaField<Int> = index(0, Metadata::varInt, 0)
+        val TYPE = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object Turtle : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Turtle : AgeableMob() {
+        companion object : Turtle()
 
-        val HAS_EGG: MetaField<Boolean> = index(0, Metadata::boolean, false)
-        val IS_LAYING_EGG: MetaField<Boolean> = index(1, Metadata::boolean, false)
+        val HAS_EGG = index(MetadataEntry.Type.BOOLEAN, false)
+        val IS_LAYING_EGG = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object PolarBear : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class PolarBear : AgeableMob() {
+        companion object : PolarBear()
 
-        val IS_STANDING_UP: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val IS_STANDING_UP = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Mooshroom : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Mooshroom : AgeableMob() {
+        companion object : Mooshroom()
 
-        val VARIANT: MetaField<Int> = index(0, Metadata::varInt, 0)
+        val VARIANT = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object Hoglin : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Hoglin : AgeableMob() {
+        companion object : Hoglin()
 
-        val IMMUNE_ZOMBIFICATION: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val IMMUNE_ZOMBIFICATION = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Sheep : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Sheep : AgeableMob() {
+        companion object : Sheep()
 
-        val SHEEP_FLAGS: MetaField<SheepMetaFlags> = index(0, SheepMetaFlags::metaEntry, SheepMetaFlags.DEFAULT)
+        val SHEEP_FLAGS =
+            index(MetadataEntry.Type.BYTE, SheepMetaFlags.DEFAULT, SheepMetaFlags::fromByte, SheepMetaFlags::toByte)
     }
 
-    object Strider : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Strider : AgeableMob() {
+        companion object : Strider()
 
-        val FUNGUS_BOOST: MetaField<Int> = index(0, Metadata::varInt, 0)
-        val IS_SHAKING: MetaField<Boolean> = index(1, Metadata::boolean, false)
+        val FUNGUS_BOOST = index(MetadataEntry.Type.VAR_INT, 0)
+        val IS_SHAKING = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Goat : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class Goat : AgeableMob() {
+        companion object : Goat()
 
-        val IS_SCREAMING_GOAT: MetaField<Boolean> = index(0, Metadata::boolean, false)
-        val HAS_LEFT_HORN: MetaField<Boolean> = index(1, Metadata::boolean, true)
-        val HAS_RIGHT_HORN: MetaField<Boolean> = index(2, Metadata::boolean, true)
+        val IS_SCREAMING_GOAT = index(MetadataEntry.Type.BOOLEAN, false)
+        val HAS_LEFT_HORN = index(MetadataEntry.Type.BOOLEAN, true)
+        val HAS_RIGHT_HORN = index(MetadataEntry.Type.BOOLEAN, true)
     }
 
-    object TameableAnimal : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class TameableAnimal : AgeableMob() {
+        companion object : TameableAnimal()
 
-        val TAMEABLE_ANIMAL_FLAGS: MetaField<TameableAnimalMetaFlags> = index(0, TameableAnimalMetaFlags::metaEntry, TameableAnimalMetaFlags.DEFAULT)
-        val OWNER: MetaField<UUID?> = index(1, Metadata::optUuid, null)
+        val TAMEABLE_ANIMAL_FLAGS =
+            index(
+                MetadataEntry.Type.BYTE,
+                TameableAnimalMetaFlags.DEFAULT,
+                TameableAnimalMetaFlags::fromByte,
+                TameableAnimalMetaFlags::toByte
+            )
+        val OWNER = index(MetadataEntry.Type.OPT_UUID, null)
     }
 
-    object Cat : MetadataDef() {
-        override val parent = TameableAnimal
+    sealed class Cat : TameableAnimal() {
+        companion object : Cat()
 
-        val VARIANT: MetaField<CatVariant> = index(0, Metadata::catVariant, CatVariants.BLACK)
-        val IS_LYING: MetaField<Boolean> = index(1, Metadata::boolean, false)
-        val IS_RELAXED: MetaField<Boolean> = index(2, Metadata::boolean, false)
-        val COLLAR_COLOR: MetaField<Int> = index(3, Metadata::varInt, 14)
+        val VARIANT = index(MetadataEntry.Type.CAT_VARIANT, CatVariants.BLACK)
+        val IS_LYING = index(MetadataEntry.Type.BOOLEAN, false)
+        val IS_RELAXED = index(MetadataEntry.Type.BOOLEAN, false)
+        val COLLAR_COLOR = index(MetadataEntry.Type.VAR_INT, 14)
     }
 
-    object Wolf : MetadataDef() {
-        override val parent = TameableAnimal
+    sealed class Wolf : TameableAnimal() {
+        companion object : Wolf()
 
-        val IS_BEGGING: MetaField<Boolean> = index(0, Metadata::boolean, false)
-        val COLLAR_COLOR: MetaField<DyeColor> = index(1, Metadata::enum, DyeColor.RED)
-        val ANGER_TIME: MetaField<Int> = index(2, Metadata::varInt, 0)
-        val VARIANT: MetaField<WolfVariant> = index(3, Metadata::wolfVariant, WolfVariants.PALE)
-        val SOUND_VARIANT: MetaField<WolfSoundVariant> = index(4, Metadata::wolfSoundVariant, WolfSoundVariants.CLASSIC)
+        val IS_BEGGING = index(MetadataEntry.Type.BOOLEAN, false)
+        val COLLAR_COLOR = index(MetadataEntry.Type.VAR_INT, DyeColor.RED, { DyeColor.entries[it] }) { it.ordinal }
+        val ANGER_TIME = index(MetadataEntry.Type.VAR_INT, 0)
+        val VARIANT = index(MetadataEntry.Type.WOLF_VARIANT, WolfVariants.PALE)
+        val SOUND_VARIANT = index(MetadataEntry.Type.WOLF_SOUND_VARIANT, WolfSoundVariants.CLASSIC)
     }
 
-    object Parrot : MetadataDef() {
-        override val parent = TameableAnimal
+    sealed class Parrot : TameableAnimal() {
+        companion object : Parrot()
 
-        val VARIANT: MetaField<ParrotVariant> = index(0, Metadata::enum, ParrotVariant.RED_BLUE)
+        val VARIANT =
+            index(MetadataEntry.Type.VAR_INT, ParrotVariant.RED_BLUE, { ParrotVariant.entries[it] }) { it.ordinal }
     }
 
-    object AbstractVillager : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class AbstractVillager : AgeableMob() {
+        companion object : AbstractVillager()
 
-        val HEAD_SHAKE_TIMER: MetaField<Int> = index(0, Metadata::varInt, 0)
+        val HEAD_SHAKE_TIMER = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object Villager : MetadataDef() {
-        override val parent = AbstractVillager
+    sealed class Villager : AbstractVillager() {
+        companion object : Villager()
 
-        val VARIANT: MetaField<VillagerData> = index(0, Metadata::villagerData, VillagerData.DEFAULT)
+        val VARIANT = index(MetadataEntry.Type.VILLAGER_DATA, VillagerData.DEFAULT)
     }
 
-    object HappyGhast : MetadataDef() {
-        override val parent = AgeableMob
+    sealed class HappyGhast : AgeableMob() {
+        companion object : HappyGhast()
 
-        val IS_LEASH_HOLDER: MetaField<Boolean> = index(0, Metadata::boolean, false)
-        val STAYS_STILL: MetaField<Boolean> = index(1, Metadata::boolean, false)
+        val IS_LEASH_HOLDER = index(MetadataEntry.Type.BOOLEAN, false)
+        val STAYS_STILL = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object IronGolem : MetadataDef() {
-        override val parent = Mob
+    sealed class IronGolem : Mob() {
+        companion object : IronGolem()
 
-        val IRON_GOLEM_FLAGS: MetaField<IronGolemMetaFlags> = index(0, IronGolemMetaFlags::metaEntry, IronGolemMetaFlags.DEFAULT)
+        val IRON_GOLEM_FLAGS =
+            index(
+                MetadataEntry.Type.BYTE,
+                IronGolemMetaFlags.DEFAULT,
+                IronGolemMetaFlags::fromByte,
+                IronGolemMetaFlags::toByte
+            )
     }
 
-    object SnowGolem : MetadataDef() {
-        override val parent = Mob
+    sealed class SnowGolem : Mob() {
+        companion object : SnowGolem()
 
-        val SNOW_GOLEM_FLAGS: MetaField<SnowGolemMetaFlags> = index(0, SnowGolemMetaFlags::metaEntry, SnowGolemMetaFlags.DEFAULT)
+        val SNOW_GOLEM_FLAGS =
+            index(
+                MetadataEntry.Type.BYTE,
+                SnowGolemMetaFlags.DEFAULT,
+                SnowGolemMetaFlags::fromByte,
+                SnowGolemMetaFlags::toByte
+            )
     }
 
-    object Shulker : MetadataDef() {
-        override val parent = Mob
+    sealed class Shulker : Mob() {
+        companion object : Shulker()
 
-        val ATTACH_FACE: MetaField<Direction> = index(0, Metadata::direction, Direction.DOWN)
-        val SHIELD_HEIGHT: MetaField<Byte> = index(1, Metadata::byte, 0)
-        val COLOR: MetaField<DyeColor?> = index(2, Metadata::shulkerColor, null)
+        val ATTACH_FACE = index(MetadataEntry.Type.DIRECTION, Direction.DOWN)
+        val SHIELD_HEIGHT = index(MetadataEntry.Type.BYTE, 0)
+        val COLOR: MetaField<Byte, DyeColor?> = index(
+            MetadataEntry.Type.BYTE,
+            null,
+            { DyeColor.entries.getOrNull(it.toInt()) }
+        ) { (it?.ordinal ?: 16).toByte() }
     }
 
-    object BasePiglin : MetadataDef() {
-        override val parent = Mob
+    sealed class BasePiglin : Mob() {
+        companion object : BasePiglin()
 
-        val IMMUNE_ZOMBIFICATION: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val IMMUNE_ZOMBIFICATION = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Piglin : MetadataDef() {
-        override val parent = BasePiglin
+    sealed class Piglin : BasePiglin() {
+        companion object : Piglin()
 
-        val IS_BABY: MetaField<Boolean> = index(0, Metadata::boolean, false)
-        val IS_CHARGING_CROSSBOW: MetaField<Boolean> = index(1, Metadata::boolean, false)
-        val IS_DANCING: MetaField<Boolean> = index(2, Metadata::boolean, false)
+        val IS_BABY = index(MetadataEntry.Type.BOOLEAN, false)
+        val IS_CHARGING_CROSSBOW = index(MetadataEntry.Type.BOOLEAN, false)
+        val IS_DANCING = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Blaze : MetadataDef() {
-        override val parent = Mob
+    sealed class Blaze : Mob() {
+        companion object : Blaze()
 
-        val BLAZE_FLAGS: MetaField<BlazeMetaFlags> = index(0, BlazeMetaFlags::metaEntry, BlazeMetaFlags.DEFAULT)
+        val BLAZE_FLAGS =
+            index(MetadataEntry.Type.BYTE, BlazeMetaFlags.DEFAULT, BlazeMetaFlags::fromByte, BlazeMetaFlags::toByte)
     }
 
-    object Bogged : MetadataDef() {
-        override val parent = Mob
+    sealed class Bogged : Mob() {
+        companion object : Bogged()
 
-        val IS_SHEARED: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val IS_SHEARED = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Creaking : MetadataDef() {
-        override val parent = Mob
+    sealed class Creaking : Mob() {
+        companion object : Creaking()
 
-        val CAN_MOVE: MetaField<Boolean> = index(0, Metadata::boolean, true)
-        val IS_ACTIVE: MetaField<Boolean> = index(1, Metadata::boolean, false)
-        val IS_TEARING_DOWN: MetaField<Boolean> = index(2, Metadata::boolean, false)
-        val HOME_POS: MetaField<Vec3I?> = index(3, Metadata::optBlockPosition, null)
+        val CAN_MOVE = index(MetadataEntry.Type.BOOLEAN, true)
+        val IS_ACTIVE = index(MetadataEntry.Type.BOOLEAN, false)
+        val IS_TEARING_DOWN = index(MetadataEntry.Type.BOOLEAN, false)
+        val HOME_POS = index(MetadataEntry.Type.OPT_BLOCK_POSITION, null)
     }
 
-    object Creeper : MetadataDef() {
-        override val parent = Mob
+    sealed class Creeper : Mob() {
+        companion object : Creeper()
 
-        val STATE: MetaField<CreeperState> = index(0, Metadata::creeperState, CreeperState.IDLE)
-        val IS_CHARGED: MetaField<Boolean> = index(1, Metadata::boolean, false)
-        val IS_IGNITED: MetaField<Boolean> = index(2, Metadata::boolean, false)
+        val STATE = index(
+            MetadataEntry.Type.VAR_INT,
+            CreeperState.IDLE,
+            { if (it == -1) CreeperState.IDLE else CreeperState.FUSE }
+        ) { if (it == CreeperState.IDLE) -1 else 1 }
+        val IS_CHARGED = index(MetadataEntry.Type.BOOLEAN, false)
+        val IS_IGNITED = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Guardian : MetadataDef() {
-        override val parent = Mob
+    sealed class Guardian : Mob() {
+        companion object : Guardian()
 
-        val IS_RETRACTING_SPIKES: MetaField<Boolean> = index(0, Metadata::boolean, false)
-        val TARGET_EID: MetaField<Int> = index(1, Metadata::varInt, 0)
+        val IS_RETRACTING_SPIKES = index(MetadataEntry.Type.BOOLEAN, false)
+        val TARGET_EID = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object Raider : MetadataDef() {
-        override val parent = Mob
+    sealed class Raider : Mob() {
+        companion object : Raider()
 
-        val IS_CELEBRATING: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val IS_CELEBRATING = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Pillager : MetadataDef() {
-        override val parent = Raider
+    sealed class Pillager : Raider() {
+        companion object : Pillager()
 
-        val IS_CHARGING: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val IS_CHARGING = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object SpellcasterIllager : MetadataDef() {
-        override val parent = Raider
+    sealed class SpellcasterIllager : Raider() {
+        companion object : SpellcasterIllager()
 
-        val SPELL: MetaField<Byte> = index(0, Metadata::byte, 0)
+        val SPELL = index(MetadataEntry.Type.BYTE, 0)
     }
 
-    object Witch : MetadataDef() {
-        override val parent = Raider
+    sealed class Witch : Raider() {
+        companion object : Witch()
 
-        val IS_DRINKING_POTION: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val IS_DRINKING_POTION = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Spider : MetadataDef() {
-        override val parent = Mob
+    sealed class Spider : Mob() {
+        companion object : Spider()
 
-        val SPIDER_FLAGS: MetaField<SpiderMetaFlags> = index(0, SpiderMetaFlags::metaEntry, SpiderMetaFlags.DEFAULT)
+        val SPIDER_FLAGS =
+            index(MetadataEntry.Type.BYTE, SpiderMetaFlags.DEFAULT, SpiderMetaFlags::fromByte, SpiderMetaFlags::toByte)
     }
 
-    object Vex : MetadataDef() {
-        override val parent = Mob
+    sealed class Vex : Mob() {
+        companion object : Vex()
 
-        val VEX_FLAGS: MetaField<VexMetaFlags> = index(0, VexMetaFlags::metaEntry, VexMetaFlags.DEFAULT)
+        val VEX_FLAGS =
+            index(MetadataEntry.Type.BYTE, VexMetaFlags.DEFAULT, VexMetaFlags::fromByte, VexMetaFlags::toByte)
     }
 
-    object Warden : MetadataDef() {
-        override val parent = Mob
+    sealed class Warden : Mob() {
+        companion object : Warden()
 
-        val ANGER_LEVEL: MetaField<Int> = index(0, Metadata::varInt, 0)
+        val ANGER_LEVEL = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object Wither : MetadataDef() {
-        override val parent = Mob
+    sealed class Wither : Mob() {
+        companion object : Wither()
 
-        val CENTER_HEAD_TARGET: MetaField<Int> = index(0, Metadata::varInt, 0)
-        val LEFT_HEAD_TARGET: MetaField<Int> = index(1, Metadata::varInt, 0)
-        val RIGHT_HEAD_TARGET: MetaField<Int> = index(2, Metadata::varInt, 0)
-        val INVULNERABLE_TIME: MetaField<Int> = index(3, Metadata::varInt, 0)
+        val CENTER_HEAD_TARGET = index(MetadataEntry.Type.VAR_INT, 0)
+        val LEFT_HEAD_TARGET = index(MetadataEntry.Type.VAR_INT, 0)
+        val RIGHT_HEAD_TARGET = index(MetadataEntry.Type.VAR_INT, 0)
+        val INVULNERABLE_TIME = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object Zoglin : MetadataDef() {
-        override val parent = Mob
+    sealed class Zoglin : Mob() {
+        companion object : Zoglin()
 
-        val IS_BABY: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val IS_BABY = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Zombie : MetadataDef() {
-        override val parent = Mob
+    sealed class Zombie : Mob() {
+        companion object : Zombie()
 
-        val IS_BABY: MetaField<Boolean> = index(0, Metadata::boolean, false)
-        val IS_BECOMING_DROWNED: MetaField<Boolean> = index(2, Metadata::boolean, false)
+        val IS_BABY = index(MetadataEntry.Type.BOOLEAN, false)
+        val IS_BECOMING_DROWNED = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object ZombieVillager : MetadataDef() {
-        override val parent = Mob
+    sealed class ZombieVillager : Mob() {
+        companion object : ZombieVillager()
 
-        val IS_CONVERTING: MetaField<Boolean> = index(0, Metadata::boolean, false)
-        val VILLAGER_DATA: MetaField<VillagerData> = index(1, Metadata::villagerData, VillagerData.DEFAULT)
+        val IS_CONVERTING = index(MetadataEntry.Type.BOOLEAN, false)
+        val VILLAGER_DATA = index(MetadataEntry.Type.VILLAGER_DATA, VillagerData.DEFAULT)
     }
 
-    object Enderman : MetadataDef() {
-        override val parent = Mob
+    sealed class Enderman : Mob() {
+        companion object : Enderman()
 
-        val CARRIED_BLOCK: MetaField<Block> = index(0, Metadata::optBlockState, Block.AIR)
-        val IS_SCREAMING: MetaField<Boolean> = index(1, Metadata::boolean, false)
-        val IS_STARING: MetaField<Boolean> = index(2, Metadata::boolean, false)
+        val CARRIED_BLOCK = index(MetadataEntry.Type.OPT_BLOCK_STATE, Block.AIR)
+        val IS_SCREAMING = index(MetadataEntry.Type.BOOLEAN, false)
+        val IS_STARING = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object EnderDragon : MetadataDef() {
-        override val parent = Mob
+    sealed class EnderDragon : Mob() {
+        companion object : EnderDragon()
 
-        val DRAGON_PHASE: MetaField<EnderDragonPhase> = index(0, Metadata::enum, EnderDragonPhase.HOVERING_WITHOUT_AI)
+        val DRAGON_PHASE = index(
+            MetadataEntry.Type.VAR_INT,
+            EnderDragonPhase.HOVERING_WITHOUT_AI,
+            { EnderDragonPhase.entries[it] }
+        ) { it.ordinal }
     }
 
-    object Ghast : MetadataDef() {
-        override val parent = Mob
+    sealed class Ghast : Mob() {
+        companion object : Ghast()
 
-        val IS_ATTACKING: MetaField<Boolean> = index(0, Metadata::boolean, false)
+        val IS_ATTACKING = index(MetadataEntry.Type.BOOLEAN, false)
     }
 
-    object Phantom : MetadataDef() {
-        override val parent = Mob
+    sealed class Phantom : Mob() {
+        companion object : Phantom()
 
-        val SIZE: MetaField<Int> = index(0, Metadata::varInt, 0)
+        val SIZE = index(MetadataEntry.Type.VAR_INT, 0)
     }
 
-    object Slime : MetadataDef() {
-        override val parent = Mob
+    sealed class Slime : Mob() {
+        companion object : Slime()
 
-        val SIZE: MetaField<Int> = index(0, Metadata::varInt, 1)
+        val SIZE = index(MetadataEntry.Type.VAR_INT, 1)
     }
 
-    object PrimedTnt : MetadataDef() {
-        override val parent = Entity
+    sealed class PrimedTnt : Entity() {
+        companion object : PrimedTnt()
 
-        val FUSE_TIME: MetaField<Int> = index(0, Metadata::varInt, 80)
-        val BLOCK_STATE: MetaField<Block> = index(1, Metadata::blockState, Blocks.TNT.toBlock())
+        val FUSE_TIME = index(MetadataEntry.Type.VAR_INT, 80)
+        val BLOCK_STATE = index(MetadataEntry.Type.BLOCK_STATE, Blocks.TNT.toBlock())
     }
 
-    object OminousItemSpawner : MetadataDef() {
-        override val parent = Entity
+    sealed class OminousItemSpawner : Entity() {
+        companion object : OminousItemSpawner()
 
-        val ITEM: MetaField<ItemStack> = index(0, Metadata::itemStack, ItemStack.AIR)
+        val ITEM = index(MetadataEntry.Type.ITEM_STACK, ItemStack.AIR)
     }
 }

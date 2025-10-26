@@ -1,10 +1,7 @@
 package ru.cherryngine.lib.minecraft.entity.flags
 
-import ru.cherryngine.lib.minecraft.entity.Metadata
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
-
 data class PandaMetaFlags(
-    val isSneezing : Boolean = false,
+    val isSneezing: Boolean = false,
     val isRolling: Boolean = false,
     val isSitting: Boolean = false,
     val isOnBack: Boolean = false,
@@ -12,16 +9,23 @@ data class PandaMetaFlags(
     companion object {
         val DEFAULT = PandaMetaFlags()
 
-        val STREAM_CODEC = StreamCodec.byteFlags(
-            // 0x01 unused
-            0x02, PandaMetaFlags::isSneezing,
-            0x04, PandaMetaFlags::isRolling,
-            0x08, PandaMetaFlags::isSitting,
-            0x10, PandaMetaFlags::isOnBack,
-            ::PandaMetaFlags
-        )
+        fun toByte(flags: PandaMetaFlags): Byte {
+            var byte = 0
+            if (flags.isSneezing) byte = byte or 0x02
+            if (flags.isRolling) byte = byte or 0x04
+            if (flags.isSitting) byte = byte or 0x08
+            if (flags.isOnBack) byte = byte or 0x10
+            return byte.toByte()
+        }
 
-        fun metaEntry(value: PandaMetaFlags): Metadata.Entry<PandaMetaFlags> =
-            Metadata.Entry(Metadata.TYPE_BYTE, value, STREAM_CODEC)
+        fun fromByte(byte: Byte): PandaMetaFlags {
+            val byte = byte.toInt()
+            return PandaMetaFlags(
+                isSneezing = (byte and 0x02) != 0,
+                isRolling = (byte and 0x04) != 0,
+                isSitting = (byte and 0x08) != 0,
+                isOnBack = (byte and 0x10) != 0,
+            )
+        }
     }
 }

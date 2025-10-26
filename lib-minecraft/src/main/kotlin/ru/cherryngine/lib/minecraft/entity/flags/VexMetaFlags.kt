@@ -1,20 +1,22 @@
 package ru.cherryngine.lib.minecraft.entity.flags
 
-import ru.cherryngine.lib.minecraft.entity.Metadata
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
-
 data class VexMetaFlags(
     val isAttacking: Boolean = false,
 ) {
     companion object {
         val DEFAULT = VexMetaFlags()
 
-        val STREAM_CODEC = StreamCodec.byteFlags(
-            0x01, VexMetaFlags::isAttacking,
-            ::VexMetaFlags
-        )
+        fun toByte(flags: VexMetaFlags): Byte {
+            var byte = 0
+            if (flags.isAttacking) byte = byte or 0x01
+            return byte.toByte()
+        }
 
-        fun metaEntry(value: VexMetaFlags): Metadata.Entry<VexMetaFlags> =
-            Metadata.Entry(Metadata.TYPE_BYTE, value, STREAM_CODEC)
+        fun fromByte(byte: Byte): VexMetaFlags {
+            val byte = byte.toInt()
+            return VexMetaFlags(
+                isAttacking = (byte and 0x01) != 0,
+            )
+        }
     }
 }
