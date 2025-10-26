@@ -2,7 +2,6 @@ package ru.cherryngine.lib.minecraft.item
 
 import io.netty.buffer.ByteBuf
 import net.kyori.adventure.nbt.CompoundBinaryTag
-import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.data.DataComponentPatch
 import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.protocol.DataComponentHashable
@@ -34,7 +33,7 @@ data class ItemStack(
                 }
 
                 StreamCodec.VAR_INT.write(buffer, value.amount)
-                RegistryStreamCodec(ItemRegistry).write(buffer, value.material)
+                ItemRegistry.STREAM_CODEC.write(buffer, value.material)
                 DataComponentPatch.patchNetworkType(value.components.components).write(buffer)
             }
 

@@ -1,6 +1,5 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
@@ -25,10 +24,10 @@ data class PotDecorationsComponent(
         val EMPTY = PotDecorationsComponent(DEFAULT_ITEM, DEFAULT_ITEM, DEFAULT_ITEM, DEFAULT_ITEM)
 
         val STREAM_CODEC = StreamCodec.of(
-            RegistryStreamCodec(ItemRegistry), PotDecorationsComponent::back,
-            RegistryStreamCodec(ItemRegistry), PotDecorationsComponent::left,
-            RegistryStreamCodec(ItemRegistry), PotDecorationsComponent::right,
-            RegistryStreamCodec(ItemRegistry), PotDecorationsComponent::front,
+            ItemRegistry.STREAM_CODEC, PotDecorationsComponent::back,
+            ItemRegistry.STREAM_CODEC, PotDecorationsComponent::left,
+            ItemRegistry.STREAM_CODEC, PotDecorationsComponent::right,
+            ItemRegistry.STREAM_CODEC, PotDecorationsComponent::front,
             ::PotDecorationsComponent
         )
     }

@@ -42,5 +42,5 @@ object StreamCodecNBT {
         }
     }
 
-    val COMPOUND_STREAM = STREAM.transform<CompoundBinaryTag>({ it as CompoundBinaryTag }, { it })
+    val COMPOUND_STREAM: StreamCodec<CompoundBinaryTag> = STREAM.transform({ it as CompoundBinaryTag }, { it })
 }

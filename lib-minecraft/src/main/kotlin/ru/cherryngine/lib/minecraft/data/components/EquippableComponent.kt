@@ -1,6 +1,5 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
@@ -23,7 +22,7 @@ class EquippableComponent(
     val damageOnHurt: Boolean,
     val equipOnInteract: Boolean,
     val canBeSheared: Boolean,
-    val shearingSound: SoundEvent
+    val shearingSound: SoundEvent,
 ) : DataComponent() {
     override fun hashStruct(): HashHolder {
         return CRC32CHasher.of {
@@ -50,7 +49,7 @@ class EquippableComponent(
             SoundEvent.STREAM_CODEC, EquippableComponent::equipSound,
             StreamCodec.STRING.optional(), EquippableComponent::assetId,
             StreamCodec.STRING.optional(), EquippableComponent::cameraOverlay,
-            RegistryStreamCodec(EntityTypeRegistry).list().optional(), EquippableComponent::allowedEntities,
+            EntityTypeRegistry.STREAM_CODEC.list().optional(), EquippableComponent::allowedEntities,
             StreamCodec.BOOLEAN, EquippableComponent::dispensable,
             StreamCodec.BOOLEAN, EquippableComponent::swappable,
             StreamCodec.BOOLEAN, EquippableComponent::damageOnHurt,

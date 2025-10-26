@@ -10,7 +10,7 @@ enum class FeatureFlags {
     MINECART_IMPROVEMENTS;
 
     companion object {
-        val STREAM_CODEC = StreamCodec.Companion.KEY.transform<FeatureFlags>(
+        val STREAM_CODEC = StreamCodec.KEY.transform<FeatureFlags>(
             { valueOf(it.value().uppercase()) },
             { Key.key(it.name.lowercase()) }
         )

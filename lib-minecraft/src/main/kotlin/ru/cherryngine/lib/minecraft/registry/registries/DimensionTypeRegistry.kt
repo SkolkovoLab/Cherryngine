@@ -1,14 +1,15 @@
 package ru.cherryngine.lib.minecraft.registry.registries
 
 import net.kyori.adventure.nbt.CompoundBinaryTag
+import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundRegistryDataPacket
 import ru.cherryngine.lib.minecraft.registry.DynamicRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
 object DimensionTypeRegistry : DynamicRegistry<DimensionType>() {
-
     override val identifier: String = "minecraft:dimension_type"
+    val STREAM_CODEC = RegistryStreamCodec(this)
 
     override fun updateCache() {
         cachedPacket = ClientboundRegistryDataPacket(this)

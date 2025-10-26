@@ -4,16 +4,17 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.nbt.CompoundBinaryTag
+import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.extentions.reversed
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.registry.RegistryException
-import ru.cherryngine.lib.minecraft.utils.CustomDataHolder
 import ru.cherryngine.lib.minecraft.world.block.Block
 
 object BlockRegistry : DataDrivenRegistry<RegistryBlock>() {
-
     override val identifier: String = "minecraft:block"
+    val STREAM_CODEC = RegistryStreamCodec(this)
+
     val AIR get() = BlockRegistry["minecraft:air"]
     val blockStates = Int2ObjectOpenHashMap<Block>()
 
@@ -28,7 +29,8 @@ object BlockRegistry : DataDrivenRegistry<RegistryBlock>() {
     }
 
     override fun getByProtocolId(id: Int): RegistryBlock {
-        return super.getByProtocolIdOrNull(id) ?: blockStates.getOrDefault(id, null)?.registryBlock ?: throw RegistryException(id, entries.size)
+        return super.getByProtocolIdOrNull(id) ?: blockStates.getOrDefault(id, null)?.registryBlock
+        ?: throw RegistryException(id, entries.size)
     }
 
 }
@@ -95,10 +97,6 @@ data class RegistryBlock(
 
     fun withBlockStates(states: Map<String, String>): Block {
         return Block(this, states.toMap())
-    }
-
-    fun withCustomData(customDataHolder: CustomDataHolder): Block {
-        return Block(this, mutableMapOf(), customDataHolder)
     }
 
     override fun getNbt(): CompoundBinaryTag? = null

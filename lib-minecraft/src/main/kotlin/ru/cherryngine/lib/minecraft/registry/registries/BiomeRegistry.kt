@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.nbt.BinaryTagTypes
 import net.kyori.adventure.nbt.CompoundBinaryTag
+import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.codec.transcoder.BinaryTagTranscoder
 import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.protocol.NbtWritable
@@ -14,6 +15,7 @@ import ru.cherryngine.lib.minecraft.utils.kotlinx.KeyToJsonSerializer
 
 object BiomeRegistry : DataDrivenRegistry<Biome>() {
     override val identifier: String = "minecraft:worldgen/biome"
+    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable

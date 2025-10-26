@@ -2,6 +2,7 @@ package ru.cherryngine.lib.minecraft.registry.registries
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.DataComponentPatch
 import ru.cherryngine.lib.minecraft.item.ItemStack
@@ -10,6 +11,7 @@ import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
 object ItemRegistry : DataDrivenRegistry<Item>() {
     override val identifier: String = "minecraft:item"
+    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable

@@ -1,6 +1,5 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
@@ -26,7 +25,7 @@ class BannerPatternsComponent(val layers: List<Layer>) : DataComponent() {
 
     data class Layer(
         val pattern: BannerPattern,
-        val color: DyeColor
+        val color: DyeColor,
     ) : DataComponentHashable {
         override fun hashStruct(): HashHolder {
             return CRC32CHasher.of {
@@ -37,7 +36,7 @@ class BannerPatternsComponent(val layers: List<Layer>) : DataComponent() {
 
         companion object {
             val STREAM_CODEC = StreamCodec.of(
-                RegistryStreamCodec(BannerPatternRegistry), Layer::pattern,
+                BannerPatternRegistry.STREAM_CODEC, Layer::pattern,
                 EnumStreamCodec<DyeColor>(), Layer::color,
                 ::Layer,
             )

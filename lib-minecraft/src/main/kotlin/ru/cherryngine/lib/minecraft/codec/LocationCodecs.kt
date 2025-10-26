@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.math.View
+import ru.cherryngine.lib.math.rotation.QRot
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.utils.clamp
 import kotlin.math.roundToInt
@@ -100,6 +101,23 @@ object LocationCodecs {
             val y = buffer.readInt() / 8.0
             val z = buffer.readInt() / 8.0
             return Vec3D(x, y, z)
+        }
+    }
+
+    val QUATERNION = object : StreamCodec<QRot> {
+        override fun write(buffer: ByteBuf, value: QRot) {
+            buffer.writeFloat(value.x.toFloat())
+            buffer.writeFloat(value.y.toFloat())
+            buffer.writeFloat(value.z.toFloat())
+            buffer.writeFloat(value.w.toFloat())
+        }
+
+        override fun read(buffer: ByteBuf): QRot {
+            val x = buffer.readFloat().toDouble()
+            val y = buffer.readFloat().toDouble()
+            val z = buffer.readFloat().toDouble()
+            val w = buffer.readFloat().toDouble()
+            return QRot(w, x, y, z)
         }
     }
 }

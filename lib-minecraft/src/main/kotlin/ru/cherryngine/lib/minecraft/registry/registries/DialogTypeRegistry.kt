@@ -1,6 +1,7 @@
 package ru.cherryngine.lib.minecraft.registry.registries
 
 import net.kyori.adventure.nbt.CompoundBinaryTag
+import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundRegistryDataPacket
 import ru.cherryngine.lib.minecraft.registry.DynamicRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
@@ -8,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 object DialogTypeRegistry : DynamicRegistry<DialogType>() {
     override val identifier: String = "minecraft:dialog_type"
+    val STREAM_CODEC = RegistryStreamCodec(this)
 
     private val dialogTypes: MutableMap<String, DialogType> = mutableMapOf()
     private val _protocolIds: MutableMap<String, Int> = mutableMapOf()

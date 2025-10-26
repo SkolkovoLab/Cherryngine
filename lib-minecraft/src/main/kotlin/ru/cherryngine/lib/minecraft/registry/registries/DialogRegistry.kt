@@ -1,6 +1,7 @@
 package ru.cherryngine.lib.minecraft.registry.registries
 
 import net.kyori.adventure.nbt.CompoundBinaryTag
+import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.dialog.Dialog
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundRegistryDataPacket
 import ru.cherryngine.lib.minecraft.registry.DynamicRegistry
@@ -8,6 +9,7 @@ import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
 object DialogRegistry : DynamicRegistry<DialogEntry>() {
     override val identifier: String = "minecraft:dialog"
+    val STREAM_CODEC = RegistryStreamCodec(this)
 
     override fun updateCache() {
         cachedPacket = ClientboundRegistryDataPacket(this)

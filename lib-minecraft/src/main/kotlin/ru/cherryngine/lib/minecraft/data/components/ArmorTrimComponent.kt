@@ -1,7 +1,6 @@
 package ru.cherryngine.lib.minecraft.data.components
 
 import ru.cherryngine.lib.minecraft.codec.RegistryCodec
-import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.codec.transcoder.CRC32CTranscoder
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
@@ -29,8 +28,8 @@ data class ArmorTrimComponent(
         )
 
         val STREAM_CODEC = StreamCodec.of(
-            RegistryStreamCodec(TrimMaterialRegistry), ArmorTrimComponent::material,
-            RegistryStreamCodec(TrimPatternRegistry), ArmorTrimComponent::pattern,
+            TrimMaterialRegistry.STREAM_CODEC, ArmorTrimComponent::material,
+            TrimPatternRegistry.STREAM_CODEC, ArmorTrimComponent::pattern,
             ::ArmorTrimComponent
         )
     }

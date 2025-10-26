@@ -2,11 +2,13 @@ package ru.cherryngine.lib.minecraft.registry.registries
 
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.nbt.BinaryTag
+import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
 object AttributeRegistry : DataDrivenRegistry<Attribute>() {
     override val identifier: String = "minecraft:attribute"
+    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable

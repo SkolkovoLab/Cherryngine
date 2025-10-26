@@ -67,7 +67,15 @@ interface StreamCodec<T> {
                 return buffer.readByte()
             }
         }
-        val INT_BYTE = BYTE.transform<Int>(Byte::toInt, Int::toByte)
+        val INT_BYTE = object : StreamCodec<Int> {
+            override fun write(buffer: ByteBuf, value: Int) {
+                buffer.writeByte(value)
+            }
+
+            override fun read(buffer: ByteBuf): Int {
+                return buffer.readByte().toInt()
+            }
+        }
         val SHORT = object : StreamCodec<Short> {
             override fun write(buffer: ByteBuf, value: Short) {
                 buffer.writeShort(value.toInt())
@@ -77,7 +85,7 @@ interface StreamCodec<T> {
                 return buffer.readShort()
             }
         }
-        val INT_SHORT = SHORT.transform<Int>(Short::toInt, Int::toShort)
+        val INT_SHORT: StreamCodec<Int> = SHORT.transform(Short::toInt, Int::toShort)
         val INT = object : StreamCodec<Int> {
             override fun write(buffer: ByteBuf, value: Int) {
                 buffer.writeInt(value)
@@ -1269,164 +1277,164 @@ interface StreamCodec<T> {
         }
 
         fun <R> byteFlags(
-            mask1: Byte, getter1: (R) -> Boolean,
+            mask1: Int, getter1: (R) -> Boolean,
             supplier: (Boolean) -> R,
         ) = object : StreamCodec<R> {
             override fun write(buffer: ByteBuf, value: R) {
-                var byte: Byte = 0
+                var byte = 0
                 if (getter1(value)) byte = byte or mask1
-                buffer.writeByte(byte.toInt())
+                buffer.writeByte(byte)
             }
 
             override fun read(buffer: ByteBuf): R {
-                val byte = buffer.readByte()
-                val result1 = (byte and mask1) != 0.toByte()
+                val byte = buffer.readByte().toInt()
+                val result1 = (byte and mask1) != 0
                 return supplier.invoke(result1)
             }
         }
 
         fun <R> byteFlags(
-            mask1: Byte, getter1: (R) -> Boolean,
-            mask2: Byte, getter2: (R) -> Boolean,
+            mask1: Int, getter1: (R) -> Boolean,
+            mask2: Int, getter2: (R) -> Boolean,
             supplier: (Boolean, Boolean) -> R,
         ) = object : StreamCodec<R> {
             override fun write(buffer: ByteBuf, value: R) {
-                var byte: Byte = 0
+                var byte = 0
                 if (getter1(value)) byte = byte or mask1
                 if (getter2(value)) byte = byte or mask2
-                buffer.writeByte(byte.toInt())
+                buffer.writeByte(byte)
             }
 
             override fun read(buffer: ByteBuf): R {
-                val byte = buffer.readByte()
-                val result1 = (byte and mask1) != 0.toByte()
-                val result2 = (byte and mask2) != 0.toByte()
+                val byte = buffer.readByte().toInt()
+                val result1 = (byte and mask1) != 0
+                val result2 = (byte and mask2) != 0
                 return supplier.invoke(result1, result2)
             }
         }
 
         fun <R> byteFlags(
-            mask1: Byte, getter1: (R) -> Boolean,
-            mask2: Byte, getter2: (R) -> Boolean,
-            mask3: Byte, getter3: (R) -> Boolean,
+            mask1: Int, getter1: (R) -> Boolean,
+            mask2: Int, getter2: (R) -> Boolean,
+            mask3: Int, getter3: (R) -> Boolean,
             supplier: (Boolean, Boolean, Boolean) -> R,
         ) = object : StreamCodec<R> {
             override fun write(buffer: ByteBuf, value: R) {
-                var byte: Byte = 0
+                var byte = 0
                 if (getter1(value)) byte = byte or mask1
                 if (getter2(value)) byte = byte or mask2
                 if (getter3(value)) byte = byte or mask3
-                buffer.writeByte(byte.toInt())
+                buffer.writeByte(byte)
             }
 
             override fun read(buffer: ByteBuf): R {
-                val byte = buffer.readByte()
-                val result1 = (byte and mask1) != 0.toByte()
-                val result2 = (byte and mask2) != 0.toByte()
-                val result3 = (byte and mask3) != 0.toByte()
+                val byte = buffer.readByte().toInt()
+                val result1 = (byte and mask1) != 0
+                val result2 = (byte and mask2) != 0
+                val result3 = (byte and mask3) != 0
                 return supplier.invoke(result1, result2, result3)
             }
         }
 
         fun <R> byteFlags(
-            mask1: Byte, getter1: (R) -> Boolean,
-            mask2: Byte, getter2: (R) -> Boolean,
-            mask3: Byte, getter3: (R) -> Boolean,
-            mask4: Byte, getter4: (R) -> Boolean,
+            mask1: Int, getter1: (R) -> Boolean,
+            mask2: Int, getter2: (R) -> Boolean,
+            mask3: Int, getter3: (R) -> Boolean,
+            mask4: Int, getter4: (R) -> Boolean,
             supplier: (Boolean, Boolean, Boolean, Boolean) -> R,
         ) = object : StreamCodec<R> {
             override fun write(buffer: ByteBuf, value: R) {
-                var byte: Byte = 0
+                var byte = 0
                 if (getter1(value)) byte = byte or mask1
                 if (getter2(value)) byte = byte or mask2
                 if (getter3(value)) byte = byte or mask3
                 if (getter4(value)) byte = byte or mask4
-                buffer.writeByte(byte.toInt())
+                buffer.writeByte(byte)
             }
 
             override fun read(buffer: ByteBuf): R {
-                val byte = buffer.readByte()
-                val result1 = (byte and mask1) != 0.toByte()
-                val result2 = (byte and mask2) != 0.toByte()
-                val result3 = (byte and mask3) != 0.toByte()
-                val result4 = (byte and mask4) != 0.toByte()
+                val byte = buffer.readByte().toInt()
+                val result1 = (byte and mask1) != 0
+                val result2 = (byte and mask2) != 0
+                val result3 = (byte and mask3) != 0
+                val result4 = (byte and mask4) != 0
                 return supplier.invoke(result1, result2, result3, result4)
             }
         }
 
         fun <R> byteFlags(
-            mask1: Byte, getter1: (R) -> Boolean,
-            mask2: Byte, getter2: (R) -> Boolean,
-            mask3: Byte, getter3: (R) -> Boolean,
-            mask4: Byte, getter4: (R) -> Boolean,
-            mask5: Byte, getter5: (R) -> Boolean,
+            mask1: Int, getter1: (R) -> Boolean,
+            mask2: Int, getter2: (R) -> Boolean,
+            mask3: Int, getter3: (R) -> Boolean,
+            mask4: Int, getter4: (R) -> Boolean,
+            mask5: Int, getter5: (R) -> Boolean,
             supplier: (Boolean, Boolean, Boolean, Boolean, Boolean) -> R,
         ) = object : StreamCodec<R> {
             override fun write(buffer: ByteBuf, value: R) {
-                var byte: Byte = 0
+                var byte = 0
                 if (getter1(value)) byte = byte or mask1
                 if (getter2(value)) byte = byte or mask2
                 if (getter3(value)) byte = byte or mask3
                 if (getter4(value)) byte = byte or mask4
                 if (getter5(value)) byte = byte or mask5
-                buffer.writeByte(byte.toInt())
+                buffer.writeByte(byte)
             }
 
             override fun read(buffer: ByteBuf): R {
-                val byte = buffer.readByte()
-                val result1 = (byte and mask1) != 0.toByte()
-                val result2 = (byte and mask2) != 0.toByte()
-                val result3 = (byte and mask3) != 0.toByte()
-                val result4 = (byte and mask4) != 0.toByte()
-                val result5 = (byte and mask5) != 0.toByte()
+                val byte = buffer.readByte().toInt()
+                val result1 = (byte and mask1) != 0
+                val result2 = (byte and mask2) != 0
+                val result3 = (byte and mask3) != 0
+                val result4 = (byte and mask4) != 0
+                val result5 = (byte and mask5) != 0
                 return supplier.invoke(result1, result2, result3, result4, result5)
             }
         }
 
         fun <R> byteFlags(
-            mask1: Byte, getter1: (R) -> Boolean,
-            mask2: Byte, getter2: (R) -> Boolean,
-            mask3: Byte, getter3: (R) -> Boolean,
-            mask4: Byte, getter4: (R) -> Boolean,
-            mask5: Byte, getter5: (R) -> Boolean,
-            mask6: Byte, getter6: (R) -> Boolean,
+            mask1: Int, getter1: (R) -> Boolean,
+            mask2: Int, getter2: (R) -> Boolean,
+            mask3: Int, getter3: (R) -> Boolean,
+            mask4: Int, getter4: (R) -> Boolean,
+            mask5: Int, getter5: (R) -> Boolean,
+            mask6: Int, getter6: (R) -> Boolean,
             supplier: (Boolean, Boolean, Boolean, Boolean, Boolean, Boolean) -> R,
         ) = object : StreamCodec<R> {
             override fun write(buffer: ByteBuf, value: R) {
-                var byte: Byte = 0
+                var byte = 0
                 if (getter1(value)) byte = byte or mask1
                 if (getter2(value)) byte = byte or mask2
                 if (getter3(value)) byte = byte or mask3
                 if (getter4(value)) byte = byte or mask4
                 if (getter5(value)) byte = byte or mask5
                 if (getter6(value)) byte = byte or mask6
-                buffer.writeByte(byte.toInt())
+                buffer.writeByte(byte)
             }
 
             override fun read(buffer: ByteBuf): R {
-                val byte = buffer.readByte()
-                val result1 = (byte and mask1) != 0.toByte()
-                val result2 = (byte and mask2) != 0.toByte()
-                val result3 = (byte and mask3) != 0.toByte()
-                val result4 = (byte and mask4) != 0.toByte()
-                val result5 = (byte and mask5) != 0.toByte()
-                val result6 = (byte and mask6) != 0.toByte()
+                val byte = buffer.readByte().toInt()
+                val result1 = (byte and mask1) != 0
+                val result2 = (byte and mask2) != 0
+                val result3 = (byte and mask3) != 0
+                val result4 = (byte and mask4) != 0
+                val result5 = (byte and mask5) != 0
+                val result6 = (byte and mask6) != 0
                 return supplier.invoke(result1, result2, result3, result4, result5, result6)
             }
         }
 
         fun <R> byteFlags(
-            mask1: Byte, getter1: (R) -> Boolean,
-            mask2: Byte, getter2: (R) -> Boolean,
-            mask3: Byte, getter3: (R) -> Boolean,
-            mask4: Byte, getter4: (R) -> Boolean,
-            mask5: Byte, getter5: (R) -> Boolean,
-            mask6: Byte, getter6: (R) -> Boolean,
-            mask7: Byte, getter7: (R) -> Boolean,
+            mask1: Int, getter1: (R) -> Boolean,
+            mask2: Int, getter2: (R) -> Boolean,
+            mask3: Int, getter3: (R) -> Boolean,
+            mask4: Int, getter4: (R) -> Boolean,
+            mask5: Int, getter5: (R) -> Boolean,
+            mask6: Int, getter6: (R) -> Boolean,
+            mask7: Int, getter7: (R) -> Boolean,
             supplier: (Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean) -> R,
         ) = object : StreamCodec<R> {
             override fun write(buffer: ByteBuf, value: R) {
-                var byte: Byte = 0
+                var byte = 0
                 if (getter1(value)) byte = byte or mask1
                 if (getter2(value)) byte = byte or mask2
                 if (getter3(value)) byte = byte or mask3
@@ -1434,35 +1442,35 @@ interface StreamCodec<T> {
                 if (getter5(value)) byte = byte or mask5
                 if (getter6(value)) byte = byte or mask6
                 if (getter7(value)) byte = byte or mask7
-                buffer.writeByte(byte.toInt())
+                buffer.writeByte(byte)
             }
 
             override fun read(buffer: ByteBuf): R {
-                val byte = buffer.readByte()
-                val result1 = (byte and mask1) != 0.toByte()
-                val result2 = (byte and mask2) != 0.toByte()
-                val result3 = (byte and mask3) != 0.toByte()
-                val result4 = (byte and mask4) != 0.toByte()
-                val result5 = (byte and mask5) != 0.toByte()
-                val result6 = (byte and mask6) != 0.toByte()
-                val result7 = (byte and mask7) != 0.toByte()
+                val byte = buffer.readByte().toInt()
+                val result1 = (byte and mask1) != 0
+                val result2 = (byte and mask2) != 0
+                val result3 = (byte and mask3) != 0
+                val result4 = (byte and mask4) != 0
+                val result5 = (byte and mask5) != 0
+                val result6 = (byte and mask6) != 0
+                val result7 = (byte and mask7) != 0
                 return supplier.invoke(result1, result2, result3, result4, result5, result6, result7)
             }
         }
 
         fun <R> byteFlags(
-            mask1: Byte, getter1: (R) -> Boolean,
-            mask2: Byte, getter2: (R) -> Boolean,
-            mask3: Byte, getter3: (R) -> Boolean,
-            mask4: Byte, getter4: (R) -> Boolean,
-            mask5: Byte, getter5: (R) -> Boolean,
-            mask6: Byte, getter6: (R) -> Boolean,
-            mask7: Byte, getter7: (R) -> Boolean,
-            mask8: Byte, getter8: (R) -> Boolean,
+            mask1: Int, getter1: (R) -> Boolean,
+            mask2: Int, getter2: (R) -> Boolean,
+            mask3: Int, getter3: (R) -> Boolean,
+            mask4: Int, getter4: (R) -> Boolean,
+            mask5: Int, getter5: (R) -> Boolean,
+            mask6: Int, getter6: (R) -> Boolean,
+            mask7: Int, getter7: (R) -> Boolean,
+            mask8: Int, getter8: (R) -> Boolean,
             supplier: (Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean) -> R,
         ) = object : StreamCodec<R> {
             override fun write(buffer: ByteBuf, value: R) {
-                var byte: Byte = 0
+                var byte = 0
                 if (getter1(value)) byte = byte or mask1
                 if (getter2(value)) byte = byte or mask2
                 if (getter3(value)) byte = byte or mask3
@@ -1471,19 +1479,19 @@ interface StreamCodec<T> {
                 if (getter6(value)) byte = byte or mask6
                 if (getter7(value)) byte = byte or mask7
                 if (getter8(value)) byte = byte or mask8
-                buffer.writeByte(byte.toInt())
+                buffer.writeByte(byte)
             }
 
             override fun read(buffer: ByteBuf): R {
-                val byte = buffer.readByte()
-                val result1 = (byte and mask1) != 0.toByte()
-                val result2 = (byte and mask2) != 0.toByte()
-                val result3 = (byte and mask3) != 0.toByte()
-                val result4 = (byte and mask4) != 0.toByte()
-                val result5 = (byte and mask5) != 0.toByte()
-                val result6 = (byte and mask6) != 0.toByte()
-                val result7 = (byte and mask7) != 0.toByte()
-                val result8 = (byte and mask8) != 0.toByte()
+                val byte = buffer.readByte().toInt()
+                val result1 = (byte and mask1) != 0
+                val result2 = (byte and mask2) != 0
+                val result3 = (byte and mask3) != 0
+                val result4 = (byte and mask4) != 0
+                val result5 = (byte and mask5) != 0
+                val result6 = (byte and mask6) != 0
+                val result7 = (byte and mask7) != 0
+                val result8 = (byte and mask8) != 0
                 return supplier.invoke(result1, result2, result3, result4, result5, result6, result7, result8)
             }
         }

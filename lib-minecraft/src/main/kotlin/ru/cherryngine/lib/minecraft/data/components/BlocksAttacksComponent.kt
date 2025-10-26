@@ -1,7 +1,6 @@
 package ru.cherryngine.lib.minecraft.data.components
 
 import ru.cherryngine.lib.minecraft.codec.RegistryCodec
-import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.codec.transcoder.CRC32CTranscoder
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
@@ -47,7 +46,7 @@ data class BlocksAttacksComponent(
             StreamCodec.FLOAT, BlocksAttacksComponent::disableCooldownScale,
             DamageReduction.STREAM_CODEC.list(), BlocksAttacksComponent::damageReductions,
             ItemDamageFunction.STREAM_CODEC, BlocksAttacksComponent::itemDamageFunction,
-            RegistryStreamCodec(DamageTypeRegistry).optional(), BlocksAttacksComponent::bypassedBy,
+            DamageTypeRegistry.STREAM_CODEC.optional(), BlocksAttacksComponent::bypassedBy,
             SoundEvent.STREAM_CODEC.optional(), BlocksAttacksComponent::blockSound,
             SoundEvent.STREAM_CODEC.optional(), BlocksAttacksComponent::disableSound,
             ::BlocksAttacksComponent
@@ -114,7 +113,7 @@ data class BlocksAttacksComponent(
 
             val STREAM_CODEC = StreamCodec.of(
                 StreamCodec.FLOAT, DamageReduction::horizontalBlockingAngle,
-                RegistryStreamCodec(EntityTypeRegistry).optional(), DamageReduction::type,
+                EntityTypeRegistry.STREAM_CODEC.optional(), DamageReduction::type,
                 StreamCodec.FLOAT, DamageReduction::base,
                 StreamCodec.FLOAT, DamageReduction::factor,
                 ::DamageReduction

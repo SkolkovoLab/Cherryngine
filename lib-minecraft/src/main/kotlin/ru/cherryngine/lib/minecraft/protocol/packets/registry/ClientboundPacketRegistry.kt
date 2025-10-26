@@ -131,7 +131,7 @@ class ClientboundPacketRegistry : AbstractPacketRegistry() {
         register(ProtocolState.PLAY, ClientboundSetCursorItemPacket::class, ClientboundSetCursorItemPacket.STREAM_CODEC)
         skip(ProtocolState.PLAY, "spawn position")
         register(ProtocolState.PLAY, ClientboundSetDisplayObjectivePacket::class, ClientboundSetDisplayObjectivePacket.STREAM_CODEC)
-        skip(ProtocolState.PLAY, "ClientboundSetEntityMetadataPacket") // addPlay, ClientboundSetEntityMetadataPacket::class, ClientboundSetEntityMetadataPacket.streamCodec)
+        register(ProtocolState.PLAY, ClientboundSetEntityDataPacket::class, ClientboundSetEntityDataPacket.STREAM_CODEC)
         skip(ProtocolState.PLAY, "attach entity packet")
         register(ProtocolState.PLAY, ClientboundSetEntityMotionPacket::class, ClientboundSetEntityMotionPacket.STREAM_CODEC)
         skip(ProtocolState.PLAY, "ClientboundSetEntityEquipmentPacket") // addPlay, ClientboundSetEntityEquipmentPacket::class, ClientboundSetEntityEquipmentPacket.streamCodec)

@@ -2,12 +2,14 @@ package ru.cherryngine.lib.minecraft.registry.registries
 
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.nbt.CompoundBinaryTag
+import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
 object CatVariantRegistry : DataDrivenRegistry<CatVariant>() {
     override val identifier: String = "minecraft:cat_variant"
+    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable

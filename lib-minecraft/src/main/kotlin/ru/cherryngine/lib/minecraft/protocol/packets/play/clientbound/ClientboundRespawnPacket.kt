@@ -1,7 +1,6 @@
 package ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound
 
 import net.kyori.adventure.key.Key
-import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.protocol.types.GameMode
 import ru.cherryngine.lib.minecraft.protocol.types.WorldPosition
@@ -25,7 +24,7 @@ data class ClientboundRespawnPacket(
 ) : ClientboundPacket {
     companion object {
         val STREAM_CODEC = StreamCodec.of(
-            RegistryStreamCodec(DimensionTypeRegistry), ClientboundRespawnPacket::dimensionType,
+            DimensionTypeRegistry.STREAM_CODEC, ClientboundRespawnPacket::dimensionType,
             StreamCodec.KEY, ClientboundRespawnPacket::dimensionName,
             StreamCodec.LONG, ClientboundRespawnPacket::hashedSeed,
             ByteEnumStreamCodec<GameMode>(), ClientboundRespawnPacket::gameMode,

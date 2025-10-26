@@ -1,16 +1,16 @@
 package ru.cherryngine.lib.minecraft.world.block
 
+import io.netty.buffer.ByteBuf
 import ru.cherryngine.lib.minecraft.registry.Blocks
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.Item
 import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.RegistryBlock
-import ru.cherryngine.lib.minecraft.utils.CustomDataHolder
+import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 data class Block(
     val registryBlock: RegistryBlock,
     val blockStates: Map<String, String> = mutableMapOf(),
-    val customData: CustomDataHolder? = null,
 ) {
     val identifier = registryBlock.identifier
 
@@ -29,7 +29,7 @@ data class Block(
         if (blockStates.isEmpty()) return registryBlock.defaultBlockStateId
         if (registryBlock.states.isEmpty()) return registryBlock.defaultBlockStateId
 
-        val id = registryBlock.possibleStates[this.toString()]
+        val id = registryBlock.possibleStates[this.asString()]
         return id ?: registryBlock.defaultBlockStateId
     }
 
@@ -60,11 +60,7 @@ data class Block(
     fun withBlockStates(states: Map<String, String>): Block {
         val newStates = blockStates.toMutableMap()
         newStates.putAll(states)
-        return Block(registryBlock, newStates, customData)
-    }
-
-    fun withCustomData(customDataHolder: CustomDataHolder): Block {
-        return Block(registryBlock, blockStates, customDataHolder)
+        return Block(registryBlock, newStates)
     }
 
     fun isAir(): Boolean {
@@ -72,9 +68,18 @@ data class Block(
     }
 
     companion object {
-
         val AIR = Block(BlockRegistry.AIR)
         val STONE = Block(BlockRegistry["minecraft:stone"])
+
+        val STREAM_CODEC = object : StreamCodec<Block> {
+            override fun write(buffer: ByteBuf, value: Block) {
+                StreamCodec.VAR_INT.write(buffer, value.getProtocolId())
+            }
+
+            override fun read(buffer: ByteBuf): Block {
+                return getBlockByStateId(StreamCodec.VAR_INT.read(buffer))
+            }
+        }
 
         fun parseBlockStateString(string: String): Pair<String, Map<String, String>> {
             val index = string.indexOf('[')
@@ -127,12 +132,14 @@ data class Block(
                 return registryBlock.toBlock()
             }
 
-            val id = registryBlock.possibleStates[identifier] ?: throw kotlin.IllegalArgumentException("No matching state sequence found on ${registryBlock.identifier}")
+            val id = registryBlock.possibleStates[identifier]
+                ?: throw kotlin.IllegalArgumentException("No matching state sequence found on ${registryBlock.identifier}")
             return getBlockByStateId(id)
         }
 
         fun getBlockFromStateStringFast(identifier: String, block: RegistryBlock): Block {
-            val id = block.possibleStates[identifier] ?: throw kotlin.IllegalArgumentException("No matching state sequence found on ${block.identifier}")
+            val id = block.possibleStates[identifier]
+                ?: throw kotlin.IllegalArgumentException("No matching state sequence found on ${block.identifier}")
             return getBlockByStateId(id)
         }
     }

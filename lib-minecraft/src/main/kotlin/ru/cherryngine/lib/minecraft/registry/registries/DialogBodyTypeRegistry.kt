@@ -1,6 +1,7 @@
 package ru.cherryngine.lib.minecraft.registry.registries
 
 import net.kyori.adventure.nbt.CompoundBinaryTag
+import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.dialog.body.DialogBody
 import ru.cherryngine.lib.minecraft.dialog.body.DialogItemBody
 import ru.cherryngine.lib.minecraft.dialog.body.PlainMessage
@@ -11,6 +12,7 @@ import kotlin.reflect.KClass
 
 object DialogBodyTypeRegistry : DynamicRegistry<DialogBodyType>() {
     override val identifier: String = "minecraft:dialog_body_type"
+    val STREAM_CODEC = RegistryStreamCodec(this)
 
     init {
         addEntry(DialogBodyType("minecraft:item", DialogItemBody::class))

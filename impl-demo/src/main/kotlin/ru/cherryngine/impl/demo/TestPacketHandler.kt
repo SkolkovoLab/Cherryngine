@@ -8,6 +8,9 @@ import ru.cherryngine.impl.demo.world.TestWorldShit
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.View
 import ru.cherryngine.lib.minecraft.PacketHandler
+import ru.cherryngine.lib.minecraft.entity.MetaContainer
+import ru.cherryngine.lib.minecraft.entity.MetadataDef
+import ru.cherryngine.lib.minecraft.entity.flags.EntityMetaFlags
 import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.common.ClientboundPongResponsePacket
@@ -20,18 +23,23 @@ import ru.cherryngine.lib.minecraft.protocol.packets.handshake.ServerboundIntent
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ClientboundLoginFinishedPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundHelloPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundLoginAcknowledgedPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundAddEntityPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundGameEventPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLoginPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundSetEntityDataPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.*
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ClientboundStatusResponsePacket
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ServerboundStatusRequestPacket
 import ru.cherryngine.lib.minecraft.protocol.types.GameMode
 import ru.cherryngine.lib.minecraft.protocol.types.GameProfile
 import ru.cherryngine.lib.minecraft.protocol.types.MovePlayerFlags
+import ru.cherryngine.lib.minecraft.registry.CatVariants
 import ru.cherryngine.lib.minecraft.registry.DimensionTypes
+import ru.cherryngine.lib.minecraft.registry.EntityTypes
 import ru.cherryngine.lib.minecraft.registry.RegistryManager
 import ru.cherryngine.lib.minecraft.registry.registries.tags.*
 import ru.cherryngine.lib.minecraft.server.Connection
+import java.util.*
 
 @Singleton
 class TestPacketHandler(
@@ -154,6 +162,36 @@ class TestPacketHandler(
 
             is ServerboundClientTickEndPacket -> {
                 playerManager.map[connection]?.tick()
+            }
+
+            is ServerboundChatCommandPacket -> {
+                val player = playerManager.map[connection] ?: return
+                when (packet.command) {
+                    "test1" -> {
+                        connection.sendPacket(
+                            ClientboundAddEntityPacket(
+                                228, UUID.randomUUID(),
+                                EntityTypes.CAT,
+                                player.clientPosition,
+                                View.ZERO, 0f,
+                                0,
+                                Vec3D.ZERO
+                            )
+                        )
+
+                        val metaContainer = MetaContainer()
+                        metaContainer[MetadataDef.Entity.ENTITY_FLAGS] = EntityMetaFlags(hasGlowingEffects = true)
+                        metaContainer[MetadataDef.Entity.HAS_NO_GRAVITY] = true
+                        metaContainer[MetadataDef.Cat.VARIANT] = CatVariants.RED
+
+                        connection.sendPacket(
+                            ClientboundSetEntityDataPacket(
+                                228,
+                                metaContainer.entries
+                            )
+                        )
+                    }
+                }
             }
         }
     }

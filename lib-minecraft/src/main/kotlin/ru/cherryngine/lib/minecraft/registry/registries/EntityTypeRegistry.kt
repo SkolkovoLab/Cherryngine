@@ -3,6 +3,7 @@ package ru.cherryngine.lib.minecraft.registry.registries
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.utils.kotlinx.Vec3DListToJsonSerializer
@@ -10,6 +11,7 @@ import ru.cherryngine.lib.minecraft.utils.kotlinx.Vec3DToJsonSerializer
 
 object EntityTypeRegistry : DataDrivenRegistry<EntityType>() {
     override val identifier: String = "minecraft:entity_type"
+    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable

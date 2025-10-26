@@ -1,7 +1,6 @@
 package ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound
 
 import net.kyori.adventure.key.Key
-import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.protocol.types.GameMode
 import ru.cherryngine.lib.minecraft.protocol.types.WorldPosition
@@ -30,7 +29,7 @@ data class ClientboundLoginPacket(
     val deathLocation: WorldPosition?,
     val portalCooldown: Int,
     val seaLevel: Int,
-    val enforcesSecureChat: Boolean
+    val enforcesSecureChat: Boolean,
 ) : ClientboundPacket {
     companion object {
         val STREAM_CODEC = StreamCodec.of(
@@ -43,7 +42,7 @@ data class ClientboundLoginPacket(
             StreamCodec.BOOLEAN, ClientboundLoginPacket::reducedDebugInfo,
             StreamCodec.BOOLEAN, ClientboundLoginPacket::enableRespawnScreen,
             StreamCodec.BOOLEAN, ClientboundLoginPacket::doLimitedCrafting,
-            RegistryStreamCodec(DimensionTypeRegistry), ClientboundLoginPacket::dimensionType,
+            DimensionTypeRegistry.STREAM_CODEC, ClientboundLoginPacket::dimensionType,
             StreamCodec.STRING, ClientboundLoginPacket::dimensionName,
             StreamCodec.LONG, ClientboundLoginPacket::hashedSeed,
             ByteEnumStreamCodec<GameMode>(), ClientboundLoginPacket::gameMode,
