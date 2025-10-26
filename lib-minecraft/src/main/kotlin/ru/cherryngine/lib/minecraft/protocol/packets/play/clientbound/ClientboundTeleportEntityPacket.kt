@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound
 
 import ru.cherryngine.lib.math.Vec3D
-import ru.cherryngine.lib.math.View
+import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.codec.LocationCodecs
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.protocol.types.TeleportFlags
@@ -11,7 +11,7 @@ data class ClientboundTeleportEntityPacket(
     val entityId: Int,
     val location: Vec3D,
     val velocity: Vec3D,
-    val view: View,
+    val yawPitch: YawPitch,
     val teleportFlags: TeleportFlags,
     val isOnGround: Boolean
 ) : ClientboundPacket {
@@ -20,7 +20,7 @@ data class ClientboundTeleportEntityPacket(
             StreamCodec.VAR_INT, ClientboundTeleportEntityPacket::entityId,
             LocationCodecs.VEC_3D, ClientboundTeleportEntityPacket::location,
             LocationCodecs.VEC_3D, ClientboundTeleportEntityPacket::velocity,
-            LocationCodecs.VIEW, ClientboundTeleportEntityPacket::view,
+            LocationCodecs.YAW_PITCH, ClientboundTeleportEntityPacket::yawPitch,
             TeleportFlags.STREAM_CODEC, ClientboundTeleportEntityPacket::teleportFlags,
             StreamCodec.BOOLEAN, ClientboundTeleportEntityPacket::isOnGround,
             ::ClientboundTeleportEntityPacket

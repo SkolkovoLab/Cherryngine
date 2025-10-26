@@ -1,8 +1,8 @@
 package ru.cherryngine.lib.minecraft.entity
 
-class MetadataContainer {
+class MetadataContainer(
     val entries: MutableMap<Int, MetadataEntry<*>> = hashMapOf()
-
+) {
     operator fun <T, K> set(metaField: MetadataDef.MetaField<T, K>, value: K) {
         val index = metaField.index
         val entry: MetadataEntry<T> = metaField.function.entry(metaField.mapper2(value))

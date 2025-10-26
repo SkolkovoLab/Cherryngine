@@ -1,14 +1,15 @@
 package ru.cherryngine.impl.demo
 
 import jakarta.inject.Singleton
+import net.kyori.adventure.text.Component
+import ru.cherryngine.impl.demo.entity.McEntity
 import ru.cherryngine.impl.demo.player.Player
 import ru.cherryngine.impl.demo.player.PlayerManager
-import ru.cherryngine.impl.demo.world.PlayerChunkView
 import ru.cherryngine.impl.demo.world.TestWorldShit
+import ru.cherryngine.impl.demo.world.world.WorldImpl
 import ru.cherryngine.lib.math.Vec3D
-import ru.cherryngine.lib.math.View
+import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.PacketHandler
-import ru.cherryngine.lib.minecraft.entity.MetadataContainer
 import ru.cherryngine.lib.minecraft.entity.MetadataDef
 import ru.cherryngine.lib.minecraft.entity.flags.EntityMetaFlags
 import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
@@ -23,10 +24,8 @@ import ru.cherryngine.lib.minecraft.protocol.packets.handshake.ServerboundIntent
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ClientboundLoginFinishedPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundHelloPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundLoginAcknowledgedPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundAddEntityPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundGameEventPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLoginPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundSetEntityDataPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.*
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ClientboundStatusResponsePacket
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ServerboundStatusRequestPacket
@@ -39,7 +38,7 @@ import ru.cherryngine.lib.minecraft.registry.EntityTypes
 import ru.cherryngine.lib.minecraft.registry.RegistryManager
 import ru.cherryngine.lib.minecraft.registry.registries.tags.*
 import ru.cherryngine.lib.minecraft.server.Connection
-import java.util.*
+import kotlin.random.Random
 
 @Singleton
 class TestPacketHandler(
@@ -145,10 +144,7 @@ class TestPacketHandler(
 
                 val player = playerManager.map[connection] ?: return
 
-                val playerChunkView = PlayerChunkView(player, testWorldShit.world)
-                player.playerChunkView = playerChunkView
-
-                playerChunkView.init()
+                player.world = testWorldShit.normalWorld
             }
 
             is ServerboundPlayerLoadedPacket -> {
@@ -156,8 +152,8 @@ class TestPacketHandler(
             }
 
             is ServerboundMovePlayerPosPacket -> onMove(connection, packet.pos, null, packet.flags)
-            is ServerboundMovePlayerPosRotPacket -> onMove(connection, packet.pos, packet.view, packet.flags)
-            is ServerboundMovePlayerRotPacket -> onMove(connection, null, packet.view, packet.flags)
+            is ServerboundMovePlayerPosRotPacket -> onMove(connection, packet.pos, packet.yawPitch, packet.flags)
+            is ServerboundMovePlayerRotPacket -> onMove(connection, null, packet.yawPitch, packet.flags)
             is ServerboundMovePlayerStatusOnlyPacket -> onMove(connection, null, null, packet.flags)
 
             is ServerboundClientTickEndPacket -> {
@@ -166,30 +162,37 @@ class TestPacketHandler(
 
             is ServerboundChatCommandPacket -> {
                 val player = playerManager.map[connection] ?: return
-                when (packet.command) {
-                    "test1" -> {
-                        connection.sendPacket(
-                            ClientboundAddEntityPacket(
-                                228, UUID.randomUUID(),
-                                EntityTypes.CAT,
-                                player.clientPosition,
-                                View.ZERO, 0f,
-                                0,
-                                Vec3D.ZERO
-                            )
-                        )
+                val split = packet.command.split(" ")
+                when (split.getOrNull(0)) {
+                    "entityadd" -> {
+                        val world = testWorldShit.worlds[split.getOrNull(1)]
+                        val name = split.getOrNull(2)
+                        if (world is WorldImpl) {
+                            world.entities += McEntity(
+                                Random.nextInt(1000, 1_000_000),
+                                EntityTypes.CAT
+                            ).apply {
+                                position = player.clientPosition
+                                yawPitch = player.clientYawPitch
+                                metadata[MetadataDef.Cat.ENTITY_FLAGS] = EntityMetaFlags(hasGlowingEffects = true)
+                                metadata[MetadataDef.Cat.HAS_NO_GRAVITY] = true
+                                metadata[MetadataDef.Cat.VARIANT] = CatVariants.RED
+                                metadata[MetadataDef.Cat.CUSTOM_NAME] = Component.text("$name (${world.name})")
+                                metadata[MetadataDef.Cat.CUSTOM_NAME_VISIBLE] = true
+                            }
+                        }
+                    }
 
-                        val metadataContainer = MetadataContainer()
-                        metadataContainer[MetadataDef.Cat.ENTITY_FLAGS] = EntityMetaFlags(hasGlowingEffects = true)
-                        metadataContainer[MetadataDef.Cat.HAS_NO_GRAVITY] = true
-                        metadataContainer[MetadataDef.Cat.VARIANT] = CatVariants.RED
+                    "entityclear" -> {
+                        val world = testWorldShit.worlds[split.getOrNull(1)]
+                        if (world is WorldImpl) {
+                            world.entities.clear()
+                        }
+                    }
 
-                        connection.sendPacket(
-                            ClientboundSetEntityDataPacket(
-                                228,
-                                metadataContainer.entries
-                            )
-                        )
+                    "world" -> {
+                        val world = testWorldShit.worlds[split.getOrNull(1)]
+                        player.world = world
                     }
                 }
             }
@@ -199,10 +202,11 @@ class TestPacketHandler(
     fun onMove(
         connection: Connection,
         pos: Vec3D?,
-        view: View?,
+        yawPitch: YawPitch?,
         flags: MovePlayerFlags,
     ) {
         val player = playerManager.map[connection] ?: return
         if (pos != null) player.lastPosition = pos
+        if (yawPitch != null) player.lastYawPitch = yawPitch
     }
 }

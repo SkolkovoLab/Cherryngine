@@ -2,33 +2,22 @@ package ru.cherryngine.impl.demo.world.polar
 
 import io.netty.buffer.Unpooled
 import org.slf4j.LoggerFactory
+import ru.cherryngine.impl.demo.world.Chunk
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.Biomes
 import ru.cherryngine.lib.minecraft.registry.registries.Biome
 import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.world.Light
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 import ru.cherryngine.lib.minecraft.world.palette.Palette
-import ru.cherryngine.impl.demo.world.Chunk
-import ru.cherryngine.impl.demo.world.World
 import java.util.*
 
 object PolarWorldGenerator {
     private val logger = LoggerFactory.getLogger(PolarWorldGenerator::class.java)
-
-    fun loadWorld(
-        name: String,
-        dimensionType: DimensionType,
-        worldBytes: ByteArray,
-    ): World {
-        val chunks = loadChunks(worldBytes)
-        return World(name, dimensionType, chunks)
-    }
 
     fun loadChunks(worldBytes: ByteArray): Map<Long, Chunk> {
         val polarWorld = PolarReader.read(worldBytes)

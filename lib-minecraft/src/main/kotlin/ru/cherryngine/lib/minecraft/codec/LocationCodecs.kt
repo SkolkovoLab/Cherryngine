@@ -3,7 +3,7 @@ package ru.cherryngine.lib.minecraft.codec
 import io.netty.buffer.ByteBuf
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.math.View
+import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.math.rotation.QRot
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.utils.clamp
@@ -38,10 +38,10 @@ object LocationCodecs {
         ::Vec3D
     )
 
-    val VIEW = StreamCodec.of(
-        StreamCodec.FLOAT, View::yaw,
-        StreamCodec.FLOAT, View::pitch,
-        ::View
+    val YAW_PITCH = StreamCodec.of(
+        StreamCodec.FLOAT, YawPitch::yaw,
+        StreamCodec.FLOAT, YawPitch::pitch,
+        ::YawPitch
     )
 
     val ANGLE = object : StreamCodec<Float> {
@@ -54,10 +54,10 @@ object LocationCodecs {
         }
     }
 
-    val VIEW_AS_ANGLE_PITCH_YAW = StreamCodec.of(
-        ANGLE, View::pitch,
-        ANGLE, View::yaw
-    ) { pitch, yaw -> View(yaw, pitch) }
+    val ANGLE_PITCH_YAW = StreamCodec.of(
+        ANGLE, YawPitch::pitch,
+        ANGLE, YawPitch::yaw
+    ) { pitch, yaw -> YawPitch(yaw, pitch) }
 
     val MOVE_ENTITY_DELTA = object : StreamCodec<Vec3D> {
         override fun write(buffer: ByteBuf, value: Vec3D) {

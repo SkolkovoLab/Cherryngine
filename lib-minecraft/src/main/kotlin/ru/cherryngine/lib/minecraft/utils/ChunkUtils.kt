@@ -5,6 +5,7 @@ import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import kotlin.math.abs
 import kotlin.math.floor
+import kotlin.math.sqrt
 
 object ChunkUtils {
     fun chunkBlockIndexGetX(index: Int): Int {
@@ -43,5 +44,41 @@ object ChunkUtils {
             }
         }
         return list
+    }
+
+    fun getChunksInRange(pos: ChunkPos, range: Int): List<ChunkPos> {
+        val chunksInRange = (range * 2 + 1) * (range * 2 + 1)
+        return List(chunksInRange) { i ->
+            chunkInSpiral(i, pos.x, pos.z)
+        }
+    }
+
+    fun chunkInSpiral(id: Int, xOffset: Int = 0, zOffset: Int = 0): ChunkPos {
+        // if the id is 0 then we know we're in the centre
+        if (id == 0) return ChunkPos(xOffset, zOffset)
+
+        val index: Int = id - 1
+
+        // compute radius (inverse arithmetic sum of 8 + 16 + 24 + ...)
+        val radius: Int = floor((sqrt(index + 1.0) - 1) / 2).toInt() + 1
+
+        // compute total point on radius -1 (arithmetic sum of 8 + 16 + 24 + ...)
+        val p = 8 * radius * (radius - 1) / 2
+
+        // points by face
+        val en = radius * 2
+
+        // compute de position and shift it so the first is (-r, -r) but (-r + 1, -r)
+        // so the square can connect
+        val a = (1 + index - p) % (radius * 8)
+
+        return when (a / (radius * 2)) {
+            // find the face (0 = top, 1 = right, 2 = bottom, 3 = left)
+            0 -> ChunkPos(a - radius + xOffset, -radius + zOffset)
+            1 -> ChunkPos(radius + xOffset, a % en - radius + zOffset)
+            2 -> ChunkPos(radius - a % en + xOffset, radius + zOffset)
+            3 -> ChunkPos(-radius + xOffset, radius - a % en + zOffset)
+            else -> ChunkPos.ZERO
+        }
     }
 }

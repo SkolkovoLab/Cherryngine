@@ -4,31 +4,31 @@ import ru.cherryngine.lib.math.rotation.QRot
 import kotlin.math.cos
 import kotlin.math.sin
 
-data class View(
+data class YawPitch(
     val yaw: Float,
     val pitch: Float,
 ) {
     companion object {
-        val ZERO: View = View(0f, 0f)
+        val ZERO: YawPitch = YawPitch(0f, 0f)
     }
 
     val yawRadians: Double get() = Math.toRadians(yaw.toDouble())
     val pitchRadians: Double get() = Math.toRadians(pitch.toDouble())
 
-    operator fun plus(other: View): View {
-        return View(yaw + other.yaw, pitch + other.pitch)
+    operator fun plus(other: YawPitch): YawPitch {
+        return YawPitch(yaw + other.yaw, pitch + other.pitch)
     }
 
-    operator fun minus(other: View): View {
-        return View(yaw - other.yaw, pitch - other.pitch)
+    operator fun minus(other: YawPitch): YawPitch {
+        return YawPitch(yaw - other.yaw, pitch - other.pitch)
     }
 
-    operator fun times(value: Float): View {
-        return View(yaw * value, pitch * value)
+    operator fun times(value: Float): YawPitch {
+        return YawPitch(yaw * value, pitch * value)
     }
 
-    operator fun div(value: Float): View {
-        return View(yaw / value, pitch / value)
+    operator fun div(value: Float): YawPitch {
+        return YawPitch(yaw / value, pitch / value)
     }
 
     fun direction(): Vec3D {

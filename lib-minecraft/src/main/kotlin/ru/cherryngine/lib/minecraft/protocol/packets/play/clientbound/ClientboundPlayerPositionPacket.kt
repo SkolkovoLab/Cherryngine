@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound
 
 import ru.cherryngine.lib.math.Vec3D
-import ru.cherryngine.lib.math.View
+import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.codec.LocationCodecs
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.protocol.types.TeleportFlags
@@ -11,7 +11,7 @@ data class ClientboundPlayerPositionPacket(
     val teleportId: Int,
     val location: Vec3D,
     val delta: Vec3D,
-    val view: View,
+    val yawPitch: YawPitch,
     val teleportFlags: TeleportFlags,
 ) : ClientboundPacket {
     companion object {
@@ -19,7 +19,7 @@ data class ClientboundPlayerPositionPacket(
             StreamCodec.VAR_INT, ClientboundPlayerPositionPacket::teleportId,
             LocationCodecs.VEC_3D, ClientboundPlayerPositionPacket::location,
             LocationCodecs.VEC_3D, ClientboundPlayerPositionPacket::delta,
-            LocationCodecs.VIEW, ClientboundPlayerPositionPacket::view,
+            LocationCodecs.YAW_PITCH, ClientboundPlayerPositionPacket::yawPitch,
             TeleportFlags.STREAM_CODEC, ClientboundPlayerPositionPacket::teleportFlags,
             ::ClientboundPlayerPositionPacket
         )
