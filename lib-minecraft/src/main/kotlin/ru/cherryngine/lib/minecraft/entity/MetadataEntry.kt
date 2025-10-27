@@ -47,7 +47,7 @@ class MetadataEntry<T>(
             val PARTICLE_LIST = Type(index++, ParticleRegistry.STREAM_CODEC.list()).also { entries.add(it) }
             val VILLAGER_DATA = Type(index++, VillagerData.STREAM_CODEC).also { entries.add(it) }
             val OPT_VAR_INT = Type(index++, StreamCodec.OPT_VAR_INT).also { entries.add(it) }
-            val ENTITY_POSE = Type(index++, EnumStreamCodec<EntityPose>()).also { entries.add(it) }
+            val ENTITY_POSE = Type(index++, EnumStreamCodec<EntityMeta.Pose>()).also { entries.add(it) }
             val CAT_VARIANT = Type(index++, CatVariantRegistry.STREAM_CODEC).also { entries.add(it) }
             val COW_VARIANT = Type(index++, CowVariantRegistry.STREAM_CODEC).also { entries.add(it) }
             val WOLF_VARIANT = Type(index++, WolfVariantRegistry.STREAM_CODEC).also { entries.add(it) }
@@ -57,8 +57,8 @@ class MetadataEntry<T>(
             val CHICKEN_VARIANT = Type(index++, ChickenVariantRegistry.STREAM_CODEC).also { entries.add(it) }
             val OPT_GLOBAL_POSITION = Type(index++, StreamCodec.UNIT).also { entries.add(it) } // Unused by protocol it seems
             val PAINTING_VARIANT = Type(index++, PaintingVariantRegistry.STREAM_CODEC).also { entries.add(it) }
-            val SNIFFER_STATE = Type(index++, EnumStreamCodec<SnifferState>()).also { entries.add(it) }
-            val ARMADILLO_STATE = Type(index++, EnumStreamCodec<ArmadilloState>()).also { entries.add(it) }
+            val SNIFFER_STATE = Type(index++, EnumStreamCodec<SnifferMeta.State>()).also { entries.add(it) }
+            val ARMADILLO_STATE = Type(index++, EnumStreamCodec<ArmadilloMeta.State>()).also { entries.add(it) }
             val VECTOR3 = Type(index++, LocationCodecs.VEC_3D_FLOAT).also { entries.add(it) }
             val QUATERNION = Type(index++, LocationCodecs.QUATERNION).also { entries.add(it) }
 

@@ -5,12 +5,9 @@ import ru.cherryngine.impl.demo.entity.McEntity
 import ru.cherryngine.impl.demo.world.world.World
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
-import ru.cherryngine.lib.minecraft.data.components.AxolotlVariantComponent
-import ru.cherryngine.lib.minecraft.entity.MetadataDef
+import ru.cherryngine.lib.minecraft.entity.AxolotlMeta
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
-import ru.cherryngine.lib.minecraft.protocol.types.AxolotlVariant
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.registry.CatVariants
 import ru.cherryngine.lib.minecraft.registry.EntityTypes
 import ru.cherryngine.lib.minecraft.server.Connection
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
@@ -41,10 +38,10 @@ class Player(
     var playerEntityView: PlayerEntityView? = null
 
     val entity = McEntity(Random.nextInt(1000, 1_000_000), EntityTypes.AXOLOTL).apply {
-        metadata[MetadataDef.Axolotl.HAS_NO_GRAVITY] = true
-        metadata[MetadataDef.Axolotl.VARIANT] = AxolotlVariant.entries.random()
-        metadata[MetadataDef.Axolotl.CUSTOM_NAME] = Component.text(connection.address.toString())
-        metadata[MetadataDef.Axolotl.CUSTOM_NAME_VISIBLE] = true
+        metadata[AxolotlMeta.HAS_NO_GRAVITY] = true
+        metadata[AxolotlMeta.VARIANT] = AxolotlMeta.Variant.entries.random()
+        metadata[AxolotlMeta.CUSTOM_NAME] = Component.text(connection.address.toString())
+        metadata[AxolotlMeta.CUSTOM_NAME_VISIBLE] = true
         viewerPredicate = { it != this@Player }
     }
 

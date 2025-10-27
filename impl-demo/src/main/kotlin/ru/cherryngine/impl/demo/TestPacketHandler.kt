@@ -10,8 +10,8 @@ import ru.cherryngine.impl.demo.world.world.WorldImpl
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.PacketHandler
-import ru.cherryngine.lib.minecraft.entity.MetadataDef
-import ru.cherryngine.lib.minecraft.entity.flags.EntityMetaFlags
+import ru.cherryngine.lib.minecraft.entity.CatMeta
+import ru.cherryngine.lib.minecraft.entity.EntityMeta
 import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.common.ClientboundPongResponsePacket
@@ -174,11 +174,11 @@ class TestPacketHandler(
                             ).apply {
                                 position = player.clientPosition
                                 yawPitch = player.clientYawPitch
-                                metadata[MetadataDef.Cat.ENTITY_FLAGS] = EntityMetaFlags(hasGlowingEffects = true)
-                                metadata[MetadataDef.Cat.HAS_NO_GRAVITY] = true
-                                metadata[MetadataDef.Cat.VARIANT] = CatVariants.RED
-                                metadata[MetadataDef.Cat.CUSTOM_NAME] = Component.text("$name (${world.name})")
-                                metadata[MetadataDef.Cat.CUSTOM_NAME_VISIBLE] = true
+                                metadata[CatMeta.ENTITY_FLAGS] = EntityMeta.Flags(hasGlowingEffects = true)
+                                metadata[CatMeta.HAS_NO_GRAVITY] = true
+                                metadata[CatMeta.VARIANT] = CatVariants.RED
+                                metadata[CatMeta.CUSTOM_NAME] = Component.text("$name (${world.name})")
+                                metadata[CatMeta.CUSTOM_NAME_VISIBLE] = true
                             }
                         }
                     }
