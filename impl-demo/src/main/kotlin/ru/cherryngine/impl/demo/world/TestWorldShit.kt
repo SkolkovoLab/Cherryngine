@@ -21,8 +21,8 @@ class TestWorldShit {
     val normalWorld = WorldImpl("normal", DimensionTypes.OVERWORLD, normalChunks)
     val winterWorld = WorldImpl("winter", DimensionTypes.OVERWORLD, winterChunks)
     val basseinWorld = WorldImpl("bassein", DimensionTypes.OVERWORLD, basseinChunks)
-    val normalWithBasseinWorld = MixedWorld(listOf(normalWorld, basseinWorld))
-    val winterWithBasseinWorld = MixedWorld(listOf(winterWorld, basseinWorld))
+    val normalWithBasseinWorld = MixedWorld("normal_bassein", DimensionTypes.OVERWORLD, listOf(normalWorld, basseinWorld), basseinWorld)
+    val winterWithBasseinWorld = MixedWorld("winter_bassein", DimensionTypes.OVERWORLD, listOf(winterWorld, basseinWorld), basseinWorld)
 
     val worlds = mapOf(
         "normal" to normalWorld,

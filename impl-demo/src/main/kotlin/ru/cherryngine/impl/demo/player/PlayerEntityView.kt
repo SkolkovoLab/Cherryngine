@@ -23,13 +23,13 @@ class PlayerEntityView(
         val currentVisible: MutableSet<McEntity> = player.currentVisibleEntities
 
         currentVisible.removeIf { entity ->
-            val shouldHide = entity !in entities || entity.chunkPos !in chunks
+            val shouldHide = entity !in entities || entity.chunkPos !in chunks || !entity.viewerPredicate(player)
             if (shouldHide) entity.hide(player)
             shouldHide
         }
 
         entities.forEach { entity ->
-            val shouldShow = entity !in currentVisible && entity.chunkPos in chunks
+            val shouldShow = entity !in currentVisible && entity.chunkPos in chunks && entity.viewerPredicate(player)
             if (shouldShow) {
                 entity.show(player)
                 currentVisible.add(entity)

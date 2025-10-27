@@ -8,20 +8,21 @@ import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 
 class MixedWorld(
+    override val name: String,
+    override val dimensionType: DimensionType,
     val worlds: List<World>,
+    val entitiesWorld: WorldImpl
 ) : World {
     init {
         if (worlds.isEmpty()) throw IllegalArgumentException("worlds is empty")
     }
 
-    override val name: String
-        get() = worlds.first().name
-    override val dimensionType: DimensionType
-        get() = worlds.first().dimensionType
     override val chunks: Map<Long, Chunk>
         get() = mixWorld(worlds.first(), worlds.drop(1))
     override val entities: Set<McEntity>
         get() = worlds.flatMap { it.entities }.toSet()
+    override val mutableEntities: MutableSet<McEntity>
+        get() = entitiesWorld.entities
 
     companion object {
         fun mixWorld(world: World, layers: List<World>): Map<Long, Chunk> {

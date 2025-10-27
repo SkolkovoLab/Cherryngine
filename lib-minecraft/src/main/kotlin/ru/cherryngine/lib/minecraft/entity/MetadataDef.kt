@@ -438,7 +438,7 @@ sealed class MetadataDef {
     sealed class Axolotl : AgeableMob() {
         companion object : Axolotl()
 
-        val VARIANT = index(MetadataEntry.Type.VAR_INT, 0)
+        val VARIANT = index(MetadataEntry.Type.VAR_INT, AxolotlVariant.LUCY, { AxolotlVariant.entries[it] }) { it.ordinal }
         val IS_PLAYING_DEAD = index(MetadataEntry.Type.BOOLEAN, false)
         val IS_FROM_BUCKET = index(MetadataEntry.Type.BOOLEAN, false)
     }

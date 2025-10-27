@@ -9,4 +9,6 @@ class WorldImpl(
     override val dimensionType: DimensionType,
     override val chunks: Map<Long, Chunk>,
     override val entities: MutableSet<McEntity> = mutableSetOf(),
-) : World
+) : World {
+    override val mutableEntities: MutableSet<McEntity> get() = entities
+}

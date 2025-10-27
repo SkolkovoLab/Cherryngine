@@ -14,6 +14,9 @@ data class TeleportFlags(
     val rotateDelta: Boolean,
 ) {
     companion object {
+        val EMPTY = TeleportFlags(false, false, false, false, false, false, false, false, false)
+        val ALL = TeleportFlags(true, true, true, true, true, true, true, true, true)
+
         val STREAM_CODEC = StreamCodec.intFlags(
             0x0001, TeleportFlags::relX,
             0x0002, TeleportFlags::relY,

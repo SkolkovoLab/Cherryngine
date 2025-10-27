@@ -9,5 +9,6 @@ interface World {
     val dimensionType: DimensionType
     val chunks: Map<Long, Chunk>
     val entities: Set<McEntity>
+    val mutableEntities: MutableSet<McEntity>
 }
 

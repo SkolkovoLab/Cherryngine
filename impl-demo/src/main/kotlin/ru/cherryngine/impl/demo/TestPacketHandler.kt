@@ -165,8 +165,8 @@ class TestPacketHandler(
                 val split = packet.command.split(" ")
                 when (split.getOrNull(0)) {
                     "entityadd" -> {
-                        val world = testWorldShit.worlds[split.getOrNull(1)]
-                        val name = split.getOrNull(2)
+                        val world = player.world
+                        val name = split.getOrNull(1)
                         if (world is WorldImpl) {
                             world.entities += McEntity(
                                 Random.nextInt(1000, 1_000_000),
@@ -184,7 +184,7 @@ class TestPacketHandler(
                     }
 
                     "entityclear" -> {
-                        val world = testWorldShit.worlds[split.getOrNull(1)]
+                        val world = player.world
                         if (world is WorldImpl) {
                             world.entities.clear()
                         }
