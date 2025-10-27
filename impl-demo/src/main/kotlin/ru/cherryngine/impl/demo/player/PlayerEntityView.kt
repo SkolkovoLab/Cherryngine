@@ -18,28 +18,22 @@ class PlayerEntityView(
     fun update() {
         val distance = DEFAULT_RENDER_DISTANCE
 
-        val toShow = mutableListOf<McEntity>()
-        val toHide = mutableListOf<McEntity>()
-
         val chunks = ChunkUtils.getChunksInRange(player.clientChunkPos, distance).toSet()
-        val entities = entitiesProvider()
-        val currentVisible = player.currentVisibleEntities
+        val entities: Set<McEntity> = entitiesProvider()
+        val currentVisible: MutableSet<McEntity> = player.currentVisibleEntities
 
-        sequenceOf(entities, currentVisible).flatten().forEach { entity ->
-            if (entity !in currentVisible && (entity in entities && entity.chunkPos in chunks)) {
-                toShow.add(entity)
-            }
-            if (entity in currentVisible && (entity !in entities || entity.chunkPos !in chunks)) {
-                toHide.add(entity)
-            }
+        currentVisible.removeIf { entity ->
+            val shouldHide = entity !in entities || entity.chunkPos !in chunks
+            if (shouldHide) entity.hide(player)
+            shouldHide
         }
-        toShow.forEach { entity ->
-            entity.show(player)
-            currentVisible += entity
-        }
-        toHide.forEach { entity ->
-            entity.hide(player)
-            currentVisible -= entity
+
+        entities.forEach { entity ->
+            val shouldShow = entity !in currentVisible && entity.chunkPos in chunks
+            if (shouldShow) {
+                entity.show(player)
+                currentVisible.add(entity)
+            }
         }
     }
 }

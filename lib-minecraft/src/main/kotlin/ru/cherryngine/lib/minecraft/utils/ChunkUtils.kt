@@ -34,16 +34,14 @@ object ChunkUtils {
     fun getChunkCoordinate(xz: Double): Int = getChunkCoordinate(floor(xz).toInt())
     fun chunkPosFromVec3D(vec3D: Vec3D) = ChunkPos(getChunkCoordinate(vec3D.x), getChunkCoordinate(vec3D.z))
 
-    fun forDifferingChunksInRange(center: ChunkPos, oldCenter: ChunkPos, range: Int): List<ChunkPos> {
-        val list = mutableListOf<ChunkPos>()
+    fun forDifferingChunksInRange(center: ChunkPos, oldCenter: ChunkPos, range: Int, action: (ChunkPos) -> Unit) {
         for (x in center.x - range..center.x + range) {
             for (z in center.z - range..center.z + range) {
                 // If the difference between either the x and old x or z and old z is > range, then the chunk is
                 // newly in range, and we can process it.
-                if (abs(x - oldCenter.x) > range || abs(z - oldCenter.z) > range) list.add(ChunkPos(x, z))
+                if (abs(x - oldCenter.x) > range || abs(z - oldCenter.z) > range) action(ChunkPos(x, z))
             }
         }
-        return list
     }
 
     fun getChunksInRange(pos: ChunkPos, range: Int): List<ChunkPos> {

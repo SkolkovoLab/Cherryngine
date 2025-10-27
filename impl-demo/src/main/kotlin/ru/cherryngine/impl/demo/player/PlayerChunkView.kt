@@ -36,21 +36,18 @@ class PlayerChunkView(
         player.sendPacket(ClientboundSetChunkCacheCenterPacket(currentChunkPos))
 
         // new chunks
-        val chunksToLoad =
-            ChunkUtils.forDifferingChunksInRange(
-                currentChunkPos,
-                previousChunkPos,
-                distance
-            )
-        val chunksToUnload =
-            ChunkUtils.forDifferingChunksInRange(
-                previousChunkPos,
-                currentChunkPos,
-                distance
-            )
-
-        chunksToLoad.forEach(::loadChunk)
-        chunksToUnload.forEach(::unloadChunk)
+        ChunkUtils.forDifferingChunksInRange(
+            currentChunkPos,
+            previousChunkPos,
+            distance,
+            ::loadChunk
+        )
+        ChunkUtils.forDifferingChunksInRange(
+            previousChunkPos,
+            currentChunkPos,
+            distance,
+            ::unloadChunk
+        )
 
         previousChunkPos = currentChunkPos
     }
