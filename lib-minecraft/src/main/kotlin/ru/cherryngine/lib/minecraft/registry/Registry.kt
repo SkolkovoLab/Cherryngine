@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.nbt.BinaryTag
 import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundRegistryDataPacket
@@ -33,8 +34,16 @@ abstract class Registry<T : RegistryEntry> {
         return getOrNull(identifier) ?: throw RegistryException(identifier, entries.size)
     }
 
+    operator fun get(key: Key): T {
+        return get(key.asString())
+    }
+
     fun getOrNull(identifier: String): T? {
         return entries.getByKeyOrNull(identifier)
+    }
+
+    fun getOrNull(key: Key): T? {
+        return getOrNull(key.asString())
     }
 
     fun getProtocolIdByEntry(entry: T): Int {

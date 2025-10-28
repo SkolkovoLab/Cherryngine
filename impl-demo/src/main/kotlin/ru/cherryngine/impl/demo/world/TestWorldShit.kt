@@ -17,18 +17,30 @@ class TestWorldShit {
     val basseinChunks = PolarWorldGenerator.loadChunks(
         javaClass.getResource("/bassein.polar")!!.readBytes()
     )
+    val dustChunks = PolarWorldGenerator.loadChunks(
+        javaClass.getResource("/de_dust2.polar")!!.readBytes()
+    )
+    val lobbyChunks = PolarWorldGenerator.loadChunks(
+        javaClass.getResource("/lobby.polar")!!.readBytes()
+    )
 
     val normalWorld = WorldImpl("normal", DimensionTypes.OVERWORLD, normalChunks)
     val winterWorld = WorldImpl("winter", DimensionTypes.OVERWORLD, winterChunks)
     val basseinWorld = WorldImpl("bassein", DimensionTypes.OVERWORLD, basseinChunks)
-    val normalWithBasseinWorld = MixedWorld("normal_bassein", DimensionTypes.OVERWORLD, listOf(normalWorld, basseinWorld), basseinWorld)
-    val winterWithBasseinWorld = MixedWorld("winter_bassein", DimensionTypes.OVERWORLD, listOf(winterWorld, basseinWorld), basseinWorld)
+    val normalWithBasseinWorld =
+        MixedWorld("normal_bassein", DimensionTypes.OVERWORLD, listOf(normalWorld, basseinWorld), basseinWorld)
+    val winterWithBasseinWorld =
+        MixedWorld("winter_bassein", DimensionTypes.OVERWORLD, listOf(winterWorld, basseinWorld), basseinWorld)
+    val dustWorld = WorldImpl("dust", DimensionTypes.OVERWORLD, dustChunks)
+    val lobbyWorld = WorldImpl("lobby", DimensionTypes.OVERWORLD, lobbyChunks)
 
-    val worlds = mapOf(
-        "normal" to normalWorld,
-        "winter" to winterWorld,
-        "bassein" to basseinWorld,
-        "normal_bassein" to normalWithBasseinWorld,
-        "winter_bassein" to winterWithBasseinWorld
-    )
+    val worlds = sequenceOf(
+        normalWorld,
+        winterWorld,
+        basseinWorld,
+        normalWithBasseinWorld,
+        winterWithBasseinWorld,
+        dustWorld,
+        lobbyWorld
+    ).associateBy { it.name }
 }

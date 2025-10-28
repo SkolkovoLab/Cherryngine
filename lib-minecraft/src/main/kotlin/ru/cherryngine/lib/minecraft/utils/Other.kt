@@ -29,8 +29,7 @@ fun clamp(value: Double, min: Short, max: Short): Int {
 
 fun bitsToRepresent(n: Int): Int {
     require(n > 0) { "n must be greater than 0" }
-
-    return Integer.SIZE - Integer.numberOfLeadingZeros(n)
+    return Int.SIZE_BITS - n.countLeadingZeroBits()
 }
 
 fun String.toComponent(): Component = Component.text(this)

@@ -212,6 +212,17 @@ interface StreamCodec<T> {
                 return LongArray(size) { buffer.readLong() }
             }
         }
+        val VAR_INT_ARRAY = object : StreamCodec<IntArray> {
+            override fun write(buffer: ByteBuf, value: IntArray) {
+                VAR_INT.write(buffer, value.size)
+                value.forEach { VAR_INT.write(buffer, it) }
+            }
+
+            override fun read(buffer: ByteBuf): IntArray {
+                val size = VAR_INT.read(buffer)
+                return IntArray(size) { VAR_INT.read(buffer) }
+            }
+        }
         val UUID_STRING = STRING.transform<JavaUUID>(JavaUUID::fromString, JavaUUID::toString)
         val BIT_SET = LONG_ARRAY.transform<BitSet>(BitSet::valueOf, BitSet::toLongArray)
         val INSTANT = LONG.transform<Instant>(Instant::fromEpochMilliseconds, Instant::toEpochMilliseconds)

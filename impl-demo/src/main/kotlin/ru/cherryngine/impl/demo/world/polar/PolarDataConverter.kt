@@ -37,8 +37,8 @@ interface PolarDataConverter {
     fun convertBlockEntityData(
         id: String, data: CompoundBinaryTag,
         fromVersion: Int, toVersion: Int
-    ): MutableMap.MutableEntry<String?, CompoundBinaryTag?> {
-        return Map.entry<String?, CompoundBinaryTag?>(id, data)
+    ): MutableMap.MutableEntry<String, CompoundBinaryTag> {
+        return Map.entry<String, CompoundBinaryTag>(id, data)
     }
 
     companion object {

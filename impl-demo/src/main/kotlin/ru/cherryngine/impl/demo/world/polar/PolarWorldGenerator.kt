@@ -1,16 +1,21 @@
 package ru.cherryngine.impl.demo.world.polar
 
 import io.netty.buffer.Unpooled
+import net.kyori.adventure.key.Key
 import org.slf4j.LoggerFactory
 import ru.cherryngine.impl.demo.world.Chunk
+import ru.cherryngine.lib.math.Vec3I
+import ru.cherryngine.lib.minecraft.protocol.types.BlockEntityType
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.Biomes
+import ru.cherryngine.lib.minecraft.registry.Blocks
 import ru.cherryngine.lib.minecraft.registry.registries.Biome
 import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.world.Light
 import ru.cherryngine.lib.minecraft.world.block.Block
+import ru.cherryngine.lib.minecraft.world.block.BlockEntity
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 import ru.cherryngine.lib.minecraft.world.palette.Palette
@@ -48,10 +53,21 @@ object PolarWorldGenerator {
                 blockLight.light
             )
 
+            val blockEntities = polarChunk.blockEntities.mapNotNull { polarBlockEntity ->
+                if (polarBlockEntity.id == null) return@mapNotNull null
+                if (polarBlockEntity.data == null) return@mapNotNull null
+
+                BlockEntity(
+                    Vec3I(polarBlockEntity.x, polarBlockEntity.y, polarBlockEntity.z),
+                    BlockEntityType.fromKey(Key.key(polarBlockEntity.id)),
+                    polarBlockEntity.data
+                )
+            }
+
             val chunkData = ChunkData(
                 mapOf(),
                 sections,
-                listOf()
+                blockEntities
             )
 
             ChunkPos.pack(polarChunk.x, polarChunk.z) to Chunk(chunkData, light)
@@ -116,14 +132,10 @@ object PolarWorldGenerator {
             val bracketPos = blockId.indexOf('[')
             if (bracketPos != -1) {
                 propertiesStr = blockId.substring(bracketPos + 1, blockId.length - 1)
-                blockId = blockId.substring(0, bracketPos)
+                blockId = blockId.take(bracketPos)
             }
 
             val registryBlock = BlockRegistry[blockId]
-            if (registryBlock.blockEntityId == -1) {
-                println(registryBlock)
-                return Block.AIR
-            }
 
             // Парсим свойства
             if (propertiesStr.isNotEmpty()) {

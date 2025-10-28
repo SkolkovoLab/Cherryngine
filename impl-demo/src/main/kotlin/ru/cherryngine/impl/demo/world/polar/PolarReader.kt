@@ -8,6 +8,7 @@ import net.kyori.adventure.nbt.CompoundBinaryTag
 import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.tide.stream.StringStreamCodec
+import ru.cherryngine.lib.minecraft.world.palette.Palettes
 import kotlin.math.ceil
 import kotlin.math.ln
 
@@ -15,7 +16,6 @@ object PolarReader {
     const val MAX_BLOCK_PALETTE_SIZE: Int = 16 * 16 * 16
     const val MAX_BIOME_PALETTE_SIZE: Int = 8 * 8 * 8
 
-    @JvmOverloads
     fun read(data: ByteArray, dataConverter: PolarDataConverter = PolarDataConverter.NOOP): PolarWorld {
         var buffer = Unpooled.copiedBuffer(data)
         buffer.writerIndex(data.size) // Set write index to end so readableBytes returns remaining bytes
@@ -114,7 +114,7 @@ object PolarReader {
 
             val rawBlockData = StreamCodec.LONG_ARRAY.read(buffer)
             val bitsPerEntry = ceil(ln(blockPalette.size.toDouble()) / ln(2.0)).toInt()
-            PaletteUtil.unpack(blockData, rawBlockData, bitsPerEntry)
+            Palettes.unpack(blockData, rawBlockData, bitsPerEntry)
         }
 
         
@@ -125,7 +125,7 @@ object PolarReader {
 
             val rawBiomeData = StreamCodec.LONG_ARRAY.read(buffer)
             val bitsPerEntry = ceil(ln(biomePalette.size.toDouble()) / ln(2.0)).toInt()
-            PaletteUtil.unpack(biomeData, rawBiomeData, bitsPerEntry)
+            Palettes.unpack(biomeData, rawBiomeData, bitsPerEntry)
         }
 
         var blockLightContent = PolarSection.LightContent.MISSING
@@ -189,7 +189,7 @@ object PolarReader {
                 } else {
                     val bitsPerEntry = packed.size * 64 / PolarChunk.HEIGHTMAP_SIZE
                     heightmaps!![i] = IntArray(PolarChunk.HEIGHTMAP_SIZE)
-                    PaletteUtil.unpack(heightmaps[i]!!, packed, bitsPerEntry)
+                    Palettes.unpack(heightmaps[i]!!, packed, bitsPerEntry)
                 }
             } else {
                 buffer.readBytes(StreamCodec.VAR_INT.read(buffer) * 8) // Skip a long array
@@ -205,31 +205,30 @@ object PolarReader {
         buffer: ByteBuf,
     ): PolarChunk.BlockEntity {
         val posIndex = buffer.readInt()
-        var id = StreamCodec.STRING.optional().read(buffer)
+        var id: String = StreamCodec.STRING.optional().read(buffer) ?: ""
 
-        var nbt: CompoundBinaryTag? = CompoundBinaryTag.empty()
+        var nbt: CompoundBinaryTag = CompoundBinaryTag.empty()
         if (version <= PolarWorld.VERSION_USERDATA_OPT_BLOCK_ENT_NBT || buffer.readBoolean()) {
             nbt = StreamCodecNBT.COMPOUND_STREAM.read(buffer)
         }
 
         if (dataVersion < dataConverter.dataVersion()) {
             val converted = dataConverter.convertBlockEntityData(
-                if (id == null) "" else id,
-                nbt!!,
+                id,
+                nbt,
                 dataVersion,
                 dataConverter.dataVersion()
             )
             id = converted.key
-            if (id!!.isEmpty()) id = null
             nbt = converted.value
-            if (nbt!!.size() == 0) nbt = null
         }
 
         return PolarChunk.BlockEntity(
             chunkBlockIndexGetX(posIndex),
             chunkBlockIndexGetY(posIndex),
             chunkBlockIndexGetZ(posIndex),
-            id, nbt
+            id.takeUnless { it.isEmpty() },
+            nbt.takeUnless { it.isEmpty }
         )
     }
 
