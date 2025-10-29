@@ -8,6 +8,7 @@ import ru.cherryngine.impl.demo.player.PlayerManager
 import ru.cherryngine.impl.demo.world.TestWorldShit
 import ru.cherryngine.impl.demo.world.world.WorldImpl
 import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.PacketHandler
 import ru.cherryngine.lib.minecraft.entity.CatMeta
@@ -32,12 +33,11 @@ import ru.cherryngine.lib.minecraft.protocol.packets.status.ServerboundStatusReq
 import ru.cherryngine.lib.minecraft.protocol.types.GameMode
 import ru.cherryngine.lib.minecraft.protocol.types.GameProfile
 import ru.cherryngine.lib.minecraft.protocol.types.MovePlayerFlags
-import ru.cherryngine.lib.minecraft.registry.CatVariants
-import ru.cherryngine.lib.minecraft.registry.DimensionTypes
-import ru.cherryngine.lib.minecraft.registry.EntityTypes
-import ru.cherryngine.lib.minecraft.registry.RegistryManager
+import ru.cherryngine.lib.minecraft.registry.*
 import ru.cherryngine.lib.minecraft.registry.registries.tags.*
 import ru.cherryngine.lib.minecraft.server.Connection
+import ru.cherryngine.lib.minecraft.utils.blockPos
+import ru.cherryngine.lib.minecraft.world.block.Block
 import kotlin.random.Random
 
 @Singleton
@@ -193,6 +193,22 @@ class TestPacketHandler(
                     "world" -> {
                         val world = testWorldShit.worlds[split.getOrNull(1)]
                         player.world = world
+                    }
+
+                    "block" -> {
+                        val world = player.world!!
+                        world.setBlock(player.clientPosition.blockPos(), Blocks.TNT.toBlock())
+                    }
+
+                    "blocks" -> {
+                        val world = player.world!!
+
+                        val blocksMap = mutableMapOf<Vec3I, Block>()
+                        for (x in -10..10) for (z in -10..10) {
+                            blocksMap[player.clientPosition.blockPos().plus(x, 0, z)] = Blocks.TNT.toBlock()
+                        }
+
+                        world.setBlocks(blocksMap)
                     }
                 }
             }

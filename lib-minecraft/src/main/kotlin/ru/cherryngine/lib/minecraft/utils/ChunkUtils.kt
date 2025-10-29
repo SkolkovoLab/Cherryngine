@@ -32,7 +32,25 @@ object ChunkUtils {
 
     fun getChunkCoordinate(xz: Int): Int = xz shr 4
     fun getChunkCoordinate(xz: Double): Int = getChunkCoordinate(floor(xz).toInt())
-    fun chunkPosFromVec3D(vec3D: Vec3D) = ChunkPos(getChunkCoordinate(vec3D.x), getChunkCoordinate(vec3D.z))
+
+    fun globalToSectionRelative(xyz: Int): Int {
+        return xyz and 0xF
+    }
+
+    fun chunkPosFromVec3D(vec: Vec3D) = ChunkPos(getChunkCoordinate(vec.x), getChunkCoordinate(vec.z))
+    fun chunkPosFromVec3I(vec: Vec3I) = ChunkPos(getChunkCoordinate(vec.x), getChunkCoordinate(vec.z))
+
+    fun sectionIndexFromBlockPos(blockPos: Vec3I): Long {
+        val sectionX = getChunkCoordinate(blockPos.x).toLong()
+        val sectionY = getChunkCoordinate(blockPos.y).toLong()
+        val sectionZ = getChunkCoordinate(blockPos.z).toLong()
+        return ((sectionX and 0x3FFFFF) shl 42) or (sectionY and 0xFFFFF) or ((sectionZ and 0x3FFFFF) shl 20)
+    }
+
+    fun encodeBlockData(blockStateId: Int, blockLocalX: Int, blockLocalY: Int, blockLocalZ: Int): Long {
+        val encodedPosition = (blockLocalX.toLong() shl 8) or (blockLocalZ.toLong() shl 4) or blockLocalY.toLong()
+        return (blockStateId.toLong() shl 12) or encodedPosition
+    }
 
     fun forDifferingChunksInRange(center: ChunkPos, oldCenter: ChunkPos, range: Int, action: (ChunkPos) -> Unit) {
         for (x in center.x - range..center.x + range) {

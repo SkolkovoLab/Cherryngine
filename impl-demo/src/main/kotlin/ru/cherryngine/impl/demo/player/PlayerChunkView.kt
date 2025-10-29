@@ -65,6 +65,8 @@ class PlayerChunkView(
     }
 
     fun unloadChunk(pos: ChunkPos) {
+        val chunk = chunks[pos.pack()] ?: Chunk.EMPTY
+
         player.sendPacket(ClientboundForgetLevelChunkPacket(pos))
     }
 }

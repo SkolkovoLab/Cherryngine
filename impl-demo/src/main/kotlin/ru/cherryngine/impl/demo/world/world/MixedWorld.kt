@@ -2,6 +2,8 @@ package ru.cherryngine.impl.demo.world.world
 
 import ru.cherryngine.impl.demo.entity.McEntity
 import ru.cherryngine.impl.demo.world.Chunk
+import ru.cherryngine.impl.demo.world.ChunkViewable
+import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.Blocks
 import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
@@ -17,8 +19,9 @@ class MixedWorld(
         if (worlds.isEmpty()) throw IllegalArgumentException("worlds is empty")
     }
 
-    override val chunks: Map<Long, Chunk>
-        get() = mixWorld(worlds.first(), worlds.drop(1))
+    override val chunks: Map<Long, Chunk> = mixWorld(worlds.first(), worlds.drop(1))
+    override val chunkViewables = chunks.mapValues { ChunkViewable(ChunkPos.unpack(it.key), it.value) }
+
     override val entities: Set<McEntity>
         get() = worlds.flatMap { it.entities }.toSet()
     override val mutableEntities: MutableSet<McEntity>

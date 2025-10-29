@@ -32,10 +32,10 @@ class Player(
         connection.sendPacket(packet)
     }
 
-    val currentVisibleEntities = mutableSetOf<McEntity>()
+    val currentVisibleEntities = mutableSetOf<Viewable>()
 
-    var playerChunkView: PlayerChunkView? = null
-    var playerEntityView: PlayerEntityView? = null
+//    var playerChunkView: PlayerChunkView? = null
+    var playerViewSystem: PlayerViewSystem? = null
 
     val entity = McEntity(Random.nextInt(1000, 1_000_000), EntityTypes.AXOLOTL).apply {
         metadata[AxolotlMeta.HAS_NO_GRAVITY] = true
@@ -52,17 +52,17 @@ class Player(
             oldValue?.mutableEntities -= entity
             value?.mutableEntities += entity
             if (value != null) {
-                playerChunkView = PlayerChunkView(this, value.chunks).apply { init() }
-                playerEntityView = PlayerEntityView(this, { value.entities }).apply { init() }
+//                playerChunkView = PlayerChunkView(this, value.chunks).apply { init() }
+                playerViewSystem = PlayerViewSystem(this, { value.entities + value.chunkViewables.values }).apply { init() }
             } else {
-                playerChunkView = null
-                playerEntityView = null
+//                playerChunkView = null
+                playerViewSystem = null
             }
         }
 
     fun tick() {
         entity.teleport(clientPosition, clientYawPitch)
-        playerChunkView?.update()
-        playerEntityView?.update()
+//        playerChunkView?.update()
+        playerViewSystem?.update()
     }
 }
