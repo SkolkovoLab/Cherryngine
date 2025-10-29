@@ -11,8 +11,11 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.PacketHandler
+import ru.cherryngine.lib.minecraft.data.DataComponentPatch
+import ru.cherryngine.lib.minecraft.data.components.CustomNameComponent
 import ru.cherryngine.lib.minecraft.entity.CatMeta
 import ru.cherryngine.lib.minecraft.entity.EntityMeta
+import ru.cherryngine.lib.minecraft.item.ItemStack
 import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.common.ClientboundPongResponsePacket
@@ -27,6 +30,7 @@ import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundHelloPacke
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundLoginAcknowledgedPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundGameEventPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLoginPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundSetPlayerInventoryPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.*
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ClientboundStatusResponsePacket
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ServerboundStatusRequestPacket
@@ -209,6 +213,13 @@ class TestPacketHandler(
                         }
 
                         world.setBlocks(blocksMap)
+                    }
+
+                    "item" -> {
+                        val itemStack = ItemStack(Items.DIAMOND, 1, DataComponentPatch.fromList(
+                            listOf(CustomNameComponent(Component.text("test-item"))),
+                        ))
+                        player.sendPacket(ClientboundSetPlayerInventoryPacket(0, itemStack))
                     }
                 }
             }

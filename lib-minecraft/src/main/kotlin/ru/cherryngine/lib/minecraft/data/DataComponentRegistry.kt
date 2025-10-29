@@ -54,7 +54,7 @@ object DataComponentRegistry {
     val TOOL = register("minecraft:tool", ToolComponent::class, ToolComponent.STREAM_CODEC)
     val WEAPON = register("minecraft:weapon", WeaponComponent::class, WeaponComponent.STREAM_CODEC)
     val ENCHANTABLE = register("minecraft:enchantable", EnchantableComponent::class, EnchantableComponent.STREAM_CODEC)
-    val EQUIPABBLE = register("minecraft:equippable", EquippableComponent::class, EquippableComponent.STREAM_CODEC)
+    val EQUIPABLE = register("minecraft:equippable", EquippableComponent::class, EquippableComponent.STREAM_CODEC)
     val REPAIRABLE = register("minecraft:repairable", RepairableComponent::class, RepairableComponent.STREAM_CODEC)
     val GLIDER = register("minecraft:glider", GliderComponent::class, GliderComponent.STREAM_CODEC)
     val TOOLTIP_STYLE = register("minecraft:tooltip_style", TooltipStyleComponent::class, TooltipStyleComponent.STREAM_CODEC)
