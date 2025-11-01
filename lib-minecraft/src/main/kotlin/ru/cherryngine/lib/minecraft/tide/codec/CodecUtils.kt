@@ -3,6 +3,7 @@ package ru.cherryngine.lib.minecraft.tide.codec
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.handler.codec.DecoderException
+import ru.cherryngine.lib.minecraft.utils.use
 import java.nio.charset.StandardCharsets
 import java.util.*
 
@@ -150,10 +151,9 @@ object CodecUtils {
     fun ByteArray.toByteBuf(): ByteBuf = Unpooled.copiedBuffer(this)
 
     inline fun byteBufBytes(writer: (ByteBuf) -> Unit): ByteArray {
-        val tempBuffer = Unpooled.buffer()
-        writer.invoke(tempBuffer)
-        val array = tempBuffer.array()
-        tempBuffer.release()
-        return array
+        return Unpooled.buffer().use {
+            writer.invoke(it)
+            it.array()
+        }
     }
 }

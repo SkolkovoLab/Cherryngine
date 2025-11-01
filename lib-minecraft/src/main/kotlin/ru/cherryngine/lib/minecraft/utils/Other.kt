@@ -1,5 +1,6 @@
 package ru.cherryngine.lib.minecraft.utils
 
+import io.netty.buffer.ByteBuf
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.nbt.NBTComponentSerializer
@@ -41,4 +42,14 @@ fun Component.toNBT() = NBTComponentSerializer.nbt().serialize(this) as Compound
 
 fun Vec3D.blockPos(): Vec3I {
     return Vec3I(floor(x).toInt(), floor(y).toInt(), floor(z).toInt())
+}
+
+inline fun <R> ByteBuf.use(block: (ByteBuf) -> R): R {
+    try {
+        return block(this)
+    } catch (e: Throwable) {
+        throw e
+    } finally {
+        release()
+    }
 }

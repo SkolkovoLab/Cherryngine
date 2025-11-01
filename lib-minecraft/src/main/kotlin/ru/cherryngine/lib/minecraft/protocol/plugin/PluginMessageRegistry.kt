@@ -1,5 +1,6 @@
 package ru.cherryngine.lib.minecraft.protocol.plugin
 
+import io.netty.buffer.Unpooled
 import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
 import ru.cherryngine.lib.minecraft.protocol.plugin.messages.BrandPluginMessage
@@ -8,6 +9,7 @@ import ru.cherryngine.lib.minecraft.protocol.plugin.messages.RegisterPluginMessa
 import ru.cherryngine.lib.minecraft.protocol.plugin.messages.UnregisterPluginMessage
 import ru.cherryngine.lib.minecraft.server.Connection
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.utils.use
 import kotlin.reflect.KClass
 
 object PluginMessageRegistry {
@@ -100,10 +102,9 @@ object PluginMessageRegistry {
         val pluginMessageData = getByChannelOrNull(state, contents.channel) as PluginMessageData<PluginMessage>?
         if (pluginMessageData == null) {
             logger.warn("Received unhandled plugin message with channel ${contents.channel}!")
-            contents.data.release()
             return
         }
-        val decoded = pluginMessageData.streamCodec.read(contents.data)
+        val decoded = Unpooled.wrappedBuffer(contents.data).use { pluginMessageData.streamCodec.read(it) }
         pluginMessageData.handler?.invoke(decoded, networkManager)
     }
 

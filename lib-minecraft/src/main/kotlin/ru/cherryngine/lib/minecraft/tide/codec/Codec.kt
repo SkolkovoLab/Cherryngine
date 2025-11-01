@@ -95,8 +95,6 @@ interface Codec<T> {
             { transcoder, value -> transcoder.decodeByteArray(value) }
         )
 
-        val BYTE_BUFFER: Codec<ByteBuf> = BYTE_ARRAY.transform({ from -> from.toByteBuf() }, { to -> to.toByteArraySafe() })
-
         val INT_ARRAY: Codec<IntArray> = PrimitiveCodec(
             { transcoder, value -> transcoder.encodeIntArray(value) },
             { transcoder, value -> transcoder.decodeIntArray(value) }

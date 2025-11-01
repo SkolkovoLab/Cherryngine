@@ -1,7 +1,7 @@
 package ru.cherryngine.impl.demo.entity
 
 import ru.cherryngine.impl.demo.player.Player
-import ru.cherryngine.impl.demo.player.Viewable
+import ru.cherryngine.impl.demo.view.Viewable
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.entity.MetadataContainer

@@ -2,6 +2,9 @@ package ru.cherryngine.impl.demo.player
 
 import net.kyori.adventure.text.Component
 import ru.cherryngine.impl.demo.entity.McEntity
+import ru.cherryngine.impl.demo.view.PlayerViewSystem
+import ru.cherryngine.impl.demo.view.StaticViewable
+import ru.cherryngine.impl.demo.view.Viewable
 import ru.cherryngine.impl.demo.world.world.World
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
@@ -32,10 +35,9 @@ class Player(
         connection.sendPacket(packet)
     }
 
-    val currentVisibleEntities = mutableSetOf<Viewable>()
-
-//    var playerChunkView: PlayerChunkView? = null
-    var playerViewSystem: PlayerViewSystem? = null
+    val playerViewSystem: PlayerViewSystem = PlayerViewSystem(this)
+    val currentVisibleViewables = mutableSetOf<Viewable>()
+    val currentVisibleStaticViewables = mutableSetOf<StaticViewable>()
 
     val entity = McEntity(Random.nextInt(1000, 1_000_000), EntityTypes.AXOLOTL).apply {
         metadata[AxolotlMeta.HAS_NO_GRAVITY] = true
@@ -51,18 +53,18 @@ class Player(
             field = value
             oldValue?.mutableEntities -= entity
             value?.mutableEntities += entity
+            if (oldValue != null) {
+                playerViewSystem.staticViewableProviders -= oldValue
+                playerViewSystem.viewableProviders -= oldValue
+            }
             if (value != null) {
-//                playerChunkView = PlayerChunkView(this, value.chunks).apply { init() }
-                playerViewSystem = PlayerViewSystem(this, { value.entities + value.chunkViewables.values }).apply { init() }
-            } else {
-//                playerChunkView = null
-                playerViewSystem = null
+                playerViewSystem.staticViewableProviders += value
+                playerViewSystem.viewableProviders += value
             }
         }
 
     fun tick() {
         entity.teleport(clientPosition, clientYawPitch)
-//        playerChunkView?.update()
-        playerViewSystem?.update()
+        playerViewSystem.update()
     }
 }

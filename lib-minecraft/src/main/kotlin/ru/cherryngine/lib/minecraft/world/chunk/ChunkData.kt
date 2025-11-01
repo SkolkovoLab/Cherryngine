@@ -13,6 +13,8 @@ data class ChunkData(
     val blockEntities: List<BlockEntity>,
 ) {
     companion object {
+        val EMPTY = ChunkData(emptyMap(), emptyList(), emptyList())
+
         val sectionsStreamCodec = object : StreamCodec<List<ChunkSection>> {
             override fun write(buffer: ByteBuf, value: List<ChunkSection>) {
                 val data = byteBufBytes { b ->

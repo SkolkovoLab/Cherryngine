@@ -5,6 +5,7 @@ import kotlinx.datetime.Instant
 import net.kyori.adventure.key.Key
 import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils
 import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils.toByteArraySafe
+import ru.cherryngine.lib.minecraft.utils.use
 import java.util.*
 import java.util.UUID as JavaUUID
 
@@ -34,10 +35,6 @@ interface StreamCodec<T> {
 
     fun <R, TR : R> union(serializers: (T) -> StreamCodec<out TR>, keyFunc: (R) -> T): UnionStreamCodec<TR, T, TR> {
         return UnionStreamCodec(this, keyFunc, serializers)
-    }
-
-    fun wrapped(): WrappedStreamCodec<T> {
-        return WrappedStreamCodec<T>(this)
     }
 
     companion object {
@@ -157,11 +154,9 @@ interface StreamCodec<T> {
             }
 
             override fun read(buffer: ByteBuf): ByteArray {
-                val len = buffer.readableBytes()
-                val b = buffer.readBytes(len)
-                val byteArray = b.toByteArraySafe()
-                b.release()
-                return byteArray
+                val length = buffer.readableBytes()
+                val tempBuffer = buffer.readBytes(length)
+                return tempBuffer.use { it.toByteArraySafe() }
             }
         }
         val BYTE_ARRAY = object : StreamCodec<ByteArray> {
@@ -171,22 +166,9 @@ interface StreamCodec<T> {
             }
 
             override fun read(buffer: ByteBuf): ByteArray {
-                val len = VAR_INT.read(buffer)
-                val b = buffer.readBytes(len)
-                val byteArray = b.toByteArraySafe()
-                b.release()
-                return byteArray
-            }
-        }
-        val BYTE_BUF = object : StreamCodec<ByteBuf> {
-            override fun write(buffer: ByteBuf, value: ByteBuf) {
-                VAR_INT.write(buffer, value.readableBytes())
-                RAW_BYTES.write(buffer, value)
-            }
-
-            override fun read(buffer: ByteBuf): ByteBuf {
-                val size = VAR_INT.read(buffer)
-                return buffer.readBytes(size)
+                val length = VAR_INT.read(buffer)
+                val tempBuffer = buffer.readBytes(length)
+                return tempBuffer.use { it.toByteArraySafe() }
             }
         }
         val UUID = object : StreamCodec<JavaUUID> {
@@ -249,10 +231,6 @@ interface StreamCodec<T> {
 
         fun fixedBitSet(length: Int): FixedBitSetStreamCodec {
             return FixedBitSetStreamCodec(length)
-        }
-
-        fun <T> lengthPrefixed(codec: StreamCodec<T>): StreamCodec<T> {
-            return LengthPrefixedStreamCodec<T>(codec)
         }
 
         fun <L, R> either(leftCodec: StreamCodec<L>, rightCodec: StreamCodec<R>): EitherStreamCodec<L, R> {

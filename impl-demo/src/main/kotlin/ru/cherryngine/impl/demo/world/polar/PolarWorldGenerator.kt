@@ -24,7 +24,7 @@ import java.util.*
 object PolarWorldGenerator {
     private val logger = LoggerFactory.getLogger(PolarWorldGenerator::class.java)
 
-    fun loadChunks(worldBytes: ByteArray): Map<Long, Chunk> {
+    fun loadChunks(worldBytes: ByteArray): Map<ChunkPos, Chunk> {
         val polarWorld = PolarReader.read(worldBytes)
 
         return polarWorld.chunks().associate { polarChunk ->
@@ -70,7 +70,7 @@ object PolarWorldGenerator {
                 blockEntities
             )
 
-            ChunkPos.pack(polarChunk.x, polarChunk.z) to Chunk(chunkData, light)
+            ChunkPos(polarChunk.x, polarChunk.z) to Chunk(chunkData, light)
         }
     }
 
