@@ -7,9 +7,8 @@ import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object WolfSoundVariantRegistry : DataDrivenRegistry<WolfSoundVariant>() {
+class WolfSoundVariantRegistry : DataDrivenRegistry<WolfSoundVariant>() {
     override val identifier: String = "minecraft:wolf_sound_variant"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -22,15 +21,9 @@ data class WolfSoundVariant(
     val pantSound: String,
     val whineSound: String,
 ) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return WolfSoundVariantRegistry.getProtocolIdByEntry(this)
-    }
-
     override fun getEntryIdentifier(): String {
         return identifier
     }
-
 
     override fun getNbt(): CompoundBinaryTag {
         return nbt {

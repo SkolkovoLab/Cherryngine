@@ -7,6 +7,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import net.kyori.adventure.key.Key
+import net.kyori.adventure.key.Keyed
 import net.kyori.adventure.nbt.BinaryTag
 import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundRegistryDataPacket
@@ -36,6 +37,10 @@ abstract class Registry<T : RegistryEntry> {
 
     operator fun get(key: Key): T {
         return get(key.asString())
+    }
+
+    operator fun get(key: RegistryKey<T>): T {
+        return get(key.key.asString())
     }
 
     fun getOrNull(identifier: String): T? {
@@ -117,6 +122,9 @@ abstract class DataDrivenRegistry<T : RegistryEntry> : Registry<T>() {
 
 interface RegistryEntry {
     fun getNbt(): BinaryTag? = null
-    fun getProtocolId(): Int
     fun getEntryIdentifier(): String
 }
+
+data class RegistryKey<T : RegistryEntry>(
+    val key: Key,
+)

@@ -7,8 +7,6 @@ import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.Registry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.registry.RegistryManager
-import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.RegistryBlock
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 abstract class TagRegistry : DataDrivenRegistry<Tag>() {
@@ -34,7 +32,6 @@ data class Tag(
     val registryIdentifier: String,
 ) : RegistryEntry {
     override fun getNbt(): BinaryTag? = null
-    override fun getProtocolId(): Int = -1
 
     override fun getEntryIdentifier(): String {
         return identifier
@@ -51,11 +48,12 @@ data class Tag(
     companion object {
         val STREAM_CODEC = object : StreamCodec<Tag> {
             override fun write(buffer: ByteBuf, value: Tag) {
-                val registry = RegistryManager.getFromIdentifier<Registry<*>>(value.registryIdentifier)
+                @Suppress("UNCHECKED_CAST")
+                val registry = RegistryManager.getFromIdentifier<Registry<*>>(value.registryIdentifier) as Registry<Any>
                 StreamCodec.STRING.write(buffer, value.identifier)
                 val intTags = value.tags.map { tag ->
                     val entry = registry[tag]
-                    if (registry is BlockRegistry) (entry as RegistryBlock).getLegacyProtocolId() else entry.getProtocolId()
+                    registry.getProtocolIdByEntry(entry)
                 }
                 StreamCodec.VAR_INT.list().write(buffer, intTags)
             }

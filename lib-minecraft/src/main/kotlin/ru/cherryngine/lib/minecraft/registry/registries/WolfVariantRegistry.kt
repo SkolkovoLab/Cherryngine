@@ -7,9 +7,8 @@ import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object WolfVariantRegistry : DataDrivenRegistry<WolfVariant>() {
+class WolfVariantRegistry : DataDrivenRegistry<WolfVariant>() {
     override val identifier: String = "minecraft:wolf_variant"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -19,15 +18,9 @@ data class WolfVariant(
     val tame: String,
     val wild: String,
 ) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return WolfVariantRegistry.getProtocolIdByEntry(this)
-    }
-
     override fun getEntryIdentifier(): String {
         return identifier
     }
-
 
     override fun getNbt(): CompoundBinaryTag {
         return nbt {

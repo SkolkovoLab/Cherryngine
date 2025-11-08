@@ -1,41 +1,42 @@
 package ru.cherryngine.lib.minecraft.registry
 
-import ru.cherryngine.lib.minecraft.registry.registries.AttributeRegistry
+import net.kyori.adventure.key.Key
+import ru.cherryngine.lib.minecraft.registry.registries.Attribute
 
 object Attributes {
-    val ARMOR = AttributeRegistry["minecraft:armor"]
-    val ARMOR_TOUGHNESS = AttributeRegistry["minecraft:armor_toughness"]
-    val ATTACK_DAMAGE = AttributeRegistry["minecraft:attack_damage"]
-    val ATTACK_KNOCKBACK = AttributeRegistry["minecraft:attack_knockback"]
-    val ATTACK_SPEED = AttributeRegistry["minecraft:attack_speed"]
-    val BLOCK_BREAK_SPEED = AttributeRegistry["minecraft:block_break_speed"]
-    val BLOCK_INTERACTION_RANGE = AttributeRegistry["minecraft:block_interaction_range"]
-    val BURNING_TIME = AttributeRegistry["minecraft:burning_time"]
-    val CAMERA_DISTANCE = AttributeRegistry["minecraft:camera_distance"]
-    val EXPLOSION_KNOCKBACK_RESISTANCE = AttributeRegistry["minecraft:explosion_knockback_resistance"]
-    val ENTITY_INTERACTION_RANGE = AttributeRegistry["minecraft:entity_interaction_range"]
-    val FALL_DAMAGE_MULTIPLIER = AttributeRegistry["minecraft:fall_damage_multiplier"]
-    val FLYING_SPEED = AttributeRegistry["minecraft:flying_speed"]
-    val FOLLOW_RANGE = AttributeRegistry["minecraft:follow_range"]
-    val GRAVITY = AttributeRegistry["minecraft:gravity"]
-    val JUMP_STRENGTH = AttributeRegistry["minecraft:jump_strength"]
-    val KNOCKBACK_RESISTANCE = AttributeRegistry["minecraft:knockback_resistance"]
-    val LUCK = AttributeRegistry["minecraft:luck"]
-    val MAX_ABSORPTION = AttributeRegistry["minecraft:max_absorption"]
-    val MAX_HEALTH = AttributeRegistry["minecraft:max_health"]
-    val MINING_EFFICIENCY = AttributeRegistry["minecraft:mining_efficiency"]
-    val MOVEMENT_EFFICIENCY = AttributeRegistry["minecraft:movement_efficiency"]
-    val MOVEMENT_SPEED = AttributeRegistry["minecraft:movement_speed"]
-    val OXYGEN_BONUS = AttributeRegistry["minecraft:oxygen_bonus"]
-    val SAFE_FALL_DISTANCE = AttributeRegistry["minecraft:safe_fall_distance"]
-    val SCALE = AttributeRegistry["minecraft:scale"]
-    val SNEAKING_SPEED = AttributeRegistry["minecraft:sneaking_speed"]
-    val SPAWN_REINFORCEMENTS = AttributeRegistry["minecraft:spawn_reinforcements"]
-    val STEP_HEIGHT = AttributeRegistry["minecraft:step_height"]
-    val SUBMERGED_MINING_SPEED = AttributeRegistry["minecraft:submerged_mining_speed"]
-    val SWEEPING_DAMAGE_RATIO = AttributeRegistry["minecraft:sweeping_damage_ratio"]
-    val TEMPT_RANGE = AttributeRegistry["minecraft:tempt_range"]
-    val WATER_MOVEMENT_EFFICIENCY = AttributeRegistry["minecraft:water_movement_efficiency"]
-    val WAYPOINT_TRANSMIT_RANGE = AttributeRegistry["minecraft:waypoint_transmit_range"]
-    val WAYPOINT_RECEIVE_RANGE = AttributeRegistry["minecraft:waypoint_receive_range"]
+    val ARMOR = RegistryKey<Attribute>(Key.key("minecraft:armor"))
+    val ARMOR_TOUGHNESS = RegistryKey<Attribute>(Key.key("minecraft:armor_toughness"))
+    val ATTACK_DAMAGE = RegistryKey<Attribute>(Key.key("minecraft:attack_damage"))
+    val ATTACK_KNOCKBACK = RegistryKey<Attribute>(Key.key("minecraft:attack_knockback"))
+    val ATTACK_SPEED = RegistryKey<Attribute>(Key.key("minecraft:attack_speed"))
+    val BLOCK_BREAK_SPEED = RegistryKey<Attribute>(Key.key("minecraft:block_break_speed"))
+    val BLOCK_INTERACTION_RANGE = RegistryKey<Attribute>(Key.key("minecraft:block_interaction_range"))
+    val BURNING_TIME = RegistryKey<Attribute>(Key.key("minecraft:burning_time"))
+    val CAMERA_DISTANCE = RegistryKey<Attribute>(Key.key("minecraft:camera_distance"))
+    val EXPLOSION_KNOCKBACK_RESISTANCE = RegistryKey<Attribute>(Key.key("minecraft:explosion_knockback_resistance"))
+    val ENTITY_INTERACTION_RANGE = RegistryKey<Attribute>(Key.key("minecraft:entity_interaction_range"))
+    val FALL_DAMAGE_MULTIPLIER = RegistryKey<Attribute>(Key.key("minecraft:fall_damage_multiplier"))
+    val FLYING_SPEED = RegistryKey<Attribute>(Key.key("minecraft:flying_speed"))
+    val FOLLOW_RANGE = RegistryKey<Attribute>(Key.key("minecraft:follow_range"))
+    val GRAVITY = RegistryKey<Attribute>(Key.key("minecraft:gravity"))
+    val JUMP_STRENGTH = RegistryKey<Attribute>(Key.key("minecraft:jump_strength"))
+    val KNOCKBACK_RESISTANCE = RegistryKey<Attribute>(Key.key("minecraft:knockback_resistance"))
+    val LUCK = RegistryKey<Attribute>(Key.key("minecraft:luck"))
+    val MAX_ABSORPTION = RegistryKey<Attribute>(Key.key("minecraft:max_absorption"))
+    val MAX_HEALTH = RegistryKey<Attribute>(Key.key("minecraft:max_health"))
+    val MINING_EFFICIENCY = RegistryKey<Attribute>(Key.key("minecraft:mining_efficiency"))
+    val MOVEMENT_EFFICIENCY = RegistryKey<Attribute>(Key.key("minecraft:movement_efficiency"))
+    val MOVEMENT_SPEED = RegistryKey<Attribute>(Key.key("minecraft:movement_speed"))
+    val OXYGEN_BONUS = RegistryKey<Attribute>(Key.key("minecraft:oxygen_bonus"))
+    val SAFE_FALL_DISTANCE = RegistryKey<Attribute>(Key.key("minecraft:safe_fall_distance"))
+    val SCALE = RegistryKey<Attribute>(Key.key("minecraft:scale"))
+    val SNEAKING_SPEED = RegistryKey<Attribute>(Key.key("minecraft:sneaking_speed"))
+    val SPAWN_REINFORCEMENTS = RegistryKey<Attribute>(Key.key("minecraft:spawn_reinforcements"))
+    val STEP_HEIGHT = RegistryKey<Attribute>(Key.key("minecraft:step_height"))
+    val SUBMERGED_MINING_SPEED = RegistryKey<Attribute>(Key.key("minecraft:submerged_mining_speed"))
+    val SWEEPING_DAMAGE_RATIO = RegistryKey<Attribute>(Key.key("minecraft:sweeping_damage_ratio"))
+    val TEMPT_RANGE = RegistryKey<Attribute>(Key.key("minecraft:tempt_range"))
+    val WATER_MOVEMENT_EFFICIENCY = RegistryKey<Attribute>(Key.key("minecraft:water_movement_efficiency"))
+    val WAYPOINT_TRANSMIT_RANGE = RegistryKey<Attribute>(Key.key("minecraft:waypoint_transmit_range"))
+    val WAYPOINT_RECEIVE_RANGE = RegistryKey<Attribute>(Key.key("minecraft:waypoint_receive_range"))
 }

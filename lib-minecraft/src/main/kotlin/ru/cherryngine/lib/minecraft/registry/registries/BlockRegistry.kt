@@ -11,11 +11,9 @@ import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.registry.RegistryException
 import ru.cherryngine.lib.minecraft.world.block.Block
 
-object BlockRegistry : DataDrivenRegistry<RegistryBlock>() {
+class BlockRegistry : DataDrivenRegistry<RegistryBlock>() {
     override val identifier: String = "minecraft:block"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 
-    val AIR get() = BlockRegistry["minecraft:air"]
     val blockStates = Int2ObjectOpenHashMap<Block>()
 
     override fun addEntry(entry: RegistryBlock) {
@@ -75,17 +73,9 @@ data class RegistryBlock(
     @Contextual
     val possibleStatesReversed = Int2ObjectOpenHashMap(possibleStates.reversed())
 
-    override fun getProtocolId(): Int {
-        return defaultBlockStateId
-    }
-
-    fun getLegacyProtocolId(): Int {
-        return BlockRegistry.getProtocolIdByEntry(this)
-    }
-
-    fun toItem(): Item {
-        return ItemRegistry[identifier]
-    }
+//    fun toItem(): Item {
+//        return ItemRegistry[identifier]
+//    }
 
     fun toBlock(): Block {
         return Block(this)

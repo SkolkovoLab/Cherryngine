@@ -7,9 +7,8 @@ import ru.cherryngine.lib.minecraft.registry.DynamicRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import java.util.concurrent.atomic.AtomicInteger
 
-object DialogTypeRegistry : DynamicRegistry<DialogType>() {
+class DialogTypeRegistry : DynamicRegistry<DialogType>() {
     override val identifier: String = "minecraft:dialog_type"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 
     private val dialogTypes: MutableMap<String, DialogType> = mutableMapOf()
     private val _protocolIds: MutableMap<String, Int> = mutableMapOf()
@@ -36,10 +35,6 @@ data class DialogType(
 
     override fun getNbt(): CompoundBinaryTag? {
         return null
-    }
-
-    override fun getProtocolId(): Int {
-        return DialogTypeRegistry.getProtocolIdByEntry(this)
     }
 
     override fun getEntryIdentifier(): String {

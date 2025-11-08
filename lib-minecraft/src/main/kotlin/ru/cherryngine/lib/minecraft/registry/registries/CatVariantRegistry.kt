@@ -7,9 +7,8 @@ import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object CatVariantRegistry : DataDrivenRegistry<CatVariant>() {
+class CatVariantRegistry : DataDrivenRegistry<CatVariant>() {
     override val identifier: String = "minecraft:cat_variant"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -20,10 +19,6 @@ data class CatVariant(
 
     override fun getEntryIdentifier(): String {
         return identifier
-    }
-
-    override fun getProtocolId(): Int {
-        return CatVariantRegistry.getProtocolIdByEntry(this)
     }
 
     override fun getNbt(): CompoundBinaryTag {

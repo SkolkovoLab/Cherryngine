@@ -7,9 +7,8 @@ import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object FrogVariantRegistry : DataDrivenRegistry<FrogVariant>() {
+class FrogVariantRegistry : DataDrivenRegistry<FrogVariant>() {
     override val identifier: String = "minecraft:frog_variant"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -17,11 +16,6 @@ data class FrogVariant(
     val identifier: String,
     val assetId: String,
 ) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return FrogVariantRegistry.getProtocolIdByEntry(this)
-    }
-
     override fun getNbt(): CompoundBinaryTag {
         return nbt {
             withString("asset_id", assetId)

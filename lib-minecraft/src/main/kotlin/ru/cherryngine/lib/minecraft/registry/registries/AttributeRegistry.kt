@@ -6,9 +6,8 @@ import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object AttributeRegistry : DataDrivenRegistry<Attribute>() {
+class AttributeRegistry : DataDrivenRegistry<Attribute>() {
     override val identifier: String = "minecraft:attribute"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -23,10 +22,6 @@ data class Attribute(
 
     override fun getNbt(): BinaryTag? {
         return null
-    }
-
-    override fun getProtocolId(): Int {
-        return AttributeRegistry.getProtocolIdByEntry(this)
     }
 
     override fun getEntryIdentifier(): String {

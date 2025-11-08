@@ -10,9 +10,8 @@ import ru.cherryngine.lib.minecraft.registry.DynamicRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import kotlin.reflect.KClass
 
-object DialogBodyTypeRegistry : DynamicRegistry<DialogBodyType>() {
+class DialogBodyTypeRegistry : DynamicRegistry<DialogBodyType>() {
     override val identifier: String = "minecraft:dialog_body_type"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 
     init {
         addEntry(DialogBodyType("minecraft:item", DialogItemBody::class))
@@ -30,10 +29,6 @@ data class DialogBodyType(
 ) : RegistryEntry {
     override fun getNbt(): CompoundBinaryTag? {
         return null
-    }
-
-    override fun getProtocolId(): Int {
-        return DialogBodyTypeRegistry.getProtocolIdByEntry(this)
     }
 
     override fun getEntryIdentifier(): String {

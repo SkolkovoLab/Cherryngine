@@ -7,9 +7,8 @@ import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundR
 import ru.cherryngine.lib.minecraft.registry.DynamicRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object DimensionTypeRegistry : DynamicRegistry<DimensionType>() {
+class DimensionTypeRegistry : DynamicRegistry<DimensionType>() {
     override val identifier: String = "minecraft:dimension_type"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 
     override fun updateCache() {
         cachedPacket = ClientboundRegistryDataPacket(this)
@@ -131,11 +130,6 @@ data class DimensionType(
     val fixedTime: Long? = null,
     val cloudHeight: Int? = null
 ) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return DimensionTypeRegistry.getProtocolIdByEntry(this)
-    }
-
     override fun getEntryIdentifier(): String {
         return identifier
     }

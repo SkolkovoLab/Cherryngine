@@ -5,9 +5,8 @@ import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundR
 import ru.cherryngine.lib.minecraft.registry.DynamicRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object ChatTypeRegistry : DynamicRegistry<ChatType>() {
+class ChatTypeRegistry : DynamicRegistry<ChatType>() {
     override val identifier: String = "minecraft:chat_type"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 
     override fun updateCache() {
         cachedPacket = ClientboundRegistryDataPacket(this)
@@ -15,11 +14,6 @@ object ChatTypeRegistry : DynamicRegistry<ChatType>() {
 }
 
 class ChatType : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        throw UnsupportedOperationException()
-    }
-
     override fun getEntryIdentifier(): String {
         throw UnsupportedOperationException()
     }

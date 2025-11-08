@@ -7,9 +7,8 @@ import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object ChickenVariantRegistry : DataDrivenRegistry<ChickenVariant>() {
+class ChickenVariantRegistry : DataDrivenRegistry<ChickenVariant>() {
     override val identifier: String = "minecraft:chicken_variant"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -17,11 +16,6 @@ data class ChickenVariant(
     val identifier: String,
     val assetId: String,
 ) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return ChickenVariantRegistry.getProtocolIdByEntry(this)
-    }
-
     override fun getEntryIdentifier(): String {
         return identifier
     }

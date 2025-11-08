@@ -36,8 +36,8 @@ class ChunkSection(
 
     fun setBlock(x: Int, y: Int, z: Int, block: Int) {
         val old = getAndSetBlock(x, y, z, block)
-        if (old != Blocks.AIR.defaultBlockStateId) nonEmptyBlockCount--
-        if (block != Blocks.AIR.defaultBlockStateId) nonEmptyBlockCount++
+        if (old != 0) nonEmptyBlockCount--
+        if (block != 0) nonEmptyBlockCount++
     }
 
     fun setBiome(x: Int, y: Int, z: Int, biome: Int) {
@@ -63,7 +63,7 @@ class ChunkSection(
         fun empty(): ChunkSection {
             val defaultBlocks = Palette.blocks()
             val defaultBiomes = Palette.biomes()
-            defaultBlocks.fill(Blocks.AIR.defaultBlockStateId)
+            defaultBlocks.fill(0)
             defaultBiomes.fill(Biomes.THE_VOID.getProtocolId())
             return ChunkSection(defaultBlocks, defaultBiomes)
         }

@@ -13,9 +13,8 @@ import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.utils.kotlinx.KeyToJsonSerializer
 
-object BiomeRegistry : DataDrivenRegistry<Biome>() {
+class BiomeRegistry : DataDrivenRegistry<Biome>() {
     override val identifier: String = "minecraft:worldgen/biome"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -137,11 +136,6 @@ data class Biome(
     val temperature: Float = 1f,
     val temperatureModifier: String? = null,
 ) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return BiomeRegistry.getProtocolIdByEntry(this)
-    }
-
     override fun getEntryIdentifier(): String {
         return identifier
     }

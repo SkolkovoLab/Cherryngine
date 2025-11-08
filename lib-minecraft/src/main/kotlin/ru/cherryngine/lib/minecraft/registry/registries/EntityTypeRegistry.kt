@@ -9,9 +9,8 @@ import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.utils.kotlinx.Vec3DListToJsonSerializer
 import ru.cherryngine.lib.minecraft.utils.kotlinx.Vec3DToJsonSerializer
 
-object EntityTypeRegistry : DataDrivenRegistry<EntityType>() {
+class EntityTypeRegistry : DataDrivenRegistry<EntityType>() {
     override val identifier: String = "minecraft:entity_type"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -28,10 +27,6 @@ data class EntityType(
     val immuneBlocks: List<String>,
     val dimensions: EntityDimensions,
 ) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return EntityTypeRegistry.getProtocolIdByEntry(this)
-    }
 
     override fun getEntryIdentifier(): String {
         return identifier

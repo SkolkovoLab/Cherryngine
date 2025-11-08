@@ -7,9 +7,8 @@ import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object PigVariantRegistry : DataDrivenRegistry<PigVariant>() {
+class PigVariantRegistry : DataDrivenRegistry<PigVariant>() {
     override val identifier: String = "minecraft:pig_variant"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -17,11 +16,6 @@ data class PigVariant(
     val identifier: String,
     val assetId: String,
 ) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return PigVariantRegistry.getProtocolIdByEntry(this)
-    }
-
     override fun getEntryIdentifier(): String {
         return identifier
     }

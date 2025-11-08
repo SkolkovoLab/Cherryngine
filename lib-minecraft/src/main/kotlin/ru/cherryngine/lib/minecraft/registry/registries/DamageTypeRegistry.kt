@@ -7,9 +7,8 @@ import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object DamageTypeRegistry : DataDrivenRegistry<DamageType>() {
+class DamageTypeRegistry : DataDrivenRegistry<DamageType>() {
     override val identifier: String = "minecraft:damage_type"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -21,11 +20,6 @@ data class DamageType(
     val effects: String? = null,
     val deathMessageType: String? = null,
 ) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return DamageTypeRegistry.getProtocolIdByEntry(this)
-    }
-
     override fun getEntryIdentifier(): String {
         return identifier
     }

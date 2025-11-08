@@ -10,9 +10,8 @@ import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.utils.kotlinx.ComponentToJsonSerializer
 import ru.cherryngine.lib.minecraft.utils.toNBT
 
-object TrimMaterialRegistry : DataDrivenRegistry<TrimMaterial>() {
+class TrimMaterialRegistry : DataDrivenRegistry<TrimMaterial>() {
     override val identifier: String = "minecraft:trim_material"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -23,11 +22,6 @@ data class TrimMaterial(
     val description: Component,
     val overrideArmorMaterials: Map<String, String>? = null,
 ) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return TrimMaterialRegistry.getProtocolIdByEntry(this)
-    }
-
     override fun getEntryIdentifier(): String {
         return identifier
     }

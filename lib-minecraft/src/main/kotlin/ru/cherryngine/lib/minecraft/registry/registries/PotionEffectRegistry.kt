@@ -14,9 +14,8 @@ import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.utils.CustomColor
 
-object PotionEffectRegistry : DataDrivenRegistry<PotionEffect>() {
+class PotionEffectRegistry : DataDrivenRegistry<PotionEffect>() {
     override val identifier: String = "minecraft:potion_effect"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -33,10 +32,6 @@ data class PotionEffect(
         BENEFICIAL,
         HARMFUL,
         NEUTRAL
-    }
-
-    override fun getProtocolId(): Int {
-        return PotionEffectRegistry.getProtocolIdByEntry(this)
     }
 
     override fun getEntryIdentifier(): String {

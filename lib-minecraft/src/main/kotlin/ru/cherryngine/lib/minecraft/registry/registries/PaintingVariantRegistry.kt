@@ -7,9 +7,8 @@ import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object PaintingVariantRegistry : DataDrivenRegistry<PaintingVariant>() {
+class PaintingVariantRegistry : DataDrivenRegistry<PaintingVariant>() {
     override val identifier: String = "minecraft:painting_variant"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -19,11 +18,6 @@ data class PaintingVariant(
     val height: Int,
     val width: Int,
 ) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return PaintingVariantRegistry.getProtocolIdByEntry(this)
-    }
-
     override fun getEntryIdentifier(): String {
         return identifier
     }

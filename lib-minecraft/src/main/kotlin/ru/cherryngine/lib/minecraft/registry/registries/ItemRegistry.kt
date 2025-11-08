@@ -9,9 +9,8 @@ import ru.cherryngine.lib.minecraft.item.ItemStack
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object ItemRegistry : DataDrivenRegistry<Item>() {
+class ItemRegistry : DataDrivenRegistry<Item>() {
     override val identifier: String = "minecraft:item"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -28,11 +27,6 @@ data class Item(
     @Transient
     var defaultComponents: List<DataComponent>? = null
 ) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return ItemRegistry.getProtocolIdByEntry(this)
-    }
-
     fun toItemStack(amount: Int = 1): ItemStack {
         return ItemStack(this, amount, DataComponentPatch.EMPTY)
     }

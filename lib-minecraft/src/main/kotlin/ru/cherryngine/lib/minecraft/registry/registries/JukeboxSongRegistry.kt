@@ -10,9 +10,8 @@ import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.utils.kotlinx.ComponentToJsonSerializer
 import ru.cherryngine.lib.minecraft.utils.toNBT
 
-object JukeboxSongRegistry : DataDrivenRegistry<JukeboxSong>() {
+class JukeboxSongRegistry : DataDrivenRegistry<JukeboxSong>() {
     override val identifier: String = "minecraft:jukebox_song"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -24,11 +23,6 @@ data class JukeboxSong(
     val lengthInSeconds: Float,
     val sound: String,
 ) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return JukeboxSongRegistry.getProtocolIdByEntry(this)
-    }
-
     override fun getNbt(): CompoundBinaryTag {
         return nbt {
             withInt("comparator_output", comparatorOutput)

@@ -6,9 +6,8 @@ import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object FluidRegistry : DataDrivenRegistry<Fluid>() {
+class FluidRegistry : DataDrivenRegistry<Fluid>() {
     override val identifier: String = "minecraft:fluid"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 }
 
 @Serializable
@@ -19,12 +18,7 @@ data class Fluid(
     val explosionResistance: Float,
     val block: String
 ) : RegistryEntry {
-
     override fun getNbt(): CompoundBinaryTag? = null
-
-    override fun getProtocolId(): Int {
-        return FluidRegistry.getProtocolIdByEntry(this)
-    }
 
     override fun getEntryIdentifier(): String {
         return identifier

@@ -6,9 +6,8 @@ import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundR
 import ru.cherryngine.lib.minecraft.registry.DynamicRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object DialogActionTypeRegistry : DynamicRegistry<DialogActionType>() {
+class DialogActionTypeRegistry : DynamicRegistry<DialogActionType>() {
     override val identifier: String = "minecraft:dialog_action_type"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 
     init {
         // this is not okay
@@ -39,10 +38,6 @@ data class DialogActionType(
 ) : RegistryEntry {
     override fun getNbt(): CompoundBinaryTag? {
         return null
-    }
-
-    override fun getProtocolId(): Int {
-        return DialogActionTypeRegistry.getProtocolIdByEntry(this)
     }
 
     override fun getEntryIdentifier(): String {

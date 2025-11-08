@@ -7,9 +7,8 @@ import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundR
 import ru.cherryngine.lib.minecraft.registry.DynamicRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object DialogRegistry : DynamicRegistry<DialogEntry>() {
+class DialogRegistry : DynamicRegistry<DialogEntry>() {
     override val identifier: String = "minecraft:dialog"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 
     override fun updateCache() {
         cachedPacket = ClientboundRegistryDataPacket(this)
@@ -22,10 +21,6 @@ data class DialogEntry(
 ) : RegistryEntry {
     override fun getNbt(): CompoundBinaryTag {
         return dialog.getNbt()
-    }
-
-    override fun getProtocolId(): Int {
-        return DialogRegistry.getProtocolIdByEntry(this)
     }
 
     override fun getEntryIdentifier(): String {

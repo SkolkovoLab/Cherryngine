@@ -6,9 +6,8 @@ import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundR
 import ru.cherryngine.lib.minecraft.registry.DynamicRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 
-object DialogInputTypeRegistry : DynamicRegistry<DialogInputType>() {
+class DialogInputTypeRegistry : DynamicRegistry<DialogInputType>() {
     override val identifier: String = "minecraft:input_control_type"
-    val STREAM_CODEC = RegistryStreamCodec(this)
 
     init {
         addEntry(DialogInputType("minecraft:boolean"))
@@ -28,10 +27,6 @@ data class DialogInputType(
 ) : RegistryEntry {
     override fun getNbt(): CompoundBinaryTag? {
         return null
-    }
-
-    override fun getProtocolId(): Int {
-        return DialogInputTypeRegistry.getProtocolIdByEntry(this)
     }
 
     override fun getEntryIdentifier(): String {
