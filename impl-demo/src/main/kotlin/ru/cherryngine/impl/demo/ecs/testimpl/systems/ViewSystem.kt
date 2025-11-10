@@ -31,8 +31,8 @@ class ViewSystem(
             val staticViewableProviders: MutableSet<StaticViewableProvider> = mutableSetOf()
 
             gameScene.objectsWithComponent(ViewableComponent::class).forEach { viewableGameObject ->
-                if (playerGameObject == viewableGameObject) return@forEach
                 val viewableComponent = viewableGameObject[ViewableComponent::class]!!
+                if (playerComponent.viewContextID != viewableComponent.viewContextID) return@forEach
                 viewableProviders.addAll(viewableComponent.viewableProviders)
                 staticViewableProviders.addAll(viewableComponent.staticViewableProviders)
             }
@@ -41,7 +41,10 @@ class ViewSystem(
         }
     }
 
-    fun getStaticViewables(staticViewableProviders: Set<StaticViewableProvider>, chunkPos: ChunkPos): Set<StaticViewable> {
+    fun getStaticViewables(
+        staticViewableProviders: Set<StaticViewableProvider>,
+        chunkPos: ChunkPos,
+    ): Set<StaticViewable> {
         return staticViewableProviders.flatMap { it.getStaticViewables(chunkPos) }.toSet()
     }
 

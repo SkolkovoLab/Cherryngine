@@ -33,12 +33,11 @@ import ru.cherryngine.lib.minecraft.registry.EntityTypes
 import ru.cherryngine.lib.minecraft.registry.RegistryManager
 import ru.cherryngine.lib.minecraft.registry.registries.tags.*
 import ru.cherryngine.lib.minecraft.server.Connection
-import java.util.*
 import kotlin.random.Random
 
 class PlayerInitSystem(
     val gameScene: GameScene,
-    val defaultViewContextUUID: UUID,
+    val defaultViewContextID: String,
 ) : GameSystem, PacketHandler {
     var queues = hashMapOf<Connection, MutableList<ServerboundPacket>>()
 
@@ -100,7 +99,7 @@ class PlayerInitSystem(
                 playerGameObject[PlayerComponent::class] = PlayerComponent(
                     connection,
                     listOf(),
-                    defaultViewContextUUID
+                    defaultViewContextID
                 )
 
                 val entity = McEntity(Random.nextInt(1000, 1_000_000), EntityTypes.AXOLOTL).apply {
@@ -114,7 +113,7 @@ class PlayerInitSystem(
                 playerGameObject[EntityComponent::class] = EntityComponent(entity)
 
                 playerGameObject[ViewableComponent::class] = ViewableComponent(
-                    defaultViewContextUUID,
+                    defaultViewContextID,
                     setOf(ViewableProvider.Static(setOf(entity))),
                     setOf()
                 )
