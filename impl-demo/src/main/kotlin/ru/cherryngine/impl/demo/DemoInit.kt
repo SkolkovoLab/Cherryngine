@@ -1,12 +1,14 @@
 package ru.cherryngine.impl.demo
 
+import com.github.quillraven.fleks.configureWorld
 import jakarta.inject.Singleton
-import ru.cherryngine.impl.demo.ecs.GameScene
+import ru.cherryngine.impl.demo.ecs.StableTicker
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.WorldComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.systems.*
 import ru.cherryngine.impl.demo.world.TestWorldShit
 import ru.cherryngine.lib.minecraft.DockyardServer
+import kotlin.time.Duration.Companion.milliseconds
 
 @Singleton
 class DemoInit(
@@ -16,7 +18,7 @@ class DemoInit(
     init {
         val demoPacketHandler = DemoPacketHandler("normal")
 
-        val scene = GameScene {
+        val fleksWorld = configureWorld {
             systems {
                 add(PlayerInitSystem(demoPacketHandler))
                 add(CommandSystem())
@@ -28,7 +30,7 @@ class DemoInit(
                 add(ClearEventsSystem())
             }
         }
-        val fleksWorld = scene.fleksWorld
+
 
         fleksWorld.entity {
             it += ViewableComponent("normal")
@@ -40,7 +42,11 @@ class DemoInit(
             it += WorldComponent("winter")
         }
 
-        scene.start()
+        val tickDuration = 50.milliseconds
+        val ticker = StableTicker(tickDuration) { _, _ ->
+            fleksWorld.update(tickDuration)
+        }
+        ticker.start()
         dockyardServer.start(demoPacketHandler)
     }
 }
