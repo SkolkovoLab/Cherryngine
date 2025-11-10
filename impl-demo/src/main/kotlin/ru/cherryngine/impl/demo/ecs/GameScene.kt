@@ -14,6 +14,7 @@ class GameScene {
 
     fun tick(tickIndex: Long, tickStartMs: Long) {
         gameSystems.forEach { it.tick(tickIndex, tickStartMs) }
+        gameObjects.forEach { it.events.clear() }
     }
 
     fun createGameObject(): GameObject {
@@ -22,7 +23,17 @@ class GameScene {
         return gameObject
     }
 
-    fun objectsWithComponent(key: KClass<out GameComponent>): List<GameObject> {
-        return gameObjects.filter { it.components.keys.contains(key) }
+    fun <T : GameComponent> objectsWithComponent(key: KClass<T>): List<Pair<GameObject, T>> {
+        return gameObjects.mapNotNull {
+            val component = it.getComponent(key) ?: return@mapNotNull null
+            it to component
+        }
+    }
+
+    fun <T : GameEvent> objectsWithEvent(key: KClass<T>): List<Pair<GameObject, T>> {
+        return gameObjects.mapNotNull {
+            val event = it.getEvent(key) ?: return@mapNotNull null
+            it to event
+        }
     }
 }

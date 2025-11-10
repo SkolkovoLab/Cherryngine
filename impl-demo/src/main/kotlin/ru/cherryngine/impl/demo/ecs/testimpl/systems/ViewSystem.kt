@@ -4,9 +4,9 @@ import ru.cherryngine.impl.demo.ecs.GameObject
 import ru.cherryngine.impl.demo.ecs.GameScene
 import ru.cherryngine.impl.demo.ecs.GameSystem
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ClientPositionComponent
-import ru.cherryngine.impl.demo.ecs.testimpl.components.CurrentVisibleComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
+import ru.cherryngine.impl.demo.ecs.testimpl.events.ViewableProvidersEvent
 import ru.cherryngine.impl.demo.view.StaticViewable
 import ru.cherryngine.impl.demo.view.StaticViewableProvider
 import ru.cherryngine.impl.demo.view.Viewable
@@ -23,19 +23,23 @@ class ViewSystem(
         const val DEFAULT_RENDER_DISTANCE = 2
     }
 
-    override fun tick(tickIndex: Long, tickStartMs: Long) {
-        gameScene.objectsWithComponent(PlayerComponent::class).forEach { playerGameObject ->
-            val playerComponent = playerGameObject[PlayerComponent::class]!!
+    // TODO сделать чтоб не утекало
+    val currentVisibleViewablesMap = hashMapOf<Connection, MutableSet<Viewable>>()
+    val currentVisibleStaticViewablesMap = hashMapOf<Connection, MutableSet<StaticViewable>>()
 
+    override fun tick(tickIndex: Long, tickStartMs: Long) {
+        gameScene.objectsWithComponent(PlayerComponent::class).forEach { (playerGameObject, playerComponent) ->
             val viewableProviders: MutableSet<ViewableProvider> = mutableSetOf()
             val staticViewableProviders: MutableSet<StaticViewableProvider> = mutableSetOf()
 
-            gameScene.objectsWithComponent(ViewableComponent::class).forEach { viewableGameObject ->
-                val viewableComponent = viewableGameObject[ViewableComponent::class]!!
-                if (playerComponent.viewContextID != viewableComponent.viewContextID) return@forEach
-                viewableProviders.addAll(viewableComponent.viewableProviders)
-                staticViewableProviders.addAll(viewableComponent.staticViewableProviders)
-            }
+            gameScene.objectsWithComponent(ViewableComponent::class)
+                .forEach { (viewableGameObject, viewableComponent) ->
+                    val viewableProvidersEvent =
+                        viewableGameObject.getEvent(ViewableProvidersEvent::class) ?: return@forEach
+                    if (playerComponent.viewContextID != viewableComponent.viewContextID) return@forEach
+                    viewableProviders.addAll(viewableProvidersEvent.viewableProviders)
+                    staticViewableProviders.addAll(viewableProvidersEvent.staticViewableProviders)
+                }
 
             update(playerGameObject, playerComponent.connection, viewableProviders, staticViewableProviders)
         }
@@ -61,15 +65,14 @@ class ViewSystem(
         if (connection.state != ProtocolState.PLAY) return
         val distance = DEFAULT_RENDER_DISTANCE
 
-        val clientChunkPos = gameObject[ClientPositionComponent::class]
+        val clientChunkPos = gameObject.getComponent(ClientPositionComponent::class)
             ?.clientPosition
             ?.let { ChunkUtils.chunkPosFromVec3D(it) }
             ?: ChunkPos.ZERO
 
-        val currentVisibleComponent = gameObject[CurrentVisibleComponent::class]
-        val currentVisible = currentVisibleComponent?.currentVisibleViewables?.toMutableSet() ?: mutableSetOf()
-        val currentVisibleStatic =
-            currentVisibleComponent?.currentVisibleStaticViewables?.toMutableSet() ?: mutableSetOf()
+
+        val currentVisible = currentVisibleViewablesMap.computeIfAbsent(connection) { mutableSetOf() }
+        val currentVisibleStatic = currentVisibleStaticViewablesMap.computeIfAbsent(connection) { mutableSetOf() }
 
         val chunks = ChunkUtils.getChunksInRange(clientChunkPos, distance).toSet()
         val viewables: Set<Viewable> = getViewables(viewableProviders)
@@ -110,7 +113,5 @@ class ViewSystem(
                 currentVisible.add(viewable)
             }
         }
-
-        gameObject[CurrentVisibleComponent::class] = CurrentVisibleComponent(currentVisible, currentVisibleStatic)
     }
 }

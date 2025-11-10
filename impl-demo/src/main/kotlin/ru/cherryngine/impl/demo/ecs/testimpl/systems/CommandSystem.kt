@@ -5,33 +5,36 @@ import ru.cherryngine.impl.demo.ecs.GameScene
 import ru.cherryngine.impl.demo.ecs.GameSystem
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
+import ru.cherryngine.impl.demo.ecs.testimpl.events.PacketsEvent
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundChatCommandPacket
 
 class CommandSystem(
     val gameScene: GameScene,
 ) : GameSystem {
     override fun tick(tickIndex: Long, tickStartMs: Long) {
-        val gameObjects = gameScene.objectsWithComponent(PlayerComponent::class)
-        gameObjects.forEach { gameObject ->
-            val playerComponent = gameObject[PlayerComponent::class]!!
+        gameScene.objectsWithEvent(PacketsEvent::class).forEach { (gameObject, playerComponent) ->
             playerComponent.packets.forEach { packet ->
                 if (packet is ServerboundChatCommandPacket) {
-                    onCommand(gameObject, playerComponent, packet.command)
+                    onCommand(gameObject, packet.command)
                 }
             }
         }
     }
 
-    fun onCommand(gameObject: GameObject, playerComponent: PlayerComponent, command: String) {
+    fun onCommand(gameObject: GameObject, command: String) {
+        val playerComponent = gameObject.getComponent(PlayerComponent::class) ?: return
         val split = command.split(" ")
 
         when (split.getOrNull(0)) {
             "world" -> {
                 val viewContextID = split[1]
-                gameObject[PlayerComponent::class] = playerComponent.copy(viewContextID = viewContextID)
-                val viewableComponent = gameObject[ViewableComponent::class]
+                gameObject.setComponent(PlayerComponent::class, playerComponent.copy(viewContextID = viewContextID))
+                val viewableComponent = gameObject.getComponent(ViewableComponent::class)
                 if (viewableComponent != null) {
-                    gameObject[ViewableComponent::class] = viewableComponent.copy(viewContextID = viewContextID)
+                    gameObject.setComponent(
+                        ViewableComponent::class,
+                        viewableComponent.copy(viewContextID = viewContextID)
+                    )
                 }
             }
         }
