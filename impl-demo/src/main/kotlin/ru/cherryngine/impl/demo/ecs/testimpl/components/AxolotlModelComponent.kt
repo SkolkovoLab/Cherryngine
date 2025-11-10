@@ -1,5 +1,5 @@
 package ru.cherryngine.impl.demo.ecs.testimpl.components
 
-import ru.cherryngine.impl.demo.ecs.GameComponent
+import com.github.quillraven.fleks.EntityTag
 
-object AxolotlModelComponent : GameComponent
+data object AxolotlModelComponent : EntityTag()

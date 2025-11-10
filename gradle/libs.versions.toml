@@ -1,11 +1,11 @@
 [versions]
 
 # main
-kotlin = "2.1.0"
-kotlinx-coroutines = "1.9.0"
-ksp = "2.1.0-1.0.29"
-micronaut = "4.7.2"
-micronaut-plugin = "4.4.4"
+kotlin = "2.2.21"
+kotlinx-coroutines = "1.10.2"
+ksp = "2.3.2"
+micronaut = "4.10.1"
+micronaut-plugin = "4.6.1"
 shadow = "8.3.5"
 typetools = "0.6.3"
 jline = "3.28.0"

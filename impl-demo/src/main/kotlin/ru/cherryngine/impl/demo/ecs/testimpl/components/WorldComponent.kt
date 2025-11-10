@@ -1,7 +1,12 @@
 package ru.cherryngine.impl.demo.ecs.testimpl.components
 
-import ru.cherryngine.impl.demo.ecs.GameComponent
+import com.github.quillraven.fleks.Component
+import com.github.quillraven.fleks.ComponentType
 
 data class WorldComponent(
-    val worldName: String,
-) : GameComponent
+    var worldName: String,
+) : Component<WorldComponent> {
+    override fun type() = WorldComponent
+
+    companion object : ComponentType<WorldComponent>()
+}

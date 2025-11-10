@@ -1,9 +1,10 @@
 package ru.cherryngine.impl.demo.ecs.testimpl.systems
 
-import ru.cherryngine.impl.demo.ecs.GameObject
-import ru.cherryngine.impl.demo.ecs.GameScene
-import ru.cherryngine.impl.demo.ecs.GameSystem
+import com.github.quillraven.fleks.Entity
+import com.github.quillraven.fleks.IteratingSystem
+import com.github.quillraven.fleks.World.Companion.family
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ClientPositionComponent
+import ru.cherryngine.impl.demo.ecs.testimpl.components.EventsComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.events.ViewableProvidersEvent
@@ -16,9 +17,9 @@ import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.server.Connection
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 
-class ViewSystem(
-    val gameScene: GameScene,
-) : GameSystem {
+class ViewSystem : IteratingSystem(
+    family { all(PlayerComponent) }
+) {
     companion object {
         const val DEFAULT_RENDER_DISTANCE = 2
     }
@@ -27,22 +28,22 @@ class ViewSystem(
     val currentVisibleViewablesMap = hashMapOf<Connection, MutableSet<Viewable>>()
     val currentVisibleStaticViewablesMap = hashMapOf<Connection, MutableSet<StaticViewable>>()
 
-    override fun tick(tickIndex: Long, tickStartMs: Long) {
-        gameScene.objectsWithComponent(PlayerComponent::class).forEach { (playerGameObject, playerComponent) ->
-            val viewableProviders: MutableSet<ViewableProvider> = mutableSetOf()
-            val staticViewableProviders: MutableSet<StaticViewableProvider> = mutableSetOf()
+    override fun onTickEntity(entity: Entity) {
+        val playerComponent = entity[PlayerComponent]
+        val viewableProviders: MutableSet<ViewableProvider> = mutableSetOf()
+        val staticViewableProviders: MutableSet<StaticViewableProvider> = mutableSetOf()
 
-            gameScene.objectsWithComponent(ViewableComponent::class)
-                .forEach { (viewableGameObject, viewableComponent) ->
-                    val viewableProvidersEvent =
-                        viewableGameObject.getEvent(ViewableProvidersEvent::class) ?: return@forEach
-                    if (playerComponent.viewContextID != viewableComponent.viewContextID) return@forEach
-                    viewableProviders.addAll(viewableProvidersEvent.viewableProviders)
-                    staticViewableProviders.addAll(viewableProvidersEvent.staticViewableProviders)
-                }
+        world.family { all(ViewableComponent, EventsComponent) }.forEach { viewableEntity ->
+            val viewableComponent = viewableEntity[ViewableComponent]
+            val eventsComponent = viewableEntity[EventsComponent]
+            val viewableProvidersEvent = eventsComponent[ViewableProvidersEvent::class] ?: return@forEach
 
-            update(playerGameObject, playerComponent.connection, viewableProviders, staticViewableProviders)
+            if (playerComponent.viewContextID != viewableComponent.viewContextID) return@forEach
+            viewableProviders.addAll(viewableProvidersEvent.viewableProviders)
+            staticViewableProviders.addAll(viewableProvidersEvent.staticViewableProviders)
         }
+
+        update(entity, playerComponent.connection, viewableProviders, staticViewableProviders)
     }
 
     fun getStaticViewables(
@@ -57,7 +58,7 @@ class ViewSystem(
     }
 
     fun update(
-        gameObject: GameObject,
+        entity: Entity,
         connection: Connection,
         viewableProviders: Set<ViewableProvider>,
         staticViewableProviders: Set<StaticViewableProvider>,
@@ -65,11 +66,10 @@ class ViewSystem(
         if (connection.state != ProtocolState.PLAY) return
         val distance = DEFAULT_RENDER_DISTANCE
 
-        val clientChunkPos = gameObject.getComponent(ClientPositionComponent::class)
+        val clientChunkPos = entity.getOrNull(ClientPositionComponent)
             ?.clientPosition
             ?.let { ChunkUtils.chunkPosFromVec3D(it) }
             ?: ChunkPos.ZERO
-
 
         val currentVisible = currentVisibleViewablesMap.computeIfAbsent(connection) { mutableSetOf() }
         val currentVisibleStatic = currentVisibleStaticViewablesMap.computeIfAbsent(connection) { mutableSetOf() }

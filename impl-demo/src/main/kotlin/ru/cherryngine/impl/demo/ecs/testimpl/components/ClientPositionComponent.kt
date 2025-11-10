@@ -1,10 +1,14 @@
 package ru.cherryngine.impl.demo.ecs.testimpl.components
 
-import ru.cherryngine.impl.demo.ecs.GameComponent
+import com.github.quillraven.fleks.Component
+import com.github.quillraven.fleks.ComponentType
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 
 data class ClientPositionComponent(
-    val clientPosition: Vec3D,
-    val clientYawPitch: YawPitch,
-) : GameComponent
+    var clientPosition: Vec3D,
+    var clientYawPitch: YawPitch,
+) : Component<ClientPositionComponent> {
+    override fun type() = ClientPositionComponent
+    companion object : ComponentType<ClientPositionComponent>()
+}

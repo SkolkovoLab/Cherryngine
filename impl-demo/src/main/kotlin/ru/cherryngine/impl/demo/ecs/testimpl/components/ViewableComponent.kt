@@ -1,7 +1,12 @@
 package ru.cherryngine.impl.demo.ecs.testimpl.components
 
-import ru.cherryngine.impl.demo.ecs.GameComponent
+import com.github.quillraven.fleks.Component
+import com.github.quillraven.fleks.ComponentType
 
 data class ViewableComponent(
-    val viewContextID: String,
-) : GameComponent
+    var viewContextID: String,
+) : Component<ViewableComponent> {
+    override fun type() = ViewableComponent
+
+    companion object : ComponentType<ViewableComponent>()
+}

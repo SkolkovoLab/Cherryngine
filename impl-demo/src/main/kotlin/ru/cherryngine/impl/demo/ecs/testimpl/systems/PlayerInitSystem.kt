@@ -1,7 +1,9 @@
 package ru.cherryngine.impl.demo.ecs.testimpl.systems
 
-import ru.cherryngine.impl.demo.ecs.GameScene
-import ru.cherryngine.impl.demo.ecs.GameSystem
+import com.github.quillraven.fleks.Entity
+import com.github.quillraven.fleks.IteratingSystem
+import com.github.quillraven.fleks.World.Companion.family
+import ru.cherryngine.impl.demo.ecs.eventsComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.AxolotlModelComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
@@ -31,18 +33,18 @@ import ru.cherryngine.lib.minecraft.registry.registries.tags.*
 import ru.cherryngine.lib.minecraft.server.Connection
 
 class PlayerInitSystem(
-    val gameScene: GameScene,
     val defaultViewContextID: String,
-) : GameSystem, PacketHandler {
-    var queues = hashMapOf<Connection, MutableList<ServerboundPacket>>()
+) : IteratingSystem(
+    family { all(PlayerComponent) }
+), PacketHandler {
+    val queues = hashMapOf<Connection, MutableList<ServerboundPacket>>()
 
-    override fun tick(tickIndex: Long, tickStartMs: Long) {
-        val queues = this.queues
-        this.queues = hashMapOf()
-        gameScene.objectsWithComponent(PlayerComponent::class).forEach { (gameObject, playerComponent) ->
-            val packets = queues[playerComponent.connection] ?: listOf()
-            gameObject.setEvent(PacketsEvent::class, PacketsEvent(packets))
-        }
+    override fun onTickEntity(entity: Entity) {
+        val playerComponent = entity[PlayerComponent]
+        val connection = playerComponent.connection
+        val packets = queues.remove(connection) ?: return
+
+        entity.eventsComponent()[PacketsEvent::class] = PacketsEvent(packets)
     }
 
     override fun onPacket(connection: Connection, packet: ServerboundPacket) {
@@ -89,16 +91,16 @@ class PlayerInitSystem(
             is ServerboundLoginAcknowledgedPacket -> {
                 connection.state = ProtocolState.CONFIGURATION
 
-                val playerGameObject = gameScene.createGameObject()
-                playerGameObject.setComponent(
-                    PlayerComponent::class, PlayerComponent(
+                world.entity {
+                    it += PlayerComponent(
                         connection,
                         defaultViewContextID
                     )
-                )
 
-                playerGameObject.setComponent(ViewableComponent::class, ViewableComponent(defaultViewContextID))
-                playerGameObject.setComponent(AxolotlModelComponent::class, AxolotlModelComponent)
+                    it += ViewableComponent(defaultViewContextID)
+
+                    it += AxolotlModelComponent
+                }
 
                 val cachedTagPacket = ClientboundUpdateTagsPacket(
                     listOf(

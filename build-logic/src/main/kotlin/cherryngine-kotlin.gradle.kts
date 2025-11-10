@@ -1,3 +1,6 @@
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("cherryngine-java")
     id("org.jetbrains.kotlin.jvm")
@@ -5,4 +8,8 @@ plugins {
 
 kotlin {
     jvmToolchain(21)
+}
+
+tasks.withType<KotlinCompile> {
+    compilerOptions.freeCompilerArgs = listOf("-Xcontext-parameters")
 }

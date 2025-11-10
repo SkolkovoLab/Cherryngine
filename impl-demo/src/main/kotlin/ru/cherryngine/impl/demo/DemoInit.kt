@@ -14,25 +14,33 @@ class DemoInit(
     testWorldShit: TestWorldShit,
 ) {
     init {
-        val scene = GameScene()
+        var playerInitSystem: PlayerInitSystem? = null
+        val scene = GameScene {
+            systems {
+                playerInitSystem = PlayerInitSystem("normal")
+                add(playerInitSystem)
+                add(CommandSystem())
+                add(ClientPositionSystem())
+                add(AxolotlModelSystem())
+                add(WorldSystem(testWorldShit))
+                add(ViewSystem())
 
-        scene.createGameObject().apply {
-            setComponent(ViewableComponent::class, ViewableComponent("normal"))
-            setComponent(WorldComponent::class, WorldComponent("normal"))
+                add(ClearEventsSystem())
+            }
         }
-        scene.createGameObject().apply {
-            setComponent(ViewableComponent::class, ViewableComponent("winter"))
-            setComponent(WorldComponent::class, WorldComponent("winter"))
+        val fleksWorld = scene.fleksWorld
+
+        fleksWorld.entity {
+            it += ViewableComponent("normal")
+            it += WorldComponent("normal")
         }
 
-        val playerInitSystem = PlayerInitSystem(scene, "normal")
-        scene.gameSystems.add(playerInitSystem)
-        scene.gameSystems.add(CommandSystem(scene))
-        scene.gameSystems.add(ClientPositionSystem(scene))
-        scene.gameSystems.add(AxolotlModelSystem(scene))
-        scene.gameSystems.add(WorldSystem(scene, testWorldShit))
-        scene.gameSystems.add(ViewSystem(scene))
+        fleksWorld.entity {
+            it += ViewableComponent("winter")
+            it += WorldComponent("winter")
+        }
+
         scene.start()
-        dockyardServer.start(playerInitSystem)
+        dockyardServer.start(playerInitSystem!!)
     }
 }
