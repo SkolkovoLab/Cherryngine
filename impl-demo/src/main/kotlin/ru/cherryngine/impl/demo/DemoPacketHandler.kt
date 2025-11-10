@@ -29,6 +29,7 @@ class DemoPacketHandler(
 ) : PacketHandler {
     val queues = hashMapOf<Connection, MutableList<ServerboundPacket>>()
     val toCreateEntities = mutableSetOf<Connection>()
+    val toRemoveEntities = mutableSetOf<Connection>()
     override fun onPacket(connection: Connection, packet: ServerboundPacket) {
         when (packet) {
             is ServerboundIntentionPacket -> {
@@ -132,5 +133,9 @@ class DemoPacketHandler(
                 queue.add(packet)
             }
         }
+    }
+
+    override fun onDisconnect(connection: Connection) {
+        toRemoveEntities.add(connection)
     }
 }

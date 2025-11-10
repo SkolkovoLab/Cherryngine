@@ -18,8 +18,12 @@ import kotlin.random.Random
 class AxolotlModelSystem() : IteratingSystem(
     family { all(AxolotlModelComponent) }
 ) {
-    // TODO сделать чтоб не утекало
-    val models = hashMapOf<Entity, McEntity>()
+    private val models = HashMap<Entity, McEntity>()
+
+    override fun onTick() {
+        models.keys.removeIf { !world.contains(it) }
+        super.onTick()
+    }
 
     override fun onTickEntity(entity: Entity) {
         val connection = entity.getOrNull(PlayerComponent)?.connection
@@ -38,6 +42,7 @@ class AxolotlModelSystem() : IteratingSystem(
         }
 
         val viewableProvider = ViewableProvider.Static(setOf(mcEntity))
-        entity.eventsComponent()[ViewableProvidersEvent::class] = ViewableProvidersEvent(setOf(viewableProvider), setOf())
+        entity.eventsComponent()[ViewableProvidersEvent::class] =
+            ViewableProvidersEvent(setOf(viewableProvider), setOf())
     }
 }

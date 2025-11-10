@@ -24,9 +24,17 @@ class ViewSystem : IteratingSystem(
         const val DEFAULT_RENDER_DISTANCE = 2
     }
 
-    // TODO сделать чтоб не утекало
-    val currentVisibleViewablesMap = hashMapOf<Connection, MutableSet<Viewable>>()
-    val currentVisibleStaticViewablesMap = hashMapOf<Connection, MutableSet<StaticViewable>>()
+    private val currentVisibleMap = hashMapOf<Connection, CurrentVisible>()
+
+    data class CurrentVisible(
+        val currentVisibleViewables: MutableSet<Viewable> = hashSetOf(),
+        val currentVisibleStaticViewables: MutableSet<StaticViewable> = hashSetOf(),
+    )
+
+    override fun onTick() {
+        currentVisibleMap.keys.removeIf { !it.isActive }
+        super.onTick()
+    }
 
     override fun onTickEntity(entity: Entity) {
         val playerComponent = entity[PlayerComponent]
@@ -71,23 +79,23 @@ class ViewSystem : IteratingSystem(
             ?.let { ChunkUtils.chunkPosFromVec3D(it) }
             ?: ChunkPos.ZERO
 
-        val currentVisible = currentVisibleViewablesMap.computeIfAbsent(connection) { mutableSetOf() }
-        val currentVisibleStatic = currentVisibleStaticViewablesMap.computeIfAbsent(connection) { mutableSetOf() }
+        val currentVisible = currentVisibleMap.computeIfAbsent(connection) { CurrentVisible() }
+        val currentVisibleViewables = currentVisible.currentVisibleViewables
+        val currentVisibleStaticViewables = currentVisible.currentVisibleStaticViewables
 
         val chunks = ChunkUtils.getChunksInRange(clientChunkPos, distance).toSet()
         val viewables: Set<Viewable> = getViewables(viewableProviders)
 
-        currentVisibleStatic.removeIf { staticViewable ->
+        currentVisibleStaticViewables.removeIf { staticViewable ->
             val staticViewables = getStaticViewables(staticViewableProviders, staticViewable.chunkPos)
-            val shouldHide =
-                staticViewable !in staticViewables || staticViewable.chunkPos !in chunks || !staticViewable.viewerPredicate(
-                    connection
-                )
+            val shouldHide = staticViewable !in staticViewables ||
+                    staticViewable.chunkPos !in chunks ||
+                    !staticViewable.viewerPredicate(connection)
             if (shouldHide) staticViewable.hide(connection)
             shouldHide
         }
 
-        currentVisible.removeIf { viewable ->
+        currentVisibleViewables.removeIf { viewable ->
             val shouldHide =
                 viewable !in viewables || viewable.chunkPos !in chunks || !viewable.viewerPredicate(connection)
             if (shouldHide) viewable.hide(connection)
@@ -97,20 +105,22 @@ class ViewSystem : IteratingSystem(
         chunks.forEach { chunk ->
             val staticViewables = getStaticViewables(staticViewableProviders, chunk)
             staticViewables.forEach { staticViewable ->
-                val shouldShow = staticViewable !in currentVisibleStatic && staticViewable.viewerPredicate(connection)
+                val shouldShow =
+                    staticViewable !in currentVisibleStaticViewables && staticViewable.viewerPredicate(connection)
                 if (shouldShow) {
                     staticViewable.show(connection)
-                    currentVisibleStatic.add(staticViewable)
+                    currentVisibleStaticViewables.add(staticViewable)
                 }
             }
         }
 
         viewables.forEach { viewable ->
-            val shouldShow =
-                viewable !in currentVisible && viewable.chunkPos in chunks && viewable.viewerPredicate(connection)
+            val shouldShow = viewable !in currentVisibleViewables &&
+                    viewable.chunkPos in chunks &&
+                    viewable.viewerPredicate(connection)
             if (shouldShow) {
                 viewable.show(connection)
-                currentVisible.add(viewable)
+                currentVisibleViewables.add(viewable)
             }
         }
     }

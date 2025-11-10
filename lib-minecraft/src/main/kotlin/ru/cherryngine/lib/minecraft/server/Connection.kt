@@ -21,6 +21,7 @@ class Connection(
     var state: ProtocolState = ProtocolState.HANDSHAKE
     lateinit var channel: Channel
     lateinit var address: SocketAddress
+    val isActive: Boolean get() = channel.isActive
 
     private var currentKeepAlive = 0L
 
@@ -28,10 +29,11 @@ class Connection(
         super.channelActive(ctx)
         this.channel = ctx.channel()
         this.address = ctx.channel().remoteAddress()
+        packetHandler.onConnect(this)
 
         CoroutineScope(Dispatchers.IO).launch {
-            while (channel.isActive) {
-                if (state == ProtocolState.PLAY) {
+            while (isActive) {
+                if (state == ProtocolState.PLAY || state == ProtocolState.CONFIGURATION) {
                     sendPacket(ClientboundKeepAlivePacket(currentKeepAlive))
                     currentKeepAlive++
                 }
@@ -39,6 +41,11 @@ class Connection(
                 delay(10_000)
             }
         }
+    }
+
+    override fun channelInactive(ctx: ChannelHandlerContext) {
+        super.channelInactive(ctx)
+        packetHandler.onDisconnect(this)
     }
 
     override fun channelRead0(

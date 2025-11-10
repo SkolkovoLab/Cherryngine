@@ -30,6 +30,14 @@ class PlayerInitSystem(
         }
         demoPacketHandler.toCreateEntities.clear()
 
+        world.family { all(PlayerComponent) }.forEach {
+            val playerComponent = it[PlayerComponent]
+            if (playerComponent.connection in demoPacketHandler.toRemoveEntities) {
+                it.remove()
+            }
+        }
+        demoPacketHandler.toRemoveEntities.clear()
+
         super.onTick()
     }
 
