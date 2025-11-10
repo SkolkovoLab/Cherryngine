@@ -1,6 +1,5 @@
 package ru.cherryngine.impl.demo.entity
 
-import ru.cherryngine.impl.demo.player.Player
 import ru.cherryngine.impl.demo.view.Viewable
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
@@ -12,6 +11,7 @@ import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.Clientboun
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.protocol.types.TeleportFlags
 import ru.cherryngine.lib.minecraft.registry.registries.EntityType
+import ru.cherryngine.lib.minecraft.server.Connection
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import java.util.*
 
@@ -22,9 +22,9 @@ class McEntity(
     val metadata = MetadataContainer()
     var position = Vec3D.ZERO
     var yawPitch = YawPitch.ZERO
-    private val viewers = mutableSetOf<Player>()
+    private val viewers = mutableSetOf<Connection>()
 
-    override var viewerPredicate: (Player) -> Boolean = { true }
+    override var viewerPredicate: (Connection) -> Boolean = { true }
 
     override val chunkPos: ChunkPos
         get() = ChunkUtils.chunkPosFromVec3D(position)
@@ -37,7 +37,7 @@ class McEntity(
         viewers.forEach { it.sendPacket(packet) }
     }
 
-    override fun show(player: Player) {
+    override fun show(player: Connection) {
         player.sendPacket(
             ClientboundAddEntityPacket(
                 entityId, UUID.randomUUID(),
@@ -52,7 +52,7 @@ class McEntity(
         viewers.add(player)
     }
 
-    override fun hide(player: Player) {
+    override fun hide(player: Connection) {
         player.sendPacket(ClientboundRemoveEntitiesPacket(listOf(entityId)))
         viewers.remove(player)
     }

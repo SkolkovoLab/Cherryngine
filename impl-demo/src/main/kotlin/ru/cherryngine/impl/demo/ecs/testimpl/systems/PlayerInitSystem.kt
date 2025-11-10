@@ -2,12 +2,8 @@ package ru.cherryngine.impl.demo.ecs.testimpl.systems
 
 import ru.cherryngine.impl.demo.ecs.GameScene
 import ru.cherryngine.impl.demo.ecs.GameSystem
-import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerGameComponent
-import ru.cherryngine.impl.demo.player.Player
-import ru.cherryngine.impl.demo.view.PlayerViewSystem
+import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerComponent
 import ru.cherryngine.impl.demo.world.TestWorldShit
-import ru.cherryngine.lib.math.Vec3D
-import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.PacketHandler
 import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
@@ -23,34 +19,28 @@ import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundHelloPacke
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundLoginAcknowledgedPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundGameEventPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLoginPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundMovePlayerPosPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundMovePlayerPosRotPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundMovePlayerRotPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundMovePlayerStatusOnlyPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ClientboundStatusResponsePacket
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ServerboundStatusRequestPacket
 import ru.cherryngine.lib.minecraft.protocol.types.GameMode
 import ru.cherryngine.lib.minecraft.protocol.types.GameProfile
-import ru.cherryngine.lib.minecraft.protocol.types.MovePlayerFlags
 import ru.cherryngine.lib.minecraft.registry.DimensionTypes
 import ru.cherryngine.lib.minecraft.registry.RegistryManager
 import ru.cherryngine.lib.minecraft.registry.registries.tags.*
 import ru.cherryngine.lib.minecraft.server.Connection
 
-class PlayerInitGameSystem(
+class PlayerInitSystem(
     val gameScene: GameScene,
     val testWorldShit: TestWorldShit,
 ) : GameSystem, PacketHandler {
-    val players = mutableMapOf<Connection, Player>()
     var queues = hashMapOf<Connection, MutableList<ServerboundPacket>>()
 
     override fun tick(tickIndex: Long, tickStartMs: Long) {
         val queues = this.queues
         this.queues = hashMapOf()
-        gameScene.objectsWithComponent(PlayerGameComponent::class).forEach { gameObject ->
-            val playerGameComponent = gameObject[PlayerGameComponent::class]!!
-            val packets = queues[playerGameComponent.player.connection] ?: listOf()
-            gameObject[PlayerGameComponent::class] = playerGameComponent.copy(packets = packets)
+        gameScene.objectsWithComponent(PlayerComponent::class).forEach { gameObject ->
+            val playerComponent = gameObject[PlayerComponent::class]!!
+            val packets = queues[playerComponent.connection] ?: listOf()
+            gameObject[PlayerComponent::class] = playerComponent.copy(packets = packets)
         }
     }
 
@@ -98,12 +88,9 @@ class PlayerInitGameSystem(
             is ServerboundLoginAcknowledgedPacket -> {
                 connection.state = ProtocolState.CONFIGURATION
 
-                val player = Player(connection)
-                players[connection] = player
-                gameScene.createGameObject()[PlayerGameComponent::class] = PlayerGameComponent(
-                    player,
+                gameScene.createGameObject()[PlayerComponent::class] = PlayerComponent(
+                    connection,
                     listOf(),
-                    PlayerViewSystem(player),
                 )
 
                 val cachedTagPacket = ClientboundUpdateTagsPacket(
@@ -157,35 +144,19 @@ class PlayerInitGameSystem(
                     )
                 )
 
-                gameScene.objectsWithComponent(PlayerGameComponent::class).forEach { gameObject ->
-                    val playerGameComponent = gameObject[PlayerGameComponent::class]!!
-                    if (playerGameComponent.player.connection == connection) {
-                        gameObject[PlayerGameComponent::class] =
-                            playerGameComponent.copy(world = testWorldShit.normalWorld)
+                gameScene.objectsWithComponent(PlayerComponent::class).forEach { gameObject ->
+                    val playerComponent = gameObject[PlayerComponent::class]!!
+                    if (playerComponent.connection == connection) {
+                        gameObject[PlayerComponent::class] =
+                            playerComponent.copy(world = testWorldShit.normalWorld)
                     }
                 }
             }
-
-            is ServerboundMovePlayerPosPacket -> onMove(connection, packet.pos, null, packet.flags)
-            is ServerboundMovePlayerPosRotPacket -> onMove(connection, packet.pos, packet.yawPitch, packet.flags)
-            is ServerboundMovePlayerRotPacket -> onMove(connection, null, packet.yawPitch, packet.flags)
-            is ServerboundMovePlayerStatusOnlyPacket -> onMove(connection, null, null, packet.flags)
 
             else -> {
                 val queue = queues.computeIfAbsent(connection) { arrayListOf() }
                 queue.add(packet)
             }
         }
-    }
-
-    fun onMove(
-        connection: Connection,
-        pos: Vec3D?,
-        yawPitch: YawPitch?,
-        flags: MovePlayerFlags,
-    ) {
-        val player = players[connection] ?: return
-        if (pos != null) player.lastPosition = pos
-        if (yawPitch != null) player.lastYawPitch = yawPitch
     }
 }
