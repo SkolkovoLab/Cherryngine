@@ -14,11 +14,11 @@ class DemoInit(
     testWorldShit: TestWorldShit,
 ) {
     init {
-        var playerInitSystem: PlayerInitSystem? = null
+        val demoPacketHandler = DemoPacketHandler("normal")
+
         val scene = GameScene {
             systems {
-                playerInitSystem = PlayerInitSystem("normal")
-                add(playerInitSystem)
+                add(PlayerInitSystem(demoPacketHandler))
                 add(CommandSystem())
                 add(ClientPositionSystem())
                 add(AxolotlModelSystem())
@@ -41,6 +41,6 @@ class DemoInit(
         }
 
         scene.start()
-        dockyardServer.start(playerInitSystem!!)
+        dockyardServer.start(demoPacketHandler)
     }
 }
