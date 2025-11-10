@@ -1,4 +1,4 @@
-package ru.cherryngine.impl.demo.scene
+package ru.cherryngine.impl.demo.ecs
 
 import kotlin.time.Duration
 

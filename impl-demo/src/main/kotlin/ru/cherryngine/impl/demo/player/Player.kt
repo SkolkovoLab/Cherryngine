@@ -1,20 +1,13 @@
 package ru.cherryngine.impl.demo.player
 
-import net.kyori.adventure.text.Component
-import ru.cherryngine.impl.demo.entity.McEntity
-import ru.cherryngine.impl.demo.view.PlayerViewSystem
 import ru.cherryngine.impl.demo.view.StaticViewable
 import ru.cherryngine.impl.demo.view.Viewable
-import ru.cherryngine.impl.demo.world.world.World
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
-import ru.cherryngine.lib.minecraft.entity.AxolotlMeta
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.registry.EntityTypes
 import ru.cherryngine.lib.minecraft.server.Connection
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
-import kotlin.random.Random
 
 class Player(
     val connection: Connection,
@@ -28,43 +21,13 @@ class Player(
     val clientChunkPos: ChunkPos
         get() = ChunkUtils.chunkPosFromVec3D(clientPosition)
 
-    var lastPosition: Vec3D = Vec3D.ZERO
-    var lastYawPitch: YawPitch = YawPitch.ZERO
+    var lastPosition: Vec3D = Vec3D.Companion.ZERO
+    var lastYawPitch: YawPitch = YawPitch.Companion.ZERO
 
     fun sendPacket(packet: ClientboundPacket) {
         connection.sendPacket(packet)
     }
 
-    val playerViewSystem: PlayerViewSystem = PlayerViewSystem(this)
     val currentVisibleViewables = mutableSetOf<Viewable>()
     val currentVisibleStaticViewables = mutableSetOf<StaticViewable>()
-
-    val entity = McEntity(Random.nextInt(1000, 1_000_000), EntityTypes.AXOLOTL).apply {
-        metadata[AxolotlMeta.HAS_NO_GRAVITY] = true
-        metadata[AxolotlMeta.VARIANT] = AxolotlMeta.Variant.entries.random()
-        metadata[AxolotlMeta.CUSTOM_NAME] = Component.text(connection.address.toString())
-        metadata[AxolotlMeta.CUSTOM_NAME_VISIBLE] = true
-        viewerPredicate = { it != this@Player }
-    }
-
-    var world: World? = null
-        set(value) {
-            val oldValue = field
-            field = value
-            oldValue?.mutableEntities -= entity
-            value?.mutableEntities += entity
-            if (oldValue != null) {
-                playerViewSystem.staticViewableProviders -= oldValue
-                playerViewSystem.viewableProviders -= oldValue
-            }
-            if (value != null) {
-                playerViewSystem.staticViewableProviders += value
-                playerViewSystem.viewableProviders += value
-            }
-        }
-
-    fun tick() {
-        entity.teleport(clientPosition, clientYawPitch)
-        playerViewSystem.update()
-    }
 }

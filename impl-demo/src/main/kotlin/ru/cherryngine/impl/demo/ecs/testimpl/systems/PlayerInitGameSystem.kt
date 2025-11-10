@@ -1,21 +1,14 @@
-package ru.cherryngine.impl.demo
+package ru.cherryngine.impl.demo.ecs.testimpl.systems
 
-import jakarta.inject.Singleton
-import net.kyori.adventure.text.Component
-import ru.cherryngine.impl.demo.entity.McEntity
+import ru.cherryngine.impl.demo.ecs.GameScene
+import ru.cherryngine.impl.demo.ecs.GameSystem
+import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerGameComponent
 import ru.cherryngine.impl.demo.player.Player
-import ru.cherryngine.impl.demo.player.PlayerManager
+import ru.cherryngine.impl.demo.view.PlayerViewSystem
 import ru.cherryngine.impl.demo.world.TestWorldShit
-import ru.cherryngine.impl.demo.world.world.WorldImpl
 import ru.cherryngine.lib.math.Vec3D
-import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.PacketHandler
-import ru.cherryngine.lib.minecraft.data.DataComponentPatch
-import ru.cherryngine.lib.minecraft.data.components.CustomNameComponent
-import ru.cherryngine.lib.minecraft.entity.CatMeta
-import ru.cherryngine.lib.minecraft.entity.EntityMeta
-import ru.cherryngine.lib.minecraft.item.ItemStack
 import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.common.ClientboundPongResponsePacket
@@ -30,25 +23,37 @@ import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundHelloPacke
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundLoginAcknowledgedPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundGameEventPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLoginPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundSetPlayerInventoryPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.*
+import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundMovePlayerPosPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundMovePlayerPosRotPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundMovePlayerRotPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundMovePlayerStatusOnlyPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ClientboundStatusResponsePacket
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ServerboundStatusRequestPacket
 import ru.cherryngine.lib.minecraft.protocol.types.GameMode
 import ru.cherryngine.lib.minecraft.protocol.types.GameProfile
 import ru.cherryngine.lib.minecraft.protocol.types.MovePlayerFlags
-import ru.cherryngine.lib.minecraft.registry.*
+import ru.cherryngine.lib.minecraft.registry.DimensionTypes
+import ru.cherryngine.lib.minecraft.registry.RegistryManager
 import ru.cherryngine.lib.minecraft.registry.registries.tags.*
 import ru.cherryngine.lib.minecraft.server.Connection
-import ru.cherryngine.lib.minecraft.utils.blockPos
-import ru.cherryngine.lib.minecraft.world.block.Block
-import kotlin.random.Random
 
-@Singleton
-class TestPacketHandler(
+class PlayerInitGameSystem(
+    val gameScene: GameScene,
     val testWorldShit: TestWorldShit,
-    val playerManager: PlayerManager,
-) : PacketHandler {
+) : GameSystem, PacketHandler {
+    val players = mutableMapOf<Connection, Player>()
+    var queues = hashMapOf<Connection, MutableList<ServerboundPacket>>()
+
+    override fun tick(tickIndex: Long, tickStartMs: Long) {
+        val queues = this.queues
+        this.queues = hashMapOf()
+        gameScene.objectsWithComponent(PlayerGameComponent::class).forEach { gameObject ->
+            val playerGameComponent = gameObject[PlayerGameComponent::class]!!
+            val packets = queues[playerGameComponent.player.connection] ?: listOf()
+            gameObject[PlayerGameComponent::class] = playerGameComponent.copy(packets = packets)
+        }
+    }
+
     override fun onPacket(connection: Connection, packet: ServerboundPacket) {
         when (packet) {
             is ServerboundIntentionPacket -> {
@@ -93,7 +98,13 @@ class TestPacketHandler(
             is ServerboundLoginAcknowledgedPacket -> {
                 connection.state = ProtocolState.CONFIGURATION
 
-                playerManager.map[connection] = Player(connection)
+                val player = Player(connection)
+                players[connection] = player
+                gameScene.createGameObject()[PlayerGameComponent::class] = PlayerGameComponent(
+                    player,
+                    listOf(),
+                    PlayerViewSystem(player),
+                )
 
                 val cachedTagPacket = ClientboundUpdateTagsPacket(
                     listOf(
@@ -146,13 +157,13 @@ class TestPacketHandler(
                     )
                 )
 
-                val player = playerManager.map[connection] ?: return
-
-                player.world = testWorldShit.normalWorld
-            }
-
-            is ServerboundPlayerLoadedPacket -> {
-                println("player loaded!")
+                gameScene.objectsWithComponent(PlayerGameComponent::class).forEach { gameObject ->
+                    val playerGameComponent = gameObject[PlayerGameComponent::class]!!
+                    if (playerGameComponent.player.connection == connection) {
+                        gameObject[PlayerGameComponent::class] =
+                            playerGameComponent.copy(world = testWorldShit.normalWorld)
+                    }
+                }
             }
 
             is ServerboundMovePlayerPosPacket -> onMove(connection, packet.pos, null, packet.flags)
@@ -160,68 +171,9 @@ class TestPacketHandler(
             is ServerboundMovePlayerRotPacket -> onMove(connection, null, packet.yawPitch, packet.flags)
             is ServerboundMovePlayerStatusOnlyPacket -> onMove(connection, null, null, packet.flags)
 
-            is ServerboundClientTickEndPacket -> {
-                playerManager.map[connection]?.tick()
-            }
-
-            is ServerboundChatCommandPacket -> {
-                val player = playerManager.map[connection] ?: return
-                val split = packet.command.split(" ")
-                when (split.getOrNull(0)) {
-                    "entityadd" -> {
-                        val world = player.world
-                        val name = split.getOrNull(1)
-                        if (world is WorldImpl) {
-                            world.entities += McEntity(
-                                Random.nextInt(1000, 1_000_000),
-                                EntityTypes.CAT
-                            ).apply {
-                                position = player.clientPosition
-                                yawPitch = player.clientYawPitch
-                                metadata[CatMeta.ENTITY_FLAGS] = EntityMeta.Flags(hasGlowingEffects = true)
-                                metadata[CatMeta.HAS_NO_GRAVITY] = true
-                                metadata[CatMeta.VARIANT] = CatVariants.RED
-                                metadata[CatMeta.CUSTOM_NAME] = Component.text("$name (${world.name})")
-                                metadata[CatMeta.CUSTOM_NAME_VISIBLE] = true
-                            }
-                        }
-                    }
-
-                    "entityclear" -> {
-                        val world = player.world
-                        if (world is WorldImpl) {
-                            world.entities.clear()
-                        }
-                    }
-
-                    "world" -> {
-                        val world = testWorldShit.worlds[split.getOrNull(1)]
-                        player.world = world
-                    }
-
-                    "block" -> {
-                        val world = player.world!!
-                        world.setBlock(player.clientPosition.blockPos(), Blocks.TNT.toBlock())
-                    }
-
-                    "blocks" -> {
-                        val world = player.world!!
-
-                        val blocksMap = mutableMapOf<Vec3I, Block>()
-                        for (x in -10..10) for (z in -10..10) {
-                            blocksMap[player.clientPosition.blockPos().plus(x, 0, z)] = Blocks.TNT.toBlock()
-                        }
-
-                        world.setBlocks(blocksMap)
-                    }
-
-                    "item" -> {
-                        val itemStack = ItemStack(Items.DIAMOND, 1, DataComponentPatch.fromList(
-                            listOf(CustomNameComponent(Component.text("test-item"))),
-                        ))
-                        player.sendPacket(ClientboundSetPlayerInventoryPacket(0, itemStack))
-                    }
-                }
+            else -> {
+                val queue = queues.computeIfAbsent(connection) { arrayListOf() }
+                queue.add(packet)
             }
         }
     }
@@ -232,7 +184,7 @@ class TestPacketHandler(
         yawPitch: YawPitch?,
         flags: MovePlayerFlags,
     ) {
-        val player = playerManager.map[connection] ?: return
+        val player = players[connection] ?: return
         if (pos != null) player.lastPosition = pos
         if (yawPitch != null) player.lastYawPitch = yawPitch
     }
