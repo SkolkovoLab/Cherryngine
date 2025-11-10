@@ -1,8 +1,6 @@
 package ru.cherryngine.impl.demo.world.world
 
-import ru.cherryngine.impl.demo.entity.McEntity
 import ru.cherryngine.impl.demo.view.StaticViewable
-import ru.cherryngine.impl.demo.view.Viewable
 import ru.cherryngine.impl.demo.world.Chunk
 import ru.cherryngine.impl.demo.world.ChunkViewable
 import ru.cherryngine.impl.demo.world.EmptyChunkViewable
@@ -15,8 +13,7 @@ import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 class MixedWorld(
     override val name: String,
     override val dimensionType: DimensionType,
-    val worlds: List<World>,
-    val entitiesWorld: WorldImpl
+    worlds: List<World>,
 ) : World {
 
     init {
@@ -25,13 +22,6 @@ class MixedWorld(
 
     override val chunks: Map<ChunkPos, Chunk> = mixWorld(worlds.first(), worlds.drop(1))
     override val chunkViewables: Map<ChunkPos, ChunkViewable> = chunks.mapValues { ChunkViewable(it.key, it.value) }
-
-    override val entities: Set<McEntity>
-        get() = worlds.flatMap { it.entities }.toSet()
-    override val mutableEntities: MutableSet<McEntity>
-        get() = entitiesWorld.entities
-    override val viewables: Set<Viewable>
-        get() = entities
 
     override fun getStaticViewables(chunkPos: ChunkPos): Set<StaticViewable> {
         val chunkViewable = chunkViewables[chunkPos] ?: EmptyChunkViewable(chunkPos)

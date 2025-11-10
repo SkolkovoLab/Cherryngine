@@ -1,10 +1,15 @@
 package ru.cherryngine.impl.demo.ecs.testimpl.systems
 
+import net.kyori.adventure.text.Component
 import ru.cherryngine.impl.demo.ecs.GameScene
 import ru.cherryngine.impl.demo.ecs.GameSystem
+import ru.cherryngine.impl.demo.ecs.testimpl.components.EntityComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerComponent
-import ru.cherryngine.impl.demo.world.TestWorldShit
+import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
+import ru.cherryngine.impl.demo.entity.McEntity
+import ru.cherryngine.impl.demo.view.ViewableProvider
 import ru.cherryngine.lib.minecraft.PacketHandler
+import ru.cherryngine.lib.minecraft.entity.AxolotlMeta
 import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.common.ClientboundPongResponsePacket
@@ -24,13 +29,16 @@ import ru.cherryngine.lib.minecraft.protocol.packets.status.ServerboundStatusReq
 import ru.cherryngine.lib.minecraft.protocol.types.GameMode
 import ru.cherryngine.lib.minecraft.protocol.types.GameProfile
 import ru.cherryngine.lib.minecraft.registry.DimensionTypes
+import ru.cherryngine.lib.minecraft.registry.EntityTypes
 import ru.cherryngine.lib.minecraft.registry.RegistryManager
 import ru.cherryngine.lib.minecraft.registry.registries.tags.*
 import ru.cherryngine.lib.minecraft.server.Connection
+import java.util.*
+import kotlin.random.Random
 
 class PlayerInitSystem(
     val gameScene: GameScene,
-    val testWorldShit: TestWorldShit,
+    val defaultViewContextUUID: UUID,
 ) : GameSystem, PacketHandler {
     var queues = hashMapOf<Connection, MutableList<ServerboundPacket>>()
 
@@ -88,9 +96,27 @@ class PlayerInitSystem(
             is ServerboundLoginAcknowledgedPacket -> {
                 connection.state = ProtocolState.CONFIGURATION
 
-                gameScene.createGameObject()[PlayerComponent::class] = PlayerComponent(
+                val playerGameObject = gameScene.createGameObject()
+                playerGameObject[PlayerComponent::class] = PlayerComponent(
                     connection,
                     listOf(),
+                    defaultViewContextUUID
+                )
+
+                val entity = McEntity(Random.nextInt(1000, 1_000_000), EntityTypes.AXOLOTL).apply {
+                    metadata[AxolotlMeta.HAS_NO_GRAVITY] = true
+                    metadata[AxolotlMeta.VARIANT] = AxolotlMeta.Variant.entries.random()
+                    metadata[AxolotlMeta.CUSTOM_NAME] = Component.text(connection.address.toString())
+                    metadata[AxolotlMeta.CUSTOM_NAME_VISIBLE] = true
+                    viewerPredicate = { it != connection }
+                }
+
+                playerGameObject[EntityComponent::class] = EntityComponent(entity)
+
+                playerGameObject[ViewableComponent::class] = ViewableComponent(
+                    defaultViewContextUUID,
+                    setOf(ViewableProvider.Static(setOf(entity))),
+                    setOf()
                 )
 
                 val cachedTagPacket = ClientboundUpdateTagsPacket(
@@ -143,14 +169,6 @@ class PlayerInitSystem(
                         0f
                     )
                 )
-
-                gameScene.objectsWithComponent(PlayerComponent::class).forEach { gameObject ->
-                    val playerComponent = gameObject[PlayerComponent::class]!!
-                    if (playerComponent.connection == connection) {
-                        gameObject[PlayerComponent::class] =
-                            playerComponent.copy(world = testWorldShit.normalWorld)
-                    }
-                }
             }
 
             else -> {

@@ -28,9 +28,9 @@ class TestWorldShit {
     val winterWorld = WorldImpl("winter", DimensionTypes.OVERWORLD, winterChunks)
     val basseinWorld = WorldImpl("bassein", DimensionTypes.OVERWORLD, basseinChunks)
     val normalWithBasseinWorld =
-        MixedWorld("normal_bassein", DimensionTypes.OVERWORLD, listOf(normalWorld, basseinWorld), basseinWorld)
+        MixedWorld("normal_bassein", DimensionTypes.OVERWORLD, listOf(normalWorld, basseinWorld))
     val winterWithBasseinWorld =
-        MixedWorld("winter_bassein", DimensionTypes.OVERWORLD, listOf(winterWorld, basseinWorld), basseinWorld)
+        MixedWorld("winter_bassein", DimensionTypes.OVERWORLD, listOf(winterWorld, basseinWorld))
     val dustWorld = WorldImpl("dust", DimensionTypes.OVERWORLD, dustChunks)
     val lobbyWorld = WorldImpl("lobby", DimensionTypes.OVERWORLD, lobbyChunks)
 
