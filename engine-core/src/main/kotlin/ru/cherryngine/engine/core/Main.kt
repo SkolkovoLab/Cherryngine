@@ -8,13 +8,17 @@ import kotlin.system.measureTimeMillis
 object Main {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
+
+
     @JvmStatic
     fun main(args: Array<String>) {
+        printBanner()
         logger.info("Starting server")
 
         try {
             measureTimeMillis {
                 Micronaut.build(*args)
+                    .banner(false)
                     .eagerInitSingletons(true)
                     .start()
             }.let {
@@ -24,5 +28,14 @@ object Main {
             logger.error("Server startup error", ex)
             exitProcess(1)
         }
+    }
+
+    fun printBanner() {
+        """
+          ____  _ ___ ___ _____   ____  _  __ _ __  _ ___  
+         / _/ || | __| _ \ _ \ `v' /  \| |/ _] |  \| | __| 
+        | \_| >< | _|| v / v /`. .'| | ' | [/\ | | ' | _|  
+         \__/_||_|___|_|_\_|_\ !_! |_|\__|\__/_|_|\__|___| 
+        """.trimIndent().lineSequence().forEach(::println)
     }
 }

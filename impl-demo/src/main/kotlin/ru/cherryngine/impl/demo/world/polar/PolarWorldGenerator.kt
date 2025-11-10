@@ -8,7 +8,6 @@ import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.protocol.types.BlockEntityType
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.Biomes
-import ru.cherryngine.lib.minecraft.registry.Blocks
 import ru.cherryngine.lib.minecraft.registry.registries.Biome
 import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry

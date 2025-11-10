@@ -63,6 +63,6 @@ class NettyServer(
 
 
 
-        logger.info("Server running on ${ip}:${port}")
+        logger.info("NettyServer running on ${ip}:${port}")
     }
 }

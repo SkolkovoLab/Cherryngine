@@ -1,9 +1,6 @@
 package ru.cherryngine.lib.minecraft.tide.codec
 
-import io.netty.buffer.ByteBuf
 import net.kyori.adventure.key.Key
-import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils.toByteArraySafe
-import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils.toByteBuf
 import ru.cherryngine.lib.minecraft.tide.transcoder.Transcoder
 import ru.cherryngine.lib.minecraft.tide.types.Either
 import java.util.*

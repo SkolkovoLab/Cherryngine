@@ -8,15 +8,16 @@ import ru.cherryngine.lib.minecraft.registry.registries.*
 import ru.cherryngine.lib.minecraft.registry.registries.tags.*
 import ru.cherryngine.lib.minecraft.server.NettyServer
 
-class DockyardServer(
+class MinecraftServer(
     ip: String,
     port: Int,
 ) {
-    val logger = LoggerFactory.getLogger(DockyardServer::class.java)
+    private val logger = LoggerFactory.getLogger(MinecraftServer::class.java)
     val nettyServer: NettyServer
 
     init {
-//        SoundRegistry.initialize(RegistryManager.getStreamFromPath("registry/sound_registry.json.gz"))
+        logger.info("Initializing registries")
+        SoundRegistry.initialize(RegistryManager.getStreamFromPath("registry/sound_registry.json.gz"))
 
         RegistryManager.register<Attribute>(AttributeRegistry)
         RegistryManager.register<RegistryBlock>(BlockRegistry)
@@ -67,9 +68,7 @@ class DockyardServer(
         )
     }
 
-
     fun start(packetHandler: PacketHandler) {
-        logger.info("Starting Server")
         nettyServer.start(packetHandler)
     }
 }

@@ -5,9 +5,7 @@ import net.kyori.adventure.nbt.CompoundBinaryTag
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
 import ru.cherryngine.lib.minecraft.protocol.types.BlockEntityType
-import ru.cherryngine.lib.minecraft.registry.registries.RegistryBlock
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
-import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 
 data class BlockEntity(
     val positionIndex: Vec3I,

@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.minecraft.world.palette
 
 import ru.cherryngine.lib.minecraft.utils.bitsToRepresent
-import java.util.Arrays
+import java.util.*
 
 object Palettes {
     fun pack(ints: IntArray, bitsPerEntry: Int): LongArray {

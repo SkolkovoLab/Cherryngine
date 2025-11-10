@@ -5,7 +5,8 @@ import ru.cherryngine.lib.minecraft.codec.ComponentCodecs
 import ru.cherryngine.lib.minecraft.codec.LocationCodecs
 import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
 import ru.cherryngine.lib.minecraft.item.ItemStack
-import ru.cherryngine.lib.minecraft.protocol.types.*
+import ru.cherryngine.lib.minecraft.protocol.types.Direction
+import ru.cherryngine.lib.minecraft.protocol.types.VillagerData
 import ru.cherryngine.lib.minecraft.registry.registries.*
 import ru.cherryngine.lib.minecraft.tide.stream.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec

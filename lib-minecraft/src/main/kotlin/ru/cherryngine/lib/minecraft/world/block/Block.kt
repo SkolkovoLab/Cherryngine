@@ -1,7 +1,6 @@
 package ru.cherryngine.lib.minecraft.world.block
 
 import io.netty.buffer.ByteBuf
-import net.kyori.adventure.key.Key
 import ru.cherryngine.lib.minecraft.registry.Blocks
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.Item

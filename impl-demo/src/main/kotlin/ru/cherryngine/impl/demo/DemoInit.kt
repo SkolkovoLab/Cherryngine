@@ -7,12 +7,12 @@ import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.WorldComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.systems.*
 import ru.cherryngine.impl.demo.world.TestWorldShit
-import ru.cherryngine.lib.minecraft.DockyardServer
+import ru.cherryngine.lib.minecraft.MinecraftServer
 import kotlin.time.Duration.Companion.milliseconds
 
 @Singleton
 class DemoInit(
-    dockyardServer: DockyardServer,
+    minecraftServer: MinecraftServer,
     testWorldShit: TestWorldShit,
 ) {
     init {
@@ -47,6 +47,6 @@ class DemoInit(
             fleksWorld.update(tickDuration)
         }
         ticker.start()
-        dockyardServer.start(demoPacketHandler)
+        minecraftServer.start(demoPacketHandler)
     }
 }
