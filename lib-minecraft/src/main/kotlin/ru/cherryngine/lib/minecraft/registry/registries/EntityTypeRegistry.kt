@@ -6,8 +6,8 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
-import ru.cherryngine.lib.minecraft.utils.kotlinx.Vec3DListToJsonSerializer
-import ru.cherryngine.lib.minecraft.utils.kotlinx.Vec3DToJsonSerializer
+import ru.cherryngine.lib.minecraft.utils.kotlinx.Vec3DListSerializer
+import ru.cherryngine.lib.minecraft.utils.kotlinx.Vec3DSerializer
 
 object EntityTypeRegistry : DataDrivenRegistry<EntityType>() {
     override val identifier: String = "minecraft:entity_type"
@@ -46,12 +46,12 @@ data class EntityDimensions(
     val fixed: Boolean,
     val height: Float,
     val width: Float,
-    @Serializable(with = Vec3DToJsonSerializer::class)
+    @Serializable(with = Vec3DSerializer::class)
     val nameTagLocation: Vec3D?,
-    @Serializable(with = Vec3DListToJsonSerializer::class)
+    @Serializable(with = Vec3DListSerializer::class)
     val passengerLocations: List<Vec3D>?,
-    @Serializable(with = Vec3DToJsonSerializer::class)
+    @Serializable(with = Vec3DSerializer::class)
     val vehicleLocation: Vec3D?,
-    @Serializable(with = Vec3DToJsonSerializer::class)
+    @Serializable(with = Vec3DSerializer::class)
     val wardenChestLocation: Vec3D?
 )

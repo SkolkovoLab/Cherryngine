@@ -8,7 +8,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import net.kyori.adventure.key.Key
 
-object KeyToJsonSerializer : KSerializer<Key> {
+object KeySerializer : KSerializer<Key> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("key", PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder): Key {

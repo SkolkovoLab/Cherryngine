@@ -7,8 +7,8 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import ru.cherryngine.lib.math.Vec3D
 
-object Vec3DListToJsonSerializer : KSerializer<List<Vec3D>> {
-    private val delegateSerializer = ListSerializer(Vec3DToJsonSerializer)
+object Vec3DListSerializer : KSerializer<List<Vec3D>> {
+    private val delegateSerializer = ListSerializer(Vec3DSerializer)
 
     override val descriptor: SerialDescriptor = delegateSerializer.descriptor
 

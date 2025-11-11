@@ -7,7 +7,7 @@ import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
-import ru.cherryngine.lib.minecraft.utils.kotlinx.ComponentToJsonSerializer
+import ru.cherryngine.lib.minecraft.utils.kotlinx.ComponentToJsonStringSerializer
 import ru.cherryngine.lib.minecraft.utils.toNBT
 
 object TrimMaterialRegistry : DataDrivenRegistry<TrimMaterial>() {
@@ -19,7 +19,7 @@ object TrimMaterialRegistry : DataDrivenRegistry<TrimMaterial>() {
 data class TrimMaterial(
     val identifier: String,
     val assetName: String,
-    @Serializable(ComponentToJsonSerializer::class)
+    @Serializable(ComponentToJsonStringSerializer::class)
     val description: Component,
     val overrideArmorMaterials: Map<String, String>? = null,
 ) : RegistryEntry {

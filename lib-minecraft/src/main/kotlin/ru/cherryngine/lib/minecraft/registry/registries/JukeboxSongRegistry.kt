@@ -7,7 +7,7 @@ import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
-import ru.cherryngine.lib.minecraft.utils.kotlinx.ComponentToJsonSerializer
+import ru.cherryngine.lib.minecraft.utils.kotlinx.ComponentToJsonStringSerializer
 import ru.cherryngine.lib.minecraft.utils.toNBT
 
 object JukeboxSongRegistry : DataDrivenRegistry<JukeboxSong>() {
@@ -19,7 +19,7 @@ object JukeboxSongRegistry : DataDrivenRegistry<JukeboxSong>() {
 data class JukeboxSong(
     val identifier: String,
     val comparatorOutput: Int,
-    @Serializable(ComponentToJsonSerializer::class)
+    @Serializable(ComponentToJsonStringSerializer::class)
     val description: Component,
     val lengthInSeconds: Float,
     val sound: String,

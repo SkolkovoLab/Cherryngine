@@ -8,7 +8,7 @@ import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.*
 import ru.cherryngine.lib.math.Vec3D
 
-object Vec3DToJsonSerializer : KSerializer<Vec3D> {
+object Vec3DSerializer : KSerializer<Vec3D> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("Vec3D") {
         element<Double>("x")
         element<Double>("y")
@@ -34,7 +34,7 @@ object Vec3DToJsonSerializer : KSerializer<Vec3D> {
                     0 -> x = decodeDoubleElement(descriptor, 0)
                     1 -> y = decodeDoubleElement(descriptor, 1)
                     2 -> z = decodeDoubleElement(descriptor, 2)
-                    CompositeDecoder.Companion.DECODE_DONE -> break
+                    CompositeDecoder.DECODE_DONE -> break
                     else -> throw SerializationException("Unexpected index $index")
                 }
             }

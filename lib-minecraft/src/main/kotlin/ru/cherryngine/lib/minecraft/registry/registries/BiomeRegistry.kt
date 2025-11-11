@@ -11,7 +11,7 @@ import ru.cherryngine.lib.minecraft.protocol.NbtWritable
 import ru.cherryngine.lib.minecraft.protocol.types.SoundEvent
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
-import ru.cherryngine.lib.minecraft.utils.kotlinx.KeyToJsonSerializer
+import ru.cherryngine.lib.minecraft.utils.kotlinx.KeySerializer
 
 object BiomeRegistry : DataDrivenRegistry<Biome>() {
     override val identifier: String = "minecraft:worldgen/biome"
@@ -22,7 +22,7 @@ object BiomeRegistry : DataDrivenRegistry<Biome>() {
 data class MoodSound(
     val blockSearchExtent: Int,
     val soundPositionOffset: Double,
-    @Serializable(with = KeyToJsonSerializer::class)
+    @Serializable(with = KeySerializer::class)
     val sound: Key,
     val tickDelay: Int,
 ) {
@@ -41,7 +41,7 @@ data class BackgroundMusic(
     val maxDelay: Int,
     val minDelay: Int,
     val replaceCurrentMusic: Boolean,
-    @Serializable(with = KeyToJsonSerializer::class)
+    @Serializable(with = KeySerializer::class)
     val sound: Key,
 ) {
     fun toNBT(): CompoundBinaryTag {
@@ -61,7 +61,7 @@ data class BackgroundMusic(
 
 @Serializable
 data class AmbientAdditions(
-    @Serializable(with = KeyToJsonSerializer::class)
+    @Serializable(with = KeySerializer::class)
     val sound: Key,
     val tickChance: Double,
 ) {

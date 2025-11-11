@@ -1,5 +1,6 @@
 package ru.cherryngine.impl.demo
 
+import net.kyori.adventure.text.minimessage.MiniMessage
 import ru.cherryngine.lib.minecraft.PacketHandler
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.common.ClientboundUpdateTagsPacket
@@ -12,40 +13,40 @@ import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.Clientboun
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ClientboundStatusResponsePacket
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ServerboundStatusRequestPacket
 import ru.cherryngine.lib.minecraft.protocol.types.GameMode
+import ru.cherryngine.lib.minecraft.protocol.types.ServerStatus
 import ru.cherryngine.lib.minecraft.registry.DimensionTypes
 import ru.cherryngine.lib.minecraft.registry.RegistryManager
 import ru.cherryngine.lib.minecraft.registry.registries.tags.*
 import ru.cherryngine.lib.minecraft.server.Connection
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class DemoPacketHandler(
     val defaultViewContextID: String,
 ) : PacketHandler {
-    val queues: MutableMap<Connection, MutableList<ServerboundPacket>> = ConcurrentHashMap<Connection, MutableList<ServerboundPacket>>()
+    val queues: MutableMap<Connection, MutableList<ServerboundPacket>> =
+        ConcurrentHashMap<Connection, MutableList<ServerboundPacket>>()
     val toCreateEntities = mutableSetOf<Connection>()
     val toRemoveEntities = mutableSetOf<Connection>()
+
     override fun onPacket(connection: Connection, packet: ServerboundPacket) {
         when (packet) {
             is ServerboundStatusRequestPacket -> {
-                connection.sendPacket(
-                    ClientboundStatusResponsePacket(
-                        """
-                    {
-                        "version": {
-                            "name": "1.21.8",
-                            "protocol": 772
-                        },
-                        "players": {
-                            "max": 0,
-                            "online": 0
-                        },
-                        "description": {
-                            "text": "Hello, world!"
-                        }
-                    }
-                    """.trimIndent()
-                    )
+                val status = ServerStatus(
+                    version = ServerStatus.Version(
+                        name = "1.21.8",
+                        protocol = 772
+                    ),
+                    players = ServerStatus.Players(
+                        online = 13,
+                        max = 37,
+                        sample = listOf(
+                            ServerStatus.ServerListPlayer("test", UUID.randomUUID())
+                        )
+                    ),
+                    description = MiniMessage.miniMessage().deserialize("<rainbow>Cherryngine</rainbow>")
                 )
+                connection.sendPacket(ClientboundStatusResponsePacket(status))
             }
 
             is ServerboundLoginAcknowledgedPacket -> {
