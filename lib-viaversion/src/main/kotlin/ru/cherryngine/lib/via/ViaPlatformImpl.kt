@@ -4,6 +4,7 @@ import com.viaversion.viaversion.api.ViaAPI
 import com.viaversion.viaversion.api.configuration.ViaVersionConfig
 import com.viaversion.viaversion.api.platform.PlatformTask
 import com.viaversion.viaversion.api.platform.ViaPlatform
+import com.viaversion.viaversion.util.VersionInfo
 import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.minecraft.server.Connection
@@ -22,7 +23,7 @@ class ViaPlatformImpl(
     override fun getConf(): ViaVersionConfig = config
     override fun getPlatformName() = "Cherryngine"
     override fun getPlatformVersion() = "dev"
-    override fun getPluginVersion() = "dev"
+    override fun getPluginVersion() = VersionInfo.VERSION
     override fun getDataFolder() = File("./via/")
     override fun hasPlugin(plugin: String) = false
 
