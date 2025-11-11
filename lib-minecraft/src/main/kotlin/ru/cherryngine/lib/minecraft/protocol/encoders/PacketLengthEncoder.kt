@@ -7,17 +7,13 @@ import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 class PacketLengthEncoder : MessageToByteEncoder<ByteBuf>() {
-    private val logger = LoggerFactory.getLogger(PacketLengthEncoder::class.java)
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     override fun encode(connection: ChannelHandlerContext, buffer: ByteBuf, out: ByteBuf) {
         try {
             val size = buffer.readableBytes()
             StreamCodec.VAR_INT.write(out, size)
             out.writeBytes(buffer)
-
-            // +1 to account for the size byte that is not counted
-//            ServerMetrics.outboundBandwidth.add(size + 1, DataSizeCounter.Type.BYTE)
-//            ServerMetrics.totalBandwidth.add(size + 1, DataSizeCounter.Type.BYTE)
         } catch (exception: Exception) {
             logger.error("There was an error while encoding packet length", exception)
         }

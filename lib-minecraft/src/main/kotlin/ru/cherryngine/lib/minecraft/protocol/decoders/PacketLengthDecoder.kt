@@ -3,13 +3,12 @@ package ru.cherryngine.lib.minecraft.protocol.decoders
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
-import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import java.io.IOException
 
 class PacketLengthDecoder : ByteToMessageDecoder() {
-
-    override fun decode(connection: ChannelHandlerContext, buffer: ByteBuf, out: MutableList<Any>) {
-        if (!connection.channel().isActive) return
+    override fun decode(ctx: ChannelHandlerContext, buffer: ByteBuf, out: MutableList<Any>) {
+        if (!ctx.channel().isActive) return
 
         buffer.markReaderIndex()
         val length = StreamCodec.VAR_INT.read(buffer)
@@ -22,15 +21,13 @@ class PacketLengthDecoder : ByteToMessageDecoder() {
 
         out.add(buffer.retainedSlice(buffer.readerIndex(), length))
         buffer.skipBytes(length)
-        // +1 to account for the size byte that is not counted
-//        ServerMetrics.inboundBandwidth.add(length + 1, DataSizeCounter.Type.BYTE)
-//        ServerMetrics.totalBandwidth.add(length + 1, DataSizeCounter.Type.BYTE)
     }
 
-    override fun exceptionCaught(connection: ChannelHandlerContext, cause: Throwable) {
-        connection.channel().close().sync()
-        if (cause.message == "An established connection was aborted by the software in your host machine") return
-
-        LoggerFactory.getLogger(PacketLengthDecoder::class.java).error("Error occurred while decoding frame", cause)
+    override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
+        if (cause is IOException) {
+            ctx.close()
+            return
+        }
+        super.exceptionCaught(ctx, cause)
     }
 }

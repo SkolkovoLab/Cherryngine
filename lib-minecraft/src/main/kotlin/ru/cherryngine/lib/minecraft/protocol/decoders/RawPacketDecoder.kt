@@ -15,7 +15,7 @@ class RawPacketDecoder(
     val processor: Connection,
     val serverboundPacketRegistry: ServerboundPacketRegistry,
 ) : MessageToMessageDecoder<ByteBuf>() {
-    private val logger = LoggerFactory.getLogger(javaClass)
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     private fun parse(id: Int, buffer: ByteBuf, protocolState: ProtocolState): ServerboundPacket? {
         try {

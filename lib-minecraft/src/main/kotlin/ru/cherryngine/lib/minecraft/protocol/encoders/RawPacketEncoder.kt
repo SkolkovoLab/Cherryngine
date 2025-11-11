@@ -14,7 +14,7 @@ class RawPacketEncoder(
     val processor: Connection,
     val clientboundPacketRegistry: ClientboundPacketRegistry,
 ) : MessageToByteEncoder<ClientboundPacket>() {
-    private val logger = LoggerFactory.getLogger(javaClass)
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     override fun encode(connection: ChannelHandlerContext, packet: ClientboundPacket, out: ByteBuf) {
         try {

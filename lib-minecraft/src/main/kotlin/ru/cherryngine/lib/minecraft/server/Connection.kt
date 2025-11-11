@@ -46,7 +46,7 @@ class Connection(
 
     var state: ProtocolState = ProtocolState.HANDSHAKE
         private set
-    lateinit var context: ChannelHandlerContext
+    private lateinit var context: ChannelHandlerContext
     val channel: Channel get() = context.channel()
     val address: SocketAddress get() = channel.remoteAddress()
     val isActive: Boolean get() = channel.isActive
@@ -64,9 +64,9 @@ class Connection(
     lateinit var gameProfile: GameProfile
         private set
 
-    override fun channelActive(ctx: ChannelHandlerContext) {
-        super.channelActive(ctx)
-        this.context = ctx
+    override fun channelActive(context: ChannelHandlerContext) {
+        super.channelActive(context)
+        this.context = context
         packetHandler.onConnect(this)
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -81,8 +81,8 @@ class Connection(
         }
     }
 
-    override fun channelInactive(ctx: ChannelHandlerContext) {
-        super.channelInactive(ctx)
+    override fun channelInactive(context: ChannelHandlerContext) {
+        super.channelInactive(context)
         packetHandler.onDisconnect(this)
     }
 
@@ -123,55 +123,7 @@ class Connection(
         }
     }
 
-    private fun finishLogin() {
-        if (compressionThreshold > -1) {
-            sendPacket(ClientboundLoginCompressionPacket(compressionThreshold))
-            channel.pipeline()
-                .addBefore(
-                    ChannelHandlers.RAW_PACKET_DECODER, ChannelHandlers.PACKET_COMPRESSION_DECODER,
-                    CompressionDecoder()
-                )
-                .addBefore(
-                    ChannelHandlers.RAW_PACKET_ENCODER, ChannelHandlers.PACKET_COMPRESSION_ENCODER,
-                    CompressionEncoder(compressionThreshold)
-                )
-        }
-
-        sendPacket(ClientboundLoginFinishedPacket(gameProfile))
-    }
-
-    override fun channelReadComplete(ctx: ChannelHandlerContext) {
-        ctx.flush()
-    }
-
-    override fun exceptionCaught(connection: ChannelHandlerContext, cause: Throwable) {
-        LoggerFactory.getLogger(Connection::class.java).error("Connection closed", cause)
-        connection.flush()
-        connection.close()
-    }
-
-    fun sendPacket(packet: ClientboundPacket) {
-        channel.writeAndFlush(packet)
-    }
-
-    fun kick(message: String) {
-        val formattedMessage = Component.text("Disconnected").appendNewline().append(Component.text(message))
-        val packet = when (state) {
-            ProtocolState.HANDSHAKE,
-            ProtocolState.STATUS,
-            ProtocolState.LOGIN,
-                -> ClientboundLoginDisconnectPacket(formattedMessage)
-
-            ProtocolState.CONFIGURATION,
-            ProtocolState.PLAY,
-                -> ClientboundDisconnectPacket(formattedMessage)
-        }
-
-        sendPacket(packet)
-        channel.close()
-    }
-
-    fun handleEncryptionResponse(packet: ServerboundEncryptionResponsePacket) {
+    private fun handleEncryptionResponse(packet: ServerboundEncryptionResponsePacket) {
         val cipher = Cipher.getInstance("RSA")
         cipher.init(Cipher.DECRYPT_MODE, crypto.privateKey)
 
@@ -218,5 +170,53 @@ class Connection(
             )
 
         finishLogin()
+    }
+
+    private fun finishLogin() {
+        if (compressionThreshold > -1) {
+            sendPacket(ClientboundLoginCompressionPacket(compressionThreshold))
+            channel.pipeline()
+                .addBefore(
+                    ChannelHandlers.RAW_PACKET_DECODER, ChannelHandlers.PACKET_COMPRESSION_DECODER,
+                    CompressionDecoder()
+                )
+                .addBefore(
+                    ChannelHandlers.RAW_PACKET_ENCODER, ChannelHandlers.PACKET_COMPRESSION_ENCODER,
+                    CompressionEncoder(compressionThreshold)
+                )
+        }
+
+        sendPacket(ClientboundLoginFinishedPacket(gameProfile))
+    }
+
+    override fun channelReadComplete(context: ChannelHandlerContext) {
+        context.flush()
+    }
+
+    override fun exceptionCaught(context: ChannelHandlerContext, cause: Throwable) {
+        LoggerFactory.getLogger(Connection::class.java).error("Connection closed", cause)
+        context.flush()
+        context.close()
+    }
+
+    fun sendPacket(packet: ClientboundPacket) {
+        channel.writeAndFlush(packet)
+    }
+
+    fun kick(message: String) {
+        val formattedMessage = Component.text("Disconnected").appendNewline().append(Component.text(message))
+        val packet = when (state) {
+            ProtocolState.HANDSHAKE,
+            ProtocolState.STATUS,
+            ProtocolState.LOGIN,
+                -> ClientboundLoginDisconnectPacket(formattedMessage)
+
+            ProtocolState.CONFIGURATION,
+            ProtocolState.PLAY,
+                -> ClientboundDisconnectPacket(formattedMessage)
+        }
+
+        sendPacket(packet)
+        channel.close()
     }
 }
