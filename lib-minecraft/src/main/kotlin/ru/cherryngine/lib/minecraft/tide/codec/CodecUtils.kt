@@ -137,19 +137,6 @@ object CodecUtils {
         return buffer
     }
 
-    fun ByteBuf.toByteArraySafe(): ByteArray {
-        if (this.hasArray()) {
-            return this.array()
-        }
-
-        val bytes = ByteArray(this.readableBytes())
-        this.getBytes(this.readerIndex(), bytes)
-
-        return bytes
-    }
-
-    fun ByteArray.toByteBuf(): ByteBuf = Unpooled.copiedBuffer(this)
-
     inline fun byteBufBytes(writer: (ByteBuf) -> Unit): ByteArray {
         return Unpooled.buffer().use {
             writer.invoke(it)

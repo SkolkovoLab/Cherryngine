@@ -19,6 +19,8 @@ import java.net.InetSocketAddress
 class NettyServer(
     val ip: String,
     val port: Int,
+    val mojangAuth: Boolean,
+    val compressionThreshold: Int,
 
     val clientboundPacketRegistry: ClientboundPacketRegistry,
     val serverboundPacketRegistry: ServerboundPacketRegistry,
@@ -31,7 +33,7 @@ class NettyServer(
         val bootstrap = ServerBootstrap()
         val channelInitializer = object : ChannelInitializer<SocketChannel>() {
             override fun initChannel(channel: SocketChannel) {
-                val connection = Connection(packetHandler)
+                val connection = Connection(packetHandler, mojangAuth, compressionThreshold)
                 val pipeline = channel.pipeline()
                     //encoders
                     .addFirst(

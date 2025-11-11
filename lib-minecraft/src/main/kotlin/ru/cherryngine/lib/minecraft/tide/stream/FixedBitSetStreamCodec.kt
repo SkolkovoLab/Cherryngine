@@ -2,7 +2,6 @@ package ru.cherryngine.lib.minecraft.tide.stream
 
 import io.netty.buffer.ByteBuf
 import ru.cherryngine.lib.minecraft.tide.codec.Codec
-import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils.toByteArraySafe
 import java.util.*
 
 class FixedBitSetStreamCodec(
@@ -15,8 +14,9 @@ class FixedBitSetStreamCodec(
     }
 
     override fun read(buffer: ByteBuf): BitSet {
-        val array = buffer.readBytes((length + 7) / 8)
-        return BitSet.valueOf(array.toByteArraySafe())
+        val array = ByteArray((length + 7) / 8)
+        buffer.readBytes(array)
+        return BitSet.valueOf(array)
     }
 
 }

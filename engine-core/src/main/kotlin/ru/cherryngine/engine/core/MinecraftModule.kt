@@ -12,7 +12,9 @@ class MinecraftModule(
     fun getDockyardServer(): MinecraftServer {
         return MinecraftServer(
             engineCoreConfig.address,
-            engineCoreConfig.port
+            engineCoreConfig.port,
+            engineCoreConfig.mojangAuth,
+            engineCoreConfig.compressionThreshold
         )
     }
 }

@@ -5,12 +5,12 @@ import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import java.util.*
 
 data class ServerboundHelloPacket(
-    val name: String,
+    val username: String,
     val uuid: UUID
 ) : ServerboundPacket {
     companion object {
         val STREAM_CODEC = StreamCodec.of(
-            StreamCodec.STRING, ServerboundHelloPacket::name,
+            StreamCodec.STRING, ServerboundHelloPacket::username,
             StreamCodec.UUID, ServerboundHelloPacket::uuid,
             ::ServerboundHelloPacket
         )

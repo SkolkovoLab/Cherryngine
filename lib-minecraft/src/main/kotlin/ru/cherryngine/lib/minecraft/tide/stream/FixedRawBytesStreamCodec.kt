@@ -1,7 +1,6 @@
 package ru.cherryngine.lib.minecraft.tide.stream
 
 import io.netty.buffer.ByteBuf
-import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils.toByteArraySafe
 
 class FixedRawBytesStreamCodec(
     val length: Int
@@ -17,9 +16,8 @@ class FixedRawBytesStreamCodec(
         require(buffer.readableBytes() >= length) {
             "Not enough bytes in buffer. Expected $length, but got ${buffer.readableBytes()}"
         }
-        val buf = buffer.readBytes(length)
-        val byteArray = buf.toByteArraySafe()
-        buf.release()
+        val byteArray = ByteArray(length)
+        buffer.readBytes(byteArray)
         return byteArray
     }
 }

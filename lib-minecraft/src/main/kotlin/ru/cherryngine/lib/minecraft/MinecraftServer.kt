@@ -11,6 +11,8 @@ import ru.cherryngine.lib.minecraft.server.NettyServer
 class MinecraftServer(
     ip: String,
     port: Int,
+    mojangAuth: Boolean = false,
+    compressionThreshold: Int = 256,
 ) {
     private val logger = LoggerFactory.getLogger(MinecraftServer::class.java)
     val nettyServer: NettyServer
@@ -63,6 +65,8 @@ class MinecraftServer(
         nettyServer = NettyServer(
             ip,
             port,
+            mojangAuth,
+            compressionThreshold,
             clientboundPacketRegistry,
             serverboundPacketRegistry,
         )

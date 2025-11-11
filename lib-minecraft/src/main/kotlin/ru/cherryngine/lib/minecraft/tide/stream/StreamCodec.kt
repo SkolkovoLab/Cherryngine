@@ -4,8 +4,6 @@ import io.netty.buffer.ByteBuf
 import kotlinx.datetime.Instant
 import net.kyori.adventure.key.Key
 import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils
-import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils.toByteArraySafe
-import ru.cherryngine.lib.minecraft.utils.use
 import java.util.*
 import java.util.UUID as JavaUUID
 
@@ -155,8 +153,9 @@ interface StreamCodec<T> {
 
             override fun read(buffer: ByteBuf): ByteArray {
                 val length = buffer.readableBytes()
-                val tempBuffer = buffer.readBytes(length)
-                return tempBuffer.use { it.toByteArraySafe() }
+                val result = ByteArray(length)
+                buffer.readBytes(result)
+                return result
             }
         }
         val BYTE_ARRAY = object : StreamCodec<ByteArray> {
@@ -167,8 +166,9 @@ interface StreamCodec<T> {
 
             override fun read(buffer: ByteBuf): ByteArray {
                 val length = VAR_INT.read(buffer)
-                val tempBuffer = buffer.readBytes(length)
-                return tempBuffer.use { it.toByteArraySafe() }
+                val result = ByteArray(length)
+                buffer.readBytes(result)
+                return result
             }
         }
         val UUID = object : StreamCodec<JavaUUID> {

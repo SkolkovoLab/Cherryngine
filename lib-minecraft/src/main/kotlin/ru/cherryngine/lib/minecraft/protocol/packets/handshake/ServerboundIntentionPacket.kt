@@ -5,16 +5,16 @@ import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 data class ServerboundIntentionPacket(
-    val version: Int,
+    val protocolVersion: Int,
     val serverAddress: String,
-    val port: Short,
+    val serverPort: Short,
     val intent: Intent
 ) : ServerboundPacket {
     companion object {
         val STREAM_CODEC = StreamCodec.of(
-            StreamCodec.VAR_INT, ServerboundIntentionPacket::version,
+            StreamCodec.VAR_INT, ServerboundIntentionPacket::protocolVersion,
             StreamCodec.STRING, ServerboundIntentionPacket::serverAddress,
-            StreamCodec.SHORT, ServerboundIntentionPacket::port,
+            StreamCodec.SHORT, ServerboundIntentionPacket::serverPort,
             Intent.STREAM_CODEC, ServerboundIntentionPacket::intent,
             ::ServerboundIntentionPacket
         )

@@ -2,21 +2,16 @@ package ru.cherryngine.impl.demo
 
 import ru.cherryngine.lib.minecraft.PacketHandler
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.common.ClientboundPongResponsePacket
 import ru.cherryngine.lib.minecraft.protocol.packets.common.ClientboundUpdateTagsPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.common.ServerboundPingRequestPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundFinishConfigurationPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundRegistryDataPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ServerboundFinishConfigurationPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.login.ClientboundLoginFinishedPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundHelloPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundLoginAcknowledgedPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundGameEventPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLoginPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ClientboundStatusResponsePacket
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ServerboundStatusRequestPacket
 import ru.cherryngine.lib.minecraft.protocol.types.GameMode
-import ru.cherryngine.lib.minecraft.protocol.types.GameProfile
 import ru.cherryngine.lib.minecraft.registry.DimensionTypes
 import ru.cherryngine.lib.minecraft.registry.RegistryManager
 import ru.cherryngine.lib.minecraft.registry.registries.tags.*
@@ -31,10 +26,6 @@ class DemoPacketHandler(
     val toRemoveEntities = mutableSetOf<Connection>()
     override fun onPacket(connection: Connection, packet: ServerboundPacket) {
         when (packet) {
-            is ServerboundPingRequestPacket -> {
-                connection.sendPacket(ClientboundPongResponsePacket(packet.time))
-            }
-
             is ServerboundStatusRequestPacket -> {
                 connection.sendPacket(
                     ClientboundStatusResponsePacket(
@@ -55,11 +46,6 @@ class DemoPacketHandler(
                     """.trimIndent()
                     )
                 )
-            }
-
-            is ServerboundHelloPacket -> {
-                val gameProfile = GameProfile(packet.uuid, packet.name, mutableListOf())
-                connection.sendPacket(ClientboundLoginFinishedPacket(gameProfile))
             }
 
             is ServerboundLoginAcknowledgedPacket -> {
