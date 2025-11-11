@@ -8,6 +8,7 @@ import ru.cherryngine.impl.demo.ecs.testimpl.components.WorldComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.systems.*
 import ru.cherryngine.impl.demo.world.TestWorldShit
 import ru.cherryngine.lib.minecraft.MinecraftServer
+import ru.cherryngine.lib.via.initVia
 import kotlin.time.Duration.Companion.milliseconds
 
 @Singleton
@@ -48,5 +49,7 @@ class DemoInit(
         }
         ticker.start()
         minecraftServer.start(demoPacketHandler)
+
+        initVia(minecraftServer)
     }
 }

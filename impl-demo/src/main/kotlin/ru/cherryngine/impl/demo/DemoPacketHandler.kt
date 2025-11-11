@@ -2,6 +2,7 @@ package ru.cherryngine.impl.demo
 
 import net.kyori.adventure.text.minimessage.MiniMessage
 import ru.cherryngine.lib.minecraft.PacketHandler
+import ru.cherryngine.lib.minecraft.ServerConsts
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.common.ClientboundUpdateTagsPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundFinishConfigurationPacket
@@ -34,8 +35,8 @@ class DemoPacketHandler(
             is ServerboundStatusRequestPacket -> {
                 val status = ServerStatus(
                     version = ServerStatus.Version(
-                        name = "1.21.8",
-                        protocol = 772
+                        name = ServerConsts.MINECRAFT_VERSION,
+                        protocol = ServerConsts.PROTOCOL_VERSION
                     ),
                     players = ServerStatus.Players(
                         online = 13,

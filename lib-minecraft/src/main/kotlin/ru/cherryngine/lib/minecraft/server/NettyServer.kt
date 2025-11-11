@@ -29,12 +29,14 @@ class NettyServer(
     val bossGroup = MultiThreadIoEventLoopGroup(NioIoHandler.newFactory())
     val workerGroup = MultiThreadIoEventLoopGroup(NioIoHandler.newFactory())
 
+    var injectors = mutableSetOf<ChannelInjector>()
+
     fun start(packetHandler: PacketHandler) {
         val bootstrap = ServerBootstrap()
         val channelInitializer = object : ChannelInitializer<SocketChannel>() {
             override fun initChannel(channel: SocketChannel) {
                 val connection = Connection(packetHandler, mojangAuth, compressionThreshold)
-                val pipeline = channel.pipeline()
+                channel.pipeline()
                     //encoders
                     .addFirst(
                         ChannelHandlers.RAW_PACKET_ENCODER,
@@ -55,6 +57,8 @@ class NettyServer(
                         PacketLengthEncoder()
                     )
                     .addLast(ChannelHandlers.PLAYER_NETWORK_MANAGER, connection)
+
+                injectors.forEach { it.inject(channel) }
             }
         }
         bootstrap.group(bossGroup, workerGroup)
