@@ -1,7 +1,6 @@
 package ru.cherryngine.impl.demo
 
 import ru.cherryngine.lib.minecraft.PacketHandler
-import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.common.ClientboundPongResponsePacket
 import ru.cherryngine.lib.minecraft.protocol.packets.common.ClientboundUpdateTagsPacket
@@ -9,7 +8,6 @@ import ru.cherryngine.lib.minecraft.protocol.packets.common.ServerboundPingReque
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundFinishConfigurationPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundRegistryDataPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ServerboundFinishConfigurationPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.handshake.ServerboundIntentionPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ClientboundLoginFinishedPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundHelloPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundLoginAcknowledgedPacket
@@ -23,23 +21,16 @@ import ru.cherryngine.lib.minecraft.registry.DimensionTypes
 import ru.cherryngine.lib.minecraft.registry.RegistryManager
 import ru.cherryngine.lib.minecraft.registry.registries.tags.*
 import ru.cherryngine.lib.minecraft.server.Connection
+import java.util.concurrent.ConcurrentHashMap
 
 class DemoPacketHandler(
     val defaultViewContextID: String,
 ) : PacketHandler {
-    val queues = hashMapOf<Connection, MutableList<ServerboundPacket>>()
+    val queues: MutableMap<Connection, MutableList<ServerboundPacket>> = ConcurrentHashMap<Connection, MutableList<ServerboundPacket>>()
     val toCreateEntities = mutableSetOf<Connection>()
     val toRemoveEntities = mutableSetOf<Connection>()
     override fun onPacket(connection: Connection, packet: ServerboundPacket) {
         when (packet) {
-            is ServerboundIntentionPacket -> {
-                connection.state = when (packet.intent) {
-                    ServerboundIntentionPacket.Intent.STATUS -> ProtocolState.STATUS
-                    ServerboundIntentionPacket.Intent.LOGIN -> ProtocolState.LOGIN
-                    ServerboundIntentionPacket.Intent.TRANSFER -> ProtocolState.LOGIN
-                }
-            }
-
             is ServerboundPingRequestPacket -> {
                 connection.sendPacket(ClientboundPongResponsePacket(packet.time))
             }
@@ -72,8 +63,6 @@ class DemoPacketHandler(
             }
 
             is ServerboundLoginAcknowledgedPacket -> {
-                connection.state = ProtocolState.CONFIGURATION
-
                 toCreateEntities.add(connection)
 
                 val cachedTagPacket = ClientboundUpdateTagsPacket(
@@ -94,7 +83,6 @@ class DemoPacketHandler(
             }
 
             is ServerboundFinishConfigurationPacket -> {
-                connection.state = ProtocolState.PLAY
                 connection.sendPacket(
                     ClientboundLoginPacket(
                         0,

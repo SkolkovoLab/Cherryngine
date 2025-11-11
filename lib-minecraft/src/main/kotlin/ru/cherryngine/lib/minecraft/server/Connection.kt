@@ -13,12 +13,16 @@ import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.common.ClientboundKeepAlivePacket
+import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ServerboundFinishConfigurationPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.handshake.ServerboundIntentionPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundLoginAcknowledgedPacket
 import java.net.SocketAddress
 
 class Connection(
     val packetHandler: PacketHandler,
 ) : SimpleChannelInboundHandler<ServerboundPacket>() {
     var state: ProtocolState = ProtocolState.HANDSHAKE
+        private set
     lateinit var channel: Channel
     lateinit var address: SocketAddress
     val isActive: Boolean get() = channel.isActive
@@ -50,9 +54,27 @@ class Connection(
 
     override fun channelRead0(
         ctx: ChannelHandlerContext,
-        msg: ServerboundPacket,
+        packet: ServerboundPacket,
     ) {
-        packetHandler.onPacket(this, msg)
+        when (packet) {
+            is ServerboundIntentionPacket -> {
+                state = when (packet.intent) {
+                    ServerboundIntentionPacket.Intent.STATUS -> ProtocolState.STATUS
+                    ServerboundIntentionPacket.Intent.LOGIN -> ProtocolState.LOGIN
+                    ServerboundIntentionPacket.Intent.TRANSFER -> ProtocolState.LOGIN
+                }
+            }
+
+            is ServerboundLoginAcknowledgedPacket -> {
+                state = ProtocolState.CONFIGURATION
+            }
+
+            is ServerboundFinishConfigurationPacket -> {
+                state = ProtocolState.PLAY
+            }
+        }
+
+        packetHandler.onPacket(this, packet)
     }
 
     override fun channelReadComplete(ctx: ChannelHandlerContext) {
