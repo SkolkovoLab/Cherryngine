@@ -2,10 +2,10 @@ package ru.cherryngine.impl.demo.ecs.testimpl.components
 
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
-import ru.cherryngine.lib.minecraft.server.Connection
+import java.util.*
 
 data class PlayerComponent(
-    var connection: Connection,
+    var uuid: UUID,
     var viewContextID: String,
 ) : Component<PlayerComponent> {
     override fun type() = PlayerComponent

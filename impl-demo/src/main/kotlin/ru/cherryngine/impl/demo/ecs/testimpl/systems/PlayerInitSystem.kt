@@ -6,9 +6,19 @@ import com.github.quillraven.fleks.World.Companion.family
 import ru.cherryngine.impl.demo.DemoPacketHandler
 import ru.cherryngine.impl.demo.ecs.eventsComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.AxolotlModelComponent
+import ru.cherryngine.impl.demo.ecs.testimpl.components.ClientPositionComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.events.PacketsEvent
+import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ServerboundFinishConfigurationPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundGameEventPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLoginPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundPlayerPositionPacket
+import ru.cherryngine.lib.minecraft.protocol.types.GameMode
+import ru.cherryngine.lib.minecraft.protocol.types.TeleportFlags
+import ru.cherryngine.lib.minecraft.registry.DimensionTypes
+import java.util.*
 
 class PlayerInitSystem(
     val demoPacketHandler: DemoPacketHandler,
@@ -16,10 +26,23 @@ class PlayerInitSystem(
     family { all(PlayerComponent) }
 ) {
     override fun onTick() {
-        demoPacketHandler.toCreateEntities.forEach { connection ->
+        val skipCreate = mutableSetOf<UUID>()
+        world.family { all(PlayerComponent) }.forEach {
+            val playerComponent = it[PlayerComponent]
+            if (playerComponent.uuid in demoPacketHandler.toCreatePlayers) {
+                skipCreate.add(playerComponent.uuid)
+            }
+            if (playerComponent.uuid in demoPacketHandler.toRemovePlayers) {
+//                it.remove()
+            }
+        }
+        demoPacketHandler.toRemovePlayers.clear()
+
+        demoPacketHandler.toCreatePlayers.forEach { player ->
+            if (player in skipCreate) return@forEach
             world.entity {
                 it += PlayerComponent(
-                    connection,
+                    player,
                     demoPacketHandler.defaultViewContextID
                 )
 
@@ -28,24 +51,68 @@ class PlayerInitSystem(
                 it += AxolotlModelComponent
             }
         }
-        demoPacketHandler.toCreateEntities.clear()
-
-        world.family { all(PlayerComponent) }.forEach {
-            val playerComponent = it[PlayerComponent]
-            if (playerComponent.connection in demoPacketHandler.toRemoveEntities) {
-                it.remove()
-            }
-        }
-        demoPacketHandler.toRemoveEntities.clear()
+        demoPacketHandler.toCreatePlayers.clear()
 
         super.onTick()
     }
 
     override fun onTickEntity(entity: Entity) {
         val playerComponent = entity[PlayerComponent]
-        val connection = playerComponent.connection
-        val packets = demoPacketHandler.queues.remove(connection) ?: return
+        val uuid = playerComponent.uuid
+        val packets = demoPacketHandler.queues.remove(uuid) ?: return
 
         entity.eventsComponent()[PacketsEvent::class] = PacketsEvent(packets)
+
+        val player = demoPacketHandler.players[uuid] ?: return
+
+        packets.forEach { packet ->
+            if (packet is ServerboundFinishConfigurationPacket) {
+                player.connection.sendPacket(
+                    ClientboundLoginPacket(
+                        0,
+                        false,
+                        listOf(),
+                        20,
+                        8,
+                        8,
+                        false,
+                        true,
+                        false,
+                        DimensionTypes.OVERWORLD,
+                        "world",
+                        0L,
+                        GameMode.CREATIVE,
+                        GameMode.CREATIVE,
+                        false,
+                        false,
+                        null,
+                        0,
+                        32,
+                        false
+                    )
+                )
+
+                val clientPositionComponent = entity.getOrNull(ClientPositionComponent)
+
+                if (clientPositionComponent != null) {
+                    player.connection.sendPacket(
+                        ClientboundPlayerPositionPacket(
+                            0,
+                            clientPositionComponent.clientPosition,
+                            Vec3D.ZERO,
+                            clientPositionComponent.clientYawPitch,
+                            TeleportFlags.EMPTY
+                        )
+                    )
+                }
+
+                player.connection.sendPacket(
+                    ClientboundGameEventPacket(
+                        ClientboundGameEventPacket.GameEvent.START_WAITING_FOR_CHUNKS,
+                        0f
+                    )
+                )
+            }
+        }
     }
 }

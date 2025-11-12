@@ -28,9 +28,9 @@ class DemoInit(
                 add(PlayerInitSystem(demoPacketHandler))
                 add(CommandSystem())
                 add(ClientPositionSystem())
-                add(AxolotlModelSystem())
+                add(AxolotlModelSystem(demoPacketHandler))
                 add(WorldSystem(testWorldShit))
-                add(ViewSystem())
+                add(ViewSystem(demoPacketHandler))
 
                 add(ClearEventsSystem())
             }
