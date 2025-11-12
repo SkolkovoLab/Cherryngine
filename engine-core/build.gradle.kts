@@ -11,6 +11,4 @@ dependencies {
     api(libs.guava)
 
     implementation("com.github.luben:zstd-jni:1.5.5-3")
-
-    implementation("org.jctools:jctools-core:4.0.3")
 }

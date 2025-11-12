@@ -3,26 +3,36 @@
 # main
 kotlin = "2.2.21"
 kotlinx-coroutines = "1.10.2"
+kotlinx-serialization = "1.9.0"
 ksp = "2.3.2"
 micronaut = "4.10.1"
 micronaut-plugin = "4.6.1"
 shadow = "9.2.2"
 typetools = "0.6.3"
 guava = "33.5.0-jre"
+netty = "4.2.7.Final"
+slf4j = "2.0.17"
+logback = "1.5.21"
+fastutil = "8.5.18"
 
 # data
 jackson = "2.20.1"
+gson = "2.13.2"
 
 # Minecraft
-kyori-adventure = "4.25.0"
+kyori-adventure = "4.25.0-nbt"
 cloud = "2.0.0"
 creative = "1.7.3"
+viaversion = "5.5.1"
 
 [libraries]
 
 # main
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "kotlinx-coroutines" }
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
 micronaut-bom = { module = "io.micronaut:micronaut-core-bom", version.ref = "micronaut" }
 micronaut-kotlin-runtime = { module = "io.micronaut.kotlin:micronaut-kotlin-runtime" }
@@ -30,8 +40,11 @@ micronaut-serde-jackson = { module = "io.micronaut.serde:micronaut-serde-jackson
 micronaut-serde-processor = { module = "io.micronaut.serde:micronaut-serde-processor" }
 
 typetools = { module = "net.jodah:typetools", version.ref = "typetools" }
-
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
+netty-all = { module = "io.netty:netty-all", version.ref = "netty" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+fastutil = { module = "it.unimi.dsi:fastutil", version.ref = "fastutil" }
 
 # data
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
@@ -39,19 +52,31 @@ jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", ver
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
 jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
 
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+
 # minecraft
 kyori-adventure-api = { module = "net.kyori:adventure-api", version.ref = "kyori-adventure" }
+kyori-adventure-nbt = { module = "net.kyori:adventure-nbt", version.ref = "kyori-adventure" }
 kyori-adventure-text-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "kyori-adventure" }
+kyori-adventure-text-serializer-nbt = { module = "net.kyori:adventure-text-serializer-nbt", version.ref = "kyori-adventure" }
+kyori-adventure-text-serializer-gson = { module = "net.kyori:adventure-text-serializer-gson", version.ref = "kyori-adventure" }
 kyori-adventure-text-serializer-ansi = { module = "net.kyori:adventure-text-serializer-ansi", version.ref = "kyori-adventure" }
+
 cloud-core = { module = "org.incendo:cloud-core", version.ref = "cloud" }
 cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud" }
 cloud-kotlin-coroutines = { module = "org.incendo:cloud-kotlin-coroutines", version.ref = "cloud" }
 cloud-kotlin-coroutines-annotations = { module = "org.incendo:cloud-kotlin-coroutines-annotations", version.ref = "cloud" }
 cloud-kotlin-extensions = { module = "org.incendo:cloud-kotlin-extensions", version.ref = "cloud" }
+
 creative-api = { module = "team.unnamed:creative-api", version.ref = "creative" }
 creative-serializer-minecraft = { module = "team.unnamed:creative-serializer-minecraft", version.ref = "creative" }
 creative-server = { module = "team.unnamed:creative-server", version.ref = "creative" }
 
+viaversion-common = { module = "com.viaversion:viaversion-common", version.ref = "viaversion" }
+viabackwards-common = { module = "com.viaversion:viabackwards-common", version.ref = "viaversion" }
+
 [bundles]
 jackson = ["jackson-core", "jackson-databind", "jackson-module-kotlin", "jackson-dataformat-yaml"]
 
+[plugins]
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

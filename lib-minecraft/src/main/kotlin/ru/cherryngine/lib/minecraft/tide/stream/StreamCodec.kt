@@ -1,10 +1,10 @@
 package ru.cherryngine.lib.minecraft.tide.stream
 
 import io.netty.buffer.ByteBuf
-import kotlinx.datetime.Instant
 import net.kyori.adventure.key.Key
 import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils
 import java.util.*
+import kotlin.time.Instant
 import java.util.UUID as JavaUUID
 
 interface StreamCodec<T> {

@@ -1,11 +1,11 @@
 package ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound
 
-import kotlinx.datetime.Instant
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 import ru.cherryngine.lib.minecraft.tide.stream.FixedBitSetStreamCodec
 import ru.cherryngine.lib.minecraft.tide.stream.FixedRawBytesStreamCodec
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import java.util.*
+import kotlin.time.Instant
 
 data class ServerboundChatPacket(
     val message: String,

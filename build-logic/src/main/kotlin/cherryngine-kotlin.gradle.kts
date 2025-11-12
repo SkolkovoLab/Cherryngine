@@ -10,5 +10,8 @@ kotlin {
 }
 
 tasks.withType<KotlinCompile> {
-    compilerOptions.freeCompilerArgs = listOf("-Xcontext-parameters")
+    compilerOptions.freeCompilerArgs = listOf(
+        "-Xcontext-parameters",
+        "-opt-in=kotlin.time.ExperimentalTime"
+    )
 }

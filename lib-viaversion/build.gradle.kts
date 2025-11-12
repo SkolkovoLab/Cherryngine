@@ -5,10 +5,11 @@ plugins {
 dependencies {
     api(project(":lib-minecraft"))
 
-    api("com.viaversion:viaversion-common:5.5.1") {
+    api(libs.viaversion.common) {
         exclude(group = "org.slf4j", module = "org.slf4j")
     }
-    api("com.viaversion:viabackwards-common:5.5.1") {
+
+    api(libs.viabackwards.common) {
         exclude(group = "org.slf4j", module = "org.slf4j")
     }
 }
