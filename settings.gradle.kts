@@ -15,6 +15,7 @@ include(
 
     "impl-demo",
 
+    "lib-grimac",
     "lib-jackson",
     "lib-math",
     "lib-minecraft",

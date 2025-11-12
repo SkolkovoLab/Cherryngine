@@ -15,4 +15,7 @@ repositories {
     maven("https://libraries.minecraft.net") // Brigadier
     maven("https://repo.cherry.pizza/repository/maven-public/")
     maven("https://repo.viaversion.com/")
+    maven("https://repo.grim.ac/snapshots")
+    maven("https://repo.codemc.io/repository/maven-releases/")
+    maven("https://repo.codemc.io/repository/maven-snapshots/")
 }
