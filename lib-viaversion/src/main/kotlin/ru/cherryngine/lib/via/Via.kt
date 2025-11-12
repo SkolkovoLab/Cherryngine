@@ -1,17 +1,23 @@
 package ru.cherryngine.lib.via
 
+import com.viaversion.viabackwards.api.ViaBackwardsConfig
 import com.viaversion.viaversion.ViaManagerImpl
 import com.viaversion.viaversion.api.Via
+import com.viaversion.viaversion.api.configuration.ViaVersionConfig
 import ru.cherryngine.lib.minecraft.MinecraftServer
-import java.io.File
 
-fun initVia(minecraftServer: MinecraftServer) {
-    val config = ViaConfigImpl().apply { reload() }
+fun initViaVersion(
+    minecraftServer: MinecraftServer,
+    viaVersionConfig: ViaVersionConfig?,
+    viaBackwardsConfig: ViaBackwardsConfig?
+) {
+    val viaVersionConfig = viaVersionConfig ?: ViaConfigImpl()
+    viaVersionConfig.reload()
     val api = ViaApiImpl()
-    val platform = ViaPlatformImpl(config, api)
+    val platform = ViaPlatformImpl(viaVersionConfig, api)
     val injector = ViaInjectorImpl(minecraftServer)
     val loader = ViaLoaderImpl()
-    val backwardsPlatform = ViaBackwardsPlatformImpl()
+    val backwardsPlatform = ViaBackwardsPlatformImpl(viaBackwardsConfig)
 
     val viaManager = ViaManagerImpl.builder()
         .platform(platform)
@@ -20,7 +26,7 @@ fun initVia(minecraftServer: MinecraftServer) {
         .build()
     Via.init(viaManager)
     viaManager.init()
-    backwardsPlatform.init(File("./via/backwards_config.yml"))
+    backwardsPlatform.init(null)
     viaManager.onServerLoaded()
     backwardsPlatform.enable()
 }

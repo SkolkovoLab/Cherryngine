@@ -24,7 +24,7 @@ class ViaPlatformImpl(
     override fun getPlatformName() = "Cherryngine"
     override fun getPlatformVersion() = "dev"
     override fun getPluginVersion() = VersionInfo.VERSION
-    override fun getDataFolder() = File("./via/")
+    override fun getDataFolder() = File("./viaversion/")
     override fun hasPlugin(plugin: String) = false
 
     override fun runAsync(runnable: Runnable) =

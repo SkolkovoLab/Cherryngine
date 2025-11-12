@@ -6,8 +6,10 @@ import ru.cherryngine.lib.minecraft.utils.Slf4jToJulAdapter
 import java.io.File
 import org.slf4j.Logger as Slf4jLogger
 
-class ViaConfigImpl : AbstractViaConfig(
-    File("./via/config.yml"),
+class ViaConfigImpl(
+    file: File = File("./viaversion/config.yml"),
+) : AbstractViaConfig(
+    file,
     Slf4jToJulAdapter(logger)
 ) {
     companion object {
