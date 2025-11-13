@@ -5,9 +5,8 @@ import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
 import ru.cherryngine.impl.demo.DemoPacketHandler
 import ru.cherryngine.impl.demo.Player
-import ru.cherryngine.impl.demo.ecs.testimpl.components.ClientPositionComponent
-import ru.cherryngine.impl.demo.ecs.testimpl.components.EventsComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerComponent
+import ru.cherryngine.impl.demo.ecs.testimpl.components.PositionComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.events.ViewableProvidersEvent
 import ru.cherryngine.impl.demo.view.StaticViewable
@@ -33,10 +32,9 @@ class ViewSystem(
         val viewableProviders: MutableSet<ViewableProvider> = mutableSetOf()
         val staticViewableProviders: MutableSet<StaticViewableProvider> = mutableSetOf()
 
-        world.family { all(ViewableComponent, EventsComponent) }.forEach { viewableEntity ->
+        world.family { all(ViewableComponent, ViewableProvidersEvent) }.forEach { viewableEntity ->
             val viewableComponent = viewableEntity[ViewableComponent]
-            val eventsComponent = viewableEntity[EventsComponent]
-            val viewableProvidersEvent = eventsComponent[ViewableProvidersEvent::class] ?: return@forEach
+            val viewableProvidersEvent = viewableEntity[ViewableProvidersEvent]
 
             if (playerComponent.viewContextID != viewableComponent.viewContextID) return@forEach
             viewableProviders.addAll(viewableProvidersEvent.viewableProviders)
@@ -67,8 +65,8 @@ class ViewSystem(
         if (connection.state != ProtocolState.PLAY) return
         val distance = DEFAULT_RENDER_DISTANCE
 
-        val clientChunkPos = entity.getOrNull(ClientPositionComponent)
-            ?.clientPosition
+        val clientChunkPos = entity.getOrNull(PositionComponent)
+            ?.position
             ?.let { ChunkUtils.chunkPosFromVec3D(it) }
             ?: ChunkPos.ZERO
 

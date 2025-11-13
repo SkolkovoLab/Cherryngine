@@ -1,8 +1,13 @@
 package ru.cherryngine.impl.demo.ecs.testimpl.events
 
-import ru.cherryngine.impl.demo.ecs.GameEvent
+import com.github.quillraven.fleks.Component
+import com.github.quillraven.fleks.ComponentType
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 
-data class PacketsEvent(
+class PacketsEvent(
     val packets: List<ServerboundPacket>,
-) : GameEvent
+) : Component<PacketsEvent> {
+    override fun type() = PacketsEvent
+
+    companion object : ComponentType<PacketsEvent>()
+}

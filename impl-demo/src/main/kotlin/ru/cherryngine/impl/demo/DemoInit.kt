@@ -26,11 +26,12 @@ class DemoInit(
         val fleksWorld = configureWorld {
             systems {
                 add(PlayerInitSystem(demoPacketHandler))
+                add(ReadClientPositionSystem(demoPacketHandler))
                 add(CommandSystem())
-                add(ClientPositionSystem())
                 add(AxolotlModelSystem(demoPacketHandler))
                 add(WorldSystem(testWorldShit))
                 add(ViewSystem(demoPacketHandler))
+                add(WriteClientPositionSystem(demoPacketHandler))
 
                 add(ClearEventsSystem())
             }

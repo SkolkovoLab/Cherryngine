@@ -3,20 +3,17 @@ package ru.cherryngine.impl.demo.ecs.testimpl.systems
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
+import org.slf4j.LoggerFactory
 import ru.cherryngine.impl.demo.DemoPacketHandler
-import ru.cherryngine.impl.demo.ecs.eventsComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.AxolotlModelComponent
-import ru.cherryngine.impl.demo.ecs.testimpl.components.ClientPositionComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerComponent
+import ru.cherryngine.impl.demo.ecs.testimpl.components.PositionComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.events.PacketsEvent
-import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ServerboundFinishConfigurationPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundGameEventPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLoginPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundPlayerPositionPacket
 import ru.cherryngine.lib.minecraft.protocol.types.GameMode
-import ru.cherryngine.lib.minecraft.protocol.types.TeleportFlags
 import ru.cherryngine.lib.minecraft.registry.DimensionTypes
 import java.util.*
 
@@ -25,6 +22,8 @@ class PlayerInitSystem(
 ) : IteratingSystem(
     family { all(PlayerComponent) }
 ) {
+    private val logger = LoggerFactory.getLogger(PlayerInitSystem::class.java)
+
     override fun onTick() {
         val skipCreate = mutableSetOf<UUID>()
         world.family { all(PlayerComponent) }.forEach {
@@ -40,6 +39,7 @@ class PlayerInitSystem(
 
         demoPacketHandler.toCreatePlayers.forEach { player ->
             if (player in skipCreate) return@forEach
+            logger.info("Creating ECS entity for player $player")
             world.entity {
                 it += PlayerComponent(
                     player,
@@ -61,7 +61,9 @@ class PlayerInitSystem(
         val uuid = playerComponent.uuid
         val packets = demoPacketHandler.queues.remove(uuid) ?: return
 
-        entity.eventsComponent()[PacketsEvent::class] = PacketsEvent(packets)
+        entity.configure {
+            it += PacketsEvent(packets)
+        }
 
         val player = demoPacketHandler.players[uuid] ?: return
 
@@ -92,18 +94,10 @@ class PlayerInitSystem(
                     )
                 )
 
-                val clientPositionComponent = entity.getOrNull(ClientPositionComponent)
+                val positionComponent = entity.getOrNull(PositionComponent)
 
-                if (clientPositionComponent != null) {
-                    player.connection.sendPacket(
-                        ClientboundPlayerPositionPacket(
-                            0,
-                            clientPositionComponent.clientPosition,
-                            Vec3D.ZERO,
-                            clientPositionComponent.clientYawPitch,
-                            TeleportFlags.EMPTY
-                        )
-                    )
+                if (positionComponent != null) {
+                    player.teleport(positionComponent.position, positionComponent.yawPitch)
                 }
 
                 player.connection.sendPacket(
