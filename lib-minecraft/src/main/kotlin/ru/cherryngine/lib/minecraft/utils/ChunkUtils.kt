@@ -41,9 +41,18 @@ object ChunkUtils {
     fun chunkPosFromVec3I(vec: Vec3I) = ChunkPos(getChunkCoordinate(vec.x), getChunkCoordinate(vec.z))
 
     fun sectionIndexFromBlockPos(blockPos: Vec3I): Long {
-        val sectionX = getChunkCoordinate(blockPos.x).toLong()
-        val sectionY = getChunkCoordinate(blockPos.y).toLong()
-        val sectionZ = getChunkCoordinate(blockPos.z).toLong()
+        val sectionPos = Vec3I(
+            getChunkCoordinate(blockPos.x),
+            getChunkCoordinate(blockPos.y),
+            getChunkCoordinate(blockPos.z)
+        )
+        return sectionIndexFromSectionPos(sectionPos)
+    }
+
+    fun sectionIndexFromSectionPos(sectionPos: Vec3I): Long {
+        val sectionX = sectionPos.x.toLong()
+        val sectionY = sectionPos.y.toLong()
+        val sectionZ = sectionPos.z.toLong()
         return ((sectionX and 0x3FFFFF) shl 42) or (sectionY and 0xFFFFF) or ((sectionZ and 0x3FFFFF) shl 20)
     }
 

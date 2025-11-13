@@ -43,10 +43,10 @@ class PlayerInitSystem(
             world.entity {
                 it += PlayerComponent(
                     player,
-                    demoPacketHandler.defaultViewContextID
+                    setOf(demoPacketHandler.defaultViewContextID)
                 )
 
-                it += ViewableComponent(demoPacketHandler.defaultViewContextID)
+                it += ViewableComponent(setOf(demoPacketHandler.defaultViewContextID))
 
                 it += AxolotlModelComponent
             }

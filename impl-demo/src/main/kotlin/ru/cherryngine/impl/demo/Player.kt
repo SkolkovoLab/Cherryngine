@@ -5,6 +5,7 @@ import ru.cherryngine.impl.demo.view.Viewable
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundPlayerPositionPacket
+import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.protocol.types.MovePlayerFlags
 import ru.cherryngine.lib.minecraft.protocol.types.TeleportFlags
 import ru.cherryngine.lib.minecraft.server.Connection
@@ -18,6 +19,7 @@ class Player(
     var clientMovePlayerFlags: MovePlayerFlags = MovePlayerFlags(false, false)
     val currentVisibleViewables: MutableSet<Viewable> = hashSetOf()
     val currentVisibleStaticViewables: MutableSet<StaticViewable> = hashSetOf()
+    val chunksToRefresh: MutableSet<ChunkPos> = hashSetOf()
 
     fun teleport(position: Vec3D, yawPitch: YawPitch) {
         clientPosition = position

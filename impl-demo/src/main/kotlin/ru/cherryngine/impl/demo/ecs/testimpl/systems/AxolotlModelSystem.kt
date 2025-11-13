@@ -29,14 +29,15 @@ class AxolotlModelSystem(
 
     override fun onTickEntity(entity: Entity) {
         val playerComponent = entity.getOrNull(PlayerComponent)
+        val name = playerComponent?.uuid?.let { demoPacketHandler.players[it] }?.connection?.gameProfile?.username
         val mcEntity = models.computeIfAbsent(entity) {
             McEntity(Random.nextInt(1000, 1_000_000), EntityTypes.AXOLOTL).apply {
                 metadata[AxolotlMeta.HAS_NO_GRAVITY] = true
                 metadata[AxolotlMeta.VARIANT] = AxolotlMeta.Variant.entries.random()
-                metadata[AxolotlMeta.CUSTOM_NAME] = Component.text(playerComponent?.uuid.toString())
+                if (name != null) metadata[AxolotlMeta.CUSTOM_NAME] = Component.text(name)
                 metadata[AxolotlMeta.CUSTOM_NAME_VISIBLE] = true
                 if (playerComponent != null) {
-                    viewerPredicate = { it != demoPacketHandler.players[playerComponent.uuid]?.connection }
+                    viewerPredicate = { it != demoPacketHandler.players[playerComponent.uuid] }
                 }
             }
         }

@@ -3,8 +3,8 @@ package ru.cherryngine.impl.demo.ecs.testimpl.systems
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
+import ru.cherryngine.impl.demo.ecs.testimpl.components.ApartComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerComponent
-import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.events.PacketsEvent
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundChatCommandPacket
 import java.util.*
@@ -26,10 +26,17 @@ class CommandSystem() : IteratingSystem(
         val split = command.split(" ")
 
         when (split.getOrNull(0)) {
-            "world" -> {
-                val viewContextID = split[1]
-                playerComponent.viewContextID = viewContextID
-                entity.getOrNull(ViewableComponent)?.viewContextID = viewContextID
+            "apart" -> {
+                val apartId = split[1]
+                if (apartId == "null") {
+                    entity.configure {
+                        it -= ApartComponent
+                    }
+                } else {
+                    entity.configure {
+                        it.getOrAdd(ApartComponent) { ApartComponent("") }.apartName = apartId
+                    }
+                }
             }
 
             "swap" -> {

@@ -8,7 +8,6 @@ import ru.cherryngine.impl.demo.ecs.testimpl.components.WorldComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.systems.*
 import ru.cherryngine.impl.demo.via.MicronautViaBackwardsConfig
 import ru.cherryngine.impl.demo.via.MicronautViaVersionConfig
-import ru.cherryngine.impl.demo.world.TestWorldShit
 import ru.cherryngine.lib.minecraft.MinecraftServer
 import ru.cherryngine.lib.via.initViaVersion
 import kotlin.time.Duration.Companion.milliseconds
@@ -16,12 +15,12 @@ import kotlin.time.Duration.Companion.milliseconds
 @Singleton
 class DemoInit(
     minecraftServer: MinecraftServer,
-    testWorldShit: TestWorldShit,
+    demoWorlds: DemoWorlds,
     viaVersionConfig: MicronautViaVersionConfig,
     viaBackwardsConfig: MicronautViaBackwardsConfig,
 ) {
     init {
-        val demoPacketHandler = DemoPacketHandler("normal")
+        val demoPacketHandler = DemoPacketHandler("street")
 
         val fleksWorld = configureWorld {
             systems {
@@ -29,7 +28,8 @@ class DemoInit(
                 add(ReadClientPositionSystem(demoPacketHandler))
                 add(CommandSystem())
                 add(AxolotlModelSystem(demoPacketHandler))
-                add(WorldSystem(testWorldShit))
+                add(WorldSystem(demoWorlds))
+                add(ApartSystem())
                 add(ViewSystem(demoPacketHandler))
                 add(WriteClientPositionSystem(demoPacketHandler))
 
@@ -37,15 +37,19 @@ class DemoInit(
             }
         }
 
-
         fleksWorld.entity {
-            it += ViewableComponent("normal")
-            it += WorldComponent("normal")
+            it += ViewableComponent(setOf("street"))
+            it += WorldComponent("street")
         }
 
         fleksWorld.entity {
-            it += ViewableComponent("winter")
-            it += WorldComponent("winter")
+            it += ViewableComponent(setOf("apart1"))
+            it += WorldComponent("apart1")
+        }
+
+        fleksWorld.entity {
+            it += ViewableComponent(setOf("apart2"))
+            it += WorldComponent("apart2")
         }
 
         val tickDuration = 50.milliseconds

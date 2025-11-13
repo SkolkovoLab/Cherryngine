@@ -4,7 +4,7 @@ import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
 
 data class ViewableComponent(
-    var viewContextID: String,
+    var viewContextIDs: Set<String>,
 ) : Component<ViewableComponent> {
     override fun type() = ViewableComponent
 

@@ -10,5 +10,6 @@ data class PositionComponent(
     var yawPitch: YawPitch = YawPitch.ZERO,
 ) : Component<PositionComponent> {
     override fun type() = PositionComponent
+
     companion object : ComponentType<PositionComponent>()
 }

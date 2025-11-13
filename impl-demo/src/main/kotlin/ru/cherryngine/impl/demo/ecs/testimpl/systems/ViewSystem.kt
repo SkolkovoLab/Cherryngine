@@ -36,9 +36,10 @@ class ViewSystem(
             val viewableComponent = viewableEntity[ViewableComponent]
             val viewableProvidersEvent = viewableEntity[ViewableProvidersEvent]
 
-            if (playerComponent.viewContextID != viewableComponent.viewContextID) return@forEach
-            viewableProviders.addAll(viewableProvidersEvent.viewableProviders)
-            staticViewableProviders.addAll(viewableProvidersEvent.staticViewableProviders)
+            if (playerComponent.viewContextIDs.any { it in viewableComponent.viewContextIDs }) {
+                viewableProviders.addAll(viewableProvidersEvent.viewableProviders)
+                staticViewableProviders.addAll(viewableProvidersEvent.staticViewableProviders)
+            }
         }
 
         update(entity, player, viewableProviders, staticViewableProviders)
@@ -80,25 +81,26 @@ class ViewSystem(
             val staticViewables = getStaticViewables(staticViewableProviders, staticViewable.chunkPos)
             val shouldHide = staticViewable !in staticViewables ||
                     staticViewable.chunkPos !in chunks ||
-                    !staticViewable.viewerPredicate(connection)
-            if (shouldHide) staticViewable.hide(connection)
+                    !staticViewable.viewerPredicate(player)
+            if (shouldHide) staticViewable.hide(player)
             shouldHide
         }
 
         currentVisibleViewables.removeIf { viewable ->
             val shouldHide =
-                viewable !in viewables || viewable.chunkPos !in chunks || !viewable.viewerPredicate(connection)
-            if (shouldHide) viewable.hide(connection)
+                viewable !in viewables || viewable.chunkPos !in chunks || !viewable.viewerPredicate(player)
+            if (shouldHide) viewable.hide(player)
             shouldHide
         }
 
-        chunks.forEach { chunk ->
-            val staticViewables = getStaticViewables(staticViewableProviders, chunk)
+        chunks.forEach { chunkPos ->
+            val staticViewables = getStaticViewables(staticViewableProviders, chunkPos)
             staticViewables.forEach { staticViewable ->
                 val shouldShow =
-                    staticViewable !in currentVisibleStaticViewables && staticViewable.viewerPredicate(connection)
+                    (staticViewable !in currentVisibleStaticViewables || chunkPos in player.chunksToRefresh) &&
+                            staticViewable.viewerPredicate(player)
                 if (shouldShow) {
-                    staticViewable.show(connection)
+                    staticViewable.show(player)
                     currentVisibleStaticViewables.add(staticViewable)
                 }
             }
@@ -107,11 +109,13 @@ class ViewSystem(
         viewables.forEach { viewable ->
             val shouldShow = viewable !in currentVisibleViewables &&
                     viewable.chunkPos in chunks &&
-                    viewable.viewerPredicate(connection)
+                    viewable.viewerPredicate(player)
             if (shouldShow) {
-                viewable.show(connection)
+                viewable.show(player)
                 currentVisibleViewables.add(viewable)
             }
         }
+
+        player.chunksToRefresh.clear()
     }
 }

@@ -6,7 +6,7 @@ import java.util.*
 
 data class PlayerComponent(
     var uuid: UUID,
-    var viewContextID: String,
+    var viewContextIDs: Set<String>,
 ) : Component<PlayerComponent> {
     override fun type() = PlayerComponent
 
