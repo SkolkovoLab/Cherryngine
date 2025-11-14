@@ -2,53 +2,62 @@ package ru.cherryngine.integration.grim
 
 import ac.grim.grimac.platform.api.sender.SenderFactory
 import net.kyori.adventure.text.Component
-import ru.cherryngine.lib.minecraft.server.Connection
+import ru.cherryngine.engine.core.commandmanager.CloudCommandManager
+import ru.cherryngine.engine.core.commandmanager.CommandSender
 import java.util.*
 
-class SenderFactoryImpl : SenderFactory<Connection>() {
-    override fun getUniqueId(sender: Connection?): UUID {
-        TODO("Not yet implemented")
+class SenderFactoryImpl : SenderFactory<CommandSender>() {
+    override fun getUniqueId(sender: CommandSender): UUID {
+        sender as CloudCommandManager.ConnectionSender
+        return sender.connection.gameProfile.uuid
     }
 
-    override fun getName(sender: Connection?): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun sendMessage(sender: Connection?, message: String?) {
-        TODO("Not yet implemented")
+    override fun getName(sender: CommandSender): String {
+        sender as CloudCommandManager.ConnectionSender
+        return sender.connection.gameProfile.username
     }
 
     override fun sendMessage(
-        sender: Connection?,
-        message: Component?,
+        sender: CommandSender,
+        message: String,
+    ) {
+        sender.sendMessage(message)
+    }
+
+    override fun sendMessage(
+        sender: CommandSender,
+        message: Component,
+    ) {
+        sender.sendMessage(message)
+    }
+
+    override fun hasPermission(
+        sender: CommandSender,
+        node: String,
+    ): Boolean {
+        return true
+    }
+
+    override fun hasPermission(
+        sender: CommandSender?,
+        node: String?,
+        defaultIfUnset: Boolean,
+    ): Boolean {
+        return true
+    }
+
+    override fun performCommand(
+        sender: CommandSender,
+        command: String,
     ) {
         TODO("Not yet implemented")
     }
 
-    override fun hasPermission(
-        sender: Connection?,
-        node: String?,
-    ): Boolean {
-        TODO("Not yet implemented")
+    override fun isConsole(sender: CommandSender): Boolean {
+        return false
     }
 
-    override fun hasPermission(
-        sender: Connection?,
-        node: String?,
-        defaultIfUnset: Boolean,
-    ): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun performCommand(sender: Connection?, command: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun isConsole(sender: Connection?): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun isPlayer(sender: Connection?): Boolean {
-        TODO("Not yet implemented")
+    override fun isPlayer(sender: CommandSender): Boolean {
+        return true
     }
 }

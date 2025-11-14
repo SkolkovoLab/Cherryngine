@@ -3,6 +3,7 @@ package ru.cherryngine.integration.grim
 import ac.grim.grimac.platform.api.player.OfflinePlatformPlayer
 import ac.grim.grimac.platform.api.player.PlatformPlayer
 import ac.grim.grimac.platform.api.player.PlatformPlayerFactory
+import ru.cherryngine.lib.minecraft.server.Connection
 import java.util.*
 
 class PlatformPlayerFactoryImpl : PlatformPlayerFactory {
@@ -22,8 +23,8 @@ class PlatformPlayerFactoryImpl : PlatformPlayerFactory {
         TODO("Not yet implemented")
     }
 
-    override fun getFromNativePlayerType(playerObject: Any?): PlatformPlayer {
-        TODO("Not yet implemented")
+    override fun getFromNativePlayerType(playerObject: Any): PlatformPlayer {
+        return PlatformPlayerImpl(playerObject as Connection)
     }
 
     override fun invalidatePlayer(uuid: UUID?) {

@@ -4,6 +4,7 @@ import ac.grim.grimac.platform.api.player.PlatformPlayer
 import ac.grim.grimac.platform.api.sender.Sender
 import net.kyori.adventure.text.Component
 import org.slf4j.LoggerFactory
+import ru.cherryngine.engine.core.utils.plainString
 import java.util.*
 
 object ConsoleSenderImpl : Sender {
@@ -22,7 +23,7 @@ object ConsoleSenderImpl : Sender {
     }
 
     override fun sendMessage(message: Component?) {
-        TODO("Not yet implemented")
+        logger.info(message?.plainString())
     }
 
     override fun hasPermission(permission: String?): Boolean {

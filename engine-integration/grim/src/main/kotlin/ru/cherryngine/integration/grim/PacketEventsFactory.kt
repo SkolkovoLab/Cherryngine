@@ -1,15 +1,29 @@
 package ru.cherryngine.integration.grim
 
-import com.github.retrooper.packetevents.PacketEventsAPI
 import io.micronaut.context.annotation.Factory
+import io.micronaut.context.event.ApplicationEventListener
 import jakarta.inject.Singleton
+import ru.cherryngine.engine.core.events.PacketEvent
 import ru.cherryngine.lib.minecraft.MinecraftServer
+import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundLoginAcknowledgedPacket
+import ru.cherryngine.lib.packetevents.PacketEventsImpl
 import ru.cherryngine.lib.packetevents.initPacketEvents
 
 @Factory
 class PacketEventsFactory {
     @Singleton
-    fun getDockyardServer(minecraftServer: MinecraftServer): PacketEventsAPI<*> {
+    fun getPacketEvents(minecraftServer: MinecraftServer): PacketEventsImpl {
         return initPacketEvents(minecraftServer.nettyServer)
+    }
+
+    @Singleton
+    class PacketEventsInitializer(
+        val pe: PacketEventsImpl
+    ) : ApplicationEventListener<PacketEvent> {
+        override fun onApplicationEvent(event: PacketEvent) {
+            if (event.packet is ServerboundLoginAcknowledgedPacket) {
+                pe.onPlayerLogin(event.connection)
+            }
+        }
     }
 }

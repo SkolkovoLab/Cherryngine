@@ -16,6 +16,7 @@ import jakarta.annotation.PreDestroy
 import jakarta.inject.Singleton
 import org.incendo.cloud.CommandManager
 import org.slf4j.LoggerFactory
+import ru.cherryngine.engine.core.commandmanager.CloudCommandManager
 import ru.cherryngine.integration.grim.scheduler.PlatformSchedulerImpl
 import ru.cherryngine.lib.minecraft.utils.Slf4jToJulAdapter
 import java.io.File
@@ -23,6 +24,7 @@ import java.io.File
 @Singleton
 class PlatformLoaderImpl(
     private val packetEvents: PacketEventsAPI<*>,
+    private val cloudCommandManager: CloudCommandManager,
 ) : PlatformLoader {
     private val logger = LoggerFactory.getLogger(PlatformLoaderImpl::class.java)
     private val plugin: GrimPlugin = BasicGrimPlugin(
@@ -35,7 +37,6 @@ class PlatformLoaderImpl(
 
     @PostConstruct
     fun init() {
-        System.setProperty("grim.platform-override", "abobus")
         GrimAPI.INSTANCE.load(this)
         GrimAPI.INSTANCE.start()
     }
@@ -56,9 +57,8 @@ class PlatformLoaderImpl(
 
     override fun getPacketEvents(): PacketEventsAPI<*> = packetEvents
 
-    override fun getCommandManager(): CommandManager<Sender> {
-        TODO("Not yet implemented")
-    }
+    private val commandManager by lazy { CommandManagerWrapper(cloudCommandManager, senderFactory) }
+    override fun getCommandManager(): CommandManager<Sender> = commandManager
 
     private val itemResetHandler by lazy { ItemResetHandlerImpl() }
     override fun getItemResetHandler(): ItemResetHandler = itemResetHandler
