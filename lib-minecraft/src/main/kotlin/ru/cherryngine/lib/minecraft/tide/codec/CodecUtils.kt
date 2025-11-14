@@ -140,7 +140,10 @@ object CodecUtils {
     inline fun byteBufBytes(writer: (ByteBuf) -> Unit): ByteArray {
         return Unpooled.buffer().use {
             writer.invoke(it)
-            it.array()
+            val length = it.readableBytes()
+            val result = ByteArray(length)
+            it.readBytes(result)
+            result
         }
     }
 }

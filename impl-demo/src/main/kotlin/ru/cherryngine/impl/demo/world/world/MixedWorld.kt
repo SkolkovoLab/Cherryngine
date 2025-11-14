@@ -24,7 +24,7 @@ class MixedWorld(
     override val chunkViewables: Map<ChunkPos, ChunkViewable> = chunks.mapValues { ChunkViewable(it.key, it.value) }
 
     override fun getStaticViewables(chunkPos: ChunkPos): Set<StaticViewable> {
-        val chunkViewable = chunkViewables[chunkPos] ?: EmptyChunkViewable(chunkPos)
+        val chunkViewable = chunkViewables[chunkPos] ?: EmptyChunkViewable(chunkPos, dimensionType)
         return setOf(chunkViewable)
     }
 

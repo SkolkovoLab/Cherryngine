@@ -1,6 +1,7 @@
 package ru.cherryngine.lib.minecraft.world.chunk
 
 import io.netty.buffer.ByteBuf
+import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
 import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils.byteBufBytes
 import ru.cherryngine.lib.minecraft.tide.stream.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.tide.stream.MapStreamCodec
@@ -13,7 +14,7 @@ data class ChunkData(
     val blockEntities: List<BlockEntity>,
 ) {
     companion object {
-        val EMPTY = ChunkData(emptyMap(), emptyList(), emptyList())
+        fun empty(dimensionType: DimensionType) = ChunkData(emptyMap(), List(dimensionType.height / 16) { ChunkSection.empty() }, emptyList())
 
         val sectionsStreamCodec = object : StreamCodec<List<ChunkSection>> {
             override fun write(buffer: ByteBuf, value: List<ChunkSection>) {
