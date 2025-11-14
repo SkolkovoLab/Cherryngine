@@ -3,22 +3,22 @@ package ru.cherryngine.impl.demo.ecs.testimpl.systems
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
-import ru.cherryngine.impl.demo.DemoPacketHandler
-import ru.cherryngine.impl.demo.Player
+import ru.cherryngine.engine.core.Player
+import ru.cherryngine.engine.core.PlayerManager
+import ru.cherryngine.engine.core.view.StaticViewable
+import ru.cherryngine.engine.core.view.StaticViewableProvider
+import ru.cherryngine.engine.core.view.Viewable
+import ru.cherryngine.engine.core.view.ViewableProvider
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PositionComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.events.ViewableProvidersEvent
-import ru.cherryngine.impl.demo.view.StaticViewable
-import ru.cherryngine.impl.demo.view.StaticViewableProvider
-import ru.cherryngine.impl.demo.view.Viewable
-import ru.cherryngine.impl.demo.view.ViewableProvider
 import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 
 class ViewSystem(
-    val demoPacketHandler: DemoPacketHandler,
+    val playerManager: PlayerManager,
 ) : IteratingSystem(
     family { all(PlayerComponent) }
 ) {
@@ -28,7 +28,7 @@ class ViewSystem(
 
     override fun onTickEntity(entity: Entity) {
         val playerComponent = entity[PlayerComponent]
-        val player = demoPacketHandler.players[playerComponent.uuid] ?: return
+        val player = playerManager.getPlayerNullable(playerComponent.uuid) ?: return
         val viewableProviders: MutableSet<ViewableProvider> = mutableSetOf()
         val staticViewableProviders: MutableSet<StaticViewableProvider> = mutableSetOf()
 

@@ -4,7 +4,7 @@ import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
 import org.slf4j.LoggerFactory
-import ru.cherryngine.impl.demo.DemoPacketHandler
+import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.impl.demo.ecs.testimpl.components.AxolotlModelComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PositionComponent
@@ -18,7 +18,8 @@ import ru.cherryngine.lib.minecraft.registry.DimensionTypes
 import java.util.*
 
 class PlayerInitSystem(
-    val demoPacketHandler: DemoPacketHandler,
+    val defaultViewContextID: String,
+    val playerManager: PlayerManager,
 ) : IteratingSystem(
     family { all(PlayerComponent) }
 ) {
@@ -28,30 +29,30 @@ class PlayerInitSystem(
         val skipCreate = mutableSetOf<UUID>()
         world.family { all(PlayerComponent) }.forEach {
             val playerComponent = it[PlayerComponent]
-            if (playerComponent.uuid in demoPacketHandler.toCreatePlayers) {
+            if (playerComponent.uuid in playerManager.toCreatePlayers) {
                 skipCreate.add(playerComponent.uuid)
             }
-            if (playerComponent.uuid in demoPacketHandler.toRemovePlayers) {
+            if (playerComponent.uuid in playerManager.toRemovePlayers) {
 //                it.remove()
             }
         }
-        demoPacketHandler.toRemovePlayers.clear()
+        playerManager.toRemovePlayers.clear()
 
-        demoPacketHandler.toCreatePlayers.forEach { player ->
+        playerManager.toCreatePlayers.forEach { player ->
             if (player in skipCreate) return@forEach
             logger.info("Creating ECS entity for player $player")
             world.entity {
                 it += PlayerComponent(
                     player,
-                    setOf(demoPacketHandler.defaultViewContextID)
+                    setOf(defaultViewContextID)
                 )
 
-                it += ViewableComponent(setOf(demoPacketHandler.defaultViewContextID))
+                it += ViewableComponent(setOf(defaultViewContextID))
 
                 it += AxolotlModelComponent
             }
         }
-        demoPacketHandler.toCreatePlayers.clear()
+        playerManager.toCreatePlayers.clear()
 
         super.onTick()
     }
@@ -59,13 +60,13 @@ class PlayerInitSystem(
     override fun onTickEntity(entity: Entity) {
         val playerComponent = entity[PlayerComponent]
         val uuid = playerComponent.uuid
-        val packets = demoPacketHandler.queues.remove(uuid) ?: return
+        val packets = playerManager.queues.remove(uuid) ?: return
 
         entity.configure {
             it += PacketsEvent(packets)
         }
 
-        val player = demoPacketHandler.players[uuid] ?: return
+        val player = playerManager.getPlayerNullable(uuid) ?: return
 
         packets.forEach { packet ->
             if (packet is ServerboundFinishConfigurationPacket) {

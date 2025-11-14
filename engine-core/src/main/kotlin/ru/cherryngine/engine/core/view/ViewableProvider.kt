@@ -1,4 +1,4 @@
-package ru.cherryngine.impl.demo.view
+package ru.cherryngine.engine.core.view
 
 interface ViewableProvider {
     val viewables: Set<Viewable>

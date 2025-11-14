@@ -1,7 +1,7 @@
 package ru.cherryngine.impl.demo.world.world
 
-import ru.cherryngine.impl.demo.view.StaticViewable
-import ru.cherryngine.impl.demo.view.StaticViewableProvider
+import ru.cherryngine.engine.core.view.StaticViewable
+import ru.cherryngine.engine.core.view.StaticViewableProvider
 import ru.cherryngine.impl.demo.world.Chunk
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.registries.DimensionType

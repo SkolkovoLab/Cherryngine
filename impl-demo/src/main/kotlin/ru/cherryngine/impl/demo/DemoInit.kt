@@ -1,9 +1,8 @@
 package ru.cherryngine.impl.demo
 
 import com.github.quillraven.fleks.configureWorld
-import io.micronaut.context.event.ApplicationEventPublisher
 import jakarta.inject.Singleton
-import ru.cherryngine.engine.core.events.PacketEvent
+import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.impl.demo.ecs.StableTicker
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.WorldComponent
@@ -15,21 +14,19 @@ import kotlin.time.Duration.Companion.milliseconds
 class DemoInit(
     minecraftServer: MinecraftServer,
     demoWorlds: DemoWorlds,
-    packetEventPublisher: ApplicationEventPublisher<PacketEvent>
+    playerManager: PlayerManager,
 ) {
     init {
-        val demoPacketHandler = DemoPacketHandler("street", packetEventPublisher)
-
         val fleksWorld = configureWorld {
             systems {
-                add(PlayerInitSystem(demoPacketHandler))
-                add(ReadClientPositionSystem(demoPacketHandler))
+                add(PlayerInitSystem("street", playerManager))
+                add(ReadClientPositionSystem(playerManager))
                 add(CommandSystem())
-                add(AxolotlModelSystem(demoPacketHandler))
+                add(AxolotlModelSystem(playerManager))
                 add(WorldSystem(demoWorlds))
                 add(ApartSystem())
-                add(ViewSystem(demoPacketHandler))
-                add(WriteClientPositionSystem(demoPacketHandler))
+                add(ViewSystem(playerManager))
+                add(WriteClientPositionSystem(playerManager))
 
                 add(ClearEventsSystem())
             }
@@ -55,6 +52,6 @@ class DemoInit(
             fleksWorld.update(tickDuration)
         }
         ticker.start()
-        minecraftServer.start(demoPacketHandler)
+        minecraftServer.start(playerManager)
     }
 }

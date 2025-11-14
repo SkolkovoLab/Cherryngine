@@ -1,7 +1,7 @@
 package ru.cherryngine.impl.demo.world
 
-import ru.cherryngine.impl.demo.Player
-import ru.cherryngine.impl.demo.view.StaticViewable
+import ru.cherryngine.engine.core.Player
+import ru.cherryngine.engine.core.view.StaticViewable
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundBlockUpdatePacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundSectionBlocksUpdatePacket

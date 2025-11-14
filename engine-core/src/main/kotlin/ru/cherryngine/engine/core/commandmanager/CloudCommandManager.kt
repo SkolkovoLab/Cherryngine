@@ -4,7 +4,6 @@ import io.micronaut.context.event.ApplicationEventListener
 import jakarta.annotation.PostConstruct
 import jakarta.inject.Singleton
 import kotlinx.coroutines.Dispatchers
-import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.incendo.cloud.CommandManager
 import org.incendo.cloud.annotations.AnnotationParser
@@ -17,18 +16,20 @@ import org.incendo.cloud.meta.CommandMeta
 import org.incendo.cloud.meta.SimpleCommandMeta
 import org.incendo.cloud.suggestion.Suggestion
 import org.slf4j.Logger
+import ru.cherryngine.engine.core.Player
+import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.core.commandmanager.brigadier.CommandNodeUtils
 import ru.cherryngine.engine.core.events.PacketEvent
 import ru.cherryngine.engine.core.utils.component
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ServerboundFinishConfigurationPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundCommandSuggestionsPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundSystemChatPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundChatCommandPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundCommandSuggestionPacket
 import ru.cherryngine.lib.minecraft.server.Connection
 
 @Singleton
 class CloudCommandManager(
+    private val playerManager: PlayerManager,
     private val logger: Logger,
 ) : CommandManager<CommandSender>(
     ExecutionCoordinator.coordinatorFor(ExecutionCoordinator.nonSchedulingExecutor()),
@@ -68,11 +69,11 @@ class CloudCommandManager(
         connection.sendPacket(commandsPacket)
     }
 
-    private fun onCommandPacket(packet: ServerboundChatCommandPacket, player: ConnectionSender) {
+    private fun onCommandPacket(packet: ServerboundChatCommandPacket, player: Player) {
         commandExecutor().executeCommand(player, packet.command)
     }
 
-    private fun onTabCompletePacket(packet: ServerboundCommandSuggestionPacket, player: ConnectionSender) {
+    private fun onTabCompletePacket(packet: ServerboundCommandSuggestionPacket, player: Player) {
         val future = suggestionFactory().suggest(player, packet.text.removePrefix("/"))
         future.whenComplete { suggestions, throwable ->
             if (throwable != null) throw throwable
@@ -90,17 +91,9 @@ class CloudCommandManager(
     override fun onApplicationEvent(event: PacketEvent) {
         val (connection, packet) = event
         when (packet) {
-            is ServerboundChatCommandPacket -> onCommandPacket(packet, ConnectionSender(connection))
-            is ServerboundCommandSuggestionPacket -> onTabCompletePacket(packet, ConnectionSender(connection))
+            is ServerboundChatCommandPacket -> onCommandPacket(packet, playerManager.getPlayer(connection))
+            is ServerboundCommandSuggestionPacket -> onTabCompletePacket(packet, playerManager.getPlayer(connection))
             is ServerboundFinishConfigurationPacket -> onPlayerInit(connection)
-        }
-    }
-
-    class ConnectionSender(
-        val connection: Connection,
-    ) : CommandSender {
-        override fun sendMessage(message: Component) {
-            connection.sendPacket(ClientboundSystemChatPacket(message, false))
         }
     }
 }

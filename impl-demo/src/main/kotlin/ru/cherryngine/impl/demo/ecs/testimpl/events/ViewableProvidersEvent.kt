@@ -2,8 +2,8 @@ package ru.cherryngine.impl.demo.ecs.testimpl.events
 
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
-import ru.cherryngine.impl.demo.view.StaticViewableProvider
-import ru.cherryngine.impl.demo.view.ViewableProvider
+import ru.cherryngine.engine.core.view.StaticViewableProvider
+import ru.cherryngine.engine.core.view.ViewableProvider
 
 class ViewableProvidersEvent(
     val viewableProviders: MutableSet<ViewableProvider> = mutableSetOf(),

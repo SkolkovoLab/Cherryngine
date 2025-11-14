@@ -1,6 +1,7 @@
-package ru.cherryngine.impl.demo
+package ru.cherryngine.engine.core
 
 import io.micronaut.context.event.ApplicationEventPublisher
+import jakarta.inject.Singleton
 import net.kyori.adventure.text.minimessage.MiniMessage
 import ru.cherryngine.engine.core.events.PacketEvent
 import ru.cherryngine.lib.math.Vec3D
@@ -28,9 +29,9 @@ import ru.cherryngine.lib.minecraft.server.Connection
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
-class DemoPacketHandler(
-    val defaultViewContextID: String,
-    val packetEventPublisher: ApplicationEventPublisher<PacketEvent>
+@Singleton
+class PlayerManager(
+    val packetEventPublisher: ApplicationEventPublisher<PacketEvent>,
 ) : PacketHandler {
     val queues: MutableMap<UUID, MutableList<ServerboundPacket>> =
         ConcurrentHashMap<UUID, MutableList<ServerboundPacket>>()
@@ -38,6 +39,20 @@ class DemoPacketHandler(
     val toRemovePlayers = mutableSetOf<UUID>()
 
     val players: MutableMap<UUID, Player> = ConcurrentHashMap()
+
+    fun getPlayerNullable(uuid: UUID): Player? {
+        return players[uuid]
+    }
+
+    fun getPlayer(uuid: UUID): Player {
+        return players[uuid] ?: throw NullPointerException("Player $uuid not found")
+    }
+
+    fun getPlayer(connection: Connection): Player {
+        return getPlayer(connection.gameProfile.uuid)
+    }
+
+    fun onlinePlayers() = players.values.toList()
 
     override fun onPacket(connection: Connection, packet: ServerboundPacket) {
         when (packet) {

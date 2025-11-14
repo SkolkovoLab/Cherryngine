@@ -1,4 +1,4 @@
-package ru.cherryngine.impl.demo.view
+package ru.cherryngine.engine.core.view
 
 /**
  * В отличие от обычного Viewable, этот подразумевает, что chunkPos иммутабельный

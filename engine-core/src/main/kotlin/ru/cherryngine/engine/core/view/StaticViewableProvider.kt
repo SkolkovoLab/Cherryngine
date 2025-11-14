@@ -1,4 +1,4 @@
-package ru.cherryngine.impl.demo.view
+package ru.cherryngine.engine.core.view
 
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 

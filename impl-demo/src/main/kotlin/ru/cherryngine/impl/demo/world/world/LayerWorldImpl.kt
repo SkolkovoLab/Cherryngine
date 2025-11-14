@@ -1,6 +1,6 @@
 package ru.cherryngine.impl.demo.world.world
 
-import ru.cherryngine.impl.demo.view.StaticViewable
+import ru.cherryngine.engine.core.view.StaticViewable
 import ru.cherryngine.impl.demo.world.Chunk
 import ru.cherryngine.impl.demo.world.LayerChunkViewable
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
