@@ -11,13 +11,14 @@ rootProject.name = "Cherryngine"
 
 include(
     "engine-core",
+    "engine-integration:grim",
     "engine-integration:viaversion",
 
     "impl-demo",
 
-    "lib-grimac",
     "lib-jackson",
     "lib-math",
     "lib-minecraft",
+    "lib-packetevents",
     "lib-viaversion",
 )
