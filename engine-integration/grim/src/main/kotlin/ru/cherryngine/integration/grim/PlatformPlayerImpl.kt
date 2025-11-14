@@ -9,15 +9,15 @@ import ac.grim.grimac.utils.math.Location
 import com.github.retrooper.packetevents.protocol.player.GameMode
 import com.github.retrooper.packetevents.util.Vector3d
 import net.kyori.adventure.text.Component
-import ru.cherryngine.lib.minecraft.server.Connection
+import ru.cherryngine.engine.core.Player
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
 class PlatformPlayerImpl(
-    val player: Connection,
-) : PlatformPlayer {
+    val player: Player,
+) : PlatformPlayer, Sender {
     override fun kickPlayer(textReason: String?) {
-        player.kick(textReason.toString())
+        player.connection.kick(textReason.toString())
     }
 
     override fun isSneaking(): Boolean {
@@ -36,35 +36,55 @@ class PlatformPlayerImpl(
         return true
     }
 
-    override fun sendMessage(message: String?) {
+    override fun performCommand(commandLine: String?) {
         TODO("Not yet implemented")
     }
 
-    override fun sendMessage(message: Component?) {
-        TODO("Not yet implemented")
+    override fun isConsole(): Boolean {
+        return false
+    }
+
+    override fun isPlayer(): Boolean {
+        return true
+    }
+
+    override fun getNativeSender(): Any {
+        return player
+    }
+
+    override fun getPlatformPlayer(): PlatformPlayer {
+        return this
+    }
+
+    override fun sendMessage(message: String) {
+        player.sendMessage(message)
+    }
+
+    override fun sendMessage(message: Component) {
+        player.sendMessage(message)
     }
 
     override fun updateInventory() {
         TODO("Not yet implemented")
     }
 
-    override fun getPosition(): Vector3d? {
+    override fun getPosition(): Vector3d {
         TODO("Not yet implemented")
     }
 
-    override fun getInventory(): PlatformInventory? {
+    override fun getInventory(): PlatformInventory {
         TODO("Not yet implemented")
     }
 
-    override fun getVehicle(): GrimEntity? {
+    override fun getVehicle(): GrimEntity {
         TODO("Not yet implemented")
     }
 
-    override fun getGameMode(): GameMode? {
+    override fun getGameMode(): GameMode {
         TODO("Not yet implemented")
     }
 
-    override fun setGameMode(gameMode: GameMode?) {
+    override fun setGameMode(gameMode: GameMode) {
         TODO("Not yet implemented")
     }
 
@@ -76,7 +96,7 @@ class PlatformPlayerImpl(
         TODO("Not yet implemented")
     }
 
-    override fun getSender(): Sender? {
+    override fun getSender(): Sender {
         TODO("Not yet implemented")
     }
 
@@ -84,7 +104,7 @@ class PlatformPlayerImpl(
         TODO("Not yet implemented")
     }
 
-    override fun teleportAsync(location: Location?): CompletableFuture<Boolean?>? {
+    override fun teleportAsync(location: Location?): CompletableFuture<Boolean> {
         TODO("Not yet implemented")
     }
 
@@ -96,23 +116,23 @@ class PlatformPlayerImpl(
         TODO("Not yet implemented")
     }
 
-    override fun getWorld(): PlatformWorld? {
+    override fun getWorld(): PlatformWorld {
         TODO("Not yet implemented")
     }
 
-    override fun getLocation(): Location? {
+    override fun getLocation(): Location {
         TODO("Not yet implemented")
     }
 
-    override fun getUniqueId(): UUID? {
-        TODO("Not yet implemented")
+    override fun getUniqueId(): UUID {
+        return player.uuid
     }
 
     override fun isOnline(): Boolean {
-        TODO("Not yet implemented")
+        return player.connection.isActive
     }
 
-    override fun getName(): String? {
-        TODO("Not yet implemented")
+    override fun getName(): String {
+        return player.username
     }
 }

@@ -2,18 +2,19 @@ package ru.cherryngine.integration.grim
 
 import ac.grim.grimac.platform.api.sender.SenderFactory
 import net.kyori.adventure.text.Component
+import ru.cherryngine.engine.core.Player
 import ru.cherryngine.engine.core.commandmanager.CloudCommandManager
 import ru.cherryngine.engine.core.commandmanager.CommandSender
 import java.util.*
 
 class SenderFactoryImpl : SenderFactory<CommandSender>() {
     override fun getUniqueId(sender: CommandSender): UUID {
-        sender as CloudCommandManager.ConnectionSender
+        sender as Player
         return sender.connection.gameProfile.uuid
     }
 
     override fun getName(sender: CommandSender): String {
-        sender as CloudCommandManager.ConnectionSender
+        sender as Player
         return sender.connection.gameProfile.username
     }
 
