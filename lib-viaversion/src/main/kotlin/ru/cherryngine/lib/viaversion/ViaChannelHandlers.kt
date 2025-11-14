@@ -1,4 +1,4 @@
-package ru.cherryngine.lib.via
+package ru.cherryngine.lib.viaversion
 
 object ViaChannelHandlers {
     const val VIA_DECODER = "via-decoder"

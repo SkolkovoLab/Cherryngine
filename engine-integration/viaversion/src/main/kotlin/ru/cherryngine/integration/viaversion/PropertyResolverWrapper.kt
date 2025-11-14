@@ -1,4 +1,4 @@
-package ru.cherryngine.impl.demo.via
+package ru.cherryngine.integration.viaversion
 
 import io.micronaut.core.convert.ConversionContext
 import io.micronaut.core.value.PropertyResolver

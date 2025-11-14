@@ -1,4 +1,4 @@
-package ru.cherryngine.impl.demo.via
+package ru.cherryngine.integration.viaversion
 
 import com.viaversion.viabackwards.api.DialogStyleConfig
 import com.viaversion.viabackwards.api.ViaBackwardsConfig

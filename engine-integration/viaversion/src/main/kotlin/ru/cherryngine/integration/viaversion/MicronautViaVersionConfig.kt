@@ -1,4 +1,4 @@
-package ru.cherryngine.impl.demo.via
+package ru.cherryngine.integration.viaversion
 
 import com.viaversion.viaversion.api.Via
 import com.viaversion.viaversion.api.configuration.RateLimitConfig

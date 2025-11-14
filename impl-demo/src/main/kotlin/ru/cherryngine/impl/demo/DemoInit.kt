@@ -6,18 +6,13 @@ import ru.cherryngine.impl.demo.ecs.StableTicker
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.WorldComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.systems.*
-import ru.cherryngine.impl.demo.via.MicronautViaBackwardsConfig
-import ru.cherryngine.impl.demo.via.MicronautViaVersionConfig
 import ru.cherryngine.lib.minecraft.MinecraftServer
-import ru.cherryngine.lib.via.initViaVersion
 import kotlin.time.Duration.Companion.milliseconds
 
 @Singleton
 class DemoInit(
     minecraftServer: MinecraftServer,
     demoWorlds: DemoWorlds,
-    viaVersionConfig: MicronautViaVersionConfig,
-    viaBackwardsConfig: MicronautViaBackwardsConfig,
 ) {
     init {
         val demoPacketHandler = DemoPacketHandler("street")
@@ -58,7 +53,5 @@ class DemoInit(
         }
         ticker.start()
         minecraftServer.start(demoPacketHandler)
-
-        initViaVersion(minecraftServer, viaVersionConfig, viaBackwardsConfig)
     }
 }

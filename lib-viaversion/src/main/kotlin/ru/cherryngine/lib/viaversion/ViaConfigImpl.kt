@@ -1,4 +1,4 @@
-package ru.cherryngine.lib.via
+package ru.cherryngine.lib.viaversion
 
 import com.viaversion.viaversion.configuration.AbstractViaConfig
 import org.slf4j.LoggerFactory

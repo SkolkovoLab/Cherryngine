@@ -1,4 +1,4 @@
-package ru.cherryngine.lib.via
+package ru.cherryngine.lib.viaversion
 
 import com.viaversion.viaversion.api.platform.ViaInjector
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion

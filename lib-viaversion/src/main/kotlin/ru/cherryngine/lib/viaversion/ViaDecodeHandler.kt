@@ -1,19 +1,21 @@
-package ru.cherryngine.lib.via
+package ru.cherryngine.lib.viaversion
 
 import com.viaversion.viaversion.api.connection.UserConnection
 import com.viaversion.viaversion.exception.CancelCodecException
-import com.viaversion.viaversion.exception.CancelEncoderException
+import com.viaversion.viaversion.exception.CancelDecoderException
 import com.viaversion.viaversion.util.ByteBufUtil
 import com.viaversion.viaversion.util.PipelineUtil
 import io.netty.buffer.ByteBuf
+import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelHandlerContext
-import io.netty.channel.ChannelPromise
-import io.netty.handler.codec.MessageToMessageEncoder
+import io.netty.handler.codec.MessageToMessageDecoder
 
-class ViaEncodeHandler(val user: UserConnection) : MessageToMessageEncoder<ByteBuf>() {
-    override fun encode(connection: ChannelHandlerContext, buffer: ByteBuf, out: MutableList<Any>) {
-        if (!user.checkClientboundPacket()) throw CancelEncoderException.generate(null)
-
+@ChannelHandler.Sharable
+class ViaDecodeHandler(
+    val user: UserConnection,
+) : MessageToMessageDecoder<ByteBuf>() {
+    override fun decode(connection: ChannelHandlerContext, buffer: ByteBuf, out: MutableList<Any>) {
+        if (!user.checkServerboundPacket(0)) throw CancelDecoderException.generate(null)
         if (!user.shouldTransformPacket()) {
             out.add(buffer.retain())
             return
@@ -21,21 +23,20 @@ class ViaEncodeHandler(val user: UserConnection) : MessageToMessageEncoder<ByteB
 
         val transformedBuffer = ByteBufUtil.copy(connection.alloc(), buffer)
         try {
-            user.transformOutgoing(transformedBuffer, CancelEncoderException::generate)
+            user.transformIncoming(transformedBuffer, CancelDecoderException::generate)
             out.add(transformedBuffer.retain())
         } finally {
             transformedBuffer.release()
         }
     }
 
-    override fun write(ctx: ChannelHandlerContext, msg: Any, promise: ChannelPromise) {
+    override fun channelRead(ctx: ChannelHandlerContext?, msg: Any?) {
         try {
-            super.write(ctx, msg, promise)
+            super.channelRead(ctx, msg)
         } catch (exception: Exception) {
             if (!PipelineUtil.containsCause(exception, CancelCodecException::class.java)) {
                 throw exception
             }
-            promise.setSuccess()
         }
     }
 }
