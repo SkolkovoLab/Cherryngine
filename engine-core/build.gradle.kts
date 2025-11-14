@@ -10,6 +10,10 @@ dependencies {
     api(libs.kotlinx.coroutines.jdk8)
     api(libs.guava)
 
+    api(libs.kyori.adventure.api)
+    api(libs.kyori.adventure.text.minimessage)
+    api(libs.kyori.adventure.text.serializer.plain)
+
     api(libs.cloud.core)
     api(libs.cloud.annotations)
     api(libs.cloud.kotlin.coroutines)

@@ -42,7 +42,7 @@ sealed class Dialog : NbtWritable {
 
             withBoolean("can_close_with_escape", canCloseWithEsc)
             withList("body", BinaryTagTypes.COMPOUND, body.map { it.getNbt() })
-            // you can't play singleplayer on dockyard
+            // you can't play singleplayer on server
             withBoolean("pause", false)
             withString("after_action", afterAction.name.lowercase())
             withList("inputs", BinaryTagTypes.COMPOUND, inputs.map { it.getNbt() })

@@ -9,7 +9,7 @@ class MinecraftModule(
     private val engineCoreConfig: EngineCoreConfig,
 ) {
     @Singleton
-    fun getDockyardServer(): MinecraftServer {
+    fun getMinecraftServer(): MinecraftServer {
         return MinecraftServer(
             engineCoreConfig.address,
             engineCoreConfig.port,

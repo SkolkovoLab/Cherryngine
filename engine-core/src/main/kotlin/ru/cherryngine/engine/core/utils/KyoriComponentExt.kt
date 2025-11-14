@@ -9,6 +9,7 @@ import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 
 fun String.component() =
     Component.text(this)
@@ -47,6 +48,6 @@ fun Component.resetBegin() = resetComponent().append(this)
 operator fun Component.plus(other: Component) = this.append(other)
 operator fun Component.plus(other: String) = this.append(other.component())
 
-//fun Component.plainString() = PlainTextComponentSerializer.plainText().serialize(this)
+fun Component.plainString() = PlainTextComponentSerializer.plainText().serialize(this)
 
 fun Component.noShadow() = shadowColor(ShadowColor.none())

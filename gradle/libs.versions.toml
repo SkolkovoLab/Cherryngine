@@ -61,6 +61,7 @@ kyori-adventure-text-minimessage = { module = "net.kyori:adventure-text-minimess
 kyori-adventure-text-serializer-nbt = { module = "net.kyori:adventure-text-serializer-nbt", version.ref = "kyori-adventure" }
 kyori-adventure-text-serializer-gson = { module = "net.kyori:adventure-text-serializer-gson", version.ref = "kyori-adventure" }
 kyori-adventure-text-serializer-ansi = { module = "net.kyori:adventure-text-serializer-ansi", version.ref = "kyori-adventure" }
+kyori-adventure-text-serializer-plain = { module = "net.kyori:adventure-text-serializer-plain", version.ref = "kyori-adventure" }
 
 cloud-core = { module = "org.incendo:cloud-core", version.ref = "cloud" }
 cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud" }

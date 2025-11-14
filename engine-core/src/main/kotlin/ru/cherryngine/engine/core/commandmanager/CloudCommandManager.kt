@@ -64,9 +64,7 @@ class CloudCommandManager(
     }
 
     fun onPlayerInit(connection: Connection) {
-        println(commandTree())
         val commandsPacket = CommandNodeUtils.commandsPacket(commandTree().rootNode())
-        println(commandsPacket)
         connection.sendPacket(commandsPacket)
     }
 
