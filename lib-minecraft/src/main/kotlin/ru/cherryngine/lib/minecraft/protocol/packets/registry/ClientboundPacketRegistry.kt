@@ -55,7 +55,7 @@ class ClientboundPacketRegistry : AbstractPacketRegistry() {
         skip(ProtocolState.PLAY, "Chunk biomes")
         register(ProtocolState.PLAY, ClientboundClearTitlesPacket::class, ClientboundClearTitlesPacket.STREAM_CODEC)
         register(ProtocolState.PLAY, ClientboundCommandSuggestionsPacket::class, ClientboundCommandSuggestionsPacket.STREAM_CODEC)
-        skip(ProtocolState.PLAY, "ClientboundCommandsPacket") // addPlay, ClientboundCommandsPacket::class, ClientboundCommandsPacket.streamCodec)
+        register(ProtocolState.PLAY, ClientboundCommandsPacket::class, ClientboundCommandsPacket.STREAM_CODEC)
         register(ProtocolState.PLAY, ClientboundContainerClosePacket::class, ClientboundContainerClosePacket.STREAM_CODEC)
         register(ProtocolState.PLAY, ClientboundContainerSetContentPacket::class, ClientboundContainerSetContentPacket.STREAM_CODEC)
         skip(ProtocolState.PLAY, "Container property")

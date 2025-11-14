@@ -6,7 +6,7 @@ import kotlin.reflect.KClass
 
 class ActionStreamCodec<T : Any>(
     val indexCodec: StreamCodec<Int>,
-    vararg val actions: Entry<out T>
+    vararg val actions: IEntry<out T>,
 ) : StreamCodec<T> {
     override fun write(buffer: ByteBuf, value: T) {
         val kClass = value::class
@@ -24,8 +24,18 @@ class ActionStreamCodec<T : Any>(
         return codec.read(buffer)
     }
 
-    data class Entry<T : Any>(
-        val kClass: KClass<T>,
+    sealed interface IEntry<T : Any> {
+        val kClass: KClass<T>?
         val streamCodec: StreamCodec<T>
-    )
+    }
+
+    data class Entry<T : Any>(
+        override val kClass: KClass<T>,
+        override val streamCodec: StreamCodec<T>,
+    ) : IEntry<T>
+
+    class Skip<T : Any> : IEntry<T> {
+        override val kClass: KClass<T>? get() = null
+        override val streamCodec: StreamCodec<T> get() = throw IllegalStateException()
+    }
 }

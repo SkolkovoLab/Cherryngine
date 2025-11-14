@@ -1,7 +1,9 @@
 package ru.cherryngine.impl.demo
 
 import com.github.quillraven.fleks.configureWorld
+import io.micronaut.context.event.ApplicationEventPublisher
 import jakarta.inject.Singleton
+import ru.cherryngine.engine.core.events.PacketEvent
 import ru.cherryngine.impl.demo.ecs.StableTicker
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ViewableComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.WorldComponent
@@ -13,9 +15,10 @@ import kotlin.time.Duration.Companion.milliseconds
 class DemoInit(
     minecraftServer: MinecraftServer,
     demoWorlds: DemoWorlds,
+    packetEventPublisher: ApplicationEventPublisher<PacketEvent>
 ) {
     init {
-        val demoPacketHandler = DemoPacketHandler("street")
+        val demoPacketHandler = DemoPacketHandler("street", packetEventPublisher)
 
         val fleksWorld = configureWorld {
             systems {

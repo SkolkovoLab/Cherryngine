@@ -1,6 +1,8 @@
 package ru.cherryngine.impl.demo
 
+import io.micronaut.context.event.ApplicationEventPublisher
 import net.kyori.adventure.text.minimessage.MiniMessage
+import ru.cherryngine.engine.core.events.PacketEvent
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.PacketHandler
@@ -28,6 +30,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 class DemoPacketHandler(
     val defaultViewContextID: String,
+    val packetEventPublisher: ApplicationEventPublisher<PacketEvent>
 ) : PacketHandler {
     val queues: MutableMap<UUID, MutableList<ServerboundPacket>> =
         ConcurrentHashMap<UUID, MutableList<ServerboundPacket>>()
@@ -105,6 +108,7 @@ class DemoPacketHandler(
             val queue = queues.computeIfAbsent(connection.gameProfile.uuid) { arrayListOf() }
             queue.add(packet)
         }
+        packetEventPublisher.publishEvent(PacketEvent(connection, packet))
     }
 
     private fun onMove(

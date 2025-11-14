@@ -30,8 +30,9 @@ class RawPacketEncoder(
                 StreamCodec.VAR_INT.write(out, packetId)
                 streamCodec.write(out, packet)
             }
-        } catch (exception: Exception) {
-            logger.error("There was an error while encoding packet", exception)
+        } catch (t: Throwable) {
+            logger.error("There was an error while encoding packet", t)
+            throw t
         }
     }
 }
