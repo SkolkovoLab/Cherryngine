@@ -1,5 +1,6 @@
 package ru.cherryngine.impl.demo
 
+import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.configureWorld
 import jakarta.inject.Singleton
 import ru.cherryngine.engine.core.PlayerManager
@@ -16,12 +17,13 @@ class DemoInit(
     demoWorlds: DemoWorlds,
     playerManager: PlayerManager,
 ) {
+    val fleksWorld: World
+
     init {
-        val fleksWorld = configureWorld {
+        fleksWorld = configureWorld {
             systems {
                 add(PlayerInitSystem("street", playerManager))
                 add(ReadClientPositionSystem(playerManager))
-                add(CommandSystem())
                 add(AxolotlModelSystem(playerManager))
                 add(WorldSystem(demoWorlds))
                 add(ApartSystem())

@@ -35,15 +35,15 @@ class PlayerManager(
     val toCreatePlayers = mutableSetOf<UUID>()
     val toRemovePlayers = mutableSetOf<UUID>()
 
-    val playersByUUID: MutableMap<UUID, Player> = ConcurrentHashMap()
-    val playersByUsername: MutableMap<String, Player> = ConcurrentHashMap()
+    private val playersByUUID: MutableMap<UUID, Player> = ConcurrentHashMap()
+    private val playersByUsername: MutableMap<String, Player> = ConcurrentHashMap()
 
     fun getPlayerNullable(uuid: UUID): Player? {
         return playersByUUID[uuid]
     }
 
     fun getPlayerNullable(username: String): Player? {
-        return playersByUsername[username]
+        return playersByUsername[username.lowercase()]
     }
 
     fun getPlayer(uuid: UUID): Player {
@@ -98,7 +98,7 @@ class PlayerManager(
                 val uuid = connection.gameProfile.uuid
                 val username = connection.gameProfile.username
                 playersByUUID.computeIfAbsent(uuid) { Player(connection) }
-                playersByUsername.computeIfAbsent(username) { Player(connection) }
+                playersByUsername.computeIfAbsent(username.lowercase()) { Player(connection) }
                 toCreatePlayers.add(uuid)
             }
 
@@ -153,7 +153,7 @@ class PlayerManager(
             val username = connection.gameProfile.username
             toRemovePlayers.add(uuid)
             playersByUUID.remove(uuid)
-            playersByUsername.remove(username)
+            playersByUsername.remove(username.lowercase())
         }
     }
 }

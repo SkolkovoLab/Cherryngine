@@ -21,10 +21,10 @@ import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.core.commandmanager.brigadier.CommandNodeUtils
 import ru.cherryngine.engine.core.events.PacketEvent
 import ru.cherryngine.engine.core.utils.component
-import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ServerboundFinishConfigurationPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundCommandSuggestionsPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundChatCommandPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundCommandSuggestionPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundPlayerLoadedPacket
 import ru.cherryngine.lib.minecraft.server.Connection
 
 @Singleton
@@ -93,7 +93,7 @@ class CloudCommandManager(
         when (packet) {
             is ServerboundChatCommandPacket -> onCommandPacket(packet, playerManager.getPlayer(connection))
             is ServerboundCommandSuggestionPacket -> onTabCompletePacket(packet, playerManager.getPlayer(connection))
-            is ServerboundFinishConfigurationPacket -> onPlayerInit(connection)
+            is ServerboundPlayerLoadedPacket -> onPlayerInit(connection)
         }
     }
 }
