@@ -3,36 +3,39 @@ package ru.cherryngine.integration.grim
 import ac.grim.grimac.platform.api.player.OfflinePlatformPlayer
 import ac.grim.grimac.platform.api.player.PlatformPlayer
 import ac.grim.grimac.platform.api.player.PlatformPlayerFactory
-import ru.cherryngine.engine.core.Player
+import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.lib.minecraft.server.Connection
 import java.util.*
 
-class PlatformPlayerFactoryImpl : PlatformPlayerFactory {
-    override fun getOfflineFromUUID(uuid: UUID?): OfflinePlatformPlayer {
-        TODO("Not yet implemented")
+class PlatformPlayerFactoryImpl(
+    private val playerManager: PlayerManager,
+) : PlatformPlayerFactory {
+    override fun getOfflineFromUUID(uuid: UUID): OfflinePlatformPlayer? {
+        return getFromUUID(uuid)
     }
 
-    override fun getOfflineFromName(name: String?): OfflinePlatformPlayer {
-        TODO("Not yet implemented")
+    override fun getOfflineFromName(name: String): OfflinePlatformPlayer? {
+        return getFromName(name)
     }
 
-    override fun getFromName(name: String?): PlatformPlayer {
-        TODO("Not yet implemented")
+    override fun getFromName(name: String): PlatformPlayer? {
+        val player = playerManager.getPlayerNullable(name) ?: return null
+        return PlatformPlayerImpl(player)
     }
 
-    override fun getFromUUID(uuid: UUID?): PlatformPlayer {
-        TODO("Not yet implemented")
+    override fun getFromUUID(uuid: UUID): PlatformPlayer? {
+        val player = playerManager.getPlayerNullable(uuid) ?: return null
+        return PlatformPlayerImpl(player)
     }
 
     override fun getFromNativePlayerType(playerObject: Any): PlatformPlayer {
-        return PlatformPlayerImpl(playerObject as Player)
+        val player = playerManager.getPlayer(playerObject as Connection)
+        return PlatformPlayerImpl(player)
     }
 
-    override fun invalidatePlayer(uuid: UUID?) {
-        TODO("Not yet implemented")
-    }
+    override fun invalidatePlayer(uuid: UUID) = Unit
 
     override fun getOnlinePlayers(): Collection<PlatformPlayer> {
-        TODO("Not yet implemented")
+        return playerManager.onlinePlayers().map { PlatformPlayerImpl(it) }
     }
 }

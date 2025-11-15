@@ -16,6 +16,7 @@ import jakarta.annotation.PreDestroy
 import jakarta.inject.Singleton
 import org.incendo.cloud.CommandManager
 import org.slf4j.LoggerFactory
+import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.core.commandmanager.CloudCommandManager
 import ru.cherryngine.integration.grim.scheduler.PlatformSchedulerImpl
 import ru.cherryngine.lib.minecraft.utils.Slf4jToJulAdapter
@@ -25,6 +26,7 @@ import java.io.File
 class PlatformLoaderImpl(
     private val packetEvents: PacketEventsAPI<*>,
     private val cloudCommandManager: CloudCommandManager,
+    private val playerManager: PlayerManager,
 ) : PlatformLoader {
     private val logger = LoggerFactory.getLogger(PlatformLoaderImpl::class.java)
     private val plugin: GrimPlugin = BasicGrimPlugin(
@@ -46,18 +48,18 @@ class PlatformLoaderImpl(
         GrimAPI.INSTANCE.stop()
     }
 
-    private val scheduler by lazy(::PlatformSchedulerImpl)
+    private val scheduler by lazy { PlatformSchedulerImpl() }
     override fun getScheduler(): PlatformScheduler = scheduler
 
-    private val platformPlayerFactory = PlatformPlayerFactoryImpl()
+    private val platformPlayerFactory = PlatformPlayerFactoryImpl(playerManager)
     override fun getPlatformPlayerFactory(): PlatformPlayerFactory = platformPlayerFactory
 
-    private val commandAdapter = CommandAdapterImpl()
+    private val commandAdapter by lazy { CommandAdapterImpl(playerManager, senderFactory) }
     override fun getCommandAdapter(): CommandAdapter = commandAdapter
 
     override fun getPacketEvents(): PacketEventsAPI<*> = packetEvents
 
-    private val commandManager by lazy { CommandManagerWrapper(cloudCommandManager, senderFactory) }
+    private val commandManager by lazy { CommandManagerImpl(cloudCommandManager, senderFactory) }
     override fun getCommandManager(): CommandManager<Sender> = commandManager
 
     private val itemResetHandler by lazy { ItemResetHandlerImpl() }
@@ -74,9 +76,7 @@ class PlatformLoaderImpl(
     private val platformServer = PlatformServerImpl()
     override fun getPlatformServer(): PlatformServer = platformServer
 
-    override fun registerAPIService() {
-//        TODO("Not yet implemented")
-    }
+    override fun registerAPIService() = Unit
 
     private val messagePlaceHolderManager = MessagePlaceHolderManagerImpl()
     override fun getMessagePlaceHolderManager(): MessagePlaceHolderManager = messagePlaceHolderManager

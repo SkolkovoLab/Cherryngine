@@ -10,6 +10,8 @@ import com.github.retrooper.packetevents.protocol.player.GameMode
 import com.github.retrooper.packetevents.util.Vector3d
 import net.kyori.adventure.text.Component
 import ru.cherryngine.engine.core.Player
+import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.lib.math.YawPitch
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
@@ -69,7 +71,8 @@ class PlatformPlayerImpl(
     }
 
     override fun getPosition(): Vector3d {
-        TODO("Not yet implemented")
+        val (x, y, z) = player.clientPosition
+        return Vector3d(x, y, z)
     }
 
     override fun getInventory(): PlatformInventory {
@@ -97,15 +100,18 @@ class PlatformPlayerImpl(
     }
 
     override fun getSender(): Sender {
-        TODO("Not yet implemented")
+        return this
     }
 
     override fun eject(): Boolean {
         TODO("Not yet implemented")
     }
 
-    override fun teleportAsync(location: Location?): CompletableFuture<Boolean> {
-        TODO("Not yet implemented")
+    override fun teleportAsync(location: Location): CompletableFuture<Boolean> {
+        val vec3D = Vec3D(location.x, location.y, location.z)
+        val yawPitch = YawPitch(location.yaw, location.pitch)
+        player.teleport(vec3D, yawPitch)
+        return CompletableFuture.completedFuture(true)
     }
 
     override fun getNative(): Any {
@@ -121,7 +127,9 @@ class PlatformPlayerImpl(
     }
 
     override fun getLocation(): Location {
-        TODO("Not yet implemented")
+        val (x, y, z) = player.clientPosition
+        val (yaw, pitch) = player.clientYawPitch
+        return Location(null, x, y, z, yaw, pitch)
     }
 
     override fun getUniqueId(): UUID {

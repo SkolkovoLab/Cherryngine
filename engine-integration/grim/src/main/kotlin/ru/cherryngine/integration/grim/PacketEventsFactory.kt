@@ -5,7 +5,7 @@ import io.micronaut.context.event.ApplicationEventListener
 import jakarta.inject.Singleton
 import ru.cherryngine.engine.core.events.PacketEvent
 import ru.cherryngine.lib.minecraft.MinecraftServer
-import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundLoginAcknowledgedPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ServerboundFinishConfigurationPacket
 import ru.cherryngine.lib.packetevents.PacketEventsImpl
 import ru.cherryngine.lib.packetevents.initPacketEvents
 
@@ -18,10 +18,10 @@ class PacketEventsFactory {
 
     @Singleton
     class PacketEventsInitializer(
-        val pe: PacketEventsImpl
+        val pe: PacketEventsImpl,
     ) : ApplicationEventListener<PacketEvent> {
         override fun onApplicationEvent(event: PacketEvent) {
-            if (event.packet is ServerboundLoginAcknowledgedPacket) {
+            if (event.packet is ServerboundFinishConfigurationPacket) {
                 pe.onPlayerLogin(event.connection)
             }
         }
