@@ -22,14 +22,19 @@ class DemoInit(
     init {
         fleksWorld = configureWorld {
             systems {
+                // чтение сосотяния клиента
                 add(PlayerInitSystem("street", playerManager))
                 add(ReadClientPositionSystem(playerManager))
+
+                // всякие действия
+                add(CommandActionsSystem())
                 add(AxolotlModelSystem(playerManager))
                 add(WorldSystem(demoWorlds))
                 add(ApartSystem())
+
+                // завершение
                 add(ViewSystem(playerManager))
                 add(WriteClientPositionSystem(playerManager))
-
                 add(ClearEventsSystem())
             }
         }

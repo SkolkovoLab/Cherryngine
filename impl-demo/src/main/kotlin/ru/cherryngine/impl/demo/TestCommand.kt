@@ -12,6 +12,7 @@ import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.impl.demo.ecs.FleksWorld
 import ru.cherryngine.impl.demo.ecs.testimpl.components.ApartComponent
 import ru.cherryngine.impl.demo.ecs.testimpl.components.PlayerComponent
+import ru.cherryngine.impl.demo.ecs.testimpl.systems.CommandActionsSystem
 import java.util.*
 
 @CloudCommand
@@ -42,7 +43,7 @@ class TestCommand(
         sender: Player,
         apartId: String,
     ) {
-        with(demoInit.fleksWorld) {
+        demoInit.fleksWorld.system<CommandActionsSystem>().addAction {
             val entity = getEntity(sender.uuid)
             if (apartId == "null") {
                 entity.configure {
@@ -63,7 +64,7 @@ class TestCommand(
         sender: Player,
         other: Player,
     ) {
-        with(demoInit.fleksWorld) {
+        demoInit.fleksWorld.system<CommandActionsSystem>().addAction {
             val entity = getEntity(sender.uuid)
             val otherPlayer = getEntity(other.uuid)
             val tmp = entity[PlayerComponent].uuid
