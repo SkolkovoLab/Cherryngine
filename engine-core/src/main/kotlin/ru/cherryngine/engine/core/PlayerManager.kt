@@ -38,21 +38,26 @@ class PlayerManager(
     val toCreatePlayers = mutableSetOf<UUID>()
     val toRemovePlayers = mutableSetOf<UUID>()
 
-    val players: MutableMap<UUID, Player> = ConcurrentHashMap()
+    val playersByUUID: MutableMap<UUID, Player> = ConcurrentHashMap()
+    val playersByUsername: MutableMap<String, Player> = ConcurrentHashMap()
 
     fun getPlayerNullable(uuid: UUID): Player? {
-        return players[uuid]
+        return playersByUUID[uuid]
+    }
+
+    fun getPlayerNullable(username: String): Player? {
+        return playersByUsername[username]
     }
 
     fun getPlayer(uuid: UUID): Player {
-        return players[uuid] ?: throw NullPointerException("Player $uuid not found")
+        return playersByUUID[uuid] ?: throw NullPointerException("Player $uuid not found")
     }
 
     fun getPlayer(connection: Connection): Player {
         return getPlayer(connection.gameProfile.uuid)
     }
 
-    fun onlinePlayers() = players.values.toList()
+    fun onlinePlayers() = playersByUUID.values.toList()
 
     override fun onPacket(connection: Connection, packet: ServerboundPacket) {
         when (packet) {
@@ -94,7 +99,9 @@ class PlayerManager(
 
             is ServerboundFinishConfigurationPacket -> {
                 val uuid = connection.gameProfile.uuid
-                players.computeIfAbsent(uuid) { Player(connection) }
+                val username = connection.gameProfile.username
+                playersByUUID.computeIfAbsent(uuid) { Player(connection) }
+                playersByUsername.computeIfAbsent(username) { Player(connection) }
                 toCreatePlayers.add(uuid)
             }
 
@@ -132,7 +139,7 @@ class PlayerManager(
         yawPitch: YawPitch?,
         flags: MovePlayerFlags,
     ) {
-        val player = players[connection.gameProfile.uuid] ?: return
+        val player = playersByUUID[connection.gameProfile.uuid] ?: return
         if (pos != null) player.clientPosition = pos
         if (yawPitch != null) player.clientYawPitch = yawPitch
         player.clientMovePlayerFlags = flags
@@ -141,8 +148,10 @@ class PlayerManager(
     override fun onDisconnect(connection: Connection) {
         if (connection.state == ProtocolState.PLAY || connection.state == ProtocolState.CONFIGURATION) {
             val uuid = connection.gameProfile.uuid
+            val username = connection.gameProfile.username
             toRemovePlayers.add(uuid)
-            players.remove(uuid)
+            playersByUUID.remove(uuid)
+            playersByUsername.remove(username)
         }
     }
 }
