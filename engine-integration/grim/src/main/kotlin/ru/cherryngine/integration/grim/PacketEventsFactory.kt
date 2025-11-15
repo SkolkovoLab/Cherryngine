@@ -18,7 +18,7 @@ class PacketEventsFactory {
 
     @Singleton
     class PacketEventsInitializer(
-        val pe: PacketEventsImpl,
+        private val pe: PacketEventsImpl,
     ) : ApplicationEventListener<PacketEvent> {
         override fun onApplicationEvent(event: PacketEvent) {
             if (event.packet is ServerboundFinishConfigurationPacket) {

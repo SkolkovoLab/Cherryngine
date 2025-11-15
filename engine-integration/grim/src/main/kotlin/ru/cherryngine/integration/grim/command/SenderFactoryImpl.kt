@@ -1,12 +1,13 @@
-package ru.cherryngine.integration.grim
+package ru.cherryngine.integration.grim.command
 
 import ac.grim.grimac.platform.api.sender.SenderFactory
+import jakarta.inject.Singleton
 import net.kyori.adventure.text.Component
 import ru.cherryngine.engine.core.Player
-import ru.cherryngine.engine.core.commandmanager.CloudCommandManager
 import ru.cherryngine.engine.core.commandmanager.CommandSender
 import java.util.*
 
+@Singleton
 class SenderFactoryImpl : SenderFactory<CommandSender>() {
     override fun getUniqueId(sender: CommandSender): UUID {
         sender as Player
@@ -59,6 +60,6 @@ class SenderFactoryImpl : SenderFactory<CommandSender>() {
     }
 
     override fun isPlayer(sender: CommandSender): Boolean {
-        return true
+        return sender is Player
     }
 }

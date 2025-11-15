@@ -1,7 +1,8 @@
-package ru.cherryngine.integration.grim
+package ru.cherryngine.integration.grim.command
 
 import ac.grim.grimac.platform.api.command.PlayerSelector
 import ac.grim.grimac.platform.api.manager.CommandAdapter
+import jakarta.inject.Singleton
 import org.incendo.cloud.parser.ArgumentParseResult
 import org.incendo.cloud.parser.ArgumentParser
 import org.incendo.cloud.parser.ParserDescriptor
@@ -9,6 +10,7 @@ import org.incendo.cloud.suggestion.SuggestionProvider
 import ru.cherryngine.engine.core.PlayerManager
 import ac.grim.grimac.platform.api.sender.Sender as GrimSender
 
+@Singleton
 class CommandAdapterImpl(
     private val playerManager: PlayerManager,
     private val senderFactory: SenderFactoryImpl,

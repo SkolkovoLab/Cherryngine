@@ -1,7 +1,9 @@
 package ru.cherryngine.integration.grim.scheduler
 
 import ac.grim.grimac.platform.api.scheduler.*
+import jakarta.inject.Singleton
 
+@Singleton
 class PlatformSchedulerImpl : PlatformScheduler {
     private val asyncScheduler = AsyncSchedulerImpl()
     private val globalRegionScheduler = GlobalRegionSchedulerImpl()

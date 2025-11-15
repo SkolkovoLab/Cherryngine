@@ -11,7 +11,9 @@ import io.netty.handler.codec.MessageToMessageDecoder
 import ru.cherryngine.lib.minecraft.server.Connection
 
 @ChannelHandler.Sharable
-class PacketEventsDecoder(var user: User) : MessageToMessageDecoder<ByteBuf>() {
+class PacketEventsDecoder(
+    var user: User
+) : MessageToMessageDecoder<ByteBuf>() {
     var player: Connection? = null
 
     fun read(ctx: ChannelHandlerContext, byteBuf: ByteBuf, output: MutableList<Any>) {

@@ -5,12 +5,17 @@ import ac.grim.grimac.platform.api.scheduler.RegionScheduler
 import ac.grim.grimac.platform.api.scheduler.TaskHandle
 import ac.grim.grimac.platform.api.world.PlatformWorld
 import ac.grim.grimac.utils.math.Location
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import org.slf4j.LoggerFactory
+import java.lang.Runnable
 
 class RegionSchedulerImpl : RegionScheduler {
+    private val logger = LoggerFactory.getLogger(GlobalRegionSchedulerImpl::class.java)
+    private val exceptionHandler = CoroutineExceptionHandler { _, e ->
+        logger.error(e.message, e)
+    }
+    private val scope = CoroutineScope(Dispatchers.IO + exceptionHandler)
+
     override fun execute(
         plugin: GrimPlugin,
         world: PlatformWorld,
@@ -18,7 +23,7 @@ class RegionSchedulerImpl : RegionScheduler {
         chunkZ: Int,
         task: Runnable,
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             task.run()
         }
     }
@@ -28,7 +33,7 @@ class RegionSchedulerImpl : RegionScheduler {
         location: Location,
         task: Runnable,
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             task.run()
         }
     }
@@ -40,7 +45,7 @@ class RegionSchedulerImpl : RegionScheduler {
         chunkZ: Int,
         task: Runnable,
     ): TaskHandle {
-        val job = CoroutineScope(Dispatchers.IO).launch {
+        val job = scope.launch {
             task.run()
         }
         return JobTaskHandle(job, true)
@@ -51,7 +56,7 @@ class RegionSchedulerImpl : RegionScheduler {
         location: Location,
         task: Runnable,
     ): TaskHandle {
-        val job = CoroutineScope(Dispatchers.IO).launch {
+        val job = scope.launch {
             task.run()
         }
         return JobTaskHandle(job, true)
@@ -66,7 +71,7 @@ class RegionSchedulerImpl : RegionScheduler {
         delayTicks: Long,
     ): TaskHandle {
         val delayMs = delayTicks * 50
-        val job = CoroutineScope(Dispatchers.IO).launch {
+        val job = scope.launch {
             delay(delayMs)
             task.run()
         }
@@ -80,7 +85,7 @@ class RegionSchedulerImpl : RegionScheduler {
         delayTicks: Long,
     ): TaskHandle {
         val delayMs = delayTicks * 50
-        val job = CoroutineScope(Dispatchers.IO).launch {
+        val job = scope.launch {
             delay(delayMs)
             task.run()
         }
@@ -98,7 +103,7 @@ class RegionSchedulerImpl : RegionScheduler {
     ): TaskHandle {
         val delayMs = initialDelayTicks * 50
         val periodMs = periodTicks * 50
-        val job = CoroutineScope(Dispatchers.IO).launch {
+        val job = scope.launch {
             delay(delayMs)
             while (true) {
                 task.run()
@@ -117,7 +122,7 @@ class RegionSchedulerImpl : RegionScheduler {
     ): TaskHandle {
         val delayMs = initialDelayTicks * 50
         val periodMs = periodTicks * 50
-        val job = CoroutineScope(Dispatchers.IO).launch {
+        val job = scope.launch {
             delay(delayMs)
             while (true) {
                 task.run()

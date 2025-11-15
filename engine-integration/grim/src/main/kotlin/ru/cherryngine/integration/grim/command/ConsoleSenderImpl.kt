@@ -1,4 +1,4 @@
-package ru.cherryngine.integration.grim
+package ru.cherryngine.integration.grim.command
 
 import ac.grim.grimac.platform.api.player.PlatformPlayer
 import ac.grim.grimac.platform.api.sender.Sender

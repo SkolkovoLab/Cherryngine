@@ -1,6 +1,6 @@
-package ru.cherryngine.integration.grim
+package ru.cherryngine.integration.grim.command
 
-import ac.grim.grimac.platform.api.sender.SenderFactory
+import jakarta.inject.Singleton
 import org.incendo.cloud.CommandManager
 import org.incendo.cloud.context.CommandContext
 import org.incendo.cloud.context.CommandInput
@@ -13,9 +13,10 @@ import ru.cherryngine.engine.core.commandmanager.CommandSender
 import java.util.concurrent.CompletableFuture
 import ac.grim.grimac.platform.api.sender.Sender as GrimSender
 
+@Singleton
 class CommandManagerImpl(
     private val originalManager: CommandManager<CommandSender>,
-    private val senderFactory: SenderFactory<CommandSender>,
+    private val senderFactory: SenderFactoryImpl,
 ) : CommandManager<GrimSender>(
     ExecutionCoordinator.coordinatorFor(ExecutionCoordinator.nonSchedulingExecutor()),
     CommandRegistrationHandler.nullCommandRegistrationHandler()

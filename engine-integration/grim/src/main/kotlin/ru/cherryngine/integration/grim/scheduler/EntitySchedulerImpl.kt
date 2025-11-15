@@ -4,12 +4,17 @@ import ac.grim.grimac.api.plugin.GrimPlugin
 import ac.grim.grimac.platform.api.entity.GrimEntity
 import ac.grim.grimac.platform.api.scheduler.EntityScheduler
 import ac.grim.grimac.platform.api.scheduler.TaskHandle
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import org.slf4j.LoggerFactory
+import java.lang.Runnable
 
 class EntitySchedulerImpl : EntityScheduler{
+    private val logger = LoggerFactory.getLogger(EntitySchedulerImpl::class.java)
+    private val exceptionHandler = CoroutineExceptionHandler { _, e ->
+        logger.error(e.message, e)
+    }
+    private val scope = CoroutineScope(Dispatchers.IO + exceptionHandler)
+    
     override fun execute(
         entity: GrimEntity,
         plugin: GrimPlugin,
@@ -18,7 +23,7 @@ class EntitySchedulerImpl : EntityScheduler{
         delay: Long,
     ) {
         val delayMs = delay * 50
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             delay(delayMs)
             run.run()
         }
@@ -30,7 +35,7 @@ class EntitySchedulerImpl : EntityScheduler{
         task: Runnable,
         retired: Runnable?,
     ): TaskHandle {
-        val job = CoroutineScope(Dispatchers.IO).launch {
+        val job = scope.launch {
             task.run()
         }
         return JobTaskHandle(job, true)
@@ -44,7 +49,7 @@ class EntitySchedulerImpl : EntityScheduler{
         delayTicks: Long,
     ): TaskHandle {
         val delayMs = delayTicks * 50
-        val job = CoroutineScope(Dispatchers.IO).launch {
+        val job = scope.launch {
             delay(delayMs)
             task.run()
         }
@@ -61,7 +66,7 @@ class EntitySchedulerImpl : EntityScheduler{
     ): TaskHandle {
         val delayMs = initialDelayTicks * 50
         val periodMs = periodTicks * 50
-        val job = CoroutineScope(Dispatchers.IO).launch {
+        val job = scope.launch {
             delay(delayMs)
             while (true) {
                 task.run()

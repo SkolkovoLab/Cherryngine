@@ -1,18 +1,22 @@
 package ru.cherryngine.lib.packetevents.handlers
 
 import com.github.retrooper.packetevents.PacketEvents
+import com.github.retrooper.packetevents.event.PacketSendEvent
 import com.github.retrooper.packetevents.netty.buffer.ByteBufHelper
 import com.github.retrooper.packetevents.protocol.player.User
 import com.github.retrooper.packetevents.util.EventCreationUtil
+import com.github.retrooper.packetevents.util.PacketEventsImplHelper
 import io.netty.buffer.ByteBuf
+import io.netty.channel.Channel
 import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToByteEncoder
+import ru.cherryngine.lib.minecraft.server.ChannelHandlers
 import ru.cherryngine.lib.minecraft.server.Connection
 
 @ChannelHandler.Sharable
 class PacketEventsEncoder(
-    var user: User
+    var user: User,
 ) : MessageToByteEncoder<ByteBuf>() {
     var player: Connection? = null
 
@@ -49,6 +53,8 @@ class PacketEventsEncoder(
 
     override fun encode(ctx: ChannelHandlerContext, msg: ByteBuf, out: ByteBuf) {
         if (!msg.isReadable) return
+        val connection = ctx.pipeline().get(ChannelHandlers.PLAYER_NETWORK_MANAGER) as Connection
+        handleClientBoundPacket(ctx.channel(), user, connection, msg)
 
         val transformed = ctx.alloc().buffer().writeBytes(msg)
         try {
@@ -57,5 +63,20 @@ class PacketEventsEncoder(
         } finally {
             transformed.release()
         }
+    }
+
+    private fun handleClientBoundPacket(
+        channel: Channel,
+        user: User,
+        player: Any,
+        buffer: ByteBuf,
+    ): PacketSendEvent? {
+        val packetSendEvent = PacketEventsImplHelper.handleClientBoundPacket(channel, user, player, buffer, true)
+        if (packetSendEvent != null && packetSendEvent.hasTasksAfterSend()) {
+            for (task in packetSendEvent.getTasksAfterSend()) {
+                task.run()
+            }
+        }
+        return packetSendEvent
     }
 }

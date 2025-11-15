@@ -1,6 +1,7 @@
 package ru.cherryngine.integration.grim
 
 import ac.grim.grimac.GrimAPI
+import ac.grim.grimac.api.GrimAPIProvider
 import ac.grim.grimac.api.plugin.BasicGrimPlugin
 import ac.grim.grimac.api.plugin.GrimPlugin
 import ac.grim.grimac.platform.api.PlatformLoader
@@ -8,26 +9,35 @@ import ac.grim.grimac.platform.api.PlatformServer
 import ac.grim.grimac.platform.api.manager.*
 import ac.grim.grimac.platform.api.player.PlatformPlayerFactory
 import ac.grim.grimac.platform.api.scheduler.PlatformScheduler
-import ac.grim.grimac.platform.api.sender.Sender
 import ac.grim.grimac.platform.api.sender.SenderFactory
 import com.github.retrooper.packetevents.PacketEventsAPI
+import io.micronaut.context.event.ApplicationEventListener
 import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
 import jakarta.inject.Singleton
 import org.incendo.cloud.CommandManager
 import org.slf4j.LoggerFactory
-import ru.cherryngine.engine.core.PlayerManager
-import ru.cherryngine.engine.core.commandmanager.CloudCommandManager
-import ru.cherryngine.integration.grim.scheduler.PlatformSchedulerImpl
+import ru.cherryngine.engine.core.commandmanager.CommandSender
+import ru.cherryngine.engine.core.events.PacketEvent
+import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundClientTickEndPacket
 import ru.cherryngine.lib.minecraft.utils.Slf4jToJulAdapter
 import java.io.File
+import ac.grim.grimac.platform.api.sender.Sender as GrimSender
 
 @Singleton
 class PlatformLoaderImpl(
     private val packetEvents: PacketEventsAPI<*>,
-    private val cloudCommandManager: CloudCommandManager,
-    private val playerManager: PlayerManager,
-) : PlatformLoader {
+    private val platformScheduler: PlatformScheduler,
+    private val platformPlayerFactory: PlatformPlayerFactory,
+    private val commandAdapter: CommandAdapter,
+    private val commandManager: CommandManager<GrimSender>,
+    private val itemResetHandler: ItemResetHandler,
+    private val senderFactory: SenderFactory<CommandSender>,
+    private val platformPluginManager: PlatformPluginManager,
+    private val platformServer: PlatformServer,
+    private val messagePlaceHolderManager: MessagePlaceHolderManager,
+    private val permissionRegistrationManager: PermissionRegistrationManager,
+) : PlatformLoader, ApplicationEventListener<PacketEvent> {
     private val logger = LoggerFactory.getLogger(PlatformLoaderImpl::class.java)
     private val plugin: GrimPlugin = BasicGrimPlugin(
         Slf4jToJulAdapter(logger),
@@ -48,39 +58,29 @@ class PlatformLoaderImpl(
         GrimAPI.INSTANCE.stop()
     }
 
-    private val scheduler by lazy { PlatformSchedulerImpl() }
-    override fun getScheduler(): PlatformScheduler = scheduler
-
-    private val platformPlayerFactory = PlatformPlayerFactoryImpl(playerManager)
-    override fun getPlatformPlayerFactory(): PlatformPlayerFactory = platformPlayerFactory
-
-    private val commandAdapter by lazy { CommandAdapterImpl(playerManager, senderFactory) }
-    override fun getCommandAdapter(): CommandAdapter = commandAdapter
-
-    override fun getPacketEvents(): PacketEventsAPI<*> = packetEvents
-
-    private val commandManager by lazy { CommandManagerImpl(cloudCommandManager, senderFactory) }
-    override fun getCommandManager(): CommandManager<Sender> = commandManager
-
-    private val itemResetHandler by lazy { ItemResetHandlerImpl() }
-    override fun getItemResetHandler(): ItemResetHandler = itemResetHandler
-
-    private val senderFactory by lazy { SenderFactoryImpl() }
-    override fun getSenderFactory(): SenderFactory<*> = senderFactory
-
     override fun getPlugin(): GrimPlugin = plugin
-
-    private val platformPluginManager = PlatformPluginManagerImpl()
+    override fun getPacketEvents(): PacketEventsAPI<*> = packetEvents
+    override fun getScheduler(): PlatformScheduler = platformScheduler
+    override fun getPlatformPlayerFactory(): PlatformPlayerFactory = platformPlayerFactory
+    override fun getCommandAdapter(): CommandAdapter = commandAdapter
+    override fun getCommandManager(): CommandManager<GrimSender> = commandManager
+    override fun getItemResetHandler(): ItemResetHandler = itemResetHandler
+    override fun getSenderFactory(): SenderFactory<*> = senderFactory
     override fun getPluginManager(): PlatformPluginManager = platformPluginManager
-
-    private val platformServer = PlatformServerImpl()
     override fun getPlatformServer(): PlatformServer = platformServer
-
-    override fun registerAPIService() = Unit
-
-    private val messagePlaceHolderManager = MessagePlaceHolderManagerImpl()
     override fun getMessagePlaceHolderManager(): MessagePlaceHolderManager = messagePlaceHolderManager
-
-    private val permissionRegistrationManager = PermissionRegistrationManagerImpl()
     override fun getPermissionManager(): PermissionRegistrationManager = permissionRegistrationManager
+
+    override fun registerAPIService() {
+        GrimAPIProvider.init(GrimAPI.INSTANCE.externalAPI)
+    }
+
+    override fun onApplicationEvent(event: PacketEvent) {
+        when (event.packet) {
+            is ServerboundClientTickEndPacket -> {
+                val grimPlayer = GrimAPI.INSTANCE.playerDataManager.getPlayer(event.connection.gameProfile.uuid) ?: return
+                grimPlayer.checkManager.entityReplication.onEndOfTickEvent()
+            }
+        }
+    }
 }

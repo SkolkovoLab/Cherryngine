@@ -2,7 +2,10 @@ package ru.cherryngine.integration.grim
 
 import ac.grim.grimac.platform.api.PlatformServer
 import ac.grim.grimac.platform.api.sender.Sender
+import jakarta.inject.Singleton
+import ru.cherryngine.integration.grim.command.ConsoleSenderImpl
 
+@Singleton
 class PlatformServerImpl : PlatformServer {
     override fun getPlatformImplementationString(): String {
         return "aboba"

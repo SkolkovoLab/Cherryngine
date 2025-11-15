@@ -1,61 +1,44 @@
-package ru.cherryngine.integration.grim
+package ru.cherryngine.integration.grim.player
 
 import ac.grim.grimac.platform.api.entity.GrimEntity
 import ac.grim.grimac.platform.api.player.PlatformInventory
 import ac.grim.grimac.platform.api.player.PlatformPlayer
 import ac.grim.grimac.platform.api.sender.Sender
+import ac.grim.grimac.platform.api.sender.SenderFactory
 import ac.grim.grimac.platform.api.world.PlatformWorld
 import ac.grim.grimac.utils.math.Location
 import com.github.retrooper.packetevents.protocol.player.GameMode
 import com.github.retrooper.packetevents.util.Vector3d
 import net.kyori.adventure.text.Component
 import ru.cherryngine.engine.core.Player
+import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
 class PlatformPlayerImpl(
-    val player: Player,
-) : PlatformPlayer, Sender {
+    private val player: Player,
+    private val senderFactory: SenderFactory<CommandSender>,
+) : PlatformPlayer {
     override fun kickPlayer(textReason: String?) {
         player.connection.kick(textReason.toString())
     }
 
     override fun isSneaking(): Boolean {
-        return false
+        return player.isSneaking
     }
 
     override fun setSneaking(b: Boolean) {
-
-    }
-
-    override fun hasPermission(s: String?): Boolean {
-        return true
-    }
-
-    override fun hasPermission(s: String?, defaultIfUnset: Boolean): Boolean {
-        return true
-    }
-
-    override fun performCommand(commandLine: String?) {
         TODO("Not yet implemented")
     }
 
-    override fun isConsole(): Boolean {
+    override fun hasPermission(s: String?): Boolean {
         return false
     }
 
-    override fun isPlayer(): Boolean {
-        return true
-    }
-
-    override fun getNativeSender(): Any {
-        return player
-    }
-
-    override fun getPlatformPlayer(): PlatformPlayer {
-        return this
+    override fun hasPermission(s: String?, defaultIfUnset: Boolean): Boolean {
+        return false
     }
 
     override fun sendMessage(message: String) {
@@ -92,7 +75,7 @@ class PlatformPlayerImpl(
     }
 
     override fun isExternalPlayer(): Boolean {
-        TODO("Not yet implemented")
+        return false
     }
 
     override fun sendPluginMessage(channelName: String?, byteArray: ByteArray?) {
@@ -100,7 +83,7 @@ class PlatformPlayerImpl(
     }
 
     override fun getSender(): Sender {
-        return this
+        return senderFactory.wrap(player)
     }
 
     override fun eject(): Boolean {
@@ -115,7 +98,7 @@ class PlatformPlayerImpl(
     }
 
     override fun getNative(): Any {
-        TODO("Not yet implemented")
+        return player
     }
 
     override fun isDead(): Boolean {
@@ -123,13 +106,14 @@ class PlatformPlayerImpl(
     }
 
     override fun getWorld(): PlatformWorld {
-        TODO("Not yet implemented")
+        return PlatformWorldImpl(player)
     }
 
     override fun getLocation(): Location {
+        val world = getWorld()
         val (x, y, z) = player.clientPosition
         val (yaw, pitch) = player.clientYawPitch
-        return Location(null, x, y, z, yaw, pitch)
+        return Location(world, x, y, z, yaw, pitch)
     }
 
     override fun getUniqueId(): UUID {
