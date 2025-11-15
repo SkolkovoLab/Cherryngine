@@ -1,6 +1,11 @@
 package ru.cherryngine.engine.core.view
 
+import ru.cherryngine.lib.math.Vec3I
+import ru.cherryngine.lib.minecraft.world.block.Block
+
 /**
  * В отличие от обычного Viewable, этот подразумевает, что chunkPos иммутабельный
  */
-interface StaticViewable : Viewable
+interface BlocksViewable : Viewable {
+    fun getBlock(pos: Vec3I): Block?
+}

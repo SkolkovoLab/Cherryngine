@@ -15,10 +15,7 @@ import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundF
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundRegistryDataPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ServerboundFinishConfigurationPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundLoginAcknowledgedPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundMovePlayerPosPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundMovePlayerPosRotPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundMovePlayerRotPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundMovePlayerStatusOnlyPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.*
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ClientboundStatusResponsePacket
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ServerboundStatusRequestPacket
 import ru.cherryngine.lib.minecraft.protocol.types.MovePlayerFlags
@@ -124,6 +121,11 @@ class PlayerManager(
                 connection,
                 null, null, packet.flags
             )
+
+            is ServerboundPlayerInputPacket -> {
+                val player = playersByUUID[connection.gameProfile.uuid] ?: return
+                player.isSneaking = true
+            }
         }
 
         if (connection.state == ProtocolState.PLAY || connection.state == ProtocolState.CONFIGURATION) {

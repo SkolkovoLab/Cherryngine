@@ -1,9 +1,9 @@
-package ru.cherryngine.impl.demo.world.polar
+package ru.cherryngine.engine.core.world.polar
 
 import io.netty.buffer.Unpooled
 import net.kyori.adventure.key.Key
 import org.slf4j.LoggerFactory
-import ru.cherryngine.impl.demo.world.Chunk
+import ru.cherryngine.engine.core.world.Chunk
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.protocol.types.BlockEntityType
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
@@ -11,6 +11,7 @@ import ru.cherryngine.lib.minecraft.registry.Biomes
 import ru.cherryngine.lib.minecraft.registry.registries.Biome
 import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
+import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.world.Light
 import ru.cherryngine.lib.minecraft.world.block.Block
@@ -23,7 +24,7 @@ import java.util.*
 object PolarWorldGenerator {
     private val logger = LoggerFactory.getLogger(PolarWorldGenerator::class.java)
 
-    fun loadChunks(worldBytes: ByteArray): Map<ChunkPos, Chunk> {
+    fun loadChunks(worldBytes: ByteArray, dimensionType: DimensionType): Map<ChunkPos, Chunk> {
         val polarWorld = PolarReader.read(worldBytes)
 
         return polarWorld.chunks().associate { polarChunk ->
@@ -69,7 +70,7 @@ object PolarWorldGenerator {
                 blockEntities
             )
 
-            ChunkPos(polarChunk.x, polarChunk.z) to Chunk(chunkData, light)
+            ChunkPos(polarChunk.x, polarChunk.z) to Chunk(chunkData, light, dimensionType)
         }
     }
 

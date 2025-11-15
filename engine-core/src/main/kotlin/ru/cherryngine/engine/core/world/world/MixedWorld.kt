@@ -1,9 +1,9 @@
-package ru.cherryngine.impl.demo.world.world
+package ru.cherryngine.engine.core.world.world
 
-import ru.cherryngine.engine.core.view.StaticViewable
-import ru.cherryngine.impl.demo.world.Chunk
-import ru.cherryngine.impl.demo.world.ChunkViewable
-import ru.cherryngine.impl.demo.world.EmptyChunkViewable
+import ru.cherryngine.engine.core.view.BlocksViewable
+import ru.cherryngine.engine.core.world.Chunk
+import ru.cherryngine.engine.core.world.ChunkViewable
+import ru.cherryngine.engine.core.world.EmptyChunkViewable
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.Blocks
 import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
@@ -23,7 +23,7 @@ class MixedWorld(
     override val chunks: Map<ChunkPos, Chunk> = mixWorld(worlds.first(), worlds.drop(1))
     override val chunkViewables: Map<ChunkPos, ChunkViewable> = chunks.mapValues { ChunkViewable(it.key, it.value) }
 
-    override fun getStaticViewables(chunkPos: ChunkPos): Set<StaticViewable> {
+    override fun getStaticViewables(chunkPos: ChunkPos): Set<BlocksViewable> {
         val chunkViewable = chunkViewables[chunkPos] ?: EmptyChunkViewable(chunkPos, dimensionType)
         return setOf(chunkViewable)
     }
@@ -42,7 +42,7 @@ class MixedWorld(
                 mixSection(section, layers.map { it.chunkData.sections[index] })
             }
 
-            return Chunk(ChunkData(chunk.chunkData.heightmaps, newSections, chunk.chunkData.blockEntities), chunk.light)
+            return Chunk(ChunkData(chunk.chunkData.heightmaps, newSections, chunk.chunkData.blockEntities), chunk.light, chunk.dimensionType)
         }
 
         fun mixSection(section: ChunkSection, layers: List<ChunkSection>): ChunkSection {

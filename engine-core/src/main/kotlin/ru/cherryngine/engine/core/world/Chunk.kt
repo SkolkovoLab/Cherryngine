@@ -1,4 +1,4 @@
-package ru.cherryngine.impl.demo.world
+package ru.cherryngine.engine.core.world
 
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
@@ -12,22 +12,23 @@ import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 class Chunk(
     val chunkData: ChunkData,
     val light: Light,
+    val dimensionType: DimensionType,
 ) {
     companion object {
-        val EMPTY = Chunk(ChunkData(mapOf(), listOf(), listOf()), Light())
+        fun empty(dimensionType: DimensionType) = Chunk(ChunkData.empty(dimensionType), Light(), dimensionType)
     }
 
-    fun getSection(section: Int, dimensionType: DimensionType): ChunkSection {
+    fun getSection(section: Int): ChunkSection {
         val minSection = dimensionType.minY / 16
         return chunkData.sections[section - minSection]
     }
 
-    fun getSectionAt(blockY: Int, dimensionType: DimensionType): ChunkSection {
-        return getSection(ChunkUtils.getChunkCoordinate(blockY), dimensionType)
+    fun getSectionAt(blockY: Int): ChunkSection {
+        return getSection(ChunkUtils.getChunkCoordinate(blockY))
     }
 
-    fun getBlockId(blockPos: Vec3I, dimensionType: DimensionType): Int {
-        val section = getSectionAt(blockPos.y, dimensionType)
+    fun getBlockId(blockPos: Vec3I): Int {
+        val section = getSectionAt(blockPos.y)
         return section.getBlock(
             globalToSectionRelative(blockPos.x),
             globalToSectionRelative(blockPos.y),
@@ -35,12 +36,12 @@ class Chunk(
         )
     }
 
-    fun getBlock(blockPos: Vec3I, dimensionType: DimensionType): Block {
-        return Block.getBlockByStateId(getBlockId(blockPos, dimensionType))
+    fun getBlock(blockPos: Vec3I): Block {
+        return Block.getBlockByStateId(getBlockId(blockPos))
     }
 
-    fun setBlockId(blockPos: Vec3I, stateId: Int, dimensionType: DimensionType) {
-        val section = getSectionAt(blockPos.y, dimensionType)
+    fun setBlockId(blockPos: Vec3I, stateId: Int) {
+        val section = getSectionAt(blockPos.y)
         return section.setBlock(
             globalToSectionRelative(blockPos.x),
             globalToSectionRelative(blockPos.y),
@@ -49,7 +50,7 @@ class Chunk(
         )
     }
 
-    fun setBlock(blockPos: Vec3I, block: Block, dimensionType: DimensionType) {
-        setBlockId(blockPos, block.getProtocolId(), dimensionType)
+    fun setBlock(blockPos: Vec3I, block: Block) {
+        setBlockId(blockPos, block.getProtocolId())
     }
 }

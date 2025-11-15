@@ -5,7 +5,7 @@ import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
 import ru.cherryngine.engine.core.Player
 import ru.cherryngine.engine.core.PlayerManager
-import ru.cherryngine.engine.core.view.StaticViewable
+import ru.cherryngine.engine.core.view.BlocksViewable
 import ru.cherryngine.engine.core.view.StaticViewableProvider
 import ru.cherryngine.engine.core.view.Viewable
 import ru.cherryngine.engine.core.view.ViewableProvider
@@ -48,7 +48,7 @@ class ViewSystem(
     fun getStaticViewables(
         staticViewableProviders: Set<StaticViewableProvider>,
         chunkPos: ChunkPos,
-    ): Set<StaticViewable> {
+    ): Set<BlocksViewable> {
         return staticViewableProviders.flatMap { it.getStaticViewables(chunkPos) }.toSet()
     }
 
@@ -72,7 +72,7 @@ class ViewSystem(
             ?: ChunkPos.ZERO
 
         val currentVisibleViewables = player.currentVisibleViewables
-        val currentVisibleStaticViewables = player.currentVisibleStaticViewables
+        val currentVisibleStaticViewables = player.currentVisibleBlocksViewables
 
         val chunks = ChunkUtils.getChunksInRange(clientChunkPos, distance).toSet()
         val viewables: Set<Viewable> = getViewables(viewableProviders)

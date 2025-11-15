@@ -1,11 +1,11 @@
 package ru.cherryngine.impl.demo
 
 import jakarta.inject.Singleton
-import ru.cherryngine.impl.demo.world.Chunk
-import ru.cherryngine.impl.demo.world.polar.PolarWorldGenerator
-import ru.cherryngine.impl.demo.world.world.LayerWorldImpl
-import ru.cherryngine.impl.demo.world.world.MixedWorld
-import ru.cherryngine.impl.demo.world.world.WorldImpl
+import ru.cherryngine.engine.core.world.Chunk
+import ru.cherryngine.engine.core.world.polar.PolarWorldGenerator
+import ru.cherryngine.engine.core.world.world.LayerWorldImpl
+import ru.cherryngine.engine.core.world.world.MixedWorld
+import ru.cherryngine.engine.core.world.world.WorldImpl
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.DimensionTypes
 
@@ -13,7 +13,8 @@ import ru.cherryngine.lib.minecraft.registry.DimensionTypes
 class DemoWorlds {
     private fun loadChunks(name: String): Map<ChunkPos, Chunk> {
         return PolarWorldGenerator.loadChunks(
-            javaClass.getResource("/${name}.polar")!!.readBytes()
+            javaClass.getResource("/${name}.polar")!!.readBytes(),
+            DimensionTypes.OVERWORLD
         )
     }
 

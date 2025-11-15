@@ -1,8 +1,8 @@
-package ru.cherryngine.impl.demo.world.world
+package ru.cherryngine.engine.core.world.world
 
-import ru.cherryngine.engine.core.view.StaticViewable
+import ru.cherryngine.engine.core.view.BlocksViewable
 import ru.cherryngine.engine.core.view.StaticViewableProvider
-import ru.cherryngine.impl.demo.world.Chunk
+import ru.cherryngine.engine.core.world.Chunk
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
 
@@ -26,6 +26,6 @@ interface World : StaticViewableProvider {
 //        }
 //    }
 
-    val chunkViewables: Map<ChunkPos, StaticViewable>
+    val chunkViewables: Map<ChunkPos, BlocksViewable>
 }
 

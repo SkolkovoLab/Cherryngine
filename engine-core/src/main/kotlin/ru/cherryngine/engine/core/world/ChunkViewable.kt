@@ -1,14 +1,13 @@
-package ru.cherryngine.impl.demo.world
+package ru.cherryngine.engine.core.world
 
 import ru.cherryngine.engine.core.Player
-import ru.cherryngine.engine.core.view.StaticViewable
+import ru.cherryngine.engine.core.view.BlocksViewable
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundBlockUpdatePacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundForgetLevelChunkPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundSectionBlocksUpdatePacket
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils.globalToSectionRelative
 import ru.cherryngine.lib.minecraft.world.block.Block
@@ -16,20 +15,20 @@ import ru.cherryngine.lib.minecraft.world.block.Block
 class ChunkViewable(
     override val chunkPos: ChunkPos,
     val chunk: Chunk,
-) : StaticViewable {
+) : BlocksViewable {
     private val viewers = mutableSetOf<Player>()
     override val viewerPredicate: (Player) -> Boolean = { true }
 
-    fun setBlock(blockPos: Vec3I, block: Block, dimensionType: DimensionType) {
-        chunk.setBlock(blockPos, block, dimensionType)
+    fun setBlock(blockPos: Vec3I, block: Block) {
+        chunk.setBlock(blockPos, block)
         viewers.forEach {
             it.connection.sendPacket(ClientboundBlockUpdatePacket(blockPos, block))
         }
     }
 
-    fun setBlocks(blocks: Map<Vec3I, Block>, dimensionType: DimensionType) {
+    fun setBlocks(blocks: Map<Vec3I, Block>) {
         blocks.forEach { (pos, block) ->
-            chunk.setBlock(pos, block, dimensionType)
+            chunk.setBlock(pos, block)
         }
         blocks.entries.groupBy { (pos, _) ->
             ChunkUtils.sectionIndexFromBlockPos(pos)
@@ -47,6 +46,10 @@ class ChunkViewable(
                 it.connection.sendPacket(ClientboundSectionBlocksUpdatePacket(sectionIndex, localSectionBlocks))
             }
         }
+    }
+
+    override fun getBlock(pos: Vec3I): Block {
+        return chunk.getBlock(pos)
     }
 
     override fun show(player: Player) {

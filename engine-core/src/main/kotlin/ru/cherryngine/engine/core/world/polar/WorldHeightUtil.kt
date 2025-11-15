@@ -1,4 +1,4 @@
-package ru.cherryngine.impl.demo.world.polar
+package ru.cherryngine.engine.core.world.polar
 
 object WorldHeightUtil {
     fun updateWorldHeight(world: PolarWorld, minSection: Byte, maxSection: Byte): PolarWorld {
