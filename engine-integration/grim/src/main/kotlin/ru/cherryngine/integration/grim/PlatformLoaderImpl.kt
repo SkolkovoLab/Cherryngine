@@ -49,7 +49,6 @@ class PlatformLoaderImpl(
 
     @PostConstruct
     fun init() {
-        System.setProperty("grim.platform-override", "bukkit")
         GrimAPI.INSTANCE.load(this)
         GrimAPI.INSTANCE.start()
         commandManager.init()

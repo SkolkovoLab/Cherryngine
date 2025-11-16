@@ -19,6 +19,5 @@ include(
     "lib-jackson",
     "lib-math",
     "lib-minecraft",
-    "lib-packetevents",
     "lib-viaversion",
 )

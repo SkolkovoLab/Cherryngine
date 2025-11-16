@@ -1,15 +1,15 @@
-package ru.cherryngine.lib.packetevents.injector
+package ru.cherryngine.integration.grim.packetevents.injector
 
 import com.github.retrooper.packetevents.PacketEvents
 import com.github.retrooper.packetevents.protocol.player.User
 import io.netty.channel.Channel
+import ru.cherryngine.integration.grim.packetevents.handler.PacketEventsDecoder
+import ru.cherryngine.integration.grim.packetevents.handler.PacketEventsEncoder
 import ru.cherryngine.lib.minecraft.server.Connection
 import ru.cherryngine.lib.minecraft.server.NettyServer
-import ru.cherryngine.lib.packetevents.handlers.PacketEventsDecoder
-import ru.cherryngine.lib.packetevents.handlers.PacketEventsEncoder
 import com.github.retrooper.packetevents.injector.ChannelInjector as PacketEventsChannelInjector
 
-class VelocityPipelineInjector(
+class PipelineInjectorImpl(
     private val nettyServer: NettyServer,
 ) : PacketEventsChannelInjector {
     override fun isServerBound(): Boolean = true

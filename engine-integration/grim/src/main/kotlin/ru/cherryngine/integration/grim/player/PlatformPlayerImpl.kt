@@ -117,6 +117,10 @@ class PlatformPlayerImpl(
         return Location(world, x, y, z, yaw, pitch)
     }
 
+    override fun distanceSquared(x: Double, y: Double, z: Double): Double {
+        return player.clientPosition.minus(x, y, z).lengthSquared()
+    }
+
     override fun getUniqueId(): UUID {
         return player.uuid
     }

@@ -14,4 +14,8 @@ class ItemResetHandlerImpl : ItemResetHandler {
     override fun getItemUsageHand(player: PlatformPlayer?): InteractionHand {
         return InteractionHand.MAIN_HAND
     }
+
+    override fun isUsingItem(player: PlatformPlayer?): Boolean {
+        return false
+    }
 }

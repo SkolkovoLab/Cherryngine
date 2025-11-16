@@ -1,4 +1,4 @@
-package ru.cherryngine.lib.packetevents
+package ru.cherryngine.integration.grim.packetevents
 
 import com.github.retrooper.packetevents.PacketEvents
 import com.github.retrooper.packetevents.PacketEventsAPI
@@ -18,11 +18,11 @@ import io.github.retrooper.packetevents.impl.netty.NettyManagerImpl
 import io.github.retrooper.packetevents.impl.netty.manager.player.PlayerManagerAbstract
 import io.github.retrooper.packetevents.impl.netty.manager.protocol.ProtocolManagerAbstract
 import net.kyori.adventure.text.format.NamedTextColor
+import ru.cherryngine.integration.grim.packetevents.injector.PipelineInjectorImpl
+import ru.cherryngine.integration.grim.packetevents.manager.PlayerManagerImpl
+import ru.cherryngine.integration.grim.packetevents.manager.ServerManagerImpl
 import ru.cherryngine.lib.minecraft.server.Connection
 import ru.cherryngine.lib.minecraft.server.NettyServer
-import ru.cherryngine.lib.packetevents.injector.VelocityPipelineInjector
-import ru.cherryngine.lib.packetevents.manager.PlayerManagerImpl
-import ru.cherryngine.lib.packetevents.manager.ServerManagerImpl
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -40,7 +40,7 @@ class PacketEventsImpl(
 
     private val serverManager: ServerManager = ServerManagerImpl()
     private val playerManager: PlayerManagerAbstract = PlayerManagerImpl()
-    private val injector: ChannelInjector = VelocityPipelineInjector(nettyServer)
+    private val injector: ChannelInjector = PipelineInjectorImpl(nettyServer)
     private val nettyManager: NettyManager = NettyManagerImpl()
     private val logManager: LogManager = object : LogManager() {
         override fun log(level: Level, color: NamedTextColor?, message: String) {

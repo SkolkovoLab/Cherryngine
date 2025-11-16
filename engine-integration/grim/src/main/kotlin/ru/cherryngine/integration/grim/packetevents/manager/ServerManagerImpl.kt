@@ -1,4 +1,4 @@
-package ru.cherryngine.lib.packetevents.manager
+package ru.cherryngine.integration.grim.packetevents.manager
 
 import com.github.retrooper.packetevents.manager.server.ServerManager
 import com.github.retrooper.packetevents.manager.server.ServerVersion
