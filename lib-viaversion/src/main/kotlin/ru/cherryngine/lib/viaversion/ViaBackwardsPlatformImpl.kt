@@ -50,8 +50,6 @@ import com.viaversion.viabackwards.protocol.v1_9_3to1_9_1.Protocol1_9_3To1_9_1
 import com.viaversion.viabackwards.utils.VersionInfo
 import com.viaversion.viaversion.api.Via
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion
-import org.slf4j.LoggerFactory
-import ru.cherryngine.lib.minecraft.utils.Slf4jToJulAdapter
 import java.io.File
 import com.viaversion.viabackwards.ViaBackwardsConfig as ViaBackwardsConfigImpl
 import java.util.logging.Logger as JulLogger
@@ -59,8 +57,7 @@ import java.util.logging.Logger as JulLogger
 class ViaBackwardsPlatformImpl(
     val config: ViaBackwardsConfig? = null,
 ) : ViaBackwardsPlatform {
-    private val logger = LoggerFactory.getLogger(this::class.java)
-    private val julLogger = Slf4jToJulAdapter(logger)
+    private val julLogger = JulLogger.getLogger(ViaBackwardsPlatformImpl::class.java.name)
     override fun getLogger(): JulLogger = julLogger
 
     override fun disable() = Unit

@@ -6,9 +6,7 @@ import com.viaversion.viaversion.api.platform.PlatformTask
 import com.viaversion.viaversion.api.platform.ViaPlatform
 import com.viaversion.viaversion.util.VersionInfo
 import kotlinx.coroutines.*
-import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.minecraft.server.Connection
-import ru.cherryngine.lib.minecraft.utils.Slf4jToJulAdapter
 import java.io.File
 import java.util.logging.Logger as JulLogger
 
@@ -16,8 +14,7 @@ class ViaPlatformImpl(
     private val config: ViaVersionConfig,
     private val api: ViaAPI<Connection>,
 ) : ViaPlatform<Connection> {
-    private val logger = LoggerFactory.getLogger(this::class.java)
-    private val julLogger = Slf4jToJulAdapter(logger)
+    private val julLogger = JulLogger.getLogger(ViaPlatformImpl::class.java.name)
     override fun getLogger(): JulLogger = julLogger
     override fun getApi(): ViaAPI<Connection> = api
     override fun getConf(): ViaVersionConfig = config

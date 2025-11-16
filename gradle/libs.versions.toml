@@ -43,6 +43,7 @@ typetools = { module = "net.jodah:typetools", version.ref = "typetools" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 netty-all = { module = "io.netty:netty-all", version.ref = "netty" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j-bridge-jul = { module = "org.slf4j:jul-to-slf4j", version.ref = "slf4j" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 fastutil = { module = "it.unimi.dsi:fastutil", version.ref = "fastutil" }
 

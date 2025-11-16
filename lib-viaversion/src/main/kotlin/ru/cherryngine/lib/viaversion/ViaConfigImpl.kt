@@ -1,19 +1,17 @@
 package ru.cherryngine.lib.viaversion
 
 import com.viaversion.viaversion.configuration.AbstractViaConfig
-import org.slf4j.LoggerFactory
-import ru.cherryngine.lib.minecraft.utils.Slf4jToJulAdapter
 import java.io.File
-import org.slf4j.Logger as Slf4jLogger
+import java.util.logging.Logger
 
 class ViaConfigImpl(
     file: File = File("./viaversion/config.yml"),
 ) : AbstractViaConfig(
     file,
-    Slf4jToJulAdapter(logger)
+    logger
 ) {
     companion object {
-        private val logger: Slf4jLogger = LoggerFactory.getLogger(ViaConfigImpl::class.java)
+        private val logger = Logger.getLogger(ViaConfigImpl::class.java.name)
         private val unsupported = sequenceOf(
             BUKKIT_ONLY_OPTIONS,
             VELOCITY_ONLY_OPTIONS
