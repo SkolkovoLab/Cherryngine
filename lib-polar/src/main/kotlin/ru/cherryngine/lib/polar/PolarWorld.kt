@@ -1,4 +1,4 @@
-package ru.cherryngine.engine.core.world.polar
+package ru.cherryngine.lib.polar
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap

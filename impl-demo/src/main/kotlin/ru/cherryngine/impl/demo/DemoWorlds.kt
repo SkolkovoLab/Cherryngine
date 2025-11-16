@@ -1,13 +1,13 @@
 package ru.cherryngine.impl.demo
 
 import jakarta.inject.Singleton
-import ru.cherryngine.engine.core.world.Chunk
-import ru.cherryngine.engine.core.world.polar.PolarWorldGenerator
 import ru.cherryngine.engine.core.world.world.LayerWorldImpl
 import ru.cherryngine.engine.core.world.world.MixedWorld
 import ru.cherryngine.engine.core.world.world.WorldImpl
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.DimensionTypes
+import ru.cherryngine.lib.minecraft.world.chunk.Chunk
+import ru.cherryngine.lib.polar.PolarWorldGenerator
 
 @Singleton
 class DemoWorlds {

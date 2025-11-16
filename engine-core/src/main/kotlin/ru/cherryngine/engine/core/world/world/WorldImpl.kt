@@ -1,11 +1,11 @@
 package ru.cherryngine.engine.core.world.world
 
 import ru.cherryngine.engine.core.view.BlocksViewable
-import ru.cherryngine.engine.core.world.Chunk
 import ru.cherryngine.engine.core.world.ChunkViewable
 import ru.cherryngine.engine.core.world.EmptyChunkViewable
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
+import ru.cherryngine.lib.minecraft.world.chunk.Chunk
 
 class WorldImpl(
     override val name: String,

@@ -1,4 +1,4 @@
-package ru.cherryngine.engine.core.world.polar
+package ru.cherryngine.lib.polar
 
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import java.util.Map

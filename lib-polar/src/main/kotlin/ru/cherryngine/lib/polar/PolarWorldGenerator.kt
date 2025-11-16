@@ -1,9 +1,8 @@
-package ru.cherryngine.engine.core.world.polar
+package ru.cherryngine.lib.polar
 
 import io.netty.buffer.Unpooled
 import net.kyori.adventure.key.Key
 import org.slf4j.LoggerFactory
-import ru.cherryngine.engine.core.world.Chunk
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.protocol.types.BlockEntityType
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
@@ -16,6 +15,7 @@ import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.world.Light
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity
+import ru.cherryngine.lib.minecraft.world.chunk.Chunk
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 import ru.cherryngine.lib.minecraft.world.palette.Palette

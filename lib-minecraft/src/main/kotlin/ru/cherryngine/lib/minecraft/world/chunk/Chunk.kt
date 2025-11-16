@@ -1,13 +1,10 @@
-package ru.cherryngine.engine.core.world
+package ru.cherryngine.lib.minecraft.world.chunk
 
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
-import ru.cherryngine.lib.minecraft.utils.ChunkUtils.globalToSectionRelative
 import ru.cherryngine.lib.minecraft.world.Light
 import ru.cherryngine.lib.minecraft.world.block.Block
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 
 class Chunk(
     val chunkData: ChunkData,
@@ -30,9 +27,9 @@ class Chunk(
     fun getBlockId(blockPos: Vec3I): Int {
         val section = getSectionAt(blockPos.y)
         return section.getBlock(
-            globalToSectionRelative(blockPos.x),
-            globalToSectionRelative(blockPos.y),
-            globalToSectionRelative(blockPos.z)
+            ChunkUtils.globalToSectionRelative(blockPos.x),
+            ChunkUtils.globalToSectionRelative(blockPos.y),
+            ChunkUtils.globalToSectionRelative(blockPos.z)
         )
     }
 
@@ -43,9 +40,9 @@ class Chunk(
     fun setBlockId(blockPos: Vec3I, stateId: Int) {
         val section = getSectionAt(blockPos.y)
         return section.setBlock(
-            globalToSectionRelative(blockPos.x),
-            globalToSectionRelative(blockPos.y),
-            globalToSectionRelative(blockPos.z),
+            ChunkUtils.globalToSectionRelative(blockPos.x),
+            ChunkUtils.globalToSectionRelative(blockPos.y),
+            ChunkUtils.globalToSectionRelative(blockPos.z),
             stateId
         )
     }

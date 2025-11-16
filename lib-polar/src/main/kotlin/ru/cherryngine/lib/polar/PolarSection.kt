@@ -1,4 +1,4 @@
-package ru.cherryngine.engine.core.world.polar
+package ru.cherryngine.lib.polar
 
 /**
  * Representation of the latest version of the section format.

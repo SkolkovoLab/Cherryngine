@@ -11,6 +11,7 @@ import ru.cherryngine.lib.minecraft.registry.DimensionTypes
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils.sectionIndexFromSectionPos
 import ru.cherryngine.lib.minecraft.world.block.Block
+import ru.cherryngine.lib.minecraft.world.chunk.Chunk
 
 class LayerChunkViewable(
     override val chunkPos: ChunkPos,

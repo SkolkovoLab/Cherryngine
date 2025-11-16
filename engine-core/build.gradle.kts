@@ -20,7 +20,5 @@ dependencies {
     api(libs.cloud.kotlin.coroutines.annotations)
     api(libs.cloud.kotlin.extensions)
 
-    implementation("com.github.luben:zstd-jni:1.5.5-3")
-
     implementation(libs.slf4j.bridge.jul)
 }
