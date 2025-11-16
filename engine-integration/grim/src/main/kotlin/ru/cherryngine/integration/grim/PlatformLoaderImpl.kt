@@ -16,12 +16,12 @@ import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
 import jakarta.inject.Singleton
 import org.incendo.cloud.CommandManager
-import org.slf4j.LoggerFactory
 import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.engine.core.events.PacketEvent
+import ru.cherryngine.integration.grim.command.CommandManagerImpl
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundClientTickEndPacket
-import ru.cherryngine.lib.minecraft.utils.Slf4jToJulAdapter
 import java.io.File
+import java.util.logging.Logger
 import ac.grim.grimac.platform.api.sender.Sender as GrimSender
 
 @Singleton
@@ -30,7 +30,7 @@ class PlatformLoaderImpl(
     private val platformScheduler: PlatformScheduler,
     private val platformPlayerFactory: PlatformPlayerFactory,
     private val commandAdapter: CommandAdapter,
-    private val commandManager: CommandManager<GrimSender>,
+    private val commandManager: CommandManagerImpl,
     private val itemResetHandler: ItemResetHandler,
     private val senderFactory: SenderFactory<CommandSender>,
     private val platformPluginManager: PlatformPluginManager,
@@ -38,9 +38,9 @@ class PlatformLoaderImpl(
     private val messagePlaceHolderManager: MessagePlaceHolderManager,
     private val permissionRegistrationManager: PermissionRegistrationManager,
 ) : PlatformLoader, ApplicationEventListener<PacketEvent> {
-    private val logger = LoggerFactory.getLogger(PlatformLoaderImpl::class.java)
+    private val julLogger = Logger.getLogger(PlatformLoaderImpl::class.java.name)
     private val plugin: GrimPlugin = BasicGrimPlugin(
-        Slf4jToJulAdapter(logger),
+        julLogger,
         File("./grim/"),
         "dev",
         "",
@@ -49,8 +49,10 @@ class PlatformLoaderImpl(
 
     @PostConstruct
     fun init() {
+        System.setProperty("grim.platform-override", "bukkit")
         GrimAPI.INSTANCE.load(this)
         GrimAPI.INSTANCE.start()
+        commandManager.init()
     }
 
     @PreDestroy

@@ -43,7 +43,6 @@ class VelocityPipelineInjector(
         channel as Channel
         player as Connection
 
-        println(channel.pipeline().names())
         val decoder = channel.pipeline().get(PacketEvents.DECODER_NAME) as PacketEventsDecoder
         decoder.player = player
         decoder.user.profile.uuid = player.gameProfile.uuid

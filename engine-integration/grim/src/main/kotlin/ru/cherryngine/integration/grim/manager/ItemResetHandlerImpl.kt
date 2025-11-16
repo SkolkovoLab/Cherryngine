@@ -8,10 +8,10 @@ import jakarta.inject.Singleton
 @Singleton
 class ItemResetHandlerImpl : ItemResetHandler {
     override fun resetItemUsage(player: PlatformPlayer?) {
-        TODO("Not yet implemented")
+
     }
 
     override fun getItemUsageHand(player: PlatformPlayer?): InteractionHand {
-        TODO("Not yet implemented")
+        return InteractionHand.MAIN_HAND
     }
 }

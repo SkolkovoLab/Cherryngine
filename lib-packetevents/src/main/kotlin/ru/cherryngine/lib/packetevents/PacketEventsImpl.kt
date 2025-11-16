@@ -18,19 +18,18 @@ import io.github.retrooper.packetevents.impl.netty.NettyManagerImpl
 import io.github.retrooper.packetevents.impl.netty.manager.player.PlayerManagerAbstract
 import io.github.retrooper.packetevents.impl.netty.manager.protocol.ProtocolManagerAbstract
 import net.kyori.adventure.text.format.NamedTextColor
-import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.minecraft.server.Connection
 import ru.cherryngine.lib.minecraft.server.NettyServer
-import ru.cherryngine.lib.minecraft.utils.Slf4jToJulAdapter
 import ru.cherryngine.lib.packetevents.injector.VelocityPipelineInjector
 import ru.cherryngine.lib.packetevents.manager.PlayerManagerImpl
 import ru.cherryngine.lib.packetevents.manager.ServerManagerImpl
 import java.util.logging.Level
+import java.util.logging.Logger
 
 class PacketEventsImpl(
     nettyServer: NettyServer,
 ) : PacketEventsAPI<Unit>() {
-    private val logger = LoggerFactory.getLogger(javaClass)
+    private val julLogger = Logger.getLogger(PacketEventsImpl::class.java.name)
     private val settings: PacketEventsSettings = PacketEventsSettings()
 
     private val protocolManager: ProtocolManager = object : ProtocolManagerAbstract() {
@@ -45,7 +44,7 @@ class PacketEventsImpl(
     private val nettyManager: NettyManager = NettyManagerImpl()
     private val logManager: LogManager = object : LogManager() {
         override fun log(level: Level, color: NamedTextColor?, message: String) {
-            Slf4jToJulAdapter.log(logger, level, message)
+            julLogger.log(level, message)
         }
     }
 

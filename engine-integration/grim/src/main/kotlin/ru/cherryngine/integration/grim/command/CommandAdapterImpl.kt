@@ -6,8 +6,11 @@ import jakarta.inject.Singleton
 import org.incendo.cloud.parser.ArgumentParseResult
 import org.incendo.cloud.parser.ArgumentParser
 import org.incendo.cloud.parser.ParserDescriptor
+import org.incendo.cloud.suggestion.Suggestion
 import org.incendo.cloud.suggestion.SuggestionProvider
 import ru.cherryngine.engine.core.PlayerManager
+import java.lang.IllegalArgumentException
+import java.util.concurrent.CompletableFuture
 import ac.grim.grimac.platform.api.sender.Sender as GrimSender
 
 @Singleton
@@ -16,11 +19,11 @@ class CommandAdapterImpl(
     private val senderFactory: SenderFactoryImpl,
 ) : CommandAdapter {
     override fun singlePlayerSelectorParser(): ParserDescriptor<GrimSender, PlayerSelector> {
-        val parser = ArgumentParser<GrimSender, PlayerSelector> { commandContext, commandInput ->
-            val input = commandInput.peekString()
+        val parser = ArgumentParser<GrimSender, PlayerSelector> { _, commandInput ->
+            val input = commandInput.readString()
             val player = playerManager.getPlayerNullable(input)
             if (player == null) {
-                ArgumentParseResult.failure(RuntimeException())
+                ArgumentParseResult.failure(IllegalArgumentException("Player $input not found"))
             } else {
                 val grimSender = senderFactory.wrap(player)
                 val playerSelector = PlayerSelectorImpl(grimSender, input)
@@ -31,8 +34,12 @@ class CommandAdapterImpl(
     }
 
     override fun onlinePlayerSuggestions(): SuggestionProvider<GrimSender> {
-        val usernames = playerManager.onlinePlayers().map { it.username }
-        return SuggestionProvider.suggestingStrings(usernames)
+        return SuggestionProvider<GrimSender> { _, _ ->
+            val suggestions = playerManager.onlinePlayers().map {
+                Suggestion.suggestion(it.username)
+            }
+            CompletableFuture.completedFuture(suggestions)
+        }
     }
 
     class PlayerSelectorImpl(

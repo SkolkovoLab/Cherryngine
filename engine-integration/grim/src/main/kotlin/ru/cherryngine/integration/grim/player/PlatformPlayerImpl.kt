@@ -21,6 +21,8 @@ class PlatformPlayerImpl(
     private val player: Player,
     private val senderFactory: SenderFactory<CommandSender>,
 ) : PlatformPlayer {
+    private val world = PlatformWorldImpl(player)
+
     override fun kickPlayer(textReason: String?) {
         player.connection.kick(textReason.toString())
     }
@@ -59,7 +61,7 @@ class PlatformPlayerImpl(
     }
 
     override fun getInventory(): PlatformInventory {
-        TODO("Not yet implemented")
+        return PlatformInventoryImpl()
     }
 
     override fun getVehicle(): GrimEntity {
@@ -106,11 +108,10 @@ class PlatformPlayerImpl(
     }
 
     override fun getWorld(): PlatformWorld {
-        return PlatformWorldImpl(player)
+        return world
     }
 
     override fun getLocation(): Location {
-        val world = getWorld()
         val (x, y, z) = player.clientPosition
         val (yaw, pitch) = player.clientYawPitch
         return Location(world, x, y, z, yaw, pitch)
