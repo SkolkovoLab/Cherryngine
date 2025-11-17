@@ -25,6 +25,10 @@ data class EmptyChunkViewable(
         player.connection.sendPacket(ClientboundForgetLevelChunkPacket(chunkPos))
     }
 
+    override fun getBlockId(pos: Vec3I): Int {
+        return 0
+    }
+
     override fun getBlock(pos: Vec3I): Block {
         return Block.AIR
     }

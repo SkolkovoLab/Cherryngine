@@ -48,6 +48,6 @@ class Chunk(
     }
 
     fun setBlock(blockPos: Vec3I, block: Block) {
-        setBlockId(blockPos, block.getProtocolId())
+        setBlockId(blockPos, block.getStateId())
     }
 }

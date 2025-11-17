@@ -8,7 +8,6 @@ import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.extentions.reversed
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
-import ru.cherryngine.lib.minecraft.registry.RegistryException
 import ru.cherryngine.lib.minecraft.world.block.Block
 
 object BlockRegistry : DataDrivenRegistry<RegistryBlock>() {
@@ -28,11 +27,9 @@ object BlockRegistry : DataDrivenRegistry<RegistryBlock>() {
         }
     }
 
-    override fun getByProtocolId(id: Int): RegistryBlock {
-        return super.getByProtocolIdOrNull(id) ?: blockStates.getOrDefault(id, null)?.registryBlock
-        ?: throw RegistryException(id, entries.size)
+    fun getByStateIdOrNull(id: Int): RegistryBlock? {
+        return blockStates.getOrDefault(id, null)?.registryBlock
     }
-
 }
 
 @Serializable
@@ -76,10 +73,6 @@ data class RegistryBlock(
     val possibleStatesReversed = Int2ObjectOpenHashMap(possibleStates.reversed())
 
     override fun getProtocolId(): Int {
-        return defaultBlockStateId
-    }
-
-    fun getLegacyProtocolId(): Int {
         return BlockRegistry.getProtocolIdByEntry(this)
     }
 

@@ -19,7 +19,7 @@ class PlatformWorldImpl(
         y: Int,
         z: Int,
     ): WrappedBlockState {
-        val blockId = player.getBlock(Vec3I(x, y, z)).getProtocolId()
+        val blockId = player.getBlockId(Vec3I(x, y, z))
         return WrappedBlockState.getByGlobalId(blockId)
     }
 
@@ -37,7 +37,7 @@ class PlatformWorldImpl(
     ): PlatformChunk {
         return PlatformChunk { x, y, z ->
             val pos = Vec3I(x + currChunkX * 16, y, z + currChunkZ * 16)
-            player.getBlock(pos).getProtocolId()
+            player.getBlockId(pos)
         }
     }
 

@@ -50,7 +50,7 @@ abstract class Registry<T : RegistryEntry> {
         return entryToProtocolId.getInt(entry)
     }
 
-    open fun getByProtocolId(id: Int): T {
+    fun getByProtocolId(id: Int): T {
         return getByProtocolIdOrNull(id) ?: throw RegistryException(id, protocolEntries.size)
     }
 

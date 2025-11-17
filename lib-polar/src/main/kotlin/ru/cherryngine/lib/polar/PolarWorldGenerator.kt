@@ -33,11 +33,11 @@ object PolarWorldGenerator {
                 val polarSection = polarChunk.sections[it]
                 val blockPalette = Palette.blocks()
                 blockPalette.setAll { x, y, z ->
-                    getBlockId(polarSection, x, y, z).getProtocolId()
+                    getBlock(polarSection, x, y, z).getStateId()
                 }
                 val biomePalette = Palette.biomes()
                 biomePalette.setAll { x, y, z ->
-                    getBiomeId(polarSection, x, y, z).getProtocolId()
+                    getBiome(polarSection, x, y, z).getProtocolId()
                 }
                 ChunkSection(blockPalette, biomePalette)
             }
@@ -111,13 +111,13 @@ object PolarWorldGenerator {
         return palette[paletteIndex]
     }
 
-    private fun getBiomeId(polarSection: PolarSection, x: Int, y: Int, z: Int): Biome {
+    private fun getBiome(polarSection: PolarSection, x: Int, y: Int, z: Int): Biome {
         val biomeId = getId(polarSection.biomePalette(), polarSection.biomeData(), x, y, z)
             ?: return Biomes.PLAINS
         return BiomeRegistry[biomeId]
     }
 
-    private fun getBlockId(polarSection: PolarSection, x: Int, y: Int, z: Int): Block {
+    private fun getBlock(polarSection: PolarSection, x: Int, y: Int, z: Int): Block {
         val blockId = getId(polarSection.blockPalette(), polarSection.blockData(), x, y, z)
             ?: return Block.AIR
         return parseBlockState(blockId)

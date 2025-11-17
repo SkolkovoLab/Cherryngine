@@ -37,7 +37,7 @@ class ChunkViewable(
             viewers.forEach {
                 val localSectionBlocks = sectionBlocks.map { (pos, block) ->
                     ChunkUtils.encodeBlockData(
-                        block.getProtocolId(),
+                        block.getStateId(),
                         globalToSectionRelative(pos.x),
                         globalToSectionRelative(pos.y),
                         globalToSectionRelative(pos.z)
@@ -47,6 +47,10 @@ class ChunkViewable(
                 it.connection.sendPacket(ClientboundSectionBlocksUpdatePacket(sectionIndex, localSectionBlocks))
             }
         }
+    }
+
+    override fun getBlockId(pos: Vec3I): Int {
+        return chunk.getBlockId(pos)
     }
 
     override fun getBlock(pos: Vec3I): Block {

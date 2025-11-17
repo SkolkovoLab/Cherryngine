@@ -25,7 +25,7 @@ data class Block(
         return ItemRegistry[identifier]
     }
 
-    fun getProtocolId(): Int {
+    fun getStateId(): Int {
         if (blockStates.isEmpty()) return registryBlock.defaultBlockStateId
         if (registryBlock.states.isEmpty()) return registryBlock.defaultBlockStateId
 
@@ -73,7 +73,7 @@ data class Block(
 
         val STREAM_CODEC = object : StreamCodec<Block> {
             override fun write(buffer: ByteBuf, value: Block) {
-                StreamCodec.VAR_INT.write(buffer, value.getProtocolId())
+                StreamCodec.VAR_INT.write(buffer, value.getStateId())
             }
 
             override fun read(buffer: ByteBuf): Block {
@@ -105,7 +105,7 @@ data class Block(
                 return blockState
             }
 
-            val registryBlock = BlockRegistry.getByProtocolIdOrNull(stateId)
+            val registryBlock = BlockRegistry.getByStateIdOrNull(stateId)
             if (registryBlock != null) {
                 val states = registryBlock.possibleStatesReversed[registryBlock.defaultBlockStateId]!!
                 val parsed = parseBlockStateString(states).second.toMutableMap()

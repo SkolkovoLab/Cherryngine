@@ -32,7 +32,7 @@ class Player(
     val currentVisibleBlocksViewables: MutableList<BlocksViewable> = mutableListOf()
     val chunksToRefresh: MutableSet<ChunkPos> = hashSetOf()
 
-    fun getBlock(pos: Vec3I): Block {
+    fun getBlockId(pos: Vec3I): Int {
         val chunkPos = ChunkUtils.chunkPosFromVec3I(pos)
         val blockPos = Vec3I(
             ChunkUtils.globalToSectionRelative(pos.x),
@@ -41,9 +41,13 @@ class Player(
         )
         val block = currentVisibleBlocksViewables.asReversed().firstNotNullOfOrNull {
             if (it.chunkPos != chunkPos) return@firstNotNullOfOrNull null
-            it.getBlock(blockPos)
+            it.getBlockId(blockPos)
         }
-        return block ?: Block.AIR
+        return block ?: 0
+    }
+
+    fun getBlock(pos: Vec3I): Block {
+        return Block.getBlockByStateId(getBlockId(pos))
     }
 
     fun teleport(position: Vec3D, yawPitch: YawPitch) {

@@ -41,7 +41,7 @@ interface BlockTypeFilter : Predicate<Block>, DataComponentHashable {
                     is Blocks -> {
                         StreamCodec.VAR_INT.write(buffer, value.blocks.size + 1)
                         value.blocks.forEach { block ->
-                            StreamCodec.VAR_INT.write(buffer, block.getProtocolId())
+                            StreamCodec.VAR_INT.write(buffer, block.getStateId())
                         }
                     }
                 }
@@ -65,9 +65,9 @@ interface BlockTypeFilter : Predicate<Block>, DataComponentHashable {
         val blocks: List<Block>
     ) : BlockTypeFilter {
         override fun test(block: Block): Boolean {
-            val blockId = block.getProtocolId()
+            val blockId = block.getStateId()
             blocks.forEach { b ->
-                if (blockId == b.getProtocolId()) return true
+                if (blockId == b.getStateId()) return true
             }
             return false
         }
