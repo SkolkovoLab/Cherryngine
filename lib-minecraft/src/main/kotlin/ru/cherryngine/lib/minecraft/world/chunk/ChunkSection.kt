@@ -3,7 +3,6 @@ package ru.cherryngine.lib.minecraft.world.chunk
 import io.netty.buffer.ByteBuf
 import ru.cherryngine.lib.minecraft.registry.Biomes
 import ru.cherryngine.lib.minecraft.registry.Blocks
-import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.world.palette.Palette
 
@@ -71,8 +70,8 @@ class ChunkSection(
         val STREAM_CODEC = object : StreamCodec<ChunkSection> {
             override fun write(buffer: ByteBuf, value: ChunkSection) {
                 buffer.writeShort(value.blockPalette.count())
-                Palette.BLOCK_SERIALIZER.write(buffer, value.blockPalette)
-                Palette.biomeSerializer(BiomeRegistry.getEntries().size).write(buffer, value.biomePalette)
+                Palette.BLOCK_STREAM_CODEC.write(buffer, value.blockPalette)
+                Palette.BIOME_STREAM_CODEC.write(buffer, value.biomePalette)
             }
 
             override fun read(buffer: ByteBuf): ChunkSection {

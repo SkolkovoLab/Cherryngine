@@ -8,7 +8,7 @@ import net.kyori.adventure.nbt.CompoundBinaryTag
 import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.tide.stream.StringStreamCodec
-import ru.cherryngine.lib.minecraft.world.palette.Palettes
+import ru.cherryngine.lib.minecraft.world.palette.PaletteUtils
 import kotlin.math.ceil
 import kotlin.math.ln
 
@@ -114,7 +114,7 @@ object PolarReader {
 
             val rawBlockData = StreamCodec.LONG_ARRAY.read(buffer)
             val bitsPerEntry = ceil(ln(blockPalette.size.toDouble()) / ln(2.0)).toInt()
-            Palettes.unpack(blockData, rawBlockData, bitsPerEntry)
+            PaletteUtils.unpack(blockData, rawBlockData, bitsPerEntry)
         }
 
         
@@ -125,7 +125,7 @@ object PolarReader {
 
             val rawBiomeData = StreamCodec.LONG_ARRAY.read(buffer)
             val bitsPerEntry = ceil(ln(biomePalette.size.toDouble()) / ln(2.0)).toInt()
-            Palettes.unpack(biomeData, rawBiomeData, bitsPerEntry)
+            PaletteUtils.unpack(biomeData, rawBiomeData, bitsPerEntry)
         }
 
         var blockLightContent = PolarSection.LightContent.MISSING
@@ -189,7 +189,7 @@ object PolarReader {
                 } else {
                     val bitsPerEntry = packed.size * 64 / PolarChunk.HEIGHTMAP_SIZE
                     heightmaps!![i] = IntArray(PolarChunk.HEIGHTMAP_SIZE)
-                    Palettes.unpack(heightmaps[i]!!, packed, bitsPerEntry)
+                    PaletteUtils.unpack(heightmaps[i]!!, packed, bitsPerEntry)
                 }
             } else {
                 buffer.readBytes(StreamCodec.VAR_INT.read(buffer) * 8) // Skip a long array
