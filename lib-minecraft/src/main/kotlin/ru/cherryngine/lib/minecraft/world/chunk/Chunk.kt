@@ -2,7 +2,6 @@ package ru.cherryngine.lib.minecraft.world.chunk
 
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity
@@ -21,20 +20,14 @@ class Chunk(
             LightData(),
             dimensionType
         )
-
-        val STREAM_CODEC = StreamCodec.of(
-            ChunkHeightmaps.STREAM_CODEC, Chunk::heightmaps,
-            ChunkSection.STREAM_CODEC_LIST, Chunk::sections,
-            BlockEntity.STREAM_CODEC_MAP, Chunk::blockEntities
-        ) { heightmaps, sections, blockEntities ->
-            TODO("Not yet implemented")
-        }
     }
 
     val minSection = dimensionType.minY / 16
     val maxSection = dimensionType.height / 16
 
     val heightmaps = ChunkHeightmaps()
+
+    val chunkData = ChunkData(heightmaps, sections, blockEntities)
 
     init {
         ChunkHeightmap.Type.entries.forEach { type ->

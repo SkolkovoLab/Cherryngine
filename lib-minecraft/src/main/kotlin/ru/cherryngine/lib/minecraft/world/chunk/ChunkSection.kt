@@ -1,10 +1,12 @@
 package ru.cherryngine.lib.minecraft.world.chunk
 
 import io.netty.buffer.ByteBuf
+import io.netty.buffer.Unpooled
 import ru.cherryngine.lib.minecraft.registry.Biomes
 import ru.cherryngine.lib.minecraft.registry.Blocks
 import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils.byteBufBytes
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.utils.use
 import ru.cherryngine.lib.minecraft.world.palette.Palette
 
 class ChunkSection(
@@ -70,13 +72,16 @@ class ChunkSection(
 
         val STREAM_CODEC = object : StreamCodec<ChunkSection> {
             override fun write(buffer: ByteBuf, value: ChunkSection) {
-                buffer.writeShort(value.blockPalette.count())
+                StreamCodec.SHORT.write(buffer, value.blockPalette.count().toShort())
                 Palette.BLOCK_STREAM_CODEC.write(buffer, value.blockPalette)
                 Palette.BIOME_STREAM_CODEC.write(buffer, value.biomePalette)
             }
 
             override fun read(buffer: ByteBuf): ChunkSection {
-                TODO("Not yet implemented")
+                StreamCodec.SHORT.read(buffer) // blockPalette.count
+                val blockPalette = Palette.BLOCK_STREAM_CODEC.read(buffer)
+                val biomePalette = Palette.BIOME_STREAM_CODEC.read(buffer)
+                return ChunkSection(blockPalette, biomePalette)
             }
         }
 
@@ -92,7 +97,13 @@ class ChunkSection(
 
             override fun read(buffer: ByteBuf): List<ChunkSection> {
                 val data = StreamCodec.BYTE_ARRAY.read(buffer)
-                TODO("Not yet implemented")
+                val result = mutableListOf<ChunkSection>()
+                Unpooled.wrappedBuffer(data).use { b ->
+                    while (b.isReadable) {
+                        result += STREAM_CODEC.read(b)
+                    }
+                }
+                return result
             }
         }
     }

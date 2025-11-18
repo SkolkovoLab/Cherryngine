@@ -60,7 +60,7 @@ class ChunkViewable(
         val lightEngine = LightEngine(chunk.sections)
         lightEngine.recalculateChunk()
         val lightData = lightEngine.createLightData()
-        player.connection.sendPacket(ClientboundLevelChunkWithLightPacket(chunkPos, chunk, LightData()))
+        player.connection.sendPacket(ClientboundLevelChunkWithLightPacket(chunkPos, chunk.chunkData, LightData()))
         player.connection.sendPacket(ClientboundLightUpdatePacket(chunkPos, lightData))
         viewers.add(player)
     }

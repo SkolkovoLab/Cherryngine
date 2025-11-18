@@ -22,14 +22,18 @@ data class BlockEntity(
 
         val STREAM_CODEC_POSITION_INDEX = object : StreamCodec<Vec3I> {
             override fun write(buffer: ByteBuf, value: Vec3I) {
-                StreamCodec.BYTE.write(buffer, ((value.x and 15) shl 4 or (value.z and 15)).toByte())
+                val packedXZ = (value.x and 15) shl 4 or (value.z and 15)
+                StreamCodec.BYTE.write(buffer, packedXZ.toByte())
                 StreamCodec.SHORT.write(buffer, value.y.toShort())
             }
 
             override fun read(buffer: ByteBuf): Vec3I {
-                TODO("Not yet implemented")
+                val packedXZ = StreamCodec.BYTE.read(buffer).toInt() and 0xFF
+                val x = (packedXZ shr 4) and 0xF
+                val z = packedXZ and 0xF
+                val y = StreamCodec.SHORT.read(buffer).toInt()
+                return Vec3I(x, y, z)
             }
-
         }
 
         val STREAM_CODEC_MAP = MapStreamCodec(STREAM_CODEC_POSITION_INDEX, STREAM_CODEC)
