@@ -22,15 +22,15 @@ object PaletteUtils {
         return longs
     }
 
-    fun unpack(out: IntArray, `in`: LongArray, bitsPerEntry: Int) {
-        assert(`in`.isNotEmpty()) { "unpack input array is zero" }
+    fun unpack(output: IntArray, input: LongArray, bitsPerEntry: Int) {
+        assert(input.isNotEmpty()) { "unpack input array is zero" }
         val intsPerLong = floor(64.0 / bitsPerEntry)
         val intsPerLongCeil = ceil(intsPerLong).toInt()
         val mask = (1L shl bitsPerEntry) - 1L
-        for (i in out.indices) {
+        for (i in output.indices) {
             val longIndex = i / intsPerLongCeil
             val subIndex = i % intsPerLongCeil
-            out[i] = ((`in`[longIndex].ushr(bitsPerEntry * subIndex)) and mask).toInt()
+            output[i] = ((input[longIndex].ushr(bitsPerEntry * subIndex)) and mask).toInt()
         }
     }
 
