@@ -2,11 +2,13 @@ package ru.cherryngine.lib.minecraft.world.palette
 
 import ru.cherryngine.lib.minecraft.utils.bitsToRepresent
 import java.util.*
+import kotlin.math.ceil
+import kotlin.math.floor
 
-object Palettes {
+object PaletteUtils {
     fun pack(ints: IntArray, bitsPerEntry: Int): LongArray {
-        val intsPerLong = Math.floor(64.0 / bitsPerEntry).toInt()
-        val longs = LongArray(Math.ceil(ints.size / intsPerLong.toDouble()).toInt())
+        val intsPerLong = floor(64.0 / bitsPerEntry).toInt()
+        val longs = LongArray(ceil(ints.size / intsPerLong.toDouble()).toInt())
         val mask = (1L shl bitsPerEntry) - 1L
         for (i in longs.indices) {
             for (intIndex in 0 until intsPerLong) {
@@ -20,15 +22,15 @@ object Palettes {
         return longs
     }
 
-    fun unpack(out: IntArray, `in`: LongArray, bitsPerEntry: Int) {
-        assert(`in`.isNotEmpty()) { "unpack input array is zero" }
-        val intsPerLong = Math.floor(64.0 / bitsPerEntry).toDouble()
-        val intsPerLongCeil = Math.ceil(intsPerLong).toInt()
+    fun unpack(output: IntArray, input: LongArray, bitsPerEntry: Int) {
+        assert(input.isNotEmpty()) { "unpack input array is zero" }
+        val intsPerLong = floor(64.0 / bitsPerEntry)
+        val intsPerLongCeil = ceil(intsPerLong).toInt()
         val mask = (1L shl bitsPerEntry) - 1L
-        for (i in out.indices) {
+        for (i in output.indices) {
             val longIndex = i / intsPerLongCeil
             val subIndex = i % intsPerLongCeil
-            out[i] = ((`in`[longIndex].ushr(bitsPerEntry * subIndex)) and mask).toInt()
+            output[i] = ((input[longIndex].ushr(bitsPerEntry * subIndex)) and mask).toInt()
         }
     }
 
@@ -88,12 +90,8 @@ object Palettes {
 
     // Optimized operations
     fun getAllFill(dimension: Byte, value: Int, consumer: Palette.EntryConsumer) {
-        for (y in 0 until dimension) {
-            for (z in 0 until dimension) {
-                for (x in 0 until dimension) {
-                    consumer.accept(x.toInt(), y.toInt(), z.toInt(), value)
-                }
-            }
+        for (y in 0 until dimension) for (z in 0 until dimension) for (x in 0 until dimension) {
+            consumer.accept(x, y, z, value)
         }
     }
 }

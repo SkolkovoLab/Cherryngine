@@ -2,6 +2,8 @@ package ru.cherryngine.lib.minecraft.world.palette
 
 import io.netty.buffer.ByteBuf
 import org.jetbrains.annotations.ApiStatus
+import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
+import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.utils.bitsToRepresent
 import java.util.function.IntUnaryOperator
@@ -16,32 +18,30 @@ sealed interface Palette {
         const val BLOCK_DIMENSION = 16
         const val BLOCK_PALETTE_MIN_BITS = 4
         const val BLOCK_PALETTE_MAX_BITS = 8
-        const val BLOCK_PALETTE_DIRECT_BITS = 15
+        val BLOCK_PALETTE_DIRECT_BITS = bitsToRepresent(BlockRegistry.blockStates.size)
 
         const val BIOME_DIMENSION = 4
         const val BIOME_PALETTE_MIN_BITS = 1
         const val BIOME_PALETTE_MAX_BITS = 3
 
-        @ApiStatus.Internal
-        const val BIOME_PALETTE_DIRECT_BITS = 6 // Vary based on biome count, this is just a sensible default
+        // TODO биомы могут меняться в рантайме
+        val BIOME_PALETTE_DIRECT_BITS = bitsToRepresent(BiomeRegistry.getMaxProtocolId())
 
-        fun blocks(bitsPerEntry: Int): Palette =
-            sized(
-                BLOCK_DIMENSION,
-                BLOCK_PALETTE_MIN_BITS,
-                BLOCK_PALETTE_MAX_BITS,
-                BLOCK_PALETTE_DIRECT_BITS,
-                bitsPerEntry
-            )
+        fun blocks(bitsPerEntry: Int): Palette = sized(
+            BLOCK_DIMENSION,
+            BLOCK_PALETTE_MIN_BITS,
+            BLOCK_PALETTE_MAX_BITS,
+            BLOCK_PALETTE_DIRECT_BITS,
+            bitsPerEntry
+        )
 
-        fun biomes(bitsPerEntry: Int): Palette =
-            sized(
-                BIOME_DIMENSION,
-                BIOME_PALETTE_MIN_BITS,
-                BIOME_PALETTE_MAX_BITS,
-                BIOME_PALETTE_DIRECT_BITS,
-                bitsPerEntry
-            )
+        fun biomes(bitsPerEntry: Int): Palette = sized(
+            BIOME_DIMENSION,
+            BIOME_PALETTE_MIN_BITS,
+            BIOME_PALETTE_MAX_BITS,
+            BIOME_PALETTE_DIRECT_BITS,
+            bitsPerEntry
+        )
 
         fun blocks(): Palette =
             empty(BLOCK_DIMENSION, BLOCK_PALETTE_MIN_BITS, BLOCK_PALETTE_MAX_BITS, BLOCK_PALETTE_DIRECT_BITS)
@@ -50,7 +50,15 @@ sealed interface Palette {
             empty(BIOME_DIMENSION, BIOME_PALETTE_MIN_BITS, BIOME_PALETTE_MAX_BITS, BIOME_PALETTE_DIRECT_BITS)
 
         fun empty(dimension: Int, minBitsPerEntry: Int, maxBitsPerEntry: Int, directBits: Int): Palette =
-            PaletteImpl(dimension.toByte(), minBitsPerEntry.toByte(), maxBitsPerEntry.toByte(), directBits.toByte())
+            PaletteImpl(
+                InternalPalette.SingleValued(
+                    dimension.toByte(),
+                    minBitsPerEntry.toByte(),
+                    maxBitsPerEntry.toByte(),
+                    directBits.toByte(),
+                    0
+                )
+            )
 
         fun sized(
             dimension: Int,
@@ -58,23 +66,23 @@ sealed interface Palette {
             maxBitsPerEntry: Int,
             directBits: Int,
             bitsPerEntry: Int,
-        ): Palette =
-            PaletteImpl(
+        ): Palette = PaletteImpl(
+            InternalPaletteUtils.newInternalPalette(
                 dimension.toByte(),
                 minBitsPerEntry.toByte(),
                 maxBitsPerEntry.toByte(),
                 directBits.toByte(),
                 bitsPerEntry.toByte()
             )
+        )
 
-        val BLOCK_SERIALIZER: StreamCodec<Palette> = serializer(
+        val BLOCK_STREAM_CODEC: StreamCodec<Palette> = serializer(
             BLOCK_DIMENSION, BLOCK_PALETTE_MIN_BITS, BLOCK_PALETTE_MAX_BITS, BLOCK_PALETTE_DIRECT_BITS
         )
 
-        fun biomeSerializer(biomeCount: Int): StreamCodec<Palette> {
-            val directBits = bitsToRepresent(biomeCount)
-            return serializer(BIOME_DIMENSION, BIOME_PALETTE_MIN_BITS, BIOME_PALETTE_MAX_BITS, directBits)
-        }
+        val BIOME_STREAM_CODEC: StreamCodec<Palette> = serializer(
+            BIOME_DIMENSION, BIOME_PALETTE_MIN_BITS, BIOME_PALETTE_MAX_BITS, BIOME_PALETTE_DIRECT_BITS
+        )
 
         @Suppress("UNCHECKED_CAST")
         fun serializer(dimension: Int, minIndirect: Int, maxIndirect: Int, directBits: Int): StreamCodec<Palette> {
@@ -82,28 +90,32 @@ sealed interface Palette {
                 override fun write(buffer: ByteBuf, value: PaletteImpl) {
                     // Temporary fix for biome direct bits depending on the number of registered biomes
                     var v: PaletteImpl = value
-                    if (directBits != v.directBits.toInt() && !v.hasPalette()) {
+
+                    if (directBits != v.directBits.toInt() && v.internalPalette is InternalPalette.Direct) {
                         val tmp = PaletteImpl(
-                            dimension.toByte(),
-                            minIndirect.toByte(),
-                            maxIndirect.toByte(),
-                            directBits.toByte()
+                            InternalPalette.SingleValued(
+                                dimension.toByte(),
+                                minIndirect.toByte(),
+                                maxIndirect.toByte(),
+                                directBits.toByte(),
+                                0
+                            )
                         )
-                        tmp.setAll { x, y, z -> v.get(x, y, z) }
+                        tmp.setAll { x, y, z -> v[x, y, z] }
                         v = tmp
                     }
-                    val bitsPerEntry: Byte = v.bitsPerEntry
+                    val internalPalette = v.internalPalette
+                    val bitsPerEntry: Byte = internalPalette.bitsPerEntry
                     StreamCodec.BYTE.write(buffer, bitsPerEntry)
-                    if (bitsPerEntry.toInt() == 0) {
-                        StreamCodec.VAR_INT.write(buffer, v.count)
+                    if (internalPalette is InternalPalette.SingleValued) {
+                        StreamCodec.VAR_INT.write(buffer, internalPalette.value)
                     } else {
-                        if (v.hasPalette()) {
-                            StreamCodec.VAR_INT.list().write(buffer, v.paletteToValueList!!)
+                        internalPalette as InternalPalette.MultiValued
+                        if (internalPalette is InternalPalette.Indirect) {
+                            StreamCodec.VAR_INT.list().write(buffer, internalPalette.paletteToValueList)
                         }
-                        val vals = v.values
-                        if (vals != null) {
-                            for (l in vals) StreamCodec.LONG.write(buffer, l)
-                        }
+                        val vals = internalPalette.values
+                        for (l in vals) StreamCodec.LONG.write(buffer, l)
                     }
                 }
 
@@ -112,14 +124,15 @@ sealed interface Palette {
                     if (bitsPerEntry.toInt() == 0) {
                         // Single value palette
                         val value = StreamCodec.VAR_INT.read(buffer)
-                        val palette = PaletteImpl(
-                            dimension.toByte(),
-                            minIndirect.toByte(),
-                            maxIndirect.toByte(),
-                            directBits.toByte()
+                        return PaletteImpl(
+                            InternalPalette.SingleValued(
+                                dimension.toByte(),
+                                minIndirect.toByte(),
+                                maxIndirect.toByte(),
+                                directBits.toByte(),
+                                value
+                            )
                         )
-                        palette.count = value
-                        return palette
                     } else if (bitsPerEntry.toInt() in minIndirect..maxIndirect) {
                         // Indirect palette
                         val palette = StreamCodec.VAR_INT_ARRAY.read(buffer)
@@ -127,29 +140,32 @@ sealed interface Palette {
                         val data = LongArray((dimension * dimension * dimension) / entriesPerLong + 1)
                         for (i in data.indices) data[i] = StreamCodec.LONG.read(buffer)
                         return PaletteImpl(
-                            dimension.toByte(),
-                            minIndirect.toByte(),
-                            maxIndirect.toByte(),
-                            directBits.toByte(),
-                            bitsPerEntry,
-                            Palettes.count(bitsPerEntry.toInt(), data),
-                            palette,
-                            data
+                            InternalPalette.Indirect(
+                                dimension.toByte(),
+                                minIndirect.toByte(),
+                                maxIndirect.toByte(),
+                                directBits.toByte(),
+                                bitsPerEntry,
+                                PaletteUtils.count(bitsPerEntry.toInt(), data),
+                                palette,
+                                data
+                            )
                         )
                     } else {
                         // Direct palette
-                        val length = Palettes.arrayLength(dimension, bitsPerEntry.toInt())
+                        val length = PaletteUtils.arrayLength(dimension, bitsPerEntry.toInt())
                         val data = LongArray(length)
                         for (i in data.indices) data[i] = StreamCodec.LONG.read(buffer)
                         return PaletteImpl(
-                            dimension.toByte(),
-                            minIndirect.toByte(),
-                            maxIndirect.toByte(),
-                            directBits.toByte(),
-                            bitsPerEntry,
-                            Palettes.count(bitsPerEntry.toInt(), data),
-                            IntArray(0),
-                            data
+                            InternalPalette.Direct(
+                                dimension.toByte(),
+                                minIndirect.toByte(),
+                                maxIndirect.toByte(),
+                                directBits.toByte(),
+                                bitsPerEntry,
+                                PaletteUtils.count(bitsPerEntry.toInt(), data),
+                                data
+                            )
                         )
                     }
                 }
