@@ -37,7 +37,7 @@ class LayerChunkViewable(
         val dimensionType = DimensionTypes.OVERWORLD // TODO оно должно браться откуда-нибудь
         val minSection = dimensionType.minY / 16
         val sVoidBlockId = Blocks.STRUCTURE_VOID.defaultBlockStateId
-        chunk.chunkData.sections.forEachIndexed { sectionIndex, section ->
+        chunk.sections.forEachIndexed { sectionIndex, section ->
             val blocks = mutableListOf<Long>()
             for (x in 0..<16) for (y in 0..<16) for (z in 0..<16) {
                 var blockId = section.getBlock(x, y, z)

@@ -3,15 +3,14 @@ package ru.cherryngine.engine.core.world
 import ru.cherryngine.engine.core.Player
 import ru.cherryngine.engine.core.view.BlocksViewable
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundBlockUpdatePacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundForgetLevelChunkPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundSectionBlocksUpdatePacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.*
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils.globalToSectionRelative
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.chunk.Chunk
+import ru.cherryngine.lib.minecraft.world.light.LightData
+import ru.cherryngine.lib.minecraft.world.light.LightEngine
 
 class ChunkViewable(
     override val chunkPos: ChunkPos,
@@ -58,7 +57,11 @@ class ChunkViewable(
     }
 
     override fun show(player: Player) {
-        player.connection.sendPacket(ClientboundLevelChunkWithLightPacket(chunkPos, chunk.chunkData, chunk.light))
+        val lightEngine = LightEngine(chunk.sections)
+        lightEngine.recalculateChunk()
+        val lightData = lightEngine.createLightData()
+        player.connection.sendPacket(ClientboundLevelChunkWithLightPacket(chunkPos, chunk, LightData()))
+        player.connection.sendPacket(ClientboundLightUpdatePacket(chunkPos, lightData))
         viewers.add(player)
     }
 

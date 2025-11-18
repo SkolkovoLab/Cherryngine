@@ -5,30 +5,33 @@ import net.kyori.adventure.nbt.CompoundBinaryTag
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
 import ru.cherryngine.lib.minecraft.protocol.types.BlockEntityType
+import ru.cherryngine.lib.minecraft.tide.stream.EnumStreamCodec
+import ru.cherryngine.lib.minecraft.tide.stream.MapStreamCodec
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 data class BlockEntity(
-    val positionIndex: Vec3I,
     val blockEntityType: BlockEntityType,
     val data: CompoundBinaryTag,
 ) {
-    val blockEntityTypeId get() = blockEntityType.id
-
     companion object {
-        val STREAM_CODEC = object : StreamCodec<BlockEntity> {
-            override fun write(buffer: ByteBuf, value: BlockEntity) {
-                val id = value.blockEntityTypeId
-                val point = value.positionIndex // ChunkUtils.chunkBlockIndexGetGlobal(value.positionIndex, 0, 0)
+        val STREAM_CODEC = StreamCodec.of(
+            EnumStreamCodec<BlockEntityType>(), BlockEntity::blockEntityType,
+            StreamCodecNBT.COMPOUND_STREAM, BlockEntity::data,
+            ::BlockEntity
+        )
 
-                StreamCodec.BYTE.write(buffer, ((point.x and 15) shl 4 or (point.z and 15)).toByte())
-                StreamCodec.SHORT.write(buffer, point.y.toShort())
-                StreamCodec.VAR_INT.write(buffer, id)
-                StreamCodecNBT.STREAM.write(buffer, value.data)
+        val STREAM_CODEC_POSITION_INDEX = object : StreamCodec<Vec3I> {
+            override fun write(buffer: ByteBuf, value: Vec3I) {
+                StreamCodec.BYTE.write(buffer, ((value.x and 15) shl 4 or (value.z and 15)).toByte())
+                StreamCodec.SHORT.write(buffer, value.y.toShort())
             }
 
-            override fun read(buffer: ByteBuf): BlockEntity {
+            override fun read(buffer: ByteBuf): Vec3I {
                 TODO("Not yet implemented")
             }
+
         }
+
+        val STREAM_CODEC_MAP = MapStreamCodec(STREAM_CODEC_POSITION_INDEX, STREAM_CODEC)
     }
 }

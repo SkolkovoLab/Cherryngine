@@ -12,12 +12,11 @@ import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
-import ru.cherryngine.lib.minecraft.world.Light
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity
 import ru.cherryngine.lib.minecraft.world.chunk.Chunk
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
+import ru.cherryngine.lib.minecraft.world.light.LightData
 import ru.cherryngine.lib.minecraft.world.palette.Palette
 import java.util.*
 
@@ -44,7 +43,7 @@ object PolarWorldGenerator {
 
             val skyLight = getLightData(polarChunk) { it.skyLight() }
             val blockLight = getLightData(polarChunk) { it.blockLight() }
-            val light = Light(
+            val lightData = LightData(
                 skyLight.mask,
                 blockLight.mask,
                 skyLight.emptyMask,
@@ -57,20 +56,13 @@ object PolarWorldGenerator {
                 if (polarBlockEntity.id == null) return@mapNotNull null
                 if (polarBlockEntity.data == null) return@mapNotNull null
 
-                BlockEntity(
-                    Vec3I(polarBlockEntity.x, polarBlockEntity.y, polarBlockEntity.z),
+                Vec3I(polarBlockEntity.x, polarBlockEntity.y, polarBlockEntity.z) to BlockEntity(
                     BlockEntityType.fromKey(Key.key(polarBlockEntity.id)),
                     polarBlockEntity.data
                 )
-            }
+            }.toMap()
 
-            val chunkData = ChunkData(
-                mapOf(),
-                sections,
-                blockEntities
-            )
-
-            ChunkPos(polarChunk.x, polarChunk.z) to Chunk(chunkData, light, dimensionType)
+            ChunkPos(polarChunk.x, polarChunk.z) to Chunk(sections, blockEntities, lightData, dimensionType)
         }
     }
 

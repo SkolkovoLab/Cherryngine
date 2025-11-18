@@ -7,7 +7,6 @@ import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.Blocks
 import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
 import ru.cherryngine.lib.minecraft.world.chunk.Chunk
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 
 class MixedWorld(
@@ -38,11 +37,11 @@ class MixedWorld(
         fun mixChunk(chunk: Chunk, layers: List<Chunk>): Chunk {
             if (layers.isEmpty()) return chunk
 
-            val newSections = chunk.chunkData.sections.mapIndexed { index, section ->
-                mixSection(section, layers.map { it.chunkData.sections[index] })
+            val newSections = chunk.sections.mapIndexed { index, section ->
+                mixSection(section, layers.map { it.sections[index] })
             }
 
-            return Chunk(ChunkData(chunk.chunkData.heightmaps, newSections, chunk.chunkData.blockEntities), chunk.light, chunk.dimensionType)
+            return Chunk(newSections, chunk.blockEntities, chunk.lightData, chunk.dimensionType)
         }
 
         fun mixSection(section: ChunkSection, layers: List<ChunkSection>): ChunkSection {

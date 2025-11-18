@@ -7,9 +7,9 @@ import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.Clientboun
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
-import ru.cherryngine.lib.minecraft.world.Light
 import ru.cherryngine.lib.minecraft.world.block.Block
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
+import ru.cherryngine.lib.minecraft.world.chunk.Chunk
+import ru.cherryngine.lib.minecraft.world.light.LightData
 
 data class EmptyChunkViewable(
     override val chunkPos: ChunkPos,
@@ -18,7 +18,7 @@ data class EmptyChunkViewable(
     override val viewerPredicate: (Player) -> Boolean = { true }
 
     override fun show(player: Player) {
-        player.connection.sendPacket(ClientboundLevelChunkWithLightPacket(chunkPos, ChunkData.empty(dimensionType), Light.EMPTY))
+        player.connection.sendPacket(ClientboundLevelChunkWithLightPacket(chunkPos, Chunk.empty(dimensionType), LightData.EMPTY))
     }
 
     override fun hide(player: Player) {

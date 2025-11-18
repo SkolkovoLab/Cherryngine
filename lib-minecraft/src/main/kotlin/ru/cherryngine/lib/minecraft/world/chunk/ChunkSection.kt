@@ -3,6 +3,7 @@ package ru.cherryngine.lib.minecraft.world.chunk
 import io.netty.buffer.ByteBuf
 import ru.cherryngine.lib.minecraft.registry.Biomes
 import ru.cherryngine.lib.minecraft.registry.Blocks
+import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils.byteBufBytes
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.world.palette.Palette
 
@@ -75,6 +76,22 @@ class ChunkSection(
             }
 
             override fun read(buffer: ByteBuf): ChunkSection {
+                TODO("Not yet implemented")
+            }
+        }
+
+        val STREAM_CODEC_LIST = object : StreamCodec<List<ChunkSection>> {
+            override fun write(buffer: ByteBuf, value: List<ChunkSection>) {
+                val data = byteBufBytes { b ->
+                    value.forEach { section ->
+                        STREAM_CODEC.write(b, section)
+                    }
+                }
+                StreamCodec.BYTE_ARRAY.write(buffer, data)
+            }
+
+            override fun read(buffer: ByteBuf): List<ChunkSection> {
+                val data = StreamCodec.BYTE_ARRAY.read(buffer)
                 TODO("Not yet implemented")
             }
         }

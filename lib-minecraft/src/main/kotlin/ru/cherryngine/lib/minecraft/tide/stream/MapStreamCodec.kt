@@ -4,7 +4,8 @@ import io.netty.buffer.ByteBuf
 
 class MapStreamCodec<K, V>(
     val keyCodec: StreamCodec<K>,
-    val valueCodec: StreamCodec<V>
+    val valueCodec: StreamCodec<V>,
+    val mapFactory: (size: Int) -> MutableMap<K, V> = { HashMap(it) },
 ) : StreamCodec<Map<K, V>> {
     override fun write(buffer: ByteBuf, value: Map<K, V>) {
         StreamCodec.VAR_INT.write(buffer, value.size)
@@ -16,8 +17,8 @@ class MapStreamCodec<K, V>(
 
     override fun read(buffer: ByteBuf): Map<K, V> {
         val size = StreamCodec.VAR_INT.read(buffer)
-        val map = mutableMapOf<K, V>()
-        for (i in 0 until size) {
+        val map = mapFactory(size)
+        repeat(size) {
             val key = keyCodec.read(buffer)
             val value = valueCodec.read(buffer)
             map[key] = value

@@ -106,4 +106,26 @@ object ChunkUtils {
             else -> ChunkPos.ZERO
         }
     }
+
+    private val MULTIPLY_DE_BRUIJN_BIT_POSITION = intArrayOf(
+        0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8,
+        31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9
+    )
+
+    fun ceilLog2(value: Int): Int {
+        val temp = if (isPowerOfTwo(value)) value else roundUpPow2(value)
+        return MULTIPLY_DE_BRUIJN_BIT_POSITION[(temp.toLong() * 125613361L shr 27 and 31).toInt()]
+    }
+
+    fun isPowerOfTwo(value: Int): Boolean = value != 0 && value and value - 1 == 0
+
+    fun roundUpPow2(value: Int): Int {
+        var temp = value - 1
+        temp = temp or (temp shr 1)
+        temp = temp or (temp shr 2)
+        temp = temp or (temp shr 4)
+        temp = temp or (temp shr 8)
+        temp = temp or (temp shr 16)
+        return temp + 1
+    }
 }

@@ -81,7 +81,7 @@ class ClientboundPacketRegistry : AbstractPacketRegistry() {
         register(ProtocolState.PLAY, ClientboundLevelChunkWithLightPacket::class, ClientboundLevelChunkWithLightPacket.STREAM_CODEC)
         register(ProtocolState.PLAY, ClientboundLevelEventPacket::class, ClientboundLevelEventPacket.STREAM_CODEC)
         skip(ProtocolState.PLAY, "ClientboundSendParticlePacket") // addPlay, ClientboundSendParticlePacket::class, ClientboundSendParticlePacket.streamCodec)
-        skip(ProtocolState.PLAY, "update light")
+        register(ProtocolState.PLAY, ClientboundLightUpdatePacket::class, ClientboundLightUpdatePacket.STREAM_CODEC)
         register(ProtocolState.PLAY, ClientboundLoginPacket::class, ClientboundLoginPacket.STREAM_CODEC)
         skip(ProtocolState.PLAY, "map data")
         skip(ProtocolState.PLAY, "trade list")
