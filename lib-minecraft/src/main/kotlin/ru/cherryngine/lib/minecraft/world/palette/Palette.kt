@@ -275,4 +275,6 @@ sealed interface Palette {
     fun interface EntryFunction {
         fun apply(x: Int, y: Int, z: Int, value: Int): Int
     }
+
+    fun isEmpty(): Boolean
 }

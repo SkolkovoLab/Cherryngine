@@ -1,47 +1,39 @@
 package ru.cherryngine.impl.demo
 
 import jakarta.inject.Singleton
-import ru.cherryngine.engine.core.world.world.LayerWorldImpl
-import ru.cherryngine.engine.core.world.world.MixedWorld
-import ru.cherryngine.engine.core.world.world.WorldImpl
-import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
+import ru.cherryngine.engine.core.world.world.LayerWorldViewableProviderImpl
+import ru.cherryngine.engine.core.world.world.WorldViewableProviderImpl
 import ru.cherryngine.lib.minecraft.registry.DimensionTypes
-import ru.cherryngine.lib.minecraft.world.chunk.Chunk
+import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
+import ru.cherryngine.lib.minecraft.world.World
 import ru.cherryngine.lib.polar.PolarWorldGenerator
 
 @Singleton
 class DemoWorlds {
-    private fun loadChunks(name: String): Map<ChunkPos, Chunk> {
-        return PolarWorldGenerator.loadChunks(
+    private fun loadChunks(dimensionType: DimensionType, name: String): World {
+        val chunks = PolarWorldGenerator.loadChunks(
             javaClass.getResource("/${name}.polar")!!.readBytes(),
-            DimensionTypes.OVERWORLD
+            dimensionType
         )
+        return World(dimensionType, chunks)
     }
 
-    val normalWorld = WorldImpl("normal", DimensionTypes.OVERWORLD, loadChunks("de_cache_normal"))
-    val winterWorld = WorldImpl("winter", DimensionTypes.OVERWORLD, loadChunks("de_cache_winter"))
-    val basseinWorld = WorldImpl("bassein", DimensionTypes.OVERWORLD, loadChunks("bassein"))
-    val normalWithBasseinWorld =
-        MixedWorld("normal_bassein", DimensionTypes.OVERWORLD, listOf(normalWorld, basseinWorld))
-    val winterWithBasseinWorld =
-        MixedWorld("winter_bassein", DimensionTypes.OVERWORLD, listOf(winterWorld, basseinWorld))
-    val dustWorld = WorldImpl("dust", DimensionTypes.OVERWORLD, loadChunks("de_dust2"))
-    val lobbyWorld = WorldImpl("lobby", DimensionTypes.OVERWORLD, loadChunks("lobby"))
+    val normalWorld = WorldViewableProviderImpl(loadChunks(DimensionTypes.OVERWORLD, "de_cache_normal"))
+    val winterWorld = WorldViewableProviderImpl(loadChunks(DimensionTypes.OVERWORLD, "de_cache_winter"))
+    val dustWorld = WorldViewableProviderImpl(loadChunks(DimensionTypes.OVERWORLD, "de_dust2"))
+    val lobbyWorld = WorldViewableProviderImpl(loadChunks(DimensionTypes.OVERWORLD, "lobby"))
 
-    val streetWorld = WorldImpl("street", DimensionTypes.OVERWORLD, loadChunks("street"))
-    val apart1World = LayerWorldImpl("apart1", DimensionTypes.OVERWORLD, loadChunks("apart1"))
-    val apart2World = LayerWorldImpl("apart2", DimensionTypes.OVERWORLD, loadChunks("apart2"))
+    val streetWorld = WorldViewableProviderImpl(loadChunks(DimensionTypes.OVERWORLD, "street"))
+    val apart1World = LayerWorldViewableProviderImpl(loadChunks(DimensionTypes.OVERWORLD, "apart1"))
+    val apart2World = LayerWorldViewableProviderImpl(loadChunks(DimensionTypes.OVERWORLD, "apart2"))
 
-    val worlds = sequenceOf(
-        normalWorld,
-        winterWorld,
-        basseinWorld,
-        normalWithBasseinWorld,
-        winterWithBasseinWorld,
-        dustWorld,
-        lobbyWorld,
-        streetWorld,
-        apart1World,
-        apart2World,
-    ).associateBy { it.name }
+    val worlds = mapOf(
+        "normal" to normalWorld,
+        "winter" to winterWorld,
+        "dust" to dustWorld,
+        "lobby" to lobbyWorld,
+        "street" to streetWorld,
+        "apart1" to apart1World,
+        "apart2" to apart2World,
+    )
 }

@@ -438,4 +438,8 @@ internal class PaletteImpl(
         val internalPalette = this.internalPalette
         return if (internalPalette is InternalPalette.MultiValued) internalPalette.values else null
     }
+
+    override fun isEmpty(): Boolean {
+        return internalPalette.isEmpty
+    }
 }
