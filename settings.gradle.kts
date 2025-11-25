@@ -11,7 +11,7 @@ rootProject.name = "Cherryngine"
 
 include(
     "engine-core",
-    "engine-integration:grim",
+//    "engine-integration:grim", // FIXME Could not resolve com.github.retrooper:packetevents-api:2.10.2+8c92928-SNAPSHOT.
     "engine-integration:viaversion",
 
     "impl-demo",
