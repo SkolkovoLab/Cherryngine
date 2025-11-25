@@ -19,6 +19,9 @@ import org.incendo.cloud.CommandManager
 import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.engine.core.events.PacketEvent
 import ru.cherryngine.integration.grim.command.CommandManagerImpl
+import ru.cherryngine.integration.grim.packetevents.PacketEventsImpl
+import ru.cherryngine.lib.minecraft.MinecraftServer
+import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ServerboundFinishConfigurationPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundClientTickEndPacket
 import java.io.File
 import java.util.logging.Logger
@@ -26,7 +29,7 @@ import ac.grim.grimac.platform.api.sender.Sender as GrimSender
 
 @Singleton
 class PlatformLoaderImpl(
-    private val packetEvents: PacketEventsAPI<*>,
+    minecraftServer: MinecraftServer,
     private val platformScheduler: PlatformScheduler,
     private val platformPlayerFactory: PlatformPlayerFactory,
     private val commandAdapter: CommandAdapter,
@@ -46,6 +49,7 @@ class PlatformLoaderImpl(
         "",
         listOf()
     )
+    private val packetEvents = PacketEventsImpl(minecraftServer.nettyServer)
 
     @PostConstruct
     fun init() {
@@ -78,6 +82,10 @@ class PlatformLoaderImpl(
 
     override fun onApplicationEvent(event: PacketEvent) {
         when (event.packet) {
+            is ServerboundFinishConfigurationPacket -> {
+                packetEvents.onPlayerLogin(event.connection)
+            }
+
             is ServerboundClientTickEndPacket -> {
                 val grimPlayer = GrimAPI.INSTANCE.playerDataManager.getPlayer(event.connection.gameProfile.uuid) ?: return
                 grimPlayer.checkManager.entityReplication.onEndOfTickEvent()

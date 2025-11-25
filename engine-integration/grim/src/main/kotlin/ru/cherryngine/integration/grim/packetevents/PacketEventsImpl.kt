@@ -63,18 +63,18 @@ class PacketEventsImpl(
             WrappedBlockState.ensureLoad()
             injector.inject()
             loaded = true
-            getEventManager().registerListener(InternalPacketListener())
+            eventManager.registerListener(InternalPacketListener())
         }
     }
 
     override fun isLoaded(): Boolean = loaded
 
     fun onPlayerLogin(player: Connection) {
-        val channel = PacketEvents.getAPI().playerManager.getChannel(player) ?: return
-        PacketEvents.getAPI().injector.setPlayer(channel, player)
-        val user = PacketEvents.getAPI().playerManager.getUser(player) ?: return
+        val channel = playerManager.getChannel(player) ?: return
+        injector.setPlayer(channel, player)
+        val user = playerManager.getUser(player) ?: return
         val loginEvent = UserLoginEvent(user, player)
-        PacketEvents.getAPI().eventManager.callEvent(loginEvent)
+        eventManager.callEvent(loginEvent)
     }
 
     override fun init() {

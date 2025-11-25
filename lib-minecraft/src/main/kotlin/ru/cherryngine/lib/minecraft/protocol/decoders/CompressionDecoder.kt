@@ -8,7 +8,7 @@ import ru.cherryngine.lib.minecraft.protocol.NetworkCompression
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 class CompressionDecoder() : ByteToMessageDecoder() {
-    override fun decode(connection: ChannelHandlerContext, buffer: ByteBuf, out: MutableList<Any>) {
+    public override fun decode(connection: ChannelHandlerContext, buffer: ByteBuf, out: MutableList<Any>) {
         if (!connection.channel().isActive) return
         val dataLength = StreamCodec.VAR_INT.read(buffer)
 
