@@ -14,8 +14,6 @@ include(
 //    "engine-integration:grim", // FIXME Could not resolve com.github.retrooper:packetevents-api:2.10.2+8c92928-SNAPSHOT.
     "engine-integration:viaversion",
 
-    "impl-demo",
-
     "lib-jackson",
     "lib-math",
     "lib-minecraft",
