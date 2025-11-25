@@ -15,10 +15,11 @@ import com.github.retrooper.packetevents.util.ExceptionUtil
 import com.github.retrooper.packetevents.util.PacketEventsImplHelper
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisconnect
 import io.netty.buffer.ByteBuf
-import io.netty.channel.*
+import io.netty.channel.ChannelHandler
+import io.netty.channel.ChannelHandlerContext
+import io.netty.channel.ChannelOutboundHandlerAdapter
+import io.netty.channel.ChannelPromise
 import net.kyori.adventure.text.Component
-import ru.cherryngine.lib.minecraft.protocol.decoders.CompressionDecoder
-import ru.cherryngine.lib.minecraft.server.ChannelHandlers
 import ru.cherryngine.lib.minecraft.server.Connection
 
 @ChannelHandler.Sharable
@@ -29,7 +30,6 @@ class PacketEventsEncoder(
 ) : ChannelOutboundHandlerAdapter() {
     var player: Connection? = null
     private var promise: ChannelPromise? = null
-    private var handledCompression: Boolean = false
 
     @Throws(Exception::class)
     override fun write(ctx: ChannelHandlerContext, msg: Any, promise: ChannelPromise) {
@@ -37,9 +37,6 @@ class PacketEventsEncoder(
             ctx.write(msg, promise)
             return
         }
-        val ctx = tryFixCompressorOrder(ctx, msg)
-
-        val inBuf: ByteBuf = msg
 
         // Handle promise management first (matches Spigot)
         val oldPromise = if (this.promise != null && this.promise?.isSuccess == false) {
@@ -58,13 +55,13 @@ class PacketEventsEncoder(
         this.promise = currentPromise
 
         // Process the packet and execute post-send tasks (matches Spigot)
-        handlePacket(ctx, inBuf, currentPromise)
+        handlePacket(ctx, msg, currentPromise)
 
         // Check for empty packets last (matches Spigot)
-        if (!ByteBufHelper.isReadable(inBuf)) {
+        if (!ByteBufHelper.isReadable(msg)) {
             throw CancelPacketException.INSTANCE
         } else {
-            ctx.write(inBuf, currentPromise)
+            ctx.write(msg, currentPromise)
         }
     }
 
@@ -135,52 +132,5 @@ class PacketEventsEncoder(
         }
 
         super.exceptionCaught(ctx, cause)
-    }
-
-    private fun tryFixCompressorOrder(
-        ctx: ChannelHandlerContext,
-        buffer: ByteBuf,
-    ): ChannelHandlerContext {
-        if (handledCompression) {
-            return ctx
-        }
-        val pipe = ctx.pipeline()
-        val pipeNames = pipe.names()
-        val compressorIndex = pipeNames.indexOf(ChannelHandlers.PACKET_COMPRESSION_ENCODER)
-        if (compressorIndex == -1) {
-            return ctx
-        }
-        handledCompression = true
-        if (compressorIndex <= pipeNames.indexOf(PacketEvents.ENCODER_NAME)) {
-            return ctx // order already seems to be correct
-        }
-
-        // relocate handlers
-        val decoder = pipe.remove(PacketEvents.DECODER_NAME)
-        val encoder = pipe.remove(PacketEvents.ENCODER_NAME)
-        pipe.addAfter(ChannelHandlers.PACKET_COMPRESSION_DECODER, PacketEvents.DECODER_NAME, decoder)
-        pipe.addAfter(ChannelHandlers.PACKET_COMPRESSION_ENCODER, PacketEvents.ENCODER_NAME, encoder)
-
-        // manually decompress packet and update context,
-        // so we don't need to additionally manually re-compress the packet
-        decompress(pipe, buffer)
-        return pipe.context(PacketEvents.ENCODER_NAME)
-    }
-
-    private fun decompress(pipe: ChannelPipeline, buffer: ByteBuf) {
-        val decompressor = pipe.get(ChannelHandlers.PACKET_COMPRESSION_DECODER) as CompressionDecoder
-        val decompressorCtx = pipe.context(ChannelHandlers.PACKET_COMPRESSION_DECODER)
-
-        var decompressed: ByteBuf? = null
-        try {
-            val out = mutableListOf<Any>()
-            decompressor.decode(decompressorCtx, buffer, out)
-            decompressed = out[0] as ByteBuf
-            if (buffer !== decompressed) {
-                buffer.clear().writeBytes(decompressed)
-            }
-        } finally {
-            decompressed?.release()
-        }
     }
 }

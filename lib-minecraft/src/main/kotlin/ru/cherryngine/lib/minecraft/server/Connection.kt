@@ -176,12 +176,12 @@ class Connection(
         if (compressionThreshold > -1) {
             sendPacket(ClientboundLoginCompressionPacket(compressionThreshold))
             channel.pipeline()
-                .addBefore(
-                    ChannelHandlers.RAW_PACKET_DECODER, ChannelHandlers.PACKET_COMPRESSION_DECODER,
+                .addAfter(
+                    ChannelHandlers.PACKET_LENGTH_DECODER, ChannelHandlers.PACKET_COMPRESSION_DECODER,
                     CompressionDecoder()
                 )
-                .addBefore(
-                    ChannelHandlers.RAW_PACKET_ENCODER, ChannelHandlers.PACKET_COMPRESSION_ENCODER,
+                .addAfter(
+                    ChannelHandlers.PACKET_LENGTH_ENCODER, ChannelHandlers.PACKET_COMPRESSION_ENCODER,
                     CompressionEncoder(compressionThreshold)
                 )
         }
