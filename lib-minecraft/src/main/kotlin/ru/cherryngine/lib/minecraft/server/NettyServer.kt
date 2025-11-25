@@ -65,9 +65,7 @@ class NettyServer(
             .channel(NioServerSocketChannel::class.java)
             .childHandler(channelInitializer)
 
-        bootstrap.bind(InetSocketAddress(ip, port)).await()
-
-
+        bootstrap.bind(InetSocketAddress(ip, port)).sync()
 
         logger.info("NettyServer running on ${ip}:${port}")
     }
