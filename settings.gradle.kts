@@ -14,6 +14,7 @@ include(
     "engine-integration:grim",
     "engine-integration:viaversion",
 
+    "lib-adventure-serializer-nbt",
     "lib-jackson",
     "lib-math",
     "lib-minecraft",

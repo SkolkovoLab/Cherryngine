@@ -16,7 +16,7 @@ dependencies {
     // Minecraft
     api(libs.kyori.adventure.api)
     api(libs.kyori.adventure.nbt)
-    api(libs.kyori.adventure.text.serializer.nbt)
+    api(project(":lib-adventure-serializer-nbt"))
     api(libs.kyori.adventure.text.serializer.gson)
 
     // Networking
