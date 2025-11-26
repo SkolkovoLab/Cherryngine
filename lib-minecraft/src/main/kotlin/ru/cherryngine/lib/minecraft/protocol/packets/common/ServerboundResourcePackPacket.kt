@@ -12,7 +12,7 @@ data class ServerboundResourcePackPacket(
     companion object {
         val STREAM_CODEC = StreamCodec.of(
             StreamCodec.UUID, ServerboundResourcePackPacket::uuid,
-            ByteEnumStreamCodec.Companion<Status>(), ServerboundResourcePackPacket::response,
+            ByteEnumStreamCodec<Status>(), ServerboundResourcePackPacket::response,
             ::ServerboundResourcePackPacket
         )
     }

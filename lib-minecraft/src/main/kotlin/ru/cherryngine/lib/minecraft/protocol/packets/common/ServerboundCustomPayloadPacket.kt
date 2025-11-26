@@ -8,7 +8,7 @@ data class ServerboundCustomPayloadPacket(
     val contents: PluginMessage.Contents
 ) : ServerboundPacket {
     companion object {
-        val STREAM_CODEC = StreamCodec.Companion.of(
+        val STREAM_CODEC = StreamCodec.of(
             PluginMessage.Contents.STREAM_CODEC, ServerboundCustomPayloadPacket::contents,
             ::ServerboundCustomPayloadPacket
         )

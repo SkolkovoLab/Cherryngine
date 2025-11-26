@@ -18,7 +18,7 @@ data class ClientboundShowDialogPacket(
             { it.getNbt() }
         )
 
-        val STREAM_CODEC = StreamCodec.Companion.of(
+        val STREAM_CODEC = StreamCodec.of(
             RegistryOrXStreamCodec(DialogRegistry, dialogCodec), ClientboundShowDialogPacket::dialog,
             ::ClientboundShowDialogPacket
         )

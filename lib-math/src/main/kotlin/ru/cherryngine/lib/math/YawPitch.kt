@@ -39,13 +39,13 @@ data class YawPitch(
     }
 
     fun getYawRotation(): QRot =
-        QRot.Companion.fromAxisAngle(Vec3D.MINUS_Y, Math.toRadians(yaw.toDouble()))
+        QRot.fromAxisAngle(Vec3D.MINUS_Y, Math.toRadians(yaw.toDouble()))
 
     fun getPitchRotation(): QRot =
-        QRot.Companion.fromAxisAngle(Vec3D.PLUS_X, Math.toRadians(pitch.toDouble()))
+        QRot.fromAxisAngle(Vec3D.PLUS_X, Math.toRadians(pitch.toDouble()))
 
     fun getRotation(): QRot {
-        if (yaw == 0f && pitch == 0f) return QRot.Companion.IDENTITY
+        if (yaw == 0f && pitch == 0f) return QRot.IDENTITY
         if (yaw == 0f) return getPitchRotation()
         if (pitch == 0f) return getYawRotation()
         return getYawRotation() * getPitchRotation()

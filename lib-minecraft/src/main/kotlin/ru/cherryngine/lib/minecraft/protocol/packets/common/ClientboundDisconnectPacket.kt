@@ -9,7 +9,7 @@ data class ClientboundDisconnectPacket(
     val reason: Component
 ) : ClientboundPacket {
     companion object {
-        val STREAM_CODEC = StreamCodec.Companion.of(
+        val STREAM_CODEC = StreamCodec.of(
             ComponentCodecs.NBT, ClientboundDisconnectPacket::reason,
             ::ClientboundDisconnectPacket
         )

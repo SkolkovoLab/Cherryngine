@@ -8,8 +8,8 @@ sealed class AbstractArrowMeta : EntityMeta() {
     val ARROW_FLAGS = index(
             MetadataEntry.Type.BYTE,
             Flags.DEFAULT,
-            Flags.Companion::fromByte,
-            Flags.Companion::toByte
+            Flags::fromByte,
+            Flags::toByte
         )
     val PIERCING_LEVEL = index(MetadataEntry.Type.BYTE, 0)
     val IN_GROUND = index(MetadataEntry.Type.BOOLEAN, false)

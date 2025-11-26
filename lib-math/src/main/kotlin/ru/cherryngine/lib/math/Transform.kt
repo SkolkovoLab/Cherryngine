@@ -4,7 +4,7 @@ import ru.cherryngine.lib.math.rotation.QRot
 
 data class Transform(
     val translation: Vec3D = Vec3D.ZERO,
-    val rotation: QRot = QRot.Companion.IDENTITY,
+    val rotation: QRot = QRot.IDENTITY,
     val scale: Vec3D = Vec3D.ONE,
 ) {
     companion object {

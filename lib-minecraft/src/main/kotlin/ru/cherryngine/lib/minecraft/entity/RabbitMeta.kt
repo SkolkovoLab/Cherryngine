@@ -7,7 +7,7 @@ sealed class RabbitMeta : AgeableMobMeta() {
     val TYPE = index(
         MetadataEntry.Type.VAR_INT,
         Variant.BROWN,
-        Variant.Companion::fromId,
+        Variant::fromId,
         Variant::id
     )
 

@@ -7,8 +7,8 @@ sealed class EntityMeta : MetadataDef() {
     val ENTITY_FLAGS = index(
             MetadataEntry.Type.BYTE,
             Flags.DEFAULT,
-            Flags.Companion::fromByte,
-            Flags.Companion::toByte
+            Flags::fromByte,
+            Flags::toByte
         )
     val AIR_TICKS = index(MetadataEntry.Type.VAR_INT, 300)
     val CUSTOM_NAME = index(MetadataEntry.Type.OPT_COMPONENT, null)

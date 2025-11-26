@@ -146,7 +146,7 @@ sealed interface ArgumentParserType {
 
         companion object {
             val STREAM_CODEC = StreamCodec.of(
-                EnumStreamCodec.Companion<Type>(), String::type,
+                EnumStreamCodec<Type>(), String::type,
                 ::String
             )
         }
