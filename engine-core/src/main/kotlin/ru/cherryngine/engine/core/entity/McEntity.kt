@@ -5,12 +5,10 @@ import ru.cherryngine.engine.core.view.Viewable
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.entity.MetadataContainer
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundAddEntityPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundRemoveEntitiesPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundSetEntityDataPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundTeleportEntityPacket
+import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.*
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.protocol.types.TeleportFlags
+import ru.cherryngine.lib.minecraft.registry.registries.Attribute
 import ru.cherryngine.lib.minecraft.registry.registries.EntityType
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import java.util.*
@@ -28,6 +26,8 @@ class McEntity(
 
     override val chunkPos: ChunkPos
         get() = ChunkUtils.chunkPosFromVec3D(position)
+
+    val attributes: MutableMap<Attribute, Double> = mutableMapOf()
 
     fun teleport(position: Vec3D, yawPitch: YawPitch) {
         this.position = position
@@ -49,6 +49,11 @@ class McEntity(
             )
         )
         player.connection.sendPacket(ClientboundSetEntityDataPacket(entityId, metadata.entries))
+        if (attributes.isNotEmpty()) player.connection.sendPacket(
+            ClientboundUpdateAttributesPacket(
+                entityId,
+                attributes.entries.map { ClientboundUpdateAttributesPacket.Property(it.key, it.value, listOf()) })
+        )
         viewers.add(player)
     }
 
