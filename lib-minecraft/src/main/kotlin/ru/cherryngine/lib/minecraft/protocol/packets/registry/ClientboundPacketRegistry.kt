@@ -163,7 +163,7 @@ class ClientboundPacketRegistry : AbstractPacketRegistry() {
         register(ProtocolState.PLAY, ClientboundTickingStepPacket::class, ClientboundTickingStepPacket.STREAM_CODEC)
         register(ProtocolState.PLAY, ClientboundTransferPacket::class, ClientboundTransferPacket.STREAM_CODEC)
         skip(ProtocolState.PLAY, "ClientboundUpdateAdvancementsPacket") // addPlay, ClientboundUpdateAdvancementsPacket::class, ClientboundUpdateAdvancementsPacket.streamCodec)
-        skip(ProtocolState.PLAY, "ClientboundUpdateAttributesPacket") // addPlay, ClientboundUpdateAttributesPacket::class, ClientboundUpdateAttributesPacket.streamCodec)
+        register(ProtocolState.PLAY, ClientboundUpdateAttributesPacket::class, ClientboundUpdateAttributesPacket.STREAM_CODEC)
         register(ProtocolState.PLAY, ClientboundUpdateMobEffectPacket::class, ClientboundUpdateMobEffectPacket.STREAM_CODEC)
         skip(ProtocolState.PLAY, "declare recipes")
         skip(ProtocolState.PLAY, "tags")
