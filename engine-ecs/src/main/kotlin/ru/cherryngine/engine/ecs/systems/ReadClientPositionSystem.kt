@@ -6,6 +6,7 @@ import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.ecs.EcsEntity
 import ru.cherryngine.engine.ecs.components.PlayerComponent
 import ru.cherryngine.engine.ecs.components.PositionComponent
+import ru.cherryngine.engine.ecs.events.LastPlayerPositionEvent
 
 class ReadClientPositionSystem(
     val playerManager: PlayerManager,
@@ -18,8 +19,11 @@ class ReadClientPositionSystem(
 
         entity.configure {
             val positionComponent = it.getOrAdd(PositionComponent, ::PositionComponent)
-            positionComponent.position = player.clientPosition
-            positionComponent.yawPitch = player.clientYawPitch
+            val clientPosition = player.clientPosition
+            val clientYawPitch = player.clientYawPitch
+            positionComponent.position = clientPosition
+            positionComponent.yawPitch = clientYawPitch
+            it += LastPlayerPositionEvent(clientPosition, clientYawPitch)
         }
     }
 }
