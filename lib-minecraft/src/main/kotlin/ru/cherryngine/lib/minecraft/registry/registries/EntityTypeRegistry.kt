@@ -1,57 +1,10 @@
 package ru.cherryngine.lib.minecraft.registry.registries
 
-import kotlinx.serialization.Serializable
-import net.kyori.adventure.nbt.CompoundBinaryTag
-import ru.cherryngine.lib.math.Vec3D
-import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
-import ru.cherryngine.lib.minecraft.registry.RegistryEntry
-import ru.cherryngine.lib.minecraft.utils.kotlinx.Vec3DListSerializer
-import ru.cherryngine.lib.minecraft.utils.kotlinx.Vec3DSerializer
+import ru.cherryngine.lib.minecraft.registry.entries.EntityType
 
-object EntityTypeRegistry : DataDrivenRegistry<EntityType>() {
-    override val identifier: String = "minecraft:entity_type"
-    val STREAM_CODEC = RegistryStreamCodec(this)
-}
-
-@Serializable
-data class EntityType(
-    val identifier: String,
-    val displayName: String,
-    val category: String,
-    val despawnDistance: Int,
-    val isFriendly: Boolean,
-    val isPersistent: Boolean,
-    val maxInstancesPerChunk: Int,
-    val noDespawnDistance: Int,
-    val immuneToFire: Boolean,
-    val immuneBlocks: List<String>,
-    val dimensions: EntityDimensions,
-) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return EntityTypeRegistry.getProtocolIdByEntry(this)
-    }
-
-    override fun getEntryIdentifier(): String {
-        return identifier
-    }
-
-    override fun getNbt(): CompoundBinaryTag? = null
-}
-
-@Serializable
-data class EntityDimensions(
-    val eyeHeight: Float,
-    val fixed: Boolean,
-    val height: Float,
-    val width: Float,
-    @Serializable(with = Vec3DSerializer::class)
-    val nameTagLocation: Vec3D?,
-    @Serializable(with = Vec3DListSerializer::class)
-    val passengerLocations: List<Vec3D>?,
-    @Serializable(with = Vec3DSerializer::class)
-    val vehicleLocation: Vec3D?,
-    @Serializable(with = Vec3DSerializer::class)
-    val wardenChestLocation: Vec3D?
+object EntityTypeRegistry : DataDrivenRegistry<EntityType>(
+    "minecraft:entity_type",
+    "registry/entity_type_registry.json.gz",
+    EntityType.serializer()
 )

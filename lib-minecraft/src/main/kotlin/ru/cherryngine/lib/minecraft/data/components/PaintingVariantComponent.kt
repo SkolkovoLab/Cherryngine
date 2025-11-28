@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.minecraft.data.components
 
 import ru.cherryngine.lib.minecraft.data.DataComponent
-import ru.cherryngine.lib.minecraft.registry.registries.PaintingVariant
+import ru.cherryngine.lib.minecraft.registry.entries.PaintingVariant
 import ru.cherryngine.lib.minecraft.registry.registries.PaintingVariantRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 

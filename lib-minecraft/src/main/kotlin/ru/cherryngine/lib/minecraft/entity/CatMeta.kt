@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.minecraft.entity
 
 import ru.cherryngine.lib.minecraft.protocol.types.DyeColor
-import ru.cherryngine.lib.minecraft.registry.CatVariants
+import ru.cherryngine.lib.minecraft.registry.keys.CatVariants
 
 @Suppress("PropertyName")
 sealed class CatMeta : TameableAnimalMeta() {

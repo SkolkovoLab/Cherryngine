@@ -2,7 +2,7 @@ package ru.cherryngine.lib.minecraft.data.components
 
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.registry.registries.JukeboxSong
+import ru.cherryngine.lib.minecraft.registry.entries.JukeboxSong
 import ru.cherryngine.lib.minecraft.registry.registries.JukeboxSongRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 

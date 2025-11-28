@@ -3,8 +3,8 @@ package ru.cherryngine.lib.minecraft.dialog.input
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import net.kyori.adventure.text.Component
 import ru.cherryngine.lib.minecraft.extentions.modify
-import ru.cherryngine.lib.minecraft.registry.DialogInputTypes
-import ru.cherryngine.lib.minecraft.registry.registries.DialogInputType
+import ru.cherryngine.lib.minecraft.registry.entries.DialogInputType
+import ru.cherryngine.lib.minecraft.registry.keys.DialogInputTypes
 
 class BooleanDialogInput(
     override val key: String,

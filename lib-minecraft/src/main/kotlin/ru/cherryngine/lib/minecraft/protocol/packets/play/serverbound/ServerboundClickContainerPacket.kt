@@ -15,7 +15,7 @@
 //import ru.cherryngine.lib.minecraft.protocol.PlayerNetworkManager
 //import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 //import ru.cherryngine.lib.minecraft.protocol.types.EquipmentSlot
-//import ru.cherryngine.lib.minecraft.registry.Sounds
+//import ru.cherryngine.lib.minecraft.registry.keys.Sounds
 //import ru.cherryngine.lib.minecraft.sounds.playSound
 //import ru.cherryngine.lib.minecraft.ui.DrawableItemStack
 //import ru.cherryngine.lib.minecraft.utils.getPlayerEventContext

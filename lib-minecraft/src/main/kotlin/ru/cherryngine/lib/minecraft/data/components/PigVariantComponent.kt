@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.registry.registries.PigVariant
+import ru.cherryngine.lib.minecraft.registry.entries.PigVariant
 import ru.cherryngine.lib.minecraft.registry.registries.PigVariantRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 

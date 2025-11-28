@@ -1,8 +1,8 @@
 package ru.cherryngine.lib.minecraft.entity
 
 import ru.cherryngine.lib.minecraft.protocol.types.DyeColor
-import ru.cherryngine.lib.minecraft.registry.WolfSoundVariants
-import ru.cherryngine.lib.minecraft.registry.WolfVariants
+import ru.cherryngine.lib.minecraft.registry.keys.WolfSoundVariants
+import ru.cherryngine.lib.minecraft.registry.keys.WolfVariants
 
 @Suppress("PropertyName")
 sealed class WolfMeta : TameableAnimalMeta() {

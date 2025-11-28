@@ -6,7 +6,7 @@ import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.HashList
 import ru.cherryngine.lib.minecraft.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.protocol.types.DyeColor
-import ru.cherryngine.lib.minecraft.registry.registries.BannerPattern
+import ru.cherryngine.lib.minecraft.registry.entries.BannerPattern
 import ru.cherryngine.lib.minecraft.registry.registries.BannerPatternRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec

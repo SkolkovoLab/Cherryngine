@@ -3,22 +3,16 @@ package ru.cherryngine.lib.minecraft.registry
 import io.netty.buffer.ByteBuf
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromStream
 import net.kyori.adventure.key.Key
-import net.kyori.adventure.nbt.BinaryTag
+import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
-import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundRegistryDataPacket
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.utils.BiMap
 import ru.cherryngine.lib.minecraft.utils.MutableBiMap
-import java.io.InputStream
-import java.util.zip.GZIPInputStream
 
-abstract class Registry<T : RegistryEntry> {
-    abstract val identifier: String
-
+abstract class Registry<T : RegistryEntry>(
+    val identifier: String
+) {
     protected val protocolEntries: ObjectArrayList<T> = ObjectArrayList()
     protected val entryToProtocolId: Object2IntOpenHashMap<T> = Object2IntOpenHashMap()
     protected val entries: MutableBiMap<String, T> = MutableBiMap()
@@ -70,6 +64,8 @@ abstract class Registry<T : RegistryEntry> {
         return entries.size
     }
 
+    val STREAM_CODEC = RegistryStreamCodec(this)
+
     companion object {
         val STREAM_CODEC = object : StreamCodec<Registry<*>> {
             override fun write(buffer: ByteBuf, value: Registry<*>) {
@@ -89,34 +85,4 @@ abstract class Registry<T : RegistryEntry> {
             }
         }
     }
-}
-
-abstract class DynamicRegistry<T : RegistryEntry> : Registry<T>() {
-    protected lateinit var cachedPacket: ClientboundRegistryDataPacket
-
-    @JvmName("getCachedPacketMethod")
-    fun getCachedPacket(): ClientboundRegistryDataPacket {
-        return cachedPacket
-    }
-
-    abstract fun updateCache()
-}
-
-@Suppress("UNCHECKED_CAST")
-@OptIn(ExperimentalSerializationApi::class)
-abstract class DataDrivenRegistry<T : RegistryEntry> : Registry<T>() {
-
-    inline fun <reified D : RegistryEntry> initialize(inputStream: InputStream) {
-        val stream = GZIPInputStream(inputStream)
-        val list = Json.decodeFromStream<List<D>>(stream)
-        list.forEach { entry ->
-            addEntry(entry as T)
-        }
-    }
-}
-
-interface RegistryEntry {
-    fun getNbt(): BinaryTag? = null
-    fun getProtocolId(): Int
-    fun getEntryIdentifier(): String
 }

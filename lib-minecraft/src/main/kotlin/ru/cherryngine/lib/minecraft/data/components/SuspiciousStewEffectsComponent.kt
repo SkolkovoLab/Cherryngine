@@ -9,7 +9,7 @@
 //import ru.cherryngine.lib.minecraft.protocol.NetworkReadable
 //import ru.cherryngine.lib.minecraft.protocol.NetworkWritable
 //import ru.cherryngine.lib.minecraft.protocol.types.writeList
-//import ru.cherryngine.lib.minecraft.registry.registries.PotionEffect
+//import ru.cherryngine.lib.minecraft.registry.entries.PotionEffect
 //import ru.cherryngine.lib.minecraft.registry.registries.PotionEffectRegistry
 //import ru.cherryngine.lib.minecraft.scheduler.runnables.inWholeMinecraftTicks
 //import ru.cherryngine.lib.minecraft.scheduler.runnables.ticks

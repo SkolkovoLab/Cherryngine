@@ -1,38 +1,10 @@
 package ru.cherryngine.lib.minecraft.registry.registries
 
-import kotlinx.serialization.Serializable
-import net.kyori.adventure.nbt.CompoundBinaryTag
-import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
-import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
-import ru.cherryngine.lib.minecraft.registry.RegistryEntry
+import ru.cherryngine.lib.minecraft.registry.entries.PaintingVariant
 
-object PaintingVariantRegistry : DataDrivenRegistry<PaintingVariant>() {
-    override val identifier: String = "minecraft:painting_variant"
-    val STREAM_CODEC = RegistryStreamCodec(this)
-}
-
-@Serializable
-data class PaintingVariant(
-    val identifier: String,
-    val assetId: String,
-    val height: Int,
-    val width: Int,
-) : RegistryEntry {
-
-    override fun getProtocolId(): Int {
-        return PaintingVariantRegistry.getProtocolIdByEntry(this)
-    }
-
-    override fun getEntryIdentifier(): String {
-        return identifier
-    }
-
-    override fun getNbt(): CompoundBinaryTag {
-        return nbt {
-            withString("asset_id", assetId)
-            withInt("height", height)
-            withInt("width", width)
-        }
-    }
-}
+object PaintingVariantRegistry : DataDrivenRegistry<PaintingVariant>(
+    "minecraft:painting_variant",
+    "registry/painting_variant_registry.json.gz",
+    PaintingVariant.serializer()
+)

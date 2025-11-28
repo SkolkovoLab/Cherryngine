@@ -6,8 +6,8 @@ import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundBlockUpdatePacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundSectionBlocksUpdatePacket
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.registry.Blocks
-import ru.cherryngine.lib.minecraft.registry.DimensionTypes
+import ru.cherryngine.lib.minecraft.registry.keys.Blocks
+import ru.cherryngine.lib.minecraft.registry.keys.DimensionTypes
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils.sectionIndexFromSectionPos
 import ru.cherryngine.lib.minecraft.world.block.Block

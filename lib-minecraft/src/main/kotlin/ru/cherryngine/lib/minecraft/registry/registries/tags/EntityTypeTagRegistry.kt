@@ -1,5 +1,8 @@
 package ru.cherryngine.lib.minecraft.registry.registries.tags
 
-object EntityTypeTagRegistry : TagRegistry() {
-    override val identifier: String = "minecraft:entity_type"
-}
+import ru.cherryngine.lib.minecraft.registry.TagRegistry
+
+object EntityTypeTagRegistry : TagRegistry(
+    "minecraft:entity_type",
+    "registry/entity_type_tags.json.gz"
+)

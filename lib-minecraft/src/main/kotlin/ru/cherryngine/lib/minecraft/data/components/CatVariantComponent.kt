@@ -4,7 +4,7 @@ import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
-import ru.cherryngine.lib.minecraft.registry.registries.CatVariant
+import ru.cherryngine.lib.minecraft.registry.entries.CatVariant
 import ru.cherryngine.lib.minecraft.registry.registries.CatVariantRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 

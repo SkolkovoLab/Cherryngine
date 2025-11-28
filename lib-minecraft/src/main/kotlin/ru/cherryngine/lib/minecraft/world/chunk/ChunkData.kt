@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.minecraft.world.chunk
 
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
+import ru.cherryngine.lib.minecraft.registry.entries.DimensionType
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity
 

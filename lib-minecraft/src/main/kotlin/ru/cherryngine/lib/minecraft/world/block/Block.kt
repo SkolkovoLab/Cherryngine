@@ -1,16 +1,16 @@
 package ru.cherryngine.lib.minecraft.world.block
 
 import io.netty.buffer.ByteBuf
-import ru.cherryngine.lib.minecraft.registry.Blocks
+import ru.cherryngine.lib.minecraft.registry.entries.Item
+import ru.cherryngine.lib.minecraft.registry.entries.RegistryBlock
+import ru.cherryngine.lib.minecraft.registry.keys.Blocks
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.Item
 import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.RegistryBlock
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 data class Block(
     val registryBlock: RegistryBlock,
-    val blockStates: Map<String, String> = mutableMapOf(),
+    val blockStates: Map<String, String> = mapOf(),
 ) {
     val identifier = registryBlock.identifier
 
@@ -68,8 +68,7 @@ data class Block(
     }
 
     companion object {
-        val AIR = Block(BlockRegistry.AIR)
-        val STONE = Block(BlockRegistry["minecraft:stone"])
+        val AIR by lazy { Block(BlockRegistry.AIR) }
 
         val STREAM_CODEC = object : StreamCodec<Block> {
             override fun write(buffer: ByteBuf, value: Block) {
@@ -98,7 +97,6 @@ data class Block(
 
         fun getBlockByStateId(stateId: Int): Block {
             if (stateId == 0) return AIR
-            if (stateId == 1) return STONE
 
             val blockState = BlockRegistry.blockStates.get(stateId)
             if (blockState != null) {

@@ -1,35 +1,10 @@
 package ru.cherryngine.lib.minecraft.registry.registries
 
-import kotlinx.serialization.Serializable
-import net.kyori.adventure.nbt.BinaryTag
-import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
-import ru.cherryngine.lib.minecraft.registry.RegistryEntry
+import ru.cherryngine.lib.minecraft.registry.entries.Attribute
 
-object AttributeRegistry : DataDrivenRegistry<Attribute>() {
-    override val identifier: String = "minecraft:attribute"
-    val STREAM_CODEC = RegistryStreamCodec(this)
-}
-
-@Serializable
-data class Attribute(
-    val identifier: String,
-    val translationKey: String,
-    val defaultValue: Double,
-    val clientSync: Boolean,
-    val minValue: Double? = null,
-    val maxValue: Double? = null
-) : RegistryEntry {
-
-    override fun getNbt(): BinaryTag? {
-        return null
-    }
-
-    override fun getProtocolId(): Int {
-        return AttributeRegistry.getProtocolIdByEntry(this)
-    }
-
-    override fun getEntryIdentifier(): String {
-        return identifier
-    }
-}
+object AttributeRegistry : DataDrivenRegistry<Attribute>(
+    "minecraft:attribute",
+    "registry/attribute_registry.json.gz",
+    Attribute.serializer()
+)

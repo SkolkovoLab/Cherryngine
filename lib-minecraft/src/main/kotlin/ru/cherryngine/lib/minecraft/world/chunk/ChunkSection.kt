@@ -2,7 +2,8 @@ package ru.cherryngine.lib.minecraft.world.chunk
 
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
-import ru.cherryngine.lib.minecraft.registry.Biomes
+import ru.cherryngine.lib.minecraft.registry.keys.Biomes
+import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
 import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils.byteBufBytes
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.utils.use
@@ -52,7 +53,7 @@ class ChunkSection(
             val defaultBlocks = Palette.blocks()
             val defaultBiomes = Palette.biomes()
             defaultBlocks.fill(Block.AIR.getStateId())
-            defaultBiomes.fill(Biomes.THE_VOID.getProtocolId())
+            defaultBiomes.fill(BiomeRegistry.getProtocolIdByEntry(Biomes.THE_VOID))
             return ChunkSection(defaultBlocks, defaultBiomes)
         }
 

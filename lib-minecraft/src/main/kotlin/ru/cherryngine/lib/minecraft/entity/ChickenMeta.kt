@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import ru.cherryngine.lib.minecraft.registry.ChickenVariants
+import ru.cherryngine.lib.minecraft.registry.keys.ChickenVariants
 
 @Suppress("PropertyName")
 sealed class ChickenMeta : AgeableMobMeta() {

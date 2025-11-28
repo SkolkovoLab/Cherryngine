@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.minecraft.protocol.packets.common
 
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
-import ru.cherryngine.lib.minecraft.registry.registries.tags.TagRegistry
+import ru.cherryngine.lib.minecraft.registry.TagRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 data class ClientboundUpdateTagsPacket(

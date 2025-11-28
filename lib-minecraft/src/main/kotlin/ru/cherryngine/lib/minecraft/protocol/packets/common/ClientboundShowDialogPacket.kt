@@ -4,7 +4,7 @@ import ru.cherryngine.lib.minecraft.codec.RegistryOrXStreamCodec
 import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
 import ru.cherryngine.lib.minecraft.dialog.Dialog
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
-import ru.cherryngine.lib.minecraft.registry.registries.DialogEntry
+import ru.cherryngine.lib.minecraft.registry.entries.DialogEntry
 import ru.cherryngine.lib.minecraft.registry.registries.DialogRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.tide.types.Either

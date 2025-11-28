@@ -6,7 +6,7 @@
 //import ru.cherryngine.lib.minecraft.data.StaticHash
 //import ru.cherryngine.lib.minecraft.protocol.NetworkReadable
 //import ru.cherryngine.lib.minecraft.protocol.types.ConsumeEffect
-//import ru.cherryngine.lib.minecraft.registry.Sounds
+//import ru.cherryngine.lib.minecraft.registry.keys.Sounds
 //import ru.cherryngine.lib.minecraft.protocol.types.BuiltinSoundEvent
 //import ru.cherryngine.lib.minecraft.protocol.types.SoundEvent
 //import ru.cherryngine.lib.minecraft.tide.codec.Codec

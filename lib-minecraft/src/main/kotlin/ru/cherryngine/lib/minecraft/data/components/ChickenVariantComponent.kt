@@ -3,7 +3,7 @@ package ru.cherryngine.lib.minecraft.data.components
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
-import ru.cherryngine.lib.minecraft.registry.registries.ChickenVariant
+import ru.cherryngine.lib.minecraft.registry.entries.ChickenVariant
 import ru.cherryngine.lib.minecraft.registry.registries.ChickenVariantRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 

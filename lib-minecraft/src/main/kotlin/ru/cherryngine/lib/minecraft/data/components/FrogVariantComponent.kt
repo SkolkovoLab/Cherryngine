@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.registry.registries.FrogVariant
+import ru.cherryngine.lib.minecraft.registry.entries.FrogVariant
 import ru.cherryngine.lib.minecraft.registry.registries.FrogVariantRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 

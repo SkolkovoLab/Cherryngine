@@ -2,7 +2,7 @@ package ru.cherryngine.lib.minecraft.dialog.action
 
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import net.kyori.adventure.text.event.ClickEvent
-import ru.cherryngine.lib.minecraft.registry.registries.DialogActionType
+import ru.cherryngine.lib.minecraft.registry.entries.DialogActionType
 import ru.cherryngine.lib.minecraft.registry.registries.DialogActionTypeRegistry
 
 /**

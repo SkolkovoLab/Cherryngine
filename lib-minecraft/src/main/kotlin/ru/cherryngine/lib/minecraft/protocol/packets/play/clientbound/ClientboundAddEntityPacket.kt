@@ -4,7 +4,7 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.codec.LocationCodecs
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
-import ru.cherryngine.lib.minecraft.registry.registries.EntityType
+import ru.cherryngine.lib.minecraft.registry.entries.EntityType
 import ru.cherryngine.lib.minecraft.registry.registries.EntityTypeRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import java.util.*

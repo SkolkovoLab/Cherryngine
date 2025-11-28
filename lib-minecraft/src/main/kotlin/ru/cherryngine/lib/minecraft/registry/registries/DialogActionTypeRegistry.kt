@@ -1,15 +1,11 @@
 package ru.cherryngine.lib.minecraft.registry.registries
 
-import net.kyori.adventure.nbt.CompoundBinaryTag
-import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
-import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundRegistryDataPacket
 import ru.cherryngine.lib.minecraft.registry.DynamicRegistry
-import ru.cherryngine.lib.minecraft.registry.RegistryEntry
+import ru.cherryngine.lib.minecraft.registry.entries.DialogActionType
 
-object DialogActionTypeRegistry : DynamicRegistry<DialogActionType>() {
-    override val identifier: String = "minecraft:dialog_action_type"
-    val STREAM_CODEC = RegistryStreamCodec(this)
-
+object DialogActionTypeRegistry : DynamicRegistry<DialogActionType>(
+    "minecraft:dialog_action_type"
+) {
     init {
         // this is not okay
         listOf(
@@ -28,24 +24,5 @@ object DialogActionTypeRegistry : DynamicRegistry<DialogActionType>() {
         }
         updateCache()
     }
-
-    override fun updateCache() {
-        cachedPacket = ClientboundRegistryDataPacket(this)
-    }
 }
 
-data class DialogActionType(
-    val identifier: String,
-) : RegistryEntry {
-    override fun getNbt(): CompoundBinaryTag? {
-        return null
-    }
-
-    override fun getProtocolId(): Int {
-        return DialogActionTypeRegistry.getProtocolIdByEntry(this)
-    }
-
-    override fun getEntryIdentifier(): String {
-        return identifier
-    }
-}

@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import ru.cherryngine.lib.minecraft.registry.CowVariants
+import ru.cherryngine.lib.minecraft.registry.keys.CowVariants
 
 @Suppress("PropertyName")
 sealed class CowMeta : AgeableMobMeta() {

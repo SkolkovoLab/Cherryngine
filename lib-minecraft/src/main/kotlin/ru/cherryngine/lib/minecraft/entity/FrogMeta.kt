@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import ru.cherryngine.lib.minecraft.registry.FrogVariants
+import ru.cherryngine.lib.minecraft.registry.keys.FrogVariants
 
 @Suppress("PropertyName")
 sealed class FrogMeta : AgeableMobMeta() {

@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import ru.cherryngine.lib.minecraft.registry.Particles
+import ru.cherryngine.lib.minecraft.registry.keys.Particles
 
 @Suppress("PropertyName")
 sealed class AreaEffectCloudMeta : EntityMeta() {

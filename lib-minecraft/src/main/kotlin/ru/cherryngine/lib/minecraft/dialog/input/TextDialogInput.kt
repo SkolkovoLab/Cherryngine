@@ -5,8 +5,8 @@ import net.kyori.adventure.text.Component
 import ru.cherryngine.lib.minecraft.extentions.modify
 import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.protocol.NbtWritable
-import ru.cherryngine.lib.minecraft.registry.DialogInputTypes
-import ru.cherryngine.lib.minecraft.registry.registries.DialogInputType
+import ru.cherryngine.lib.minecraft.registry.entries.DialogInputType
+import ru.cherryngine.lib.minecraft.registry.keys.DialogInputTypes
 
 class TextDialogInput(
     override val key: String,

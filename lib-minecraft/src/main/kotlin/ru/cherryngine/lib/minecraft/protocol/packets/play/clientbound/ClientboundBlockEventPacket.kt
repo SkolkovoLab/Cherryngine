@@ -3,8 +3,8 @@ package ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.codec.LocationCodecs
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
+import ru.cherryngine.lib.minecraft.registry.entries.RegistryBlock
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.RegistryBlock
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 data class ClientboundBlockEventPacket(

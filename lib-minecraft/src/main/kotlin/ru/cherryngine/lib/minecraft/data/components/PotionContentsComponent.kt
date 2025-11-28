@@ -8,7 +8,7 @@
 //import ru.cherryngine.lib.minecraft.protocol.NetworkReadable
 //import ru.cherryngine.lib.minecraft.protocol.readOptional
 //import ru.cherryngine.lib.minecraft.protocol.writeOptional
-//import ru.cherryngine.lib.minecraft.registry.registries.PotionType
+//import ru.cherryngine.lib.minecraft.registry.entries.PotionType
 //import ru.cherryngine.lib.minecraft.registry.registries.PotionTypeRegistry
 //import ru.cherryngine.lib.minecraft.scroll.CustomColor
 //import io.netty.buffer.ByteBuf

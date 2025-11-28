@@ -4,7 +4,7 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.minecraft.codec.LocationCodecs
 import ru.cherryngine.lib.minecraft.codec.OtherCodecs
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
-import ru.cherryngine.lib.minecraft.registry.registries.DamageType
+import ru.cherryngine.lib.minecraft.registry.entries.DamageType
 import ru.cherryngine.lib.minecraft.registry.registries.DamageTypeRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 

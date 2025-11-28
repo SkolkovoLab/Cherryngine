@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import ru.cherryngine.lib.minecraft.registry.PaintingVariants
+import ru.cherryngine.lib.minecraft.registry.keys.PaintingVariants
 
 sealed class PaintingMeta : HangingMeta() {
     companion object : PaintingMeta()

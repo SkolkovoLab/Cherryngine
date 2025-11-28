@@ -10,8 +10,8 @@ import ru.cherryngine.lib.minecraft.dialog.input.*
 import ru.cherryngine.lib.minecraft.item.ItemStack
 import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.protocol.NbtWritable
-import ru.cherryngine.lib.minecraft.registry.registries.DialogType
-import ru.cherryngine.lib.minecraft.registry.registries.Item
+import ru.cherryngine.lib.minecraft.registry.entries.DialogType
+import ru.cherryngine.lib.minecraft.registry.entries.Item
 import ru.cherryngine.lib.minecraft.utils.toNBT
 
 sealed class Dialog : NbtWritable {

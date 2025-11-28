@@ -4,11 +4,18 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import ru.cherryngine.lib.minecraft.registry.RegistryException
-import java.io.InputStream
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.zip.GZIPInputStream
 
+@OptIn(ExperimentalSerializationApi::class)
 object SoundRegistry {
+
+    init {
+        val inputStream = ClassLoader.getSystemResource("registry/sound_registry.json.gz").openStream()
+        val stream = GZIPInputStream(inputStream)
+        val list = Json.decodeFromStream<List<String>>(stream)
+        list.forEach(::addEntry)
+    }
 
     private val map: MutableMap<Int, String> = mutableMapOf()
     private val reversed: MutableMap<String, Int> = mutableMapOf()
@@ -23,13 +30,6 @@ object SoundRegistry {
         val id = protocolIdCounter.getAndIncrement()
         map[id] = entry
         reversed[entry] = id
-    }
-
-    @OptIn(ExperimentalSerializationApi::class)
-    fun initialize(inputStream: InputStream) {
-        val stream = GZIPInputStream(inputStream)
-        val list = Json.decodeFromStream<List<String>>(stream)
-        list.forEach(::addEntry)
     }
 
     operator fun get(identifier: String): Int {

@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound
 
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
-import ru.cherryngine.lib.minecraft.registry.registries.PotionEffect
+import ru.cherryngine.lib.minecraft.registry.entries.PotionEffect
 import ru.cherryngine.lib.minecraft.registry.registries.PotionEffectRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 

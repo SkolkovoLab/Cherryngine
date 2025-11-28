@@ -4,7 +4,7 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.minecraft.codec.LocationCodecs
 import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
-import ru.cherryngine.lib.minecraft.registry.registries.Particle
+import ru.cherryngine.lib.minecraft.registry.entries.Particle
 import ru.cherryngine.lib.minecraft.registry.registries.ParticleRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 

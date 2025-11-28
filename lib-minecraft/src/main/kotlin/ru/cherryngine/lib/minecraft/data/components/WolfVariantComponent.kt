@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.registry.registries.WolfVariant
+import ru.cherryngine.lib.minecraft.registry.entries.WolfVariant
 import ru.cherryngine.lib.minecraft.registry.registries.WolfVariantRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 

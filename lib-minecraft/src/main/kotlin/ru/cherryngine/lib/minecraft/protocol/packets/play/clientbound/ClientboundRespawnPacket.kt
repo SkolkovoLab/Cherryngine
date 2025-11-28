@@ -4,7 +4,7 @@ import net.kyori.adventure.key.Key
 import ru.cherryngine.lib.minecraft.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.protocol.types.GameMode
 import ru.cherryngine.lib.minecraft.protocol.types.WorldPosition
-import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
+import ru.cherryngine.lib.minecraft.registry.entries.DimensionType
 import ru.cherryngine.lib.minecraft.registry.registries.DimensionTypeRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.ByteEnumStreamCodec
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec

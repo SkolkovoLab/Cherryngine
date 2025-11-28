@@ -8,9 +8,9 @@ import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.protocol.types.SoundEvent
-import ru.cherryngine.lib.minecraft.registry.registries.DamageType
+import ru.cherryngine.lib.minecraft.registry.entries.DamageType
+import ru.cherryngine.lib.minecraft.registry.entries.EntityType
 import ru.cherryngine.lib.minecraft.registry.registries.DamageTypeRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.EntityType
 import ru.cherryngine.lib.minecraft.registry.registries.EntityTypeRegistry
 import ru.cherryngine.lib.minecraft.tide.codec.Codec
 import ru.cherryngine.lib.minecraft.tide.codec.StructCodec

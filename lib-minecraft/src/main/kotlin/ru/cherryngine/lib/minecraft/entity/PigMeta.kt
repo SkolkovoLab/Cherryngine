@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import ru.cherryngine.lib.minecraft.registry.PigVariants
+import ru.cherryngine.lib.minecraft.registry.keys.PigVariants
 
 @Suppress("PropertyName")
 sealed class PigMeta : AgeableMobMeta() {

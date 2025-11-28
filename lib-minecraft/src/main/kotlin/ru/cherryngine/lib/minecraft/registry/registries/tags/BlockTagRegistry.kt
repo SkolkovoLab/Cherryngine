@@ -1,6 +1,8 @@
 package ru.cherryngine.lib.minecraft.registry.registries.tags
 
-object BlockTagRegistry : TagRegistry() {
+import ru.cherryngine.lib.minecraft.registry.TagRegistry
 
-    override val identifier: String = "minecraft:block"
-}
+object BlockTagRegistry : TagRegistry(
+    "minecraft:block",
+    "registry/block_tags.json.gz"
+)

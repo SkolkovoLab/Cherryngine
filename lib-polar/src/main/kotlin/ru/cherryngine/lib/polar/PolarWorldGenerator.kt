@@ -6,11 +6,11 @@ import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.protocol.types.BlockEntityType
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.registry.Biomes
-import ru.cherryngine.lib.minecraft.registry.registries.Biome
+import ru.cherryngine.lib.minecraft.registry.entries.Biome
+import ru.cherryngine.lib.minecraft.registry.entries.DimensionType
+import ru.cherryngine.lib.minecraft.registry.keys.Biomes
 import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.DimensionType
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity
@@ -36,7 +36,7 @@ object PolarWorldGenerator {
                 }
                 val biomePalette = Palette.biomes()
                 biomePalette.setAll { x, y, z ->
-                    getBiome(polarSection, x, y, z).getProtocolId()
+                    BiomeRegistry.getProtocolIdByEntry(getBiome(polarSection, x, y, z))
                 }
                 ChunkSection(blockPalette, biomePalette)
             }

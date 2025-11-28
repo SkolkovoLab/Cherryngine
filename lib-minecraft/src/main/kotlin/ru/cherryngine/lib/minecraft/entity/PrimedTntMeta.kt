@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import ru.cherryngine.lib.minecraft.registry.Blocks
+import ru.cherryngine.lib.minecraft.registry.keys.Blocks
 
 @Suppress("PropertyName")
 sealed class PrimedTntMeta : EntityMeta() {

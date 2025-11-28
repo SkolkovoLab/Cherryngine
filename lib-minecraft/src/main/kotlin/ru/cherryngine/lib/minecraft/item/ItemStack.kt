@@ -6,8 +6,8 @@ import ru.cherryngine.lib.minecraft.data.DataComponentPatch
 import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.protocol.NbtWritable
-import ru.cherryngine.lib.minecraft.registry.Items
-import ru.cherryngine.lib.minecraft.registry.registries.Item
+import ru.cherryngine.lib.minecraft.registry.entries.Item
+import ru.cherryngine.lib.minecraft.registry.keys.Items
 import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
@@ -63,14 +63,15 @@ data class ItemStack(
 
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is ItemStack) return false
-        return material.getProtocolId() == other.material.getProtocolId()
+
+        return ItemRegistry.getProtocolIdByEntry(material) == ItemRegistry.getProtocolIdByEntry(other.material)
 //                && attributes == other.attributes //TODO why no same??
                 && this.components.getComparisonHash() == other.components.getComparisonHash()
 
     }
 
     override fun hashCode(): Int {
-        var result = material.getProtocolId().hashCode()
+        var result = ItemRegistry.getProtocolIdByEntry(material).hashCode()
         result = 31 * result + this.components.getComparisonHash().hashCode()
 //        result = 31 * result + attributes.hashCode() //TODO why no same??
         return result
