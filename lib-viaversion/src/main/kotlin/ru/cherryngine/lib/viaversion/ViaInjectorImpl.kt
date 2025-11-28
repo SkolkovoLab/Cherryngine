@@ -5,13 +5,13 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion
 import com.viaversion.viaversion.connection.UserConnectionImpl
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl
 import io.netty.channel.Channel
-import ru.cherryngine.lib.minecraft.MinecraftServer
 import ru.cherryngine.lib.minecraft.ServerConsts
 import ru.cherryngine.lib.minecraft.server.ChannelHandlers
 import ru.cherryngine.lib.minecraft.server.ChannelInjector
+import ru.cherryngine.lib.minecraft.server.NettyServer
 
 class ViaInjectorImpl(
-    private val minecraftServer: MinecraftServer,
+    private val nettyServer: NettyServer,
 ) : ViaInjector, ChannelInjector {
     override fun inject(channel: Channel) {
         val connection = UserConnectionImpl(channel, false)
@@ -28,11 +28,11 @@ class ViaInjectorImpl(
     }
 
     override fun inject() {
-        minecraftServer.nettyServer.injectors += this
+        nettyServer.injectors += this
     }
 
     override fun uninject() {
-        minecraftServer.nettyServer.injectors -= this
+        nettyServer.injectors -= this
     }
 
     override fun getServerProtocolVersion(): ProtocolVersion {

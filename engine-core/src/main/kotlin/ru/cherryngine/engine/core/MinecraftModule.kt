@@ -2,19 +2,24 @@ package ru.cherryngine.engine.core
 
 import io.micronaut.context.annotation.Factory
 import jakarta.inject.Singleton
-import ru.cherryngine.lib.minecraft.MinecraftServer
+import ru.cherryngine.lib.minecraft.protocol.packets.registry.ClientboundPacketRegistry
+import ru.cherryngine.lib.minecraft.protocol.packets.registry.ServerboundPacketRegistry
+import ru.cherryngine.lib.minecraft.server.NettyServer
 
 @Factory
-class MinecraftModule(
-    private val engineCoreConfig: EngineCoreConfig,
-) {
+class MinecraftModule {
     @Singleton
-    fun getMinecraftServer(): MinecraftServer {
-        return MinecraftServer(
-            engineCoreConfig.address,
-            engineCoreConfig.port,
-            engineCoreConfig.mojangAuth,
-            engineCoreConfig.compressionThreshold
-        )
-    }
+    fun getClientboundPacketRegistry() = ClientboundPacketRegistry()
+
+    @Singleton
+    fun getServerboundPacketRegistry() = ServerboundPacketRegistry()
+
+    @Singleton
+    fun getNettyServer(
+        clientboundPacketRegistry: ClientboundPacketRegistry,
+        serverboundPacketRegistry: ServerboundPacketRegistry,
+    ) = NettyServer(
+        clientboundPacketRegistry,
+        serverboundPacketRegistry
+    )
 }

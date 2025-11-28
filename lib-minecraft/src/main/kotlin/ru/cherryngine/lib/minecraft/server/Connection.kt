@@ -9,7 +9,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.kyori.adventure.text.Component
 import org.slf4j.LoggerFactory
-import ru.cherryngine.lib.minecraft.PacketHandler
 import ru.cherryngine.lib.minecraft.protocol.cryptography.EncryptionUtil
 import ru.cherryngine.lib.minecraft.protocol.decoders.CompressionDecoder
 import ru.cherryngine.lib.minecraft.protocol.decoders.PacketDecryptionHandler
@@ -34,7 +33,7 @@ import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 
 class Connection(
-    val packetHandler: PacketHandler,
+    val connectionHandler: ConnectionHandler,
     val mojangAuth: Boolean,
     val compressionThreshold: Int,
 ) : SimpleChannelInboundHandler<ServerboundPacket>() {
@@ -61,13 +60,20 @@ class Connection(
         private set
     lateinit var intent: Intent
         private set
+
+    lateinit var helloGameProfile: GameProfile
+        private set
+
+    var onlineGameProfile: GameProfile? = null
+        private set
+
     lateinit var gameProfile: GameProfile
         private set
 
     override fun channelActive(context: ChannelHandlerContext) {
         super.channelActive(context)
         this.context = context
-        packetHandler.onConnect(this)
+        connectionHandler.onConnect(this)
 
         CoroutineScope(Dispatchers.IO).launch {
             while (isActive) {
@@ -83,7 +89,7 @@ class Connection(
 
     override fun channelInactive(context: ChannelHandlerContext) {
         super.channelInactive(context)
-        packetHandler.onDisconnect(this)
+        connectionHandler.onDisconnect(this)
     }
 
     override fun channelRead0(
@@ -99,7 +105,7 @@ class Connection(
             is ServerboundPingRequestPacket -> sendPacket(ClientboundPongResponsePacket(packet.time))
         }
 
-        packetHandler.onPacket(this, packet)
+        connectionHandler.onPacket(this, packet)
     }
 
     private fun handleIntention(packet: ServerboundIntentionPacket) {
@@ -115,7 +121,7 @@ class Connection(
     }
 
     private fun handleHello(packet: ServerboundHelloPacket) {
-        gameProfile = GameProfile(packet.uuid, packet.username, mutableListOf())
+        helloGameProfile = GameProfile(packet.uuid, packet.username, mutableListOf())
         if (mojangAuth) {
             sendPacket(ClientboundEncryptionRequestPacket("", crypto.publicKey.encoded, crypto.verifyToken, true))
         } else {
@@ -131,7 +137,7 @@ class Connection(
         val sharedSecret = cipher.doFinal(packet.sharedSecret)
 
         if (!verifyToken.contentEquals(crypto.verifyToken)) {
-            logger.error("Verify Token of player ${this@Connection.gameProfile.username} does not match!")
+            logger.error("Verify Token of player ${this@Connection.helloGameProfile.username} does not match!")
             kick("Your encryption verify token does not match!")
             return
         }
@@ -141,8 +147,8 @@ class Connection(
 
         val serverId = BigInteger(digestedData).toString(16)
 
-        gameProfile = try {
-            val profileResponse = MojangUtil.authenticateSession(this@Connection.gameProfile.username, serverId)
+        onlineGameProfile = try {
+            val profileResponse = MojangUtil.authenticateSession(this@Connection.helloGameProfile.username, serverId)
             val uuid = profileResponse.getUUID()
             val name = profileResponse.name
             val properties = profileResponse.properties.toMutableList()
@@ -186,6 +192,7 @@ class Connection(
                 )
         }
 
+        gameProfile = connectionHandler.setGameProfile(this, helloGameProfile, onlineGameProfile)
         sendPacket(ClientboundLoginFinishedPacket(gameProfile))
     }
 

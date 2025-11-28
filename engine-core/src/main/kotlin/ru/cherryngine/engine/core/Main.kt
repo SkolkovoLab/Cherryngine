@@ -3,6 +3,7 @@ package ru.cherryngine.engine.core
 import io.micronaut.runtime.Micronaut
 import org.slf4j.LoggerFactory
 import org.slf4j.bridge.SLF4JBridgeHandler
+import ru.cherryngine.lib.minecraft.Init
 import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
@@ -11,23 +12,28 @@ object Main {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        SLF4JBridgeHandler.removeHandlersForRootLogger()
-        SLF4JBridgeHandler.install()
         printBanner()
-        logger.info("Starting server")
 
-        try {
-            measureTimeMillis {
+        measureTimeMillis {
+            logger.info("Starting server")
+
+            SLF4JBridgeHandler.removeHandlersForRootLogger()
+            SLF4JBridgeHandler.install()
+
+            Init.initRegistries()
+
+            try {
                 Micronaut.build(*args)
                     .banner(false)
                     .eagerInitSingletons(true)
                     .start()
-            }.let {
-                logger.info("Server started in ${"%.2f".format(it / 1000.0)} sec.")
+
+            } catch (ex: Exception) {
+                logger.error("Server startup error", ex)
+                exitProcess(1)
             }
-        } catch (ex: Exception) {
-            logger.error("Server startup error", ex)
-            exitProcess(1)
+        }.let {
+            logger.info("Server started in ${"%.2f".format(it / 1000.0)} sec.")
         }
     }
 

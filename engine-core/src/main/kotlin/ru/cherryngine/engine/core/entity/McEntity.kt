@@ -1,6 +1,6 @@
 package ru.cherryngine.engine.core.entity
 
-import ru.cherryngine.engine.core.Player
+import ru.cherryngine.engine.core.player.Player
 import ru.cherryngine.engine.core.view.Viewable
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch

@@ -4,12 +4,12 @@ import com.viaversion.viaversion.ViaManagerImpl
 import com.viaversion.viaversion.api.Via
 import jakarta.annotation.PostConstruct
 import jakarta.inject.Singleton
-import ru.cherryngine.lib.minecraft.MinecraftServer
+import ru.cherryngine.lib.minecraft.server.NettyServer
 import ru.cherryngine.lib.viaversion.*
 
 @Singleton
 class ViaVersionRunner(
-    val minecraftServer: MinecraftServer,
+    val nettyServer: NettyServer,
     val viaVersionConfig: MicronautViaVersionConfig,
     val viaBackwardsConfig: MicronautViaBackwardsConfig,
 ) {
@@ -17,7 +17,7 @@ class ViaVersionRunner(
     fun init() {
         val api = ViaApiImpl()
         val platform = ViaPlatformImpl(viaVersionConfig, api)
-        val injector = ViaInjectorImpl(minecraftServer)
+        val injector = ViaInjectorImpl(nettyServer)
         val loader = ViaLoaderImpl()
         val backwardsPlatform = ViaBackwardsPlatformImpl(viaBackwardsConfig)
 

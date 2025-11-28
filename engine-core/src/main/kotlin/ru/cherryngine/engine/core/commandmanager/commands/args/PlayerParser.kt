@@ -5,10 +5,10 @@ import org.incendo.cloud.context.CommandContext
 import org.incendo.cloud.context.CommandInput
 import org.incendo.cloud.parser.ArgumentParseResult
 import org.incendo.cloud.suggestion.BlockingSuggestionProvider
-import ru.cherryngine.engine.core.Player
-import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.engine.core.commandmanager.SArgumentParser
+import ru.cherryngine.engine.core.player.Player
+import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.lib.minecraft.protocol.types.ArgumentParserType
 
 @Singleton

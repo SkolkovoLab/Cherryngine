@@ -1,6 +1,6 @@
 package ru.cherryngine.engine.core.world
 
-import ru.cherryngine.engine.core.Player
+import ru.cherryngine.engine.core.player.Player
 import ru.cherryngine.engine.core.view.BlocksViewable
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundBlockUpdatePacket

@@ -11,25 +11,25 @@ import ac.grim.grimac.platform.api.player.PlatformPlayerFactory
 import ac.grim.grimac.platform.api.scheduler.PlatformScheduler
 import ac.grim.grimac.platform.api.sender.SenderFactory
 import com.github.retrooper.packetevents.PacketEventsAPI
-import io.micronaut.context.event.ApplicationEventListener
+import io.micronaut.runtime.event.annotation.EventListener
 import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
 import jakarta.inject.Singleton
 import org.incendo.cloud.CommandManager
 import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.engine.core.events.PacketEvent
+import ru.cherryngine.engine.core.events.PlayerCreatedEvent
 import ru.cherryngine.integration.grim.command.CommandManagerImpl
 import ru.cherryngine.integration.grim.packetevents.PacketEventsImpl
-import ru.cherryngine.lib.minecraft.MinecraftServer
-import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ServerboundFinishConfigurationPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundClientTickEndPacket
+import ru.cherryngine.lib.minecraft.server.NettyServer
 import java.io.File
 import java.util.logging.Logger
 import ac.grim.grimac.platform.api.sender.Sender as GrimSender
 
 @Singleton
 class PlatformLoaderImpl(
-    minecraftServer: MinecraftServer,
+    nettyServer: NettyServer,
     private val platformScheduler: PlatformScheduler,
     private val platformPlayerFactory: PlatformPlayerFactory,
     private val commandAdapter: CommandAdapter,
@@ -40,8 +40,8 @@ class PlatformLoaderImpl(
     private val platformServer: PlatformServer,
     private val messagePlaceHolderManager: MessagePlaceHolderManager,
     private val permissionRegistrationManager: PermissionRegistrationManager,
-) : PlatformLoader, ApplicationEventListener<PacketEvent> {
-    private val julLogger = Logger.getLogger(PlatformLoaderImpl::class.java.name)
+) : PlatformLoader {
+    private val julLogger = Logger.getLogger("GrimAC")
     private val plugin: GrimPlugin = BasicGrimPlugin(
         julLogger,
         File("./grim/"),
@@ -49,7 +49,7 @@ class PlatformLoaderImpl(
         "",
         listOf()
     )
-    private val packetEvents = PacketEventsImpl(minecraftServer.nettyServer)
+    private val packetEvents = PacketEventsImpl(nettyServer)
 
     @PostConstruct
     fun init() {
@@ -80,16 +80,19 @@ class PlatformLoaderImpl(
         GrimAPIProvider.init(GrimAPI.INSTANCE.externalAPI)
     }
 
-    override fun onApplicationEvent(event: PacketEvent) {
+    @EventListener
+    fun onPacket(event: PacketEvent) {
         when (event.packet) {
-            is ServerboundFinishConfigurationPacket -> {
-                packetEvents.onPlayerLogin(event.connection)
-            }
-
             is ServerboundClientTickEndPacket -> {
-                val grimPlayer = GrimAPI.INSTANCE.playerDataManager.getPlayer(event.connection.gameProfile.uuid) ?: return
+                val grimPlayer =
+                    GrimAPI.INSTANCE.playerDataManager.getPlayer(event.connection.gameProfile.uuid) ?: return
                 grimPlayer.checkManager.entityReplication.onEndOfTickEvent()
             }
         }
+    }
+
+    @EventListener
+    fun onPlayerCreated(event: PlayerCreatedEvent) {
+        packetEvents.onPlayerLogin(event.player.connection)
     }
 }

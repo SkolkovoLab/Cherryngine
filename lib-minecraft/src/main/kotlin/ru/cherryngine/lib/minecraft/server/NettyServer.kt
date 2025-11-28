@@ -7,7 +7,6 @@ import io.netty.channel.nio.NioIoHandler
 import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import org.slf4j.LoggerFactory
-import ru.cherryngine.lib.minecraft.PacketHandler
 import ru.cherryngine.lib.minecraft.protocol.decoders.PacketLengthDecoder
 import ru.cherryngine.lib.minecraft.protocol.decoders.RawPacketDecoder
 import ru.cherryngine.lib.minecraft.protocol.encoders.PacketLengthEncoder
@@ -17,11 +16,6 @@ import ru.cherryngine.lib.minecraft.protocol.packets.registry.ServerboundPacketR
 import java.net.InetSocketAddress
 
 class NettyServer(
-    val ip: String,
-    val port: Int,
-    val mojangAuth: Boolean,
-    val compressionThreshold: Int,
-
     val clientboundPacketRegistry: ClientboundPacketRegistry,
     val serverboundPacketRegistry: ServerboundPacketRegistry,
 ) {
@@ -31,11 +25,21 @@ class NettyServer(
 
     var injectors = mutableSetOf<ChannelInjector>()
 
-    fun start(packetHandler: PacketHandler) {
+    private var started = false
+
+    fun start(
+        ip: String,
+        port: Int,
+        mojangAuth: Boolean,
+        compressionThreshold: Int,
+        connectionHandler: ConnectionHandler,
+    ) {
+        if (started) throw IllegalStateException()
+        started = true
         val bootstrap = ServerBootstrap()
         val channelInitializer = object : ChannelInitializer<SocketChannel>() {
             override fun initChannel(channel: SocketChannel) {
-                val connection = Connection(packetHandler, mojangAuth, compressionThreshold)
+                val connection = Connection(connectionHandler, mojangAuth, compressionThreshold)
                 channel.pipeline()
                     //encoders
                     .addFirst(

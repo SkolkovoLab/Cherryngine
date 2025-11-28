@@ -1,6 +1,6 @@
 package ru.cherryngine.engine.core.view
 
-import ru.cherryngine.engine.core.Player
+import ru.cherryngine.engine.core.player.Player
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 
 interface Viewable {

@@ -1,19 +1,21 @@
-package ru.cherryngine.engine.core
+package ru.cherryngine.engine.core.player
 
 import io.micronaut.context.event.ApplicationEventPublisher
+import io.micronaut.runtime.event.annotation.EventListener
 import jakarta.inject.Singleton
 import net.kyori.adventure.text.minimessage.MiniMessage
+import ru.cherryngine.engine.core.events.DisconnectEvent
 import ru.cherryngine.engine.core.events.PacketEvent
+import ru.cherryngine.engine.core.events.PlayerConfigurationAsyncEvent
+import ru.cherryngine.engine.core.events.PlayerCreatedEvent
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
-import ru.cherryngine.lib.minecraft.PacketHandler
 import ru.cherryngine.lib.minecraft.ServerConsts
 import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
 import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.common.ClientboundUpdateTagsPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundFinishConfigurationPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundRegistryDataPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ServerboundFinishConfigurationPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ServerboundLoginAcknowledgedPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.*
 import ru.cherryngine.lib.minecraft.protocol.packets.status.ClientboundStatusResponsePacket
@@ -28,8 +30,9 @@ import java.util.concurrent.ConcurrentHashMap
 
 @Singleton
 class PlayerManager(
-    val packetEventPublisher: ApplicationEventPublisher<PacketEvent>,
-) : PacketHandler {
+    val playerCreatedEventPublisher: ApplicationEventPublisher<PlayerCreatedEvent>,
+    val playerConfigurationAsyncEventPublisher: ApplicationEventPublisher<PlayerConfigurationAsyncEvent>,
+) {
     val queues: MutableMap<UUID, MutableList<ServerboundPacket>> =
         ConcurrentHashMap<UUID, MutableList<ServerboundPacket>>()
     val toCreatePlayers = mutableSetOf<UUID>()
@@ -56,7 +59,9 @@ class PlayerManager(
 
     fun onlinePlayers() = playersByUUID.values.toList()
 
-    override fun onPacket(connection: Connection, packet: ServerboundPacket) {
+    @EventListener
+    fun onPacket(event: PacketEvent) {
+        val (connection, packet) = event
         when (packet) {
             is ServerboundStatusRequestPacket -> {
                 val status = ServerStatus(
@@ -91,15 +96,24 @@ class PlayerManager(
                 RegistryManager.dynamicRegistries.values.forEach { registry ->
                     connection.sendPacket(ClientboundRegistryDataPacket(registry))
                 }
-                connection.sendPacket(ClientboundFinishConfigurationPacket())
-            }
 
-            is ServerboundFinishConfigurationPacket -> {
                 val uuid = connection.gameProfile.uuid
                 val username = connection.gameProfile.username
-                playersByUUID.computeIfAbsent(uuid) { Player(connection) }
-                playersByUsername.computeIfAbsent(username.lowercase()) { Player(connection) }
-                toCreatePlayers.add(uuid)
+                val player: Player
+                if (uuid !in playersByUUID) {
+                    player = Player(connection)
+                    playersByUUID[uuid] = player
+                    playersByUsername[username.lowercase()] = player
+                    toCreatePlayers.add(uuid)
+                    playerCreatedEventPublisher.publishEvent(PlayerCreatedEvent(player))
+                } else {
+                    player = playersByUUID[uuid]!!
+                }
+
+                Thread.startVirtualThread {
+                    playerConfigurationAsyncEventPublisher.publishEvent(PlayerConfigurationAsyncEvent(player))
+                    connection.sendPacket(ClientboundFinishConfigurationPacket())
+                }
             }
 
             is ServerboundMovePlayerPosPacket -> onMove(
@@ -132,7 +146,6 @@ class PlayerManager(
             val queue = queues.computeIfAbsent(connection.gameProfile.uuid) { arrayListOf() }
             queue.add(packet)
         }
-        packetEventPublisher.publishEvent(PacketEvent(connection, packet))
     }
 
     private fun onMove(
@@ -147,7 +160,9 @@ class PlayerManager(
         player.clientMovePlayerFlags = flags
     }
 
-    override fun onDisconnect(connection: Connection) {
+    @EventListener
+    fun onDisconnect(event: DisconnectEvent) {
+        val connection = event.connection
         if (connection.state == ProtocolState.PLAY || connection.state == ProtocolState.CONFIGURATION) {
             val uuid = connection.gameProfile.uuid
             val username = connection.gameProfile.username

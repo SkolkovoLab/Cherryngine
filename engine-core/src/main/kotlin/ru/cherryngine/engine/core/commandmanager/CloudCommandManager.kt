@@ -1,6 +1,6 @@
 package ru.cherryngine.engine.core.commandmanager
 
-import io.micronaut.context.event.ApplicationEventListener
+import io.micronaut.runtime.event.annotation.EventListener
 import jakarta.annotation.PostConstruct
 import jakarta.inject.Singleton
 import kotlinx.coroutines.Dispatchers
@@ -16,10 +16,10 @@ import org.incendo.cloud.meta.CommandMeta
 import org.incendo.cloud.meta.SimpleCommandMeta
 import org.incendo.cloud.suggestion.Suggestion
 import org.slf4j.Logger
-import ru.cherryngine.engine.core.Player
-import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.core.commandmanager.brigadier.CommandNodeUtils
 import ru.cherryngine.engine.core.events.PacketEvent
+import ru.cherryngine.engine.core.player.Player
+import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.utils.component
 import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundCommandSuggestionsPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundChatCommandPacket
@@ -34,7 +34,7 @@ class CloudCommandManager(
 ) : CommandManager<CommandSender>(
     ExecutionCoordinator.coordinatorFor(ExecutionCoordinator.nonSchedulingExecutor()),
     CommandRegistrationHandler.nullCommandRegistrationHandler()
-), ApplicationEventListener<PacketEvent> {
+) {
     val annotationParser = AnnotationParser(this, CommandSender::class.java)
         .installCoroutineSupport(context = Dispatchers.Unconfined)
 
@@ -88,7 +88,8 @@ class CloudCommandManager(
         }
     }
 
-    override fun onApplicationEvent(event: PacketEvent) {
+    @EventListener
+    fun onPacket(event: PacketEvent) {
         val (connection, packet) = event
         when (packet) {
             is ServerboundChatCommandPacket -> onCommandPacket(packet, playerManager.getPlayer(connection))

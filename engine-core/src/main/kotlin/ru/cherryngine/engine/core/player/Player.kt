@@ -1,4 +1,4 @@
-package ru.cherryngine.engine.core
+package ru.cherryngine.engine.core.player
 
 import net.kyori.adventure.text.Component
 import ru.cherryngine.engine.core.commandmanager.CommandSender

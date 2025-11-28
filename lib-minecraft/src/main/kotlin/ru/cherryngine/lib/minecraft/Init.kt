@@ -1,24 +1,12 @@
 package ru.cherryngine.lib.minecraft
 
-import org.slf4j.LoggerFactory
-import ru.cherryngine.lib.minecraft.protocol.packets.registry.ClientboundPacketRegistry
-import ru.cherryngine.lib.minecraft.protocol.packets.registry.ServerboundPacketRegistry
 import ru.cherryngine.lib.minecraft.registry.RegistryManager
 import ru.cherryngine.lib.minecraft.registry.registries.*
 import ru.cherryngine.lib.minecraft.registry.registries.tags.*
-import ru.cherryngine.lib.minecraft.server.NettyServer
 
-class MinecraftServer(
-    ip: String,
-    port: Int,
-    mojangAuth: Boolean = false,
-    compressionThreshold: Int = 256,
-) {
-    private val logger = LoggerFactory.getLogger(MinecraftServer::class.java)
-    val nettyServer: NettyServer
-
-    init {
-        logger.info("Initializing registries")
+object Init {
+    // TODO избавиться нахуй от этой статики
+    fun initRegistries() {
         SoundRegistry.initialize(RegistryManager.getStreamFromPath("registry/sound_registry.json.gz"))
 
         RegistryManager.register<Attribute>(AttributeRegistry)
@@ -58,21 +46,5 @@ class MinecraftServer(
         RegistryManager.register<DialogEntry>(DialogRegistry)
         RegistryManager.register<DialogInputType>(DialogInputTypeRegistry)
         RegistryManager.register<DialogActionType>(DialogActionTypeRegistry)
-
-        val serverboundPacketRegistry = ServerboundPacketRegistry()
-        val clientboundPacketRegistry = ClientboundPacketRegistry()
-
-        nettyServer = NettyServer(
-            ip,
-            port,
-            mojangAuth,
-            compressionThreshold,
-            clientboundPacketRegistry,
-            serverboundPacketRegistry,
-        )
-    }
-
-    fun start(packetHandler: PacketHandler) {
-        nettyServer.start(packetHandler)
     }
 }
