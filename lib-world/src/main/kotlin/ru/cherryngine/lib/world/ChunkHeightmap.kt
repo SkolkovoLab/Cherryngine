@@ -1,36 +1,20 @@
-package ru.cherryngine.lib.minecraft.world.chunk
+package ru.cherryngine.lib.world
 
-import io.netty.buffer.ByteBuf
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils.ceilLog2
-import ru.cherryngine.lib.minecraft.utils.bitstorage.SimpleBitStorage
-import ru.cherryngine.lib.minecraft.world.block.Block
-import java.util.function.Predicate
+import ru.cherryngine.lib.minecraft.world.chunk.ChunkHeightmapType
+import ru.cherryngine.lib.world.utils.SimpleBitStorage
 
 class ChunkHeightmap(
     val chunk: Chunk,
-    val type: Type,
+    val type: ChunkHeightmapType,
 ) {
     private val bitStorage = SimpleBitStorage(ceilLog2(chunk.dimensionType.height + 1), 256)
     fun getRawData(): LongArray = bitStorage.data
 
     companion object {
-        val STREAM_CODEC = object : StreamCodec<ChunkHeightmap> {
-            override fun write(
-                buffer: ByteBuf,
-                value: ChunkHeightmap,
-            ) {
-                StreamCodec.LONG_ARRAY.write(buffer, value.getRawData())
-            }
-
-            override fun read(buffer: ByteBuf): ChunkHeightmap {
-                TODO("Not yet implemented")
-            }
-        }
-
-        fun generate(chunk: Chunk, toGenerate: Set<Type>) {
+        fun generate(chunk: Chunk, toGenerate: Set<ChunkHeightmapType>) {
             val size = toGenerate.size
             val heightmaps = ObjectArrayList<ChunkHeightmap>(size)
             val iterator = heightmaps.iterator()
@@ -78,14 +62,4 @@ class ChunkHeightmap(
 
     private fun indexOf(x: Int, z: Int): Int = x + z * 16
 
-    enum class Type(val id: Int, val predicate: Predicate<Block>) {
-        WORLD_SURFACE(1, { block -> !block.isAir() }),
-        MOTION_BLOCKING(4, { block -> block.registryBlock.isSolid || block.registryBlock.isLiquid }),
-        MOTION_BLOCKING_NO_LEAVES(5, { block -> block.registryBlock.isSolid && !block.identifier.endsWith("_leaves") });
-
-        companion object {
-            val BY_ID = entries.associateBy { it.id }
-            val STREAM_CODEC = StreamCodec.VAR_INT.transform<Type>({ BY_ID[it]!! }, { it.id })
-        }
-    }
 }

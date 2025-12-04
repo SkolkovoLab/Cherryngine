@@ -1,10 +1,13 @@
-package ru.cherryngine.lib.minecraft.world.chunk
+package ru.cherryngine.lib.world
 
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.registry.entries.DimensionType
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity
+import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
+import ru.cherryngine.lib.minecraft.world.chunk.ChunkHeightmapType
+import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 import ru.cherryngine.lib.minecraft.world.light.LightData
 
 class Chunk(
@@ -27,10 +30,10 @@ class Chunk(
 
     val heightmaps = ChunkHeightmaps()
 
-    val chunkData = ChunkData(heightmaps, sections, blockEntities)
+    val chunkData = ChunkData(heightmaps.rawDataMap, sections, blockEntities)
 
     init {
-        ChunkHeightmap.Type.entries.forEach { type ->
+        ChunkHeightmapType.entries.forEach { type ->
             getOrCreateHeightmap(type)
             ChunkHeightmap.generate(this, setOf(type))
         }
@@ -71,5 +74,5 @@ class Chunk(
         setBlockId(blockPos, block.getStateId())
     }
 
-    fun getOrCreateHeightmap(type: ChunkHeightmap.Type): ChunkHeightmap = heightmaps.getOrCreateHeightmap(this, type)
+    fun getOrCreateHeightmap(type: ChunkHeightmapType): ChunkHeightmap = heightmaps.getOrCreateHeightmap(this, type)
 }

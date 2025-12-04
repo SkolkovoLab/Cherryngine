@@ -8,9 +8,9 @@ import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils.globalToSectionRelative
 import ru.cherryngine.lib.minecraft.world.block.Block
-import ru.cherryngine.lib.minecraft.world.chunk.Chunk
 import ru.cherryngine.lib.minecraft.world.light.LightData
-import ru.cherryngine.lib.minecraft.world.light.LightEngine
+import ru.cherryngine.lib.world.Chunk
+import ru.cherryngine.lib.world.LightEngine
 
 class ChunkViewable(
     override val chunkPos: ChunkPos,

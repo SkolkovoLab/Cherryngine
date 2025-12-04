@@ -1,8 +1,9 @@
-package ru.cherryngine.lib.minecraft.world.light
+package ru.cherryngine.lib.world
 
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
+import ru.cherryngine.lib.minecraft.world.light.LightData
 import java.util.*
 
 class LightEngine(

@@ -7,14 +7,12 @@ import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.protocol.types.BlockEntityType
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.entries.Biome
-import ru.cherryngine.lib.minecraft.registry.entries.DimensionType
 import ru.cherryngine.lib.minecraft.registry.keys.Biomes
 import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity
-import ru.cherryngine.lib.minecraft.world.chunk.Chunk
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 import ru.cherryngine.lib.minecraft.world.light.LightData
 import ru.cherryngine.lib.minecraft.world.palette.Palette
@@ -23,7 +21,7 @@ import java.util.*
 object PolarWorldGenerator {
     private val logger = LoggerFactory.getLogger(PolarWorldGenerator::class.java)
 
-    fun loadChunks(worldBytes: ByteArray, dimensionType: DimensionType): Map<ChunkPos, Chunk> {
+    fun loadChunks(worldBytes: ByteArray): Map<ChunkPos, PolarChunkResult> {
         val polarWorld = PolarReader.read(worldBytes)
 
         return polarWorld.chunks().associate { polarChunk ->
@@ -62,11 +60,17 @@ object PolarWorldGenerator {
                 )
             }.toMap()
 
-            ChunkPos(polarChunk.x, polarChunk.z) to Chunk(sections, blockEntities, lightData, dimensionType)
+            ChunkPos(polarChunk.x, polarChunk.z) to PolarChunkResult(sections, blockEntities, lightData)
         }
     }
 
-    private fun getLightData(polarChunk: PolarChunk, action: (PolarSection) -> ByteArray?): LightData {
+    data class PolarChunkResult(
+        val sections: List<ChunkSection>,
+        val blockEntities: Map<Vec3I, BlockEntity>,
+        val lightData: LightData,
+    )
+
+    private fun getLightData(polarChunk: PolarChunk, action: (PolarSection) -> ByteArray?): PolarLightData {
         val mask = BitSet()
         val emptyMask = BitSet()
         val list = arrayListOf<ByteArray>()
@@ -81,10 +85,10 @@ object PolarWorldGenerator {
         }
         val buffer = Unpooled.buffer()
         StreamCodec.RAW_BYTES_ARRAY.list().write(buffer, list)
-        return LightData(mask, emptyMask, list)
+        return PolarLightData(mask, emptyMask, list)
     }
 
-    private class LightData(
+    private class PolarLightData(
         var mask: BitSet,
         var emptyMask: BitSet,
         var light: List<ByteArray>,

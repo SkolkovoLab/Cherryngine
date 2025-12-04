@@ -1,4 +1,4 @@
-package ru.cherryngine.lib.minecraft.utils.bitstorage
+package ru.cherryngine.lib.world.utils
 
 interface BitStorage {
     val size: Int

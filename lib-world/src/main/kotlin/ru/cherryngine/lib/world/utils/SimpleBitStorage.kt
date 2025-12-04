@@ -1,4 +1,4 @@
-package ru.cherryngine.lib.minecraft.utils.bitstorage
+package ru.cherryngine.lib.world.utils
 
 // Basically 1 to 1 from mojang code, just ported to Kotlin
 

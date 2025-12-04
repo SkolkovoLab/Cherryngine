@@ -4,7 +4,7 @@ import ru.cherryngine.engine.core.view.BlocksViewable
 import ru.cherryngine.engine.core.world.ChunkViewable
 import ru.cherryngine.engine.core.world.EmptyChunkViewable
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.world.World
+import ru.cherryngine.lib.world.World
 
 class WorldViewableProviderImpl(
     override val world: World,

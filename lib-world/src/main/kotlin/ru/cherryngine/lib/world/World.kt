@@ -1,8 +1,7 @@
-package ru.cherryngine.lib.minecraft.world
+package ru.cherryngine.lib.world
 
 import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.entries.DimensionType
-import ru.cherryngine.lib.minecraft.world.chunk.Chunk
 
 class World(
     val dimensionType: DimensionType,
