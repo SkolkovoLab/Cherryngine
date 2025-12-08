@@ -14,6 +14,7 @@ include(
     "engine-ecs",
     "engine-integration:grim",
     "engine-integration:viaversion",
+    "engine-physics",
 
     "lib-adventure-serializer-nbt",
     "lib-jackson",
