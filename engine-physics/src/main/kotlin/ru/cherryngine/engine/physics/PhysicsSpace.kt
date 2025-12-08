@@ -4,26 +4,20 @@ import com.github.stephengold.joltjni.*
 import com.github.stephengold.joltjni.enumerate.EActivation
 import com.github.stephengold.joltjni.enumerate.EMotionType
 import com.github.stephengold.joltjni.enumerate.EPhysicsUpdateError
+import com.github.stephengold.joltjni.readonly.ConstPlane
+import com.github.stephengold.joltjni.readonly.ConstShape
+import com.github.stephengold.joltjni.readonly.Vec3Arg
 import ru.cherryngine.lib.math.Transform
 import ru.cherryngine.lib.math.Vec3D
-import ru.cherryngine.lib.math.rotation.QRot
 
-class MinecraftPhysics {
+
+class PhysicsSpace {
     val physicsSystem: PhysicsSystem
     val tempAllocator: TempAllocator
     val jobSystem: JobSystem
 
     init {
-        NativeLoader.checkAndInit()
-        // https://github.com/stephengold/jolt-jni-docs/blob/master/java-apps/src/main/java/com/github/stephengold/sportjolt/javaapp/sample/console/HelloJoltJni.java
-        //Jolt.setTraceAllocations(true); // to log Jolt-JNI heap allocations
-        JoltPhysicsObject.startCleaner() // to reclaim native memory
-        Jolt.registerDefaultAllocator() // tell Jolt Physics to use malloc/free
-        Jolt.installDefaultAssertCallback()
-        Jolt.installDefaultTraceCallback()
-        Jolt.newFactory().also { success -> check(success) }
-        Jolt.registerTypes()
-
+        JoltLoader.checkAndInit()
 
         // For simplicity, use a single broadphase layer:
         val numBpLayers = 1
@@ -72,6 +66,19 @@ class MinecraftPhysics {
         physicsSystem.setGravity(Vec3(0f, -17f, 0f))
     }
 
+    fun addFloor(y: Double): PhysicsBody {
+        val normal: Vec3Arg = Vec3.sAxisY()
+        val plane: ConstPlane = Plane(normal, -y.toFloat())
+        val floorShape: ConstShape = PlaneShape(plane)
+
+        val bodyCreationSettings = BodyCreationSettings()
+            .setMotionType(EMotionType.Static)
+            .setObjectLayer(Layers.NON_MOVING)
+            .setShape(floorShape)
+
+        return createBody(bodyCreationSettings, EActivation.DontActivate)
+    }
+
     fun update(delta: Float) {
         val steps = 1
         physicsSystem.update(delta, steps, tempAllocator, jobSystem).also { errors ->
@@ -79,54 +86,52 @@ class MinecraftPhysics {
         }
     }
 
-    val bodies = HashMap<Long, Aboba>()
+    val bodies = HashMap<Long, PhysicsBody>()
 
-    fun addCube(position: Vec3D, size: Vec3D): Aboba {
-        val positionRVec3 = RVec3(position.x, position.y, position.z)
+    fun addCube(position: Vec3D, size: Vec3D): PhysicsBody {
         val bodyCreationSettings = BodyCreationSettings()
             .setMotionType(EMotionType.Dynamic)
             .setObjectLayer(Layers.MOVING)
-            .setShape(BoxShape(size.x.toFloat(), size.y.toFloat(), size.z.toFloat()))
+            .setShape(BoxShape(size.joltVec3().apply { scaleInPlace(0.5f) }))
             .setAngularDamping(0.1f)
             .setLinearDamping(0.3f)
-            .setPosition(positionRVec3)
-        return addObject(bodyCreationSettings)
+            .setPosition(position.joltRVec3())
+        return createBody(bodyCreationSettings, EActivation.Activate)
     }
 
-    fun addObject(bodyCreationSettings: BodyCreationSettings): Aboba {
-        val aboba = Aboba(bodyCreationSettings)
-        bodies[aboba.body.va()] = aboba
-        return aboba
+    fun createBody(bodyCreationSettings: BodyCreationSettings, eActivation: EActivation): PhysicsBody {
+        val physicsBody = PhysicsBody(bodyCreationSettings, eActivation)
+        bodies[physicsBody.body.va()] = physicsBody
+        return physicsBody
     }
 
-    fun removeObject(body: Aboba) {
-        body.remove()
-        bodies.remove(body.body.va())
+    fun destroy() {
+        // TODO
     }
 
-    inner class Aboba(
+    inner class PhysicsBody(
         bodySettings: BodyCreationSettings,
+        eActivation: EActivation,
     ) {
         val body: Body
 
         init {
-            this.body = physicsSystem.getBodyInterface().createBody(bodySettings)
-            physicsSystem.getBodyInterface().addBody(body, EActivation.Activate)
+            val bodyInterface = physicsSystem.getBodyInterface()
+            this.body = bodyInterface.createBody(bodySettings)
+            bodyInterface.addBody(body, eActivation)
         }
 
         fun getTransform(): Transform {
             val rVec3 = RVec3()
             val quat = Quat()
             body.getPositionAndRotation(rVec3, quat)
-            return Transform(
-                Vec3D(rVec3.xx(), rVec3.yy(), rVec3.zz()),
-                QRot(quat.w.toDouble(), quat.x.toDouble(), quat.y.toDouble(), quat.z.toDouble())
-            )
+            return Transform(rVec3.vec3D(), quat.qRot())
         }
 
-        internal fun remove() {
+        fun remove() {
             physicsSystem.getBodyInterface().removeBody(body.id)
             physicsSystem.getBodyInterface().destroyBody(body.id)
+            bodies.remove(body.va())
         }
     }
 }

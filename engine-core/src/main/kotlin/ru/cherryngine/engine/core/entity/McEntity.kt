@@ -37,6 +37,11 @@ class McEntity(
         viewers.forEach { it.connection.sendPacket(packet) }
     }
 
+    fun resendMeta() {
+        val packet = ClientboundSetEntityDataPacket(entityId, metadata.entries)
+        viewers.forEach { it.connection.sendPacket(packet) }
+    }
+
     override fun show(player: Player) {
         player.connection.sendPacket(
             ClientboundAddEntityPacket(
