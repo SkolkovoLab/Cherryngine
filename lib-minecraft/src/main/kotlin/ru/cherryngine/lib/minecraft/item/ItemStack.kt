@@ -14,7 +14,7 @@ import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 data class ItemStack(
     var material: Item,
     var amount: Int = 1,
-    val components: DataComponentPatch,
+    val components: DataComponentPatch = DataComponentPatch.EMPTY,
 ) : DataComponentHashable, NbtWritable {
     init {
         require(amount >= 1) { "ItemStack amount cannot be less than 1" }
