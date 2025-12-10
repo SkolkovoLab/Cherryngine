@@ -1,17 +1,16 @@
 package ru.cherryngine.lib.minecraft.utils
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
+import net.kyori.adventure.util.RGBLike
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 @Serializable
-data class CustomColor(val r: Int, val g: Int, val b: Int) {
+data class CustomColor(
+    val r: Int,
+    val g: Int,
+    val b: Int,
+) : RGBLike {
 
     companion object {
         fun fromHex(hex: String): CustomColor {
@@ -103,18 +102,9 @@ data class CustomColor(val r: Int, val g: Int, val b: Int) {
 
         return CustomColor(newR, newG, newB)
     }
+
+    override fun red() = r
+    override fun green() = g
+    override fun blue() = b
 }
 
-// To make sure it has "color": Hex in the json
-object CustomColorSerializer : KSerializer<CustomColor> {
-    override val descriptor: SerialDescriptor =
-        PrimitiveSerialDescriptor("CustomColor", PrimitiveKind.STRING)
-
-    override fun serialize(encoder: Encoder, value: CustomColor) {
-        encoder.encodeString(value.toHex())
-    }
-
-    override fun deserialize(decoder: Decoder): CustomColor {
-        return CustomColor.fromHex(decoder.decodeString())
-    }
-}

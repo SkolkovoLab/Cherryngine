@@ -3,8 +3,8 @@ package ru.cherryngine.lib.minecraft.entity
 import io.netty.buffer.ByteBuf
 import ru.cherryngine.lib.minecraft.codec.ComponentCodecs
 import ru.cherryngine.lib.minecraft.codec.LocationCodecs
-import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
 import ru.cherryngine.lib.minecraft.item.ItemStack
+import ru.cherryngine.lib.minecraft.protocol.types.ClientSettings
 import ru.cherryngine.lib.minecraft.protocol.types.Direction
 import ru.cherryngine.lib.minecraft.protocol.types.ResolvableProfile
 import ru.cherryngine.lib.minecraft.protocol.types.VillagerData
@@ -56,6 +56,7 @@ class MetadataEntry<T>(
             val FROG_VARIANT = Type(index++, FrogVariantRegistry.STREAM_CODEC).also { entries.add(it) }
             val PIG_VARIANT = Type(index++, PigVariantRegistry.STREAM_CODEC).also { entries.add(it) }
             val CHICKEN_VARIANT = Type(index++, ChickenVariantRegistry.STREAM_CODEC).also { entries.add(it) }
+            val ZOMBIE_NAUTILUS_VARIANT = Type(index++, ZombieNautilusVariantRegistry.STREAM_CODEC).also { entries.add(it) }
             val OPT_GLOBAL_POSITION = Type(index++, StreamCodec.UNIT).also { entries.add(it) } // Unused by protocol it seems
             val PAINTING_VARIANT = Type(index++, PaintingVariantRegistry.STREAM_CODEC).also { entries.add(it) }
             val SNIFFER_STATE = Type(index++, EnumStreamCodec<SnifferMeta.State>()).also { entries.add(it) }
@@ -65,6 +66,7 @@ class MetadataEntry<T>(
             val VECTOR3 = Type(index++, LocationCodecs.VEC_3D_FLOAT).also { entries.add(it) }
             val QUATERNION = Type(index++, LocationCodecs.QUATERNION).also { entries.add(it) }
             val RESOLVABLE_PROFILE = Type(index++, ResolvableProfile.STREAM_CODEC).also { entries.add(it) }
+            val MAIN_HAND = Type(index++, EnumStreamCodec<ClientSettings.MainHand>()).also { entries.add(it) }
 
             fun fromIndex(index: Int): Type<*> {
                 return entries[index]

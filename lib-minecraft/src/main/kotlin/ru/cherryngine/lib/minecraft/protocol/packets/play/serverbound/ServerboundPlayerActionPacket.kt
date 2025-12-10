@@ -31,6 +31,7 @@ data class ServerboundPlayerActionPacket(
         DROP_ITEM_STACK,
         DROP_ITEM,
         HELD_ITEM_UPDATE,
-        SWAP_ITEM
+        SWAP_ITEM,
+        STAB
     }
 }

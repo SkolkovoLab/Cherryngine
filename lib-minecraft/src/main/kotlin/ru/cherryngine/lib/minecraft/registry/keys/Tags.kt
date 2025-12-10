@@ -2,23 +2,18 @@
 package ru.cherryngine.lib.minecraft.registry.keys
 
 import ru.cherryngine.lib.minecraft.registry.Tag
-import ru.cherryngine.lib.minecraft.registry.registries.tags.BiomeTagRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.tags.BlockTagRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.tags.EntityTypeTagRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.tags.FluidTagRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.tags.ItemTagRegistry
+import ru.cherryngine.lib.minecraft.registry.registries.tags.*
 
 public object Tags {
-  public val BIOME_SNOW_GOLEM_MELTS: Tag = BiomeTagRegistry["minecraft:snow_golem_melts"]
-
-  public val BIOME_HAS_CLOSER_WATER_FOG: Tag = BiomeTagRegistry["minecraft:has_closer_water_fog"]
-
   public val BIOME_IS_OCEAN: Tag = BiomeTagRegistry["minecraft:is_ocean"]
 
   public val BIOME_WITHOUT_WANDERING_TRADER_SPAWNS: Tag =
       BiomeTagRegistry["minecraft:without_wandering_trader_spawns"]
 
   public val BIOME_IS_SAVANNA: Tag = BiomeTagRegistry["minecraft:is_savanna"]
+
+  public val BIOME_SPAWNS_CORAL_VARIANT_ZOMBIE_NAUTILUS: Tag =
+      BiomeTagRegistry["minecraft:spawns_coral_variant_zombie_nautilus"]
 
   public val BIOME_SPAWNS_WHITE_RABBITS: Tag = BiomeTagRegistry["minecraft:spawns_white_rabbits"]
 
@@ -34,8 +29,6 @@ public object Tags {
   public val BIOME_IS_RIVER: Tag = BiomeTagRegistry["minecraft:is_river"]
 
   public val BIOME_IS_BADLANDS: Tag = BiomeTagRegistry["minecraft:is_badlands"]
-
-  public val BIOME_WITHOUT_PATROL_SPAWNS: Tag = BiomeTagRegistry["minecraft:without_patrol_spawns"]
 
   public val BIOME_WITHOUT_ZOMBIE_SIEGES: Tag = BiomeTagRegistry["minecraft:without_zombie_sieges"]
 
@@ -163,9 +156,6 @@ public object Tags {
   public val BIOME_POLAR_BEARS_SPAWN_ON_ALTERNATE_BLOCKS: Tag =
       BiomeTagRegistry["minecraft:polar_bears_spawn_on_alternate_blocks"]
 
-  public val BIOME_PLAYS_UNDERWATER_MUSIC: Tag =
-      BiomeTagRegistry["minecraft:plays_underwater_music"]
-
   public val BIOME_WATER_ON_MAP_OUTLINES: Tag = BiomeTagRegistry["minecraft:water_on_map_outlines"]
 
   public val BIOME_IS_END: Tag = BiomeTagRegistry["minecraft:is_end"]
@@ -187,9 +177,6 @@ public object Tags {
   public val BIOME_IS_TAIGA: Tag = BiomeTagRegistry["minecraft:is_taiga"]
 
   public val BIOME_SPAWNS_SNOW_FOXES: Tag = BiomeTagRegistry["minecraft:spawns_snow_foxes"]
-
-  public val BIOME_INCREASED_FIRE_BURNOUT: Tag =
-      BiomeTagRegistry["minecraft:increased_fire_burnout"]
 
   public val BIOME_REDUCE_WATER_AMBIENT_SPAWNS: Tag =
       BiomeTagRegistry["minecraft:reduce_water_ambient_spawns"]
@@ -611,6 +598,8 @@ public object Tags {
   public val BLOCK_AZALEA_ROOT_REPLACEABLE: Tag =
       BlockTagRegistry["minecraft:azalea_root_replaceable"]
 
+  public val BLOCK_CAN_GLIDE_THROUGH: Tag = BlockTagRegistry["minecraft:can_glide_through"]
+
   public val BLOCK_BEE_ATTRACTIVE: Tag = BlockTagRegistry["minecraft:bee_attractive"]
 
   public val BLOCK_REPLACEABLE_BY_TREES: Tag = BlockTagRegistry["minecraft:replaceable_by_trees"]
@@ -731,6 +720,9 @@ public object Tags {
   public val ENTITY_TYPE_BEEHIVE_INHABITORS: Tag =
       EntityTypeTagRegistry["minecraft:beehive_inhabitors"]
 
+  public val ENTITY_TYPE_CAN_WEAR_NAUTILUS_ARMOR: Tag =
+      EntityTypeTagRegistry["minecraft:can_wear_nautilus_armor"]
+
   public val ENTITY_TYPE_RAIDERS: Tag = EntityTypeTagRegistry["minecraft:raiders"]
 
   public val ENTITY_TYPE_CANNOT_BE_PUSHED_ONTO_BOATS: Tag =
@@ -740,6 +732,9 @@ public object Tags {
       EntityTypeTagRegistry["minecraft:sensitive_to_bane_of_arthropods"]
 
   public val ENTITY_TYPE_ILLAGER_FRIENDS: Tag = EntityTypeTagRegistry["minecraft:illager_friends"]
+
+  public val ENTITY_TYPE_NAUTILUS_HOSTILES: Tag =
+      EntityTypeTagRegistry["minecraft:nautilus_hostiles"]
 
   public val ENTITY_TYPE_ARROWS: Tag = EntityTypeTagRegistry["minecraft:arrows"]
 
@@ -754,8 +749,13 @@ public object Tags {
   public val ENTITY_TYPE_IGNORES_POISON_AND_REGEN: Tag =
       EntityTypeTagRegistry["minecraft:ignores_poison_and_regen"]
 
+  public val ENTITY_TYPE_CAN_FLOAT_WHILE_RIDDEN: Tag =
+      EntityTypeTagRegistry["minecraft:can_float_while_ridden"]
+
   public val ENTITY_TYPE_NOT_SCARY_FOR_PUFFERFISH: Tag =
       EntityTypeTagRegistry["minecraft:not_scary_for_pufferfish"]
+
+  public val ENTITY_TYPE_BURN_IN_DAYLIGHT: Tag = EntityTypeTagRegistry["minecraft:burn_in_daylight"]
 
   public val ENTITY_TYPE_IMMUNE_TO_INFESTED: Tag =
       EntityTypeTagRegistry["minecraft:immune_to_infested"]
@@ -872,6 +872,10 @@ public object Tags {
 
   public val ITEM_WOODEN_STAIRS: Tag = ItemTagRegistry["minecraft:wooden_stairs"]
 
+  public val ITEM_ZOMBIE_HORSE_FOOD: Tag = ItemTagRegistry["minecraft:zombie_horse_food"]
+
+  public val ITEM_NAUTILUS_BUCKET_FOOD: Tag = ItemTagRegistry["minecraft:nautilus_bucket_food"]
+
   public val ITEM_HORSE_TEMPT_ITEMS: Tag = ItemTagRegistry["minecraft:horse_tempt_items"]
 
   public val ITEM_NETHERITE_TOOL_MATERIALS: Tag =
@@ -922,6 +926,8 @@ public object Tags {
 
   public val ITEM_TRAPDOORS: Tag = ItemTagRegistry["minecraft:trapdoors"]
 
+  public val ITEM_CAMEL_HUSK_FOOD: Tag = ItemTagRegistry["minecraft:camel_husk_food"]
+
   public val ITEM_RAILS: Tag = ItemTagRegistry["minecraft:rails"]
 
   public val ITEM_HOGLIN_FOOD: Tag = ItemTagRegistry["minecraft:hoglin_food"]
@@ -942,8 +948,6 @@ public object Tags {
 
   public val ITEM_ENCHANTABLE_FOOT_ARMOR: Tag = ItemTagRegistry["minecraft:enchantable/foot_armor"]
 
-  public val ITEM_ENCHANTABLE_SWORD: Tag = ItemTagRegistry["minecraft:enchantable/sword"]
-
   public val ITEM_ENCHANTABLE_FISHING: Tag = ItemTagRegistry["minecraft:enchantable/fishing"]
 
   public val ITEM_ENCHANTABLE_SHARP_WEAPON: Tag =
@@ -955,6 +959,10 @@ public object Tags {
 
   public val ITEM_ENCHANTABLE_CROSSBOW: Tag = ItemTagRegistry["minecraft:enchantable/crossbow"]
 
+  public val ITEM_ENCHANTABLE_LUNGE: Tag = ItemTagRegistry["minecraft:enchantable/lunge"]
+
+  public val ITEM_ENCHANTABLE_SWEEPING: Tag = ItemTagRegistry["minecraft:enchantable/sweeping"]
+
   public val ITEM_ENCHANTABLE_MACE: Tag = ItemTagRegistry["minecraft:enchantable/mace"]
 
   public val ITEM_ENCHANTABLE_BOW: Tag = ItemTagRegistry["minecraft:enchantable/bow"]
@@ -963,6 +971,9 @@ public object Tags {
       ItemTagRegistry["minecraft:enchantable/fire_aspect"]
 
   public val ITEM_ENCHANTABLE_VANISHING: Tag = ItemTagRegistry["minecraft:enchantable/vanishing"]
+
+  public val ITEM_ENCHANTABLE_MELEE_WEAPON: Tag =
+      ItemTagRegistry["minecraft:enchantable/melee_weapon"]
 
   public val ITEM_ENCHANTABLE_DURABILITY: Tag = ItemTagRegistry["minecraft:enchantable/durability"]
 
@@ -979,6 +990,8 @@ public object Tags {
   public val ITEM_SMALL_FLOWERS: Tag = ItemTagRegistry["minecraft:small_flowers"]
 
   public val ITEM_DARK_OAK_LOGS: Tag = ItemTagRegistry["minecraft:dark_oak_logs"]
+
+  public val ITEM_NAUTILUS_TAMING_ITEMS: Tag = ItemTagRegistry["minecraft:nautilus_taming_items"]
 
   public val ITEM_FISHES: Tag = ItemTagRegistry["minecraft:fishes"]
 
@@ -1013,6 +1026,8 @@ public object Tags {
   public val ITEM_LOGS_THAT_BURN: Tag = ItemTagRegistry["minecraft:logs_that_burn"]
 
   public val ITEM_COMPASSES: Tag = ItemTagRegistry["minecraft:compasses"]
+
+  public val ITEM_SPEARS: Tag = ItemTagRegistry["minecraft:spears"]
 
   public val ITEM_PARROT_POISONOUS_FOOD: Tag = ItemTagRegistry["minecraft:parrot_poisonous_food"]
 
@@ -1097,6 +1112,8 @@ public object Tags {
   public val ITEM_IRON_ORES: Tag = ItemTagRegistry["minecraft:iron_ores"]
 
   public val ITEM_GOAT_FOOD: Tag = ItemTagRegistry["minecraft:goat_food"]
+
+  public val ITEM_NAUTILUS_FOOD: Tag = ItemTagRegistry["minecraft:nautilus_food"]
 
   public val ITEM_FLOWERS: Tag = ItemTagRegistry["minecraft:flowers"]
 

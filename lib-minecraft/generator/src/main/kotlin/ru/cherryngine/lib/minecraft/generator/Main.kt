@@ -133,6 +133,12 @@ object Main {
             "WolfVariant",
             "wolf_variant.json"
         )
+        generateDataDrivenRegistry(
+            "ZombieNautilusVariants",
+            "ZombieNautilusVariantRegistry",
+            "ZombieNautilusVariant",
+            "zombie_nautilus_variant.json"
+        )
 
         generateSounds()
         generateTags()

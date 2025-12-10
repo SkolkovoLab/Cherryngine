@@ -10,7 +10,7 @@ sealed class BeeMeta : AgeableMobMeta() {
         Flags::fromByte,
         Flags::toByte
     )
-    val ANGER_TIME_TICKS = index(MetadataEntry.Type.VAR_INT, 0)
+    val ANGER_TIME_TICKS = index(MetadataEntry.Type.VAR_LONG, -1)
 
     data class Flags(
         val isAngry: Boolean = false,

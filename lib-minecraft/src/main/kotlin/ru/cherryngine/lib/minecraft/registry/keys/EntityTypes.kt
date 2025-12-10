@@ -45,6 +45,8 @@ public object EntityTypes {
 
   public val CAMEL: EntityType = EntityTypeRegistry["minecraft:camel"]
 
+  public val CAMEL_HUSK: EntityType = EntityTypeRegistry["minecraft:camel_husk"]
+
   public val CAT: EntityType = EntityTypeRegistry["minecraft:cat"]
 
   public val CAVE_SPIDER: EntityType = EntityTypeRegistry["minecraft:cave_spider"]
@@ -180,6 +182,8 @@ public object EntityTypes {
 
   public val MULE: EntityType = EntityTypeRegistry["minecraft:mule"]
 
+  public val NAUTILUS: EntityType = EntityTypeRegistry["minecraft:nautilus"]
+
   public val OAK_BOAT: EntityType = EntityTypeRegistry["minecraft:oak_boat"]
 
   public val OAK_CHEST_BOAT: EntityType = EntityTypeRegistry["minecraft:oak_chest_boat"]
@@ -195,6 +199,8 @@ public object EntityTypes {
   public val PALE_OAK_CHEST_BOAT: EntityType = EntityTypeRegistry["minecraft:pale_oak_chest_boat"]
 
   public val PANDA: EntityType = EntityTypeRegistry["minecraft:panda"]
+
+  public val PARCHED: EntityType = EntityTypeRegistry["minecraft:parched"]
 
   public val PARROT: EntityType = EntityTypeRegistry["minecraft:parrot"]
 
@@ -303,6 +309,8 @@ public object EntityTypes {
   public val ZOMBIE: EntityType = EntityTypeRegistry["minecraft:zombie"]
 
   public val ZOMBIE_HORSE: EntityType = EntityTypeRegistry["minecraft:zombie_horse"]
+
+  public val ZOMBIE_NAUTILUS: EntityType = EntityTypeRegistry["minecraft:zombie_nautilus"]
 
   public val ZOMBIE_VILLAGER: EntityType = EntityTypeRegistry["minecraft:zombie_villager"]
 

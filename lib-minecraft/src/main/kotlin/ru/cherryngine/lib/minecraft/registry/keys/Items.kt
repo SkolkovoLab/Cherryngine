@@ -2297,45 +2297,171 @@ public object Items {
 
   public val GLISTERING_MELON_SLICE: Item = ItemRegistry["minecraft:glistering_melon_slice"]
 
+  public val CHICKEN_SPAWN_EGG: Item = ItemRegistry["minecraft:chicken_spawn_egg"]
+
+  public val COW_SPAWN_EGG: Item = ItemRegistry["minecraft:cow_spawn_egg"]
+
+  public val PIG_SPAWN_EGG: Item = ItemRegistry["minecraft:pig_spawn_egg"]
+
+  public val SHEEP_SPAWN_EGG: Item = ItemRegistry["minecraft:sheep_spawn_egg"]
+
+  public val CAMEL_SPAWN_EGG: Item = ItemRegistry["minecraft:camel_spawn_egg"]
+
+  public val DONKEY_SPAWN_EGG: Item = ItemRegistry["minecraft:donkey_spawn_egg"]
+
+  public val HORSE_SPAWN_EGG: Item = ItemRegistry["minecraft:horse_spawn_egg"]
+
+  public val MULE_SPAWN_EGG: Item = ItemRegistry["minecraft:mule_spawn_egg"]
+
+  public val CAT_SPAWN_EGG: Item = ItemRegistry["minecraft:cat_spawn_egg"]
+
+  public val PARROT_SPAWN_EGG: Item = ItemRegistry["minecraft:parrot_spawn_egg"]
+
+  public val WOLF_SPAWN_EGG: Item = ItemRegistry["minecraft:wolf_spawn_egg"]
+
   public val ARMADILLO_SPAWN_EGG: Item = ItemRegistry["minecraft:armadillo_spawn_egg"]
-
-  public val ALLAY_SPAWN_EGG: Item = ItemRegistry["minecraft:allay_spawn_egg"]
-
-  public val AXOLOTL_SPAWN_EGG: Item = ItemRegistry["minecraft:axolotl_spawn_egg"]
 
   public val BAT_SPAWN_EGG: Item = ItemRegistry["minecraft:bat_spawn_egg"]
 
   public val BEE_SPAWN_EGG: Item = ItemRegistry["minecraft:bee_spawn_egg"]
 
-  public val BLAZE_SPAWN_EGG: Item = ItemRegistry["minecraft:blaze_spawn_egg"]
+  public val FOX_SPAWN_EGG: Item = ItemRegistry["minecraft:fox_spawn_egg"]
 
-  public val BOGGED_SPAWN_EGG: Item = ItemRegistry["minecraft:bogged_spawn_egg"]
+  public val GOAT_SPAWN_EGG: Item = ItemRegistry["minecraft:goat_spawn_egg"]
 
-  public val BREEZE_SPAWN_EGG: Item = ItemRegistry["minecraft:breeze_spawn_egg"]
+  public val LLAMA_SPAWN_EGG: Item = ItemRegistry["minecraft:llama_spawn_egg"]
 
-  public val CAT_SPAWN_EGG: Item = ItemRegistry["minecraft:cat_spawn_egg"]
+  public val OCELOT_SPAWN_EGG: Item = ItemRegistry["minecraft:ocelot_spawn_egg"]
 
-  public val CAMEL_SPAWN_EGG: Item = ItemRegistry["minecraft:camel_spawn_egg"]
+  public val PANDA_SPAWN_EGG: Item = ItemRegistry["minecraft:panda_spawn_egg"]
 
-  public val CAVE_SPIDER_SPAWN_EGG: Item = ItemRegistry["minecraft:cave_spider_spawn_egg"]
+  public val POLAR_BEAR_SPAWN_EGG: Item = ItemRegistry["minecraft:polar_bear_spawn_egg"]
 
-  public val CHICKEN_SPAWN_EGG: Item = ItemRegistry["minecraft:chicken_spawn_egg"]
+  public val RABBIT_SPAWN_EGG: Item = ItemRegistry["minecraft:rabbit_spawn_egg"]
+
+  public val AXOLOTL_SPAWN_EGG: Item = ItemRegistry["minecraft:axolotl_spawn_egg"]
 
   public val COD_SPAWN_EGG: Item = ItemRegistry["minecraft:cod_spawn_egg"]
 
-  public val COPPER_GOLEM_SPAWN_EGG: Item = ItemRegistry["minecraft:copper_golem_spawn_egg"]
-
-  public val COW_SPAWN_EGG: Item = ItemRegistry["minecraft:cow_spawn_egg"]
-
-  public val CREEPER_SPAWN_EGG: Item = ItemRegistry["minecraft:creeper_spawn_egg"]
-
   public val DOLPHIN_SPAWN_EGG: Item = ItemRegistry["minecraft:dolphin_spawn_egg"]
 
-  public val DONKEY_SPAWN_EGG: Item = ItemRegistry["minecraft:donkey_spawn_egg"]
+  public val FROG_SPAWN_EGG: Item = ItemRegistry["minecraft:frog_spawn_egg"]
+
+  public val GLOW_SQUID_SPAWN_EGG: Item = ItemRegistry["minecraft:glow_squid_spawn_egg"]
+
+  public val NAUTILUS_SPAWN_EGG: Item = ItemRegistry["minecraft:nautilus_spawn_egg"]
+
+  public val PUFFERFISH_SPAWN_EGG: Item = ItemRegistry["minecraft:pufferfish_spawn_egg"]
+
+  public val SALMON_SPAWN_EGG: Item = ItemRegistry["minecraft:salmon_spawn_egg"]
+
+  public val SQUID_SPAWN_EGG: Item = ItemRegistry["minecraft:squid_spawn_egg"]
+
+  public val TADPOLE_SPAWN_EGG: Item = ItemRegistry["minecraft:tadpole_spawn_egg"]
+
+  public val TROPICAL_FISH_SPAWN_EGG: Item = ItemRegistry["minecraft:tropical_fish_spawn_egg"]
+
+  public val TURTLE_SPAWN_EGG: Item = ItemRegistry["minecraft:turtle_spawn_egg"]
+
+  public val ALLAY_SPAWN_EGG: Item = ItemRegistry["minecraft:allay_spawn_egg"]
+
+  public val MOOSHROOM_SPAWN_EGG: Item = ItemRegistry["minecraft:mooshroom_spawn_egg"]
+
+  public val SNIFFER_SPAWN_EGG: Item = ItemRegistry["minecraft:sniffer_spawn_egg"]
+
+  public val COPPER_GOLEM_SPAWN_EGG: Item = ItemRegistry["minecraft:copper_golem_spawn_egg"]
+
+  public val IRON_GOLEM_SPAWN_EGG: Item = ItemRegistry["minecraft:iron_golem_spawn_egg"]
+
+  public val SNOW_GOLEM_SPAWN_EGG: Item = ItemRegistry["minecraft:snow_golem_spawn_egg"]
+
+  public val TRADER_LLAMA_SPAWN_EGG: Item = ItemRegistry["minecraft:trader_llama_spawn_egg"]
+
+  public val VILLAGER_SPAWN_EGG: Item = ItemRegistry["minecraft:villager_spawn_egg"]
+
+  public val WANDERING_TRADER_SPAWN_EGG: Item = ItemRegistry["minecraft:wandering_trader_spawn_egg"]
+
+  public val BOGGED_SPAWN_EGG: Item = ItemRegistry["minecraft:bogged_spawn_egg"]
+
+  public val CAMEL_HUSK_SPAWN_EGG: Item = ItemRegistry["minecraft:camel_husk_spawn_egg"]
 
   public val DROWNED_SPAWN_EGG: Item = ItemRegistry["minecraft:drowned_spawn_egg"]
 
+  public val HUSK_SPAWN_EGG: Item = ItemRegistry["minecraft:husk_spawn_egg"]
+
+  public val PARCHED_SPAWN_EGG: Item = ItemRegistry["minecraft:parched_spawn_egg"]
+
+  public val SKELETON_SPAWN_EGG: Item = ItemRegistry["minecraft:skeleton_spawn_egg"]
+
+  public val SKELETON_HORSE_SPAWN_EGG: Item = ItemRegistry["minecraft:skeleton_horse_spawn_egg"]
+
+  public val STRAY_SPAWN_EGG: Item = ItemRegistry["minecraft:stray_spawn_egg"]
+
+  public val WITHER_SPAWN_EGG: Item = ItemRegistry["minecraft:wither_spawn_egg"]
+
+  public val WITHER_SKELETON_SPAWN_EGG: Item = ItemRegistry["minecraft:wither_skeleton_spawn_egg"]
+
+  public val ZOMBIE_SPAWN_EGG: Item = ItemRegistry["minecraft:zombie_spawn_egg"]
+
+  public val ZOMBIE_HORSE_SPAWN_EGG: Item = ItemRegistry["minecraft:zombie_horse_spawn_egg"]
+
+  public val ZOMBIE_NAUTILUS_SPAWN_EGG: Item = ItemRegistry["minecraft:zombie_nautilus_spawn_egg"]
+
+  public val ZOMBIE_VILLAGER_SPAWN_EGG: Item = ItemRegistry["minecraft:zombie_villager_spawn_egg"]
+
+  public val CAVE_SPIDER_SPAWN_EGG: Item = ItemRegistry["minecraft:cave_spider_spawn_egg"]
+
+  public val SPIDER_SPAWN_EGG: Item = ItemRegistry["minecraft:spider_spawn_egg"]
+
+  public val BREEZE_SPAWN_EGG: Item = ItemRegistry["minecraft:breeze_spawn_egg"]
+
+  public val CREAKING_SPAWN_EGG: Item = ItemRegistry["minecraft:creaking_spawn_egg"]
+
+  public val CREEPER_SPAWN_EGG: Item = ItemRegistry["minecraft:creeper_spawn_egg"]
+
   public val ELDER_GUARDIAN_SPAWN_EGG: Item = ItemRegistry["minecraft:elder_guardian_spawn_egg"]
+
+  public val GUARDIAN_SPAWN_EGG: Item = ItemRegistry["minecraft:guardian_spawn_egg"]
+
+  public val PHANTOM_SPAWN_EGG: Item = ItemRegistry["minecraft:phantom_spawn_egg"]
+
+  public val SILVERFISH_SPAWN_EGG: Item = ItemRegistry["minecraft:silverfish_spawn_egg"]
+
+  public val SLIME_SPAWN_EGG: Item = ItemRegistry["minecraft:slime_spawn_egg"]
+
+  public val WARDEN_SPAWN_EGG: Item = ItemRegistry["minecraft:warden_spawn_egg"]
+
+  public val WITCH_SPAWN_EGG: Item = ItemRegistry["minecraft:witch_spawn_egg"]
+
+  public val EVOKER_SPAWN_EGG: Item = ItemRegistry["minecraft:evoker_spawn_egg"]
+
+  public val PILLAGER_SPAWN_EGG: Item = ItemRegistry["minecraft:pillager_spawn_egg"]
+
+  public val RAVAGER_SPAWN_EGG: Item = ItemRegistry["minecraft:ravager_spawn_egg"]
+
+  public val VINDICATOR_SPAWN_EGG: Item = ItemRegistry["minecraft:vindicator_spawn_egg"]
+
+  public val VEX_SPAWN_EGG: Item = ItemRegistry["minecraft:vex_spawn_egg"]
+
+  public val BLAZE_SPAWN_EGG: Item = ItemRegistry["minecraft:blaze_spawn_egg"]
+
+  public val GHAST_SPAWN_EGG: Item = ItemRegistry["minecraft:ghast_spawn_egg"]
+
+  public val HAPPY_GHAST_SPAWN_EGG: Item = ItemRegistry["minecraft:happy_ghast_spawn_egg"]
+
+  public val HOGLIN_SPAWN_EGG: Item = ItemRegistry["minecraft:hoglin_spawn_egg"]
+
+  public val MAGMA_CUBE_SPAWN_EGG: Item = ItemRegistry["minecraft:magma_cube_spawn_egg"]
+
+  public val PIGLIN_SPAWN_EGG: Item = ItemRegistry["minecraft:piglin_spawn_egg"]
+
+  public val PIGLIN_BRUTE_SPAWN_EGG: Item = ItemRegistry["minecraft:piglin_brute_spawn_egg"]
+
+  public val STRIDER_SPAWN_EGG: Item = ItemRegistry["minecraft:strider_spawn_egg"]
+
+  public val ZOGLIN_SPAWN_EGG: Item = ItemRegistry["minecraft:zoglin_spawn_egg"]
+
+  public val ZOMBIFIED_PIGLIN_SPAWN_EGG: Item = ItemRegistry["minecraft:zombified_piglin_spawn_egg"]
 
   public val ENDER_DRAGON_SPAWN_EGG: Item = ItemRegistry["minecraft:ender_dragon_spawn_egg"]
 
@@ -2343,125 +2469,7 @@ public object Items {
 
   public val ENDERMITE_SPAWN_EGG: Item = ItemRegistry["minecraft:endermite_spawn_egg"]
 
-  public val EVOKER_SPAWN_EGG: Item = ItemRegistry["minecraft:evoker_spawn_egg"]
-
-  public val FOX_SPAWN_EGG: Item = ItemRegistry["minecraft:fox_spawn_egg"]
-
-  public val FROG_SPAWN_EGG: Item = ItemRegistry["minecraft:frog_spawn_egg"]
-
-  public val GHAST_SPAWN_EGG: Item = ItemRegistry["minecraft:ghast_spawn_egg"]
-
-  public val HAPPY_GHAST_SPAWN_EGG: Item = ItemRegistry["minecraft:happy_ghast_spawn_egg"]
-
-  public val GLOW_SQUID_SPAWN_EGG: Item = ItemRegistry["minecraft:glow_squid_spawn_egg"]
-
-  public val GOAT_SPAWN_EGG: Item = ItemRegistry["minecraft:goat_spawn_egg"]
-
-  public val GUARDIAN_SPAWN_EGG: Item = ItemRegistry["minecraft:guardian_spawn_egg"]
-
-  public val HOGLIN_SPAWN_EGG: Item = ItemRegistry["minecraft:hoglin_spawn_egg"]
-
-  public val HORSE_SPAWN_EGG: Item = ItemRegistry["minecraft:horse_spawn_egg"]
-
-  public val HUSK_SPAWN_EGG: Item = ItemRegistry["minecraft:husk_spawn_egg"]
-
-  public val IRON_GOLEM_SPAWN_EGG: Item = ItemRegistry["minecraft:iron_golem_spawn_egg"]
-
-  public val LLAMA_SPAWN_EGG: Item = ItemRegistry["minecraft:llama_spawn_egg"]
-
-  public val MAGMA_CUBE_SPAWN_EGG: Item = ItemRegistry["minecraft:magma_cube_spawn_egg"]
-
-  public val MOOSHROOM_SPAWN_EGG: Item = ItemRegistry["minecraft:mooshroom_spawn_egg"]
-
-  public val MULE_SPAWN_EGG: Item = ItemRegistry["minecraft:mule_spawn_egg"]
-
-  public val OCELOT_SPAWN_EGG: Item = ItemRegistry["minecraft:ocelot_spawn_egg"]
-
-  public val PANDA_SPAWN_EGG: Item = ItemRegistry["minecraft:panda_spawn_egg"]
-
-  public val PARROT_SPAWN_EGG: Item = ItemRegistry["minecraft:parrot_spawn_egg"]
-
-  public val PHANTOM_SPAWN_EGG: Item = ItemRegistry["minecraft:phantom_spawn_egg"]
-
-  public val PIG_SPAWN_EGG: Item = ItemRegistry["minecraft:pig_spawn_egg"]
-
-  public val PIGLIN_SPAWN_EGG: Item = ItemRegistry["minecraft:piglin_spawn_egg"]
-
-  public val PIGLIN_BRUTE_SPAWN_EGG: Item = ItemRegistry["minecraft:piglin_brute_spawn_egg"]
-
-  public val PILLAGER_SPAWN_EGG: Item = ItemRegistry["minecraft:pillager_spawn_egg"]
-
-  public val POLAR_BEAR_SPAWN_EGG: Item = ItemRegistry["minecraft:polar_bear_spawn_egg"]
-
-  public val PUFFERFISH_SPAWN_EGG: Item = ItemRegistry["minecraft:pufferfish_spawn_egg"]
-
-  public val RABBIT_SPAWN_EGG: Item = ItemRegistry["minecraft:rabbit_spawn_egg"]
-
-  public val RAVAGER_SPAWN_EGG: Item = ItemRegistry["minecraft:ravager_spawn_egg"]
-
-  public val SALMON_SPAWN_EGG: Item = ItemRegistry["minecraft:salmon_spawn_egg"]
-
-  public val SHEEP_SPAWN_EGG: Item = ItemRegistry["minecraft:sheep_spawn_egg"]
-
   public val SHULKER_SPAWN_EGG: Item = ItemRegistry["minecraft:shulker_spawn_egg"]
-
-  public val SILVERFISH_SPAWN_EGG: Item = ItemRegistry["minecraft:silverfish_spawn_egg"]
-
-  public val SKELETON_SPAWN_EGG: Item = ItemRegistry["minecraft:skeleton_spawn_egg"]
-
-  public val SKELETON_HORSE_SPAWN_EGG: Item = ItemRegistry["minecraft:skeleton_horse_spawn_egg"]
-
-  public val SLIME_SPAWN_EGG: Item = ItemRegistry["minecraft:slime_spawn_egg"]
-
-  public val SNIFFER_SPAWN_EGG: Item = ItemRegistry["minecraft:sniffer_spawn_egg"]
-
-  public val SNOW_GOLEM_SPAWN_EGG: Item = ItemRegistry["minecraft:snow_golem_spawn_egg"]
-
-  public val SPIDER_SPAWN_EGG: Item = ItemRegistry["minecraft:spider_spawn_egg"]
-
-  public val SQUID_SPAWN_EGG: Item = ItemRegistry["minecraft:squid_spawn_egg"]
-
-  public val STRAY_SPAWN_EGG: Item = ItemRegistry["minecraft:stray_spawn_egg"]
-
-  public val STRIDER_SPAWN_EGG: Item = ItemRegistry["minecraft:strider_spawn_egg"]
-
-  public val TADPOLE_SPAWN_EGG: Item = ItemRegistry["minecraft:tadpole_spawn_egg"]
-
-  public val TRADER_LLAMA_SPAWN_EGG: Item = ItemRegistry["minecraft:trader_llama_spawn_egg"]
-
-  public val TROPICAL_FISH_SPAWN_EGG: Item = ItemRegistry["minecraft:tropical_fish_spawn_egg"]
-
-  public val TURTLE_SPAWN_EGG: Item = ItemRegistry["minecraft:turtle_spawn_egg"]
-
-  public val VEX_SPAWN_EGG: Item = ItemRegistry["minecraft:vex_spawn_egg"]
-
-  public val VILLAGER_SPAWN_EGG: Item = ItemRegistry["minecraft:villager_spawn_egg"]
-
-  public val VINDICATOR_SPAWN_EGG: Item = ItemRegistry["minecraft:vindicator_spawn_egg"]
-
-  public val WANDERING_TRADER_SPAWN_EGG: Item = ItemRegistry["minecraft:wandering_trader_spawn_egg"]
-
-  public val WARDEN_SPAWN_EGG: Item = ItemRegistry["minecraft:warden_spawn_egg"]
-
-  public val WITCH_SPAWN_EGG: Item = ItemRegistry["minecraft:witch_spawn_egg"]
-
-  public val WITHER_SPAWN_EGG: Item = ItemRegistry["minecraft:wither_spawn_egg"]
-
-  public val WITHER_SKELETON_SPAWN_EGG: Item = ItemRegistry["minecraft:wither_skeleton_spawn_egg"]
-
-  public val WOLF_SPAWN_EGG: Item = ItemRegistry["minecraft:wolf_spawn_egg"]
-
-  public val ZOGLIN_SPAWN_EGG: Item = ItemRegistry["minecraft:zoglin_spawn_egg"]
-
-  public val CREAKING_SPAWN_EGG: Item = ItemRegistry["minecraft:creaking_spawn_egg"]
-
-  public val ZOMBIE_SPAWN_EGG: Item = ItemRegistry["minecraft:zombie_spawn_egg"]
-
-  public val ZOMBIE_HORSE_SPAWN_EGG: Item = ItemRegistry["minecraft:zombie_horse_spawn_egg"]
-
-  public val ZOMBIE_VILLAGER_SPAWN_EGG: Item = ItemRegistry["minecraft:zombie_villager_spawn_egg"]
-
-  public val ZOMBIFIED_PIGLIN_SPAWN_EGG: Item = ItemRegistry["minecraft:zombified_piglin_spawn_egg"]
 
   public val EXPERIENCE_BOTTLE: Item = ItemRegistry["minecraft:experience_bottle"]
 
@@ -2547,6 +2555,8 @@ public object Items {
 
   public val DIAMOND_HORSE_ARMOR: Item = ItemRegistry["minecraft:diamond_horse_armor"]
 
+  public val NETHERITE_HORSE_ARMOR: Item = ItemRegistry["minecraft:netherite_horse_armor"]
+
   public val LEATHER_HORSE_ARMOR: Item = ItemRegistry["minecraft:leather_horse_armor"]
 
   public val LEAD: Item = ItemRegistry["minecraft:lead"]
@@ -2619,6 +2629,20 @@ public object Items {
 
   public val SHIELD: Item = ItemRegistry["minecraft:shield"]
 
+  public val WOODEN_SPEAR: Item = ItemRegistry["minecraft:wooden_spear"]
+
+  public val STONE_SPEAR: Item = ItemRegistry["minecraft:stone_spear"]
+
+  public val COPPER_SPEAR: Item = ItemRegistry["minecraft:copper_spear"]
+
+  public val IRON_SPEAR: Item = ItemRegistry["minecraft:iron_spear"]
+
+  public val GOLDEN_SPEAR: Item = ItemRegistry["minecraft:golden_spear"]
+
+  public val DIAMOND_SPEAR: Item = ItemRegistry["minecraft:diamond_spear"]
+
+  public val NETHERITE_SPEAR: Item = ItemRegistry["minecraft:netherite_spear"]
+
   public val TOTEM_OF_UNDYING: Item = ItemRegistry["minecraft:totem_of_undying"]
 
   public val SHULKER_SHELL: Item = ItemRegistry["minecraft:shulker_shell"]
@@ -2679,6 +2703,16 @@ public object Items {
   public val TRIDENT: Item = ItemRegistry["minecraft:trident"]
 
   public val NAUTILUS_SHELL: Item = ItemRegistry["minecraft:nautilus_shell"]
+
+  public val IRON_NAUTILUS_ARMOR: Item = ItemRegistry["minecraft:iron_nautilus_armor"]
+
+  public val GOLDEN_NAUTILUS_ARMOR: Item = ItemRegistry["minecraft:golden_nautilus_armor"]
+
+  public val DIAMOND_NAUTILUS_ARMOR: Item = ItemRegistry["minecraft:diamond_nautilus_armor"]
+
+  public val NETHERITE_NAUTILUS_ARMOR: Item = ItemRegistry["minecraft:netherite_nautilus_armor"]
+
+  public val COPPER_NAUTILUS_ARMOR: Item = ItemRegistry["minecraft:copper_nautilus_armor"]
 
   public val HEART_OF_THE_SEA: Item = ItemRegistry["minecraft:heart_of_the_sea"]
 

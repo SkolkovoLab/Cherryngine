@@ -34,6 +34,7 @@ object RegistryManager {
             PigVariantRegistry,
             FrogVariantRegistry,
             ChickenVariantRegistry,
+            ZombieNautilusVariantRegistry,
 
             ItemTagRegistry,
             BlockTagRegistry,

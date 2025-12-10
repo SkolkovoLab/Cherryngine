@@ -173,6 +173,10 @@ public object Sounds {
 
   public val ITEM_ARMOR_UNEQUIP_WOLF: Key = Key.key("minecraft:item.armor.unequip_wolf")
 
+  public val ITEM_ARMOR_EQUIP_NAUTILUS: Key = Key.key("minecraft:item.armor.equip_nautilus")
+
+  public val ITEM_ARMOR_UNEQUIP_NAUTILUS: Key = Key.key("minecraft:item.armor.unequip_nautilus")
+
   public val ENTITY_ARMOR_STAND_BREAK: Key = Key.key("minecraft:entity.armor_stand.break")
 
   public val ENTITY_ARMOR_STAND_FALL: Key = Key.key("minecraft:entity.armor_stand.fall")
@@ -226,6 +230,27 @@ public object Sounds {
   public val BLOCK_AZALEA_LEAVES_PLACE: Key = Key.key("minecraft:block.azalea_leaves.place")
 
   public val BLOCK_AZALEA_LEAVES_STEP: Key = Key.key("minecraft:block.azalea_leaves.step")
+
+  public val ENTITY_BABY_NAUTILUS_AMBIENT: Key = Key.key("minecraft:entity.baby_nautilus.ambient")
+
+  public val ENTITY_BABY_NAUTILUS_AMBIENT_LAND: Key =
+      Key.key("minecraft:entity.baby_nautilus.ambient_land")
+
+  public val ENTITY_BABY_NAUTILUS_DEATH: Key = Key.key("minecraft:entity.baby_nautilus.death")
+
+  public val ENTITY_BABY_NAUTILUS_DEATH_LAND: Key =
+      Key.key("minecraft:entity.baby_nautilus.death_land")
+
+  public val ENTITY_BABY_NAUTILUS_EAT: Key = Key.key("minecraft:entity.baby_nautilus.eat")
+
+  public val ENTITY_BABY_NAUTILUS_HURT: Key = Key.key("minecraft:entity.baby_nautilus.hurt")
+
+  public val ENTITY_BABY_NAUTILUS_HURT_LAND: Key =
+      Key.key("minecraft:entity.baby_nautilus.hurt_land")
+
+  public val ENTITY_NAUTILUS_RIDING: Key = Key.key("minecraft:entity.nautilus.riding")
+
+  public val ENTITY_BABY_NAUTILUS_SWIM: Key = Key.key("minecraft:entity.baby_nautilus.swim")
 
   public val BLOCK_BAMBOO_BREAK: Key = Key.key("minecraft:block.bamboo.break")
 
@@ -502,6 +527,28 @@ public object Sounds {
   public val BLOCK_CALCITE_HIT: Key = Key.key("minecraft:block.calcite.hit")
 
   public val BLOCK_CALCITE_FALL: Key = Key.key("minecraft:block.calcite.fall")
+
+  public val ENTITY_CAMEL_HUSK_AMBIENT: Key = Key.key("minecraft:entity.camel_husk.ambient")
+
+  public val ENTITY_CAMEL_HUSK_DASH: Key = Key.key("minecraft:entity.camel_husk.dash")
+
+  public val ENTITY_CAMEL_HUSK_DASH_READY: Key = Key.key("minecraft:entity.camel_husk.dash_ready")
+
+  public val ENTITY_CAMEL_HUSK_DEATH: Key = Key.key("minecraft:entity.camel_husk.death")
+
+  public val ENTITY_CAMEL_HUSK_EAT: Key = Key.key("minecraft:entity.camel_husk.eat")
+
+  public val ENTITY_CAMEL_HUSK_HURT: Key = Key.key("minecraft:entity.camel_husk.hurt")
+
+  public val ENTITY_CAMEL_HUSK_SADDLE: Key = Key.key("minecraft:entity.camel_husk.saddle")
+
+  public val ENTITY_CAMEL_HUSK_SIT: Key = Key.key("minecraft:entity.camel_husk.sit")
+
+  public val ENTITY_CAMEL_HUSK_STAND: Key = Key.key("minecraft:entity.camel_husk.stand")
+
+  public val ENTITY_CAMEL_HUSK_STEP: Key = Key.key("minecraft:entity.camel_husk.step")
+
+  public val ENTITY_CAMEL_HUSK_STEP_SAND: Key = Key.key("minecraft:entity.camel_husk.step_sand")
 
   public val ENTITY_CAMEL_AMBIENT: Key = Key.key("minecraft:entity.camel.ambient")
 
@@ -1908,6 +1955,12 @@ public object Sounds {
 
   public val ITEM_LODESTONE_COMPASS_LOCK: Key = Key.key("minecraft:item.lodestone_compass.lock")
 
+  public val ITEM_SPEAR_LUNGE_1: Key = Key.key("minecraft:item.spear.lunge_1")
+
+  public val ITEM_SPEAR_LUNGE_2: Key = Key.key("minecraft:item.spear.lunge_2")
+
+  public val ITEM_SPEAR_LUNGE_3: Key = Key.key("minecraft:item.spear.lunge_3")
+
   public val ITEM_MACE_SMASH_AIR: Key = Key.key("minecraft:item.mace.smash_air")
 
   public val ITEM_MACE_SMASH_GROUND: Key = Key.key("minecraft:item.mace.smash_ground")
@@ -2162,6 +2215,31 @@ public object Sounds {
 
   public val MUSIC_UNDER_WATER: Key = Key.key("minecraft:music.under_water")
 
+  public val ENTITY_NAUTILUS_AMBIENT: Key = Key.key("minecraft:entity.nautilus.ambient")
+
+  public val ENTITY_NAUTILUS_AMBIENT_LAND: Key = Key.key("minecraft:entity.nautilus.ambient_land")
+
+  public val ENTITY_NAUTILUS_DASH: Key = Key.key("minecraft:entity.nautilus.dash")
+
+  public val ENTITY_NAUTILUS_DASH_LAND: Key = Key.key("minecraft:entity.nautilus.dash_land")
+
+  public val ENTITY_NAUTILUS_DASH_READY: Key = Key.key("minecraft:entity.nautilus.dash_ready")
+
+  public val ENTITY_NAUTILUS_DASH_READY_LAND: Key =
+      Key.key("minecraft:entity.nautilus.dash_ready_land")
+
+  public val ENTITY_NAUTILUS_DEATH: Key = Key.key("minecraft:entity.nautilus.death")
+
+  public val ENTITY_NAUTILUS_DEATH_LAND: Key = Key.key("minecraft:entity.nautilus.death_land")
+
+  public val ENTITY_NAUTILUS_EAT: Key = Key.key("minecraft:entity.nautilus.eat")
+
+  public val ENTITY_NAUTILUS_HURT: Key = Key.key("minecraft:entity.nautilus.hurt")
+
+  public val ENTITY_NAUTILUS_HURT_LAND: Key = Key.key("minecraft:entity.nautilus.hurt_land")
+
+  public val ENTITY_NAUTILUS_SWIM: Key = Key.key("minecraft:entity.nautilus.swim")
+
   public val BLOCK_NETHER_BRICKS_BREAK: Key = Key.key("minecraft:block.nether_bricks.break")
 
   public val BLOCK_NETHER_BRICKS_STEP: Key = Key.key("minecraft:block.nether_bricks.step")
@@ -2394,6 +2472,14 @@ public object Sounds {
 
   public val ENTITY_PANDA_BITE: Key = Key.key("minecraft:entity.panda.bite")
 
+  public val ENTITY_PARCHED_AMBIENT: Key = Key.key("minecraft:entity.parched.ambient")
+
+  public val ENTITY_PARCHED_DEATH: Key = Key.key("minecraft:entity.parched.death")
+
+  public val ENTITY_PARCHED_HURT: Key = Key.key("minecraft:entity.parched.hurt")
+
+  public val ENTITY_PARCHED_STEP: Key = Key.key("minecraft:entity.parched.step")
+
   public val ENTITY_PARROT_AMBIENT: Key = Key.key("minecraft:entity.parrot.ambient")
 
   public val ENTITY_PARROT_DEATH: Key = Key.key("minecraft:entity.parrot.death")
@@ -2409,6 +2495,9 @@ public object Sounds {
   public val ENTITY_PARROT_IMITATE_BOGGED: Key = Key.key("minecraft:entity.parrot.imitate.bogged")
 
   public val ENTITY_PARROT_IMITATE_BREEZE: Key = Key.key("minecraft:entity.parrot.imitate.breeze")
+
+  public val ENTITY_PARROT_IMITATE_CAMEL_HUSK: Key =
+      Key.key("minecraft:entity.parrot.imitate.camel_husk")
 
   public val ENTITY_PARROT_IMITATE_CREAKING: Key =
       Key.key("minecraft:entity.parrot.imitate.creaking")
@@ -2444,6 +2533,8 @@ public object Sounds {
       Key.key("minecraft:entity.parrot.imitate.magma_cube")
 
   public val ENTITY_PARROT_IMITATE_PHANTOM: Key = Key.key("minecraft:entity.parrot.imitate.phantom")
+
+  public val ENTITY_PARROT_IMITATE_PARCHED: Key = Key.key("minecraft:entity.parrot.imitate.parched")
 
   public val ENTITY_PARROT_IMITATE_PIGLIN: Key = Key.key("minecraft:entity.parrot.imitate.piglin")
 
@@ -2486,6 +2577,12 @@ public object Sounds {
   public val ENTITY_PARROT_IMITATE_ZOGLIN: Key = Key.key("minecraft:entity.parrot.imitate.zoglin")
 
   public val ENTITY_PARROT_IMITATE_ZOMBIE: Key = Key.key("minecraft:entity.parrot.imitate.zombie")
+
+  public val ENTITY_PARROT_IMITATE_ZOMBIE_HORSE: Key =
+      Key.key("minecraft:entity.parrot.imitate.zombie_horse")
+
+  public val ENTITY_PARROT_IMITATE_ZOMBIE_NAUTILUS: Key =
+      Key.key("minecraft:entity.parrot.imitate.zombie_nautilus")
 
   public val ENTITY_PARROT_IMITATE_ZOMBIE_VILLAGER: Key =
       Key.key("minecraft:entity.parrot.imitate.zombie_villager")
@@ -2709,6 +2806,24 @@ public object Sounds {
   public val BLOCK_NETHER_ORE_STEP: Key = Key.key("minecraft:block.nether_ore.step")
 
   public val BLOCK_REDSTONE_TORCH_BURNOUT: Key = Key.key("minecraft:block.redstone_torch.burnout")
+
+  public val BLOCK_RESIN_BREAK: Key = Key.key("minecraft:block.resin.break")
+
+  public val BLOCK_RESIN_FALL: Key = Key.key("minecraft:block.resin.fall")
+
+  public val BLOCK_RESIN_PLACE: Key = Key.key("minecraft:block.resin.place")
+
+  public val BLOCK_RESIN_STEP: Key = Key.key("minecraft:block.resin.step")
+
+  public val BLOCK_RESIN_BRICKS_BREAK: Key = Key.key("minecraft:block.resin_bricks.break")
+
+  public val BLOCK_RESIN_BRICKS_FALL: Key = Key.key("minecraft:block.resin_bricks.fall")
+
+  public val BLOCK_RESIN_BRICKS_HIT: Key = Key.key("minecraft:block.resin_bricks.hit")
+
+  public val BLOCK_RESIN_BRICKS_PLACE: Key = Key.key("minecraft:block.resin_bricks.place")
+
+  public val BLOCK_RESIN_BRICKS_STEP: Key = Key.key("minecraft:block.resin_bricks.step")
 
   public val BLOCK_RESPAWN_ANCHOR_AMBIENT: Key = Key.key("minecraft:block.respawn_anchor.ambient")
 
@@ -3005,23 +3120,17 @@ public object Sounds {
 
   public val BLOCK_SPAWNER_STEP: Key = Key.key("minecraft:block.spawner.step")
 
-  public val BLOCK_RESIN_BREAK: Key = Key.key("minecraft:block.resin.break")
+  public val ITEM_SPEAR_USE: Key = Key.key("minecraft:item.spear.use")
 
-  public val BLOCK_RESIN_FALL: Key = Key.key("minecraft:block.resin.fall")
+  public val ITEM_SPEAR_HIT: Key = Key.key("minecraft:item.spear.hit")
 
-  public val BLOCK_RESIN_PLACE: Key = Key.key("minecraft:block.resin.place")
+  public val ITEM_SPEAR_ATTACK: Key = Key.key("minecraft:item.spear.attack")
 
-  public val BLOCK_RESIN_STEP: Key = Key.key("minecraft:block.resin.step")
+  public val ITEM_SPEAR_WOOD_USE: Key = Key.key("minecraft:item.spear_wood.use")
 
-  public val BLOCK_RESIN_BRICKS_BREAK: Key = Key.key("minecraft:block.resin_bricks.break")
+  public val ITEM_SPEAR_WOOD_HIT: Key = Key.key("minecraft:item.spear_wood.hit")
 
-  public val BLOCK_RESIN_BRICKS_FALL: Key = Key.key("minecraft:block.resin_bricks.fall")
-
-  public val BLOCK_RESIN_BRICKS_HIT: Key = Key.key("minecraft:block.resin_bricks.hit")
-
-  public val BLOCK_RESIN_BRICKS_PLACE: Key = Key.key("minecraft:block.resin_bricks.place")
-
-  public val BLOCK_RESIN_BRICKS_STEP: Key = Key.key("minecraft:block.resin_bricks.step")
+  public val ITEM_SPEAR_WOOD_ATTACK: Key = Key.key("minecraft:item.spear_wood.attack")
 
   public val BLOCK_SPORE_BLOSSOM_BREAK: Key = Key.key("minecraft:block.spore_blossom.break")
 
@@ -3712,13 +3821,48 @@ public object Sounds {
 
   public val ENTITY_ZOMBIE_HORSE_AMBIENT: Key = Key.key("minecraft:entity.zombie_horse.ambient")
 
+  public val ENTITY_ZOMBIE_HORSE_ANGRY: Key = Key.key("minecraft:entity.zombie_horse.angry")
+
   public val ENTITY_ZOMBIE_HORSE_DEATH: Key = Key.key("minecraft:entity.zombie_horse.death")
+
+  public val ENTITY_ZOMBIE_HORSE_EAT: Key = Key.key("minecraft:entity.zombie_horse.eat")
 
   public val ENTITY_ZOMBIE_HORSE_HURT: Key = Key.key("minecraft:entity.zombie_horse.hurt")
 
   public val ENTITY_ZOMBIE_HURT: Key = Key.key("minecraft:entity.zombie.hurt")
 
   public val ENTITY_ZOMBIE_INFECT: Key = Key.key("minecraft:entity.zombie.infect")
+
+  public val ENTITY_ZOMBIE_NAUTILUS_AMBIENT: Key =
+      Key.key("minecraft:entity.zombie_nautilus.ambient")
+
+  public val ENTITY_ZOMBIE_NAUTILUS_AMBIENT_LAND: Key =
+      Key.key("minecraft:entity.zombie_nautilus.ambient_land")
+
+  public val ENTITY_ZOMBIE_NAUTILUS_DASH: Key = Key.key("minecraft:entity.zombie_nautilus.dash")
+
+  public val ENTITY_ZOMBIE_NAUTILUS_DASH_LAND: Key =
+      Key.key("minecraft:entity.zombie_nautilus.dash_land")
+
+  public val ENTITY_ZOMBIE_NAUTILUS_DASH_READY: Key =
+      Key.key("minecraft:entity.zombie_nautilus.dash_ready")
+
+  public val ENTITY_ZOMBIE_NAUTILUS_DASH_READY_LAND: Key =
+      Key.key("minecraft:entity.zombie_nautilus.dash_ready_land")
+
+  public val ENTITY_ZOMBIE_NAUTILUS_DEATH: Key = Key.key("minecraft:entity.zombie_nautilus.death")
+
+  public val ENTITY_ZOMBIE_NAUTILUS_DEATH_LAND: Key =
+      Key.key("minecraft:entity.zombie_nautilus.death_land")
+
+  public val ENTITY_ZOMBIE_NAUTILUS_EAT: Key = Key.key("minecraft:entity.zombie_nautilus.eat")
+
+  public val ENTITY_ZOMBIE_NAUTILUS_HURT: Key = Key.key("minecraft:entity.zombie_nautilus.hurt")
+
+  public val ENTITY_ZOMBIE_NAUTILUS_HURT_LAND: Key =
+      Key.key("minecraft:entity.zombie_nautilus.hurt_land")
+
+  public val ENTITY_ZOMBIE_NAUTILUS_SWIM: Key = Key.key("minecraft:entity.zombie_nautilus.swim")
 
   public val ENTITY_ZOMBIFIED_PIGLIN_AMBIENT: Key =
       Key.key("minecraft:entity.zombified_piglin.ambient")
@@ -3752,4 +3896,9 @@ public object Sounds {
   public val EVENT_MOB_EFFECT_RAID_OMEN: Key = Key.key("minecraft:event.mob_effect.raid_omen")
 
   public val ITEM_SADDLE_UNEQUIP: Key = Key.key("minecraft:item.saddle.unequip")
+
+  public val ITEM_NAUTILUS_SADDLE_UNDERWATER_EQUIP: Key =
+      Key.key("minecraft:item.nautilus_saddle_underwater_equip")
+
+  public val ITEM_NAUTILUS_SADDLE_EQUIP: Key = Key.key("minecraft:item.nautilus_saddle_equip")
 }

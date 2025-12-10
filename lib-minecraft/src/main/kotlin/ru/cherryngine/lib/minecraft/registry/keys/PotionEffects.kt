@@ -83,4 +83,7 @@ public object PotionEffects {
   public val OOZING: PotionEffect = PotionEffectRegistry["minecraft:oozing"]
 
   public val INFESTED: PotionEffect = PotionEffectRegistry["minecraft:infested"]
+
+  public val BREATH_OF_THE_NAUTILUS: PotionEffect =
+      PotionEffectRegistry["minecraft:breath_of_the_nautilus"]
 }

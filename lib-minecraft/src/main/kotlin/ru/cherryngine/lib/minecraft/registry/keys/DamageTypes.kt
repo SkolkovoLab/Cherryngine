@@ -25,6 +25,8 @@ public object DamageTypes {
 
   public val STING: DamageType = DamageTypeRegistry["minecraft:sting"]
 
+  public val SPEAR: DamageType = DamageTypeRegistry["minecraft:spear"]
+
   public val IN_FIRE: DamageType = DamageTypeRegistry["minecraft:in_fire"]
 
   public val ARROW: DamageType = DamageTypeRegistry["minecraft:arrow"]

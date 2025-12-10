@@ -5,133 +5,133 @@ import ru.cherryngine.lib.minecraft.registry.entries.Biome
 import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
 
 public object Biomes {
-  public val SNOWY_SLOPES: Biome = BiomeRegistry["minecraft:snowy_slopes"]
-
-  public val OLD_GROWTH_PINE_TAIGA: Biome = BiomeRegistry["minecraft:old_growth_pine_taiga"]
-
-  public val MUSHROOM_FIELDS: Biome = BiomeRegistry["minecraft:mushroom_fields"]
-
-  public val TAIGA: Biome = BiomeRegistry["minecraft:taiga"]
-
-  public val DEEP_OCEAN: Biome = BiomeRegistry["minecraft:deep_ocean"]
-
-  public val ERODED_BADLANDS: Biome = BiomeRegistry["minecraft:eroded_badlands"]
-
-  public val FROZEN_RIVER: Biome = BiomeRegistry["minecraft:frozen_river"]
-
-  public val END_HIGHLANDS: Biome = BiomeRegistry["minecraft:end_highlands"]
-
-  public val CHERRY_GROVE: Biome = BiomeRegistry["minecraft:cherry_grove"]
-
-  public val SUNFLOWER_PLAINS: Biome = BiomeRegistry["minecraft:sunflower_plains"]
-
-  public val BIRCH_FOREST: Biome = BiomeRegistry["minecraft:birch_forest"]
-
-  public val WINDSWEPT_HILLS: Biome = BiomeRegistry["minecraft:windswept_hills"]
-
   public val BAMBOO_JUNGLE: Biome = BiomeRegistry["minecraft:bamboo_jungle"]
-
-  public val WOODED_BADLANDS: Biome = BiomeRegistry["minecraft:wooded_badlands"]
-
-  public val BADLANDS: Biome = BiomeRegistry["minecraft:badlands"]
-
-  public val SAVANNA_PLATEAU: Biome = BiomeRegistry["minecraft:savanna_plateau"]
-
-  public val BEACH: Biome = BiomeRegistry["minecraft:beach"]
-
-  public val DARK_FOREST: Biome = BiomeRegistry["minecraft:dark_forest"]
-
-  public val STONY_PEAKS: Biome = BiomeRegistry["minecraft:stony_peaks"]
-
-  public val MANGROVE_SWAMP: Biome = BiomeRegistry["minecraft:mangrove_swamp"]
-
-  public val SPARSE_JUNGLE: Biome = BiomeRegistry["minecraft:sparse_jungle"]
-
-  public val LUKEWARM_OCEAN: Biome = BiomeRegistry["minecraft:lukewarm_ocean"]
-
-  public val RIVER: Biome = BiomeRegistry["minecraft:river"]
-
-  public val STONY_SHORE: Biome = BiomeRegistry["minecraft:stony_shore"]
-
-  public val WARPED_FOREST: Biome = BiomeRegistry["minecraft:warped_forest"]
-
-  public val SNOWY_PLAINS: Biome = BiomeRegistry["minecraft:snowy_plains"]
-
-  public val DRIPSTONE_CAVES: Biome = BiomeRegistry["minecraft:dripstone_caves"]
-
-  public val SNOWY_TAIGA: Biome = BiomeRegistry["minecraft:snowy_taiga"]
-
-  public val GROVE: Biome = BiomeRegistry["minecraft:grove"]
-
-  public val SWAMP: Biome = BiomeRegistry["minecraft:swamp"]
-
-  public val JAGGED_PEAKS: Biome = BiomeRegistry["minecraft:jagged_peaks"]
-
-  public val COLD_OCEAN: Biome = BiomeRegistry["minecraft:cold_ocean"]
-
-  public val FOREST: Biome = BiomeRegistry["minecraft:forest"]
-
-  public val LUSH_CAVES: Biome = BiomeRegistry["minecraft:lush_caves"]
-
-  public val BASALT_DELTAS: Biome = BiomeRegistry["minecraft:basalt_deltas"]
-
-  public val DEEP_COLD_OCEAN: Biome = BiomeRegistry["minecraft:deep_cold_ocean"]
-
-  public val ICE_SPIKES: Biome = BiomeRegistry["minecraft:ice_spikes"]
-
-  public val END_MIDLANDS: Biome = BiomeRegistry["minecraft:end_midlands"]
-
-  public val FROZEN_OCEAN: Biome = BiomeRegistry["minecraft:frozen_ocean"]
-
-  public val DESERT: Biome = BiomeRegistry["minecraft:desert"]
-
-  public val DEEP_FROZEN_OCEAN: Biome = BiomeRegistry["minecraft:deep_frozen_ocean"]
-
-  public val WINDSWEPT_FOREST: Biome = BiomeRegistry["minecraft:windswept_forest"]
 
   public val JUNGLE: Biome = BiomeRegistry["minecraft:jungle"]
 
+  public val LUKEWARM_OCEAN: Biome = BiomeRegistry["minecraft:lukewarm_ocean"]
+
+  public val WINDSWEPT_SAVANNA: Biome = BiomeRegistry["minecraft:windswept_savanna"]
+
+  public val MANGROVE_SWAMP: Biome = BiomeRegistry["minecraft:mangrove_swamp"]
+
   public val OCEAN: Biome = BiomeRegistry["minecraft:ocean"]
+
+  public val STONY_SHORE: Biome = BiomeRegistry["minecraft:stony_shore"]
+
+  public val END_HIGHLANDS: Biome = BiomeRegistry["minecraft:end_highlands"]
+
+  public val FROZEN_RIVER: Biome = BiomeRegistry["minecraft:frozen_river"]
+
+  public val DEEP_FROZEN_OCEAN: Biome = BiomeRegistry["minecraft:deep_frozen_ocean"]
+
+  public val DEEP_COLD_OCEAN: Biome = BiomeRegistry["minecraft:deep_cold_ocean"]
+
+  public val TAIGA: Biome = BiomeRegistry["minecraft:taiga"]
+
+  public val DRIPSTONE_CAVES: Biome = BiomeRegistry["minecraft:dripstone_caves"]
+
+  public val CHERRY_GROVE: Biome = BiomeRegistry["minecraft:cherry_grove"]
+
+  public val FLOWER_FOREST: Biome = BiomeRegistry["minecraft:flower_forest"]
+
+  public val WINDSWEPT_FOREST: Biome = BiomeRegistry["minecraft:windswept_forest"]
+
+  public val SAVANNA_PLATEAU: Biome = BiomeRegistry["minecraft:savanna_plateau"]
+
+  public val WARPED_FOREST: Biome = BiomeRegistry["minecraft:warped_forest"]
+
+  public val WINDSWEPT_GRAVELLY_HILLS: Biome = BiomeRegistry["minecraft:windswept_gravelly_hills"]
+
+  public val WINDSWEPT_HILLS: Biome = BiomeRegistry["minecraft:windswept_hills"]
+
+  public val DARK_FOREST: Biome = BiomeRegistry["minecraft:dark_forest"]
+
+  public val RIVER: Biome = BiomeRegistry["minecraft:river"]
+
+  public val SAVANNA: Biome = BiomeRegistry["minecraft:savanna"]
+
+  public val FROZEN_PEAKS: Biome = BiomeRegistry["minecraft:frozen_peaks"]
+
+  public val SOUL_SAND_VALLEY: Biome = BiomeRegistry["minecraft:soul_sand_valley"]
+
+  public val WOODED_BADLANDS: Biome = BiomeRegistry["minecraft:wooded_badlands"]
+
+  public val END_BARRENS: Biome = BiomeRegistry["minecraft:end_barrens"]
+
+  public val BADLANDS: Biome = BiomeRegistry["minecraft:badlands"]
+
+  public val LUSH_CAVES: Biome = BiomeRegistry["minecraft:lush_caves"]
+
+  public val SNOWY_PLAINS: Biome = BiomeRegistry["minecraft:snowy_plains"]
+
+  public val THE_VOID: Biome = BiomeRegistry["minecraft:the_void"]
+
+  public val BASALT_DELTAS: Biome = BiomeRegistry["minecraft:basalt_deltas"]
+
+  public val DESERT: Biome = BiomeRegistry["minecraft:desert"]
+
+  public val GROVE: Biome = BiomeRegistry["minecraft:grove"]
+
+  public val BEACH: Biome = BiomeRegistry["minecraft:beach"]
+
+  public val SNOWY_TAIGA: Biome = BiomeRegistry["minecraft:snowy_taiga"]
+
+  public val THE_END: Biome = BiomeRegistry["minecraft:the_end"]
+
+  public val PALE_GARDEN: Biome = BiomeRegistry["minecraft:pale_garden"]
+
+  public val SNOWY_SLOPES: Biome = BiomeRegistry["minecraft:snowy_slopes"]
+
+  public val DEEP_OCEAN: Biome = BiomeRegistry["minecraft:deep_ocean"]
+
+  public val MEADOW: Biome = BiomeRegistry["minecraft:meadow"]
+
+  public val SMALL_END_ISLANDS: Biome = BiomeRegistry["minecraft:small_end_islands"]
+
+  public val SWAMP: Biome = BiomeRegistry["minecraft:swamp"]
+
+  public val DEEP_LUKEWARM_OCEAN: Biome = BiomeRegistry["minecraft:deep_lukewarm_ocean"]
+
+  public val COLD_OCEAN: Biome = BiomeRegistry["minecraft:cold_ocean"]
+
+  public val STONY_PEAKS: Biome = BiomeRegistry["minecraft:stony_peaks"]
+
+  public val CRIMSON_FOREST: Biome = BiomeRegistry["minecraft:crimson_forest"]
+
+  public val END_MIDLANDS: Biome = BiomeRegistry["minecraft:end_midlands"]
+
+  public val ERODED_BADLANDS: Biome = BiomeRegistry["minecraft:eroded_badlands"]
+
+  public val SPARSE_JUNGLE: Biome = BiomeRegistry["minecraft:sparse_jungle"]
+
+  public val DEEP_DARK: Biome = BiomeRegistry["minecraft:deep_dark"]
+
+  public val OLD_GROWTH_BIRCH_FOREST: Biome = BiomeRegistry["minecraft:old_growth_birch_forest"]
+
+  public val BIRCH_FOREST: Biome = BiomeRegistry["minecraft:birch_forest"]
+
+  public val NETHER_WASTES: Biome = BiomeRegistry["minecraft:nether_wastes"]
+
+  public val SUNFLOWER_PLAINS: Biome = BiomeRegistry["minecraft:sunflower_plains"]
+
+  public val WARM_OCEAN: Biome = BiomeRegistry["minecraft:warm_ocean"]
+
+  public val ICE_SPIKES: Biome = BiomeRegistry["minecraft:ice_spikes"]
+
+  public val JAGGED_PEAKS: Biome = BiomeRegistry["minecraft:jagged_peaks"]
+
+  public val PLAINS: Biome = BiomeRegistry["minecraft:plains"]
+
+  public val MUSHROOM_FIELDS: Biome = BiomeRegistry["minecraft:mushroom_fields"]
+
+  public val FOREST: Biome = BiomeRegistry["minecraft:forest"]
+
+  public val FROZEN_OCEAN: Biome = BiomeRegistry["minecraft:frozen_ocean"]
 
   public val OLD_GROWTH_SPRUCE_TAIGA: Biome = BiomeRegistry["minecraft:old_growth_spruce_taiga"]
 
   public val SNOWY_BEACH: Biome = BiomeRegistry["minecraft:snowy_beach"]
 
-  public val WINDSWEPT_SAVANNA: Biome = BiomeRegistry["minecraft:windswept_savanna"]
-
-  public val END_BARRENS: Biome = BiomeRegistry["minecraft:end_barrens"]
-
-  public val WARM_OCEAN: Biome = BiomeRegistry["minecraft:warm_ocean"]
-
-  public val DEEP_LUKEWARM_OCEAN: Biome = BiomeRegistry["minecraft:deep_lukewarm_ocean"]
-
-  public val FLOWER_FOREST: Biome = BiomeRegistry["minecraft:flower_forest"]
-
-  public val SOUL_SAND_VALLEY: Biome = BiomeRegistry["minecraft:soul_sand_valley"]
-
-  public val NETHER_WASTES: Biome = BiomeRegistry["minecraft:nether_wastes"]
-
-  public val FROZEN_PEAKS: Biome = BiomeRegistry["minecraft:frozen_peaks"]
-
-  public val THE_END: Biome = BiomeRegistry["minecraft:the_end"]
-
-  public val SMALL_END_ISLANDS: Biome = BiomeRegistry["minecraft:small_end_islands"]
-
-  public val OLD_GROWTH_BIRCH_FOREST: Biome = BiomeRegistry["minecraft:old_growth_birch_forest"]
-
-  public val CRIMSON_FOREST: Biome = BiomeRegistry["minecraft:crimson_forest"]
-
-  public val THE_VOID: Biome = BiomeRegistry["minecraft:the_void"]
-
-  public val DEEP_DARK: Biome = BiomeRegistry["minecraft:deep_dark"]
-
-  public val MEADOW: Biome = BiomeRegistry["minecraft:meadow"]
-
-  public val WINDSWEPT_GRAVELLY_HILLS: Biome = BiomeRegistry["minecraft:windswept_gravelly_hills"]
-
-  public val SAVANNA: Biome = BiomeRegistry["minecraft:savanna"]
-
-  public val PLAINS: Biome = BiomeRegistry["minecraft:plains"]
-
-  public val PALE_GARDEN: Biome = BiomeRegistry["minecraft:pale_garden"]
+  public val OLD_GROWTH_PINE_TAIGA: Biome = BiomeRegistry["minecraft:old_growth_pine_taiga"]
 }
