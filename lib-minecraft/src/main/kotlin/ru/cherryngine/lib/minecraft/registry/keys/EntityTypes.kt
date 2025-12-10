@@ -59,6 +59,8 @@ public object EntityTypes {
 
   public val COD: EntityType = EntityTypeRegistry["minecraft:cod"]
 
+  public val COPPER_GOLEM: EntityType = EntityTypeRegistry["minecraft:copper_golem"]
+
   public val COMMAND_BLOCK_MINECART: EntityType =
       EntityTypeRegistry["minecraft:command_block_minecart"]
 
@@ -167,6 +169,8 @@ public object EntityTypes {
   public val MANGROVE_BOAT: EntityType = EntityTypeRegistry["minecraft:mangrove_boat"]
 
   public val MANGROVE_CHEST_BOAT: EntityType = EntityTypeRegistry["minecraft:mangrove_chest_boat"]
+
+  public val MANNEQUIN: EntityType = EntityTypeRegistry["minecraft:mannequin"]
 
   public val MARKER: EntityType = EntityTypeRegistry["minecraft:marker"]
 

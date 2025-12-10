@@ -367,6 +367,30 @@ public object Blocks {
 
   public val CHISELED_BOOKSHELF: RegistryBlock = BlockRegistry["minecraft:chiseled_bookshelf"]
 
+  public val ACACIA_SHELF: RegistryBlock = BlockRegistry["minecraft:acacia_shelf"]
+
+  public val BAMBOO_SHELF: RegistryBlock = BlockRegistry["minecraft:bamboo_shelf"]
+
+  public val BIRCH_SHELF: RegistryBlock = BlockRegistry["minecraft:birch_shelf"]
+
+  public val CHERRY_SHELF: RegistryBlock = BlockRegistry["minecraft:cherry_shelf"]
+
+  public val CRIMSON_SHELF: RegistryBlock = BlockRegistry["minecraft:crimson_shelf"]
+
+  public val DARK_OAK_SHELF: RegistryBlock = BlockRegistry["minecraft:dark_oak_shelf"]
+
+  public val JUNGLE_SHELF: RegistryBlock = BlockRegistry["minecraft:jungle_shelf"]
+
+  public val MANGROVE_SHELF: RegistryBlock = BlockRegistry["minecraft:mangrove_shelf"]
+
+  public val OAK_SHELF: RegistryBlock = BlockRegistry["minecraft:oak_shelf"]
+
+  public val PALE_OAK_SHELF: RegistryBlock = BlockRegistry["minecraft:pale_oak_shelf"]
+
+  public val SPRUCE_SHELF: RegistryBlock = BlockRegistry["minecraft:spruce_shelf"]
+
+  public val WARPED_SHELF: RegistryBlock = BlockRegistry["minecraft:warped_shelf"]
+
   public val MOSSY_COBBLESTONE: RegistryBlock = BlockRegistry["minecraft:mossy_cobblestone"]
 
   public val OBSIDIAN: RegistryBlock = BlockRegistry["minecraft:obsidian"]
@@ -582,6 +606,10 @@ public object Blocks {
 
   public val SOUL_WALL_TORCH: RegistryBlock = BlockRegistry["minecraft:soul_wall_torch"]
 
+  public val COPPER_TORCH: RegistryBlock = BlockRegistry["minecraft:copper_torch"]
+
+  public val COPPER_WALL_TORCH: RegistryBlock = BlockRegistry["minecraft:copper_wall_torch"]
+
   public val GLOWSTONE: RegistryBlock = BlockRegistry["minecraft:glowstone"]
 
   public val NETHER_PORTAL: RegistryBlock = BlockRegistry["minecraft:nether_portal"]
@@ -683,7 +711,46 @@ public object Blocks {
 
   public val IRON_BARS: RegistryBlock = BlockRegistry["minecraft:iron_bars"]
 
-  public val CHAIN: RegistryBlock = BlockRegistry["minecraft:chain"]
+  public val COPPER_BARS: RegistryBlock = BlockRegistry["minecraft:copper_bars"]
+
+  public val EXPOSED_COPPER_BARS: RegistryBlock = BlockRegistry["minecraft:exposed_copper_bars"]
+
+  public val WEATHERED_COPPER_BARS: RegistryBlock = BlockRegistry["minecraft:weathered_copper_bars"]
+
+  public val OXIDIZED_COPPER_BARS: RegistryBlock = BlockRegistry["minecraft:oxidized_copper_bars"]
+
+  public val WAXED_COPPER_BARS: RegistryBlock = BlockRegistry["minecraft:waxed_copper_bars"]
+
+  public val WAXED_EXPOSED_COPPER_BARS: RegistryBlock =
+      BlockRegistry["minecraft:waxed_exposed_copper_bars"]
+
+  public val WAXED_WEATHERED_COPPER_BARS: RegistryBlock =
+      BlockRegistry["minecraft:waxed_weathered_copper_bars"]
+
+  public val WAXED_OXIDIZED_COPPER_BARS: RegistryBlock =
+      BlockRegistry["minecraft:waxed_oxidized_copper_bars"]
+
+  public val IRON_CHAIN: RegistryBlock = BlockRegistry["minecraft:iron_chain"]
+
+  public val COPPER_CHAIN: RegistryBlock = BlockRegistry["minecraft:copper_chain"]
+
+  public val EXPOSED_COPPER_CHAIN: RegistryBlock = BlockRegistry["minecraft:exposed_copper_chain"]
+
+  public val WEATHERED_COPPER_CHAIN: RegistryBlock =
+      BlockRegistry["minecraft:weathered_copper_chain"]
+
+  public val OXIDIZED_COPPER_CHAIN: RegistryBlock = BlockRegistry["minecraft:oxidized_copper_chain"]
+
+  public val WAXED_COPPER_CHAIN: RegistryBlock = BlockRegistry["minecraft:waxed_copper_chain"]
+
+  public val WAXED_EXPOSED_COPPER_CHAIN: RegistryBlock =
+      BlockRegistry["minecraft:waxed_exposed_copper_chain"]
+
+  public val WAXED_WEATHERED_COPPER_CHAIN: RegistryBlock =
+      BlockRegistry["minecraft:waxed_weathered_copper_chain"]
+
+  public val WAXED_OXIDIZED_COPPER_CHAIN: RegistryBlock =
+      BlockRegistry["minecraft:waxed_oxidized_copper_chain"]
 
   public val GLASS_PANE: RegistryBlock = BlockRegistry["minecraft:glass_pane"]
 
@@ -1742,6 +1809,28 @@ public object Blocks {
 
   public val SOUL_LANTERN: RegistryBlock = BlockRegistry["minecraft:soul_lantern"]
 
+  public val COPPER_LANTERN: RegistryBlock = BlockRegistry["minecraft:copper_lantern"]
+
+  public val EXPOSED_COPPER_LANTERN: RegistryBlock =
+      BlockRegistry["minecraft:exposed_copper_lantern"]
+
+  public val WEATHERED_COPPER_LANTERN: RegistryBlock =
+      BlockRegistry["minecraft:weathered_copper_lantern"]
+
+  public val OXIDIZED_COPPER_LANTERN: RegistryBlock =
+      BlockRegistry["minecraft:oxidized_copper_lantern"]
+
+  public val WAXED_COPPER_LANTERN: RegistryBlock = BlockRegistry["minecraft:waxed_copper_lantern"]
+
+  public val WAXED_EXPOSED_COPPER_LANTERN: RegistryBlock =
+      BlockRegistry["minecraft:waxed_exposed_copper_lantern"]
+
+  public val WAXED_WEATHERED_COPPER_LANTERN: RegistryBlock =
+      BlockRegistry["minecraft:waxed_weathered_copper_lantern"]
+
+  public val WAXED_OXIDIZED_COPPER_LANTERN: RegistryBlock =
+      BlockRegistry["minecraft:waxed_oxidized_copper_lantern"]
+
   public val CAMPFIRE: RegistryBlock = BlockRegistry["minecraft:campfire"]
 
   public val SOUL_CAMPFIRE: RegistryBlock = BlockRegistry["minecraft:soul_campfire"]
@@ -2243,7 +2332,69 @@ public object Blocks {
   public val WAXED_OXIDIZED_COPPER_BULB: RegistryBlock =
       BlockRegistry["minecraft:waxed_oxidized_copper_bulb"]
 
+  public val COPPER_CHEST: RegistryBlock = BlockRegistry["minecraft:copper_chest"]
+
+  public val EXPOSED_COPPER_CHEST: RegistryBlock = BlockRegistry["minecraft:exposed_copper_chest"]
+
+  public val WEATHERED_COPPER_CHEST: RegistryBlock =
+      BlockRegistry["minecraft:weathered_copper_chest"]
+
+  public val OXIDIZED_COPPER_CHEST: RegistryBlock = BlockRegistry["minecraft:oxidized_copper_chest"]
+
+  public val WAXED_COPPER_CHEST: RegistryBlock = BlockRegistry["minecraft:waxed_copper_chest"]
+
+  public val WAXED_EXPOSED_COPPER_CHEST: RegistryBlock =
+      BlockRegistry["minecraft:waxed_exposed_copper_chest"]
+
+  public val WAXED_WEATHERED_COPPER_CHEST: RegistryBlock =
+      BlockRegistry["minecraft:waxed_weathered_copper_chest"]
+
+  public val WAXED_OXIDIZED_COPPER_CHEST: RegistryBlock =
+      BlockRegistry["minecraft:waxed_oxidized_copper_chest"]
+
+  public val COPPER_GOLEM_STATUE: RegistryBlock = BlockRegistry["minecraft:copper_golem_statue"]
+
+  public val EXPOSED_COPPER_GOLEM_STATUE: RegistryBlock =
+      BlockRegistry["minecraft:exposed_copper_golem_statue"]
+
+  public val WEATHERED_COPPER_GOLEM_STATUE: RegistryBlock =
+      BlockRegistry["minecraft:weathered_copper_golem_statue"]
+
+  public val OXIDIZED_COPPER_GOLEM_STATUE: RegistryBlock =
+      BlockRegistry["minecraft:oxidized_copper_golem_statue"]
+
+  public val WAXED_COPPER_GOLEM_STATUE: RegistryBlock =
+      BlockRegistry["minecraft:waxed_copper_golem_statue"]
+
+  public val WAXED_EXPOSED_COPPER_GOLEM_STATUE: RegistryBlock =
+      BlockRegistry["minecraft:waxed_exposed_copper_golem_statue"]
+
+  public val WAXED_WEATHERED_COPPER_GOLEM_STATUE: RegistryBlock =
+      BlockRegistry["minecraft:waxed_weathered_copper_golem_statue"]
+
+  public val WAXED_OXIDIZED_COPPER_GOLEM_STATUE: RegistryBlock =
+      BlockRegistry["minecraft:waxed_oxidized_copper_golem_statue"]
+
   public val LIGHTNING_ROD: RegistryBlock = BlockRegistry["minecraft:lightning_rod"]
+
+  public val EXPOSED_LIGHTNING_ROD: RegistryBlock = BlockRegistry["minecraft:exposed_lightning_rod"]
+
+  public val WEATHERED_LIGHTNING_ROD: RegistryBlock =
+      BlockRegistry["minecraft:weathered_lightning_rod"]
+
+  public val OXIDIZED_LIGHTNING_ROD: RegistryBlock =
+      BlockRegistry["minecraft:oxidized_lightning_rod"]
+
+  public val WAXED_LIGHTNING_ROD: RegistryBlock = BlockRegistry["minecraft:waxed_lightning_rod"]
+
+  public val WAXED_EXPOSED_LIGHTNING_ROD: RegistryBlock =
+      BlockRegistry["minecraft:waxed_exposed_lightning_rod"]
+
+  public val WAXED_WEATHERED_LIGHTNING_ROD: RegistryBlock =
+      BlockRegistry["minecraft:waxed_weathered_lightning_rod"]
+
+  public val WAXED_OXIDIZED_LIGHTNING_ROD: RegistryBlock =
+      BlockRegistry["minecraft:waxed_oxidized_lightning_rod"]
 
   public val POINTED_DRIPSTONE: RegistryBlock = BlockRegistry["minecraft:pointed_dripstone"]
 

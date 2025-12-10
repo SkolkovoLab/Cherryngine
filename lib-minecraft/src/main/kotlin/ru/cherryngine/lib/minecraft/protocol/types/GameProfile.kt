@@ -1,6 +1,7 @@
 package ru.cherryngine.lib.minecraft.protocol.types
 
 import kotlinx.serialization.Serializable
+import net.kyori.adventure.text.`object`.PlayerHeadObjectContents
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import java.util.*
 
@@ -28,12 +29,16 @@ data class GameProfile(
         val name: String,
         val value: String,
         val signature: String? = null
-    ) {
+    ) : PlayerHeadObjectContents.ProfileProperty {
+        override fun name(): String = name
+        override fun value(): String = value
+        override fun signature(): String? = signature
+
         companion object {
             val STREAM_CODEC = StreamCodec.of(
-                StreamCodec.STRING, Property::name,
-                StreamCodec.STRING, Property::value,
-                StreamCodec.STRING.optional(), Property::signature,
+                StreamCodec.STRING, PlayerHeadObjectContents.ProfileProperty::name,
+                StreamCodec.STRING, PlayerHeadObjectContents.ProfileProperty::value,
+                StreamCodec.STRING.optional(), PlayerHeadObjectContents.ProfileProperty::signature,
                 ::Property
             )
         }

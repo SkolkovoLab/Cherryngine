@@ -6,6 +6,7 @@ import ru.cherryngine.lib.minecraft.codec.LocationCodecs
 import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
 import ru.cherryngine.lib.minecraft.item.ItemStack
 import ru.cherryngine.lib.minecraft.protocol.types.Direction
+import ru.cherryngine.lib.minecraft.protocol.types.ResolvableProfile
 import ru.cherryngine.lib.minecraft.protocol.types.VillagerData
 import ru.cherryngine.lib.minecraft.registry.registries.*
 import ru.cherryngine.lib.minecraft.tide.stream.EnumStreamCodec
@@ -43,7 +44,6 @@ class MetadataEntry<T>(
             val OPT_UUID = Type(index++, StreamCodec.UUID.optional()).also { entries.add(it) }
             val BLOCK_STATE = Type(index++, Block.STREAM_CODEC).also { entries.add(it) }
             val OPT_BLOCK_STATE = Type(index++, Block.STREAM_CODEC).also { entries.add(it) }
-            val NBT = Type(index++, StreamCodecNBT.STREAM).also { entries.add(it) }
             val PARTICLE = Type(index++, ParticleRegistry.STREAM_CODEC).also { entries.add(it) }
             val PARTICLE_LIST = Type(index++, ParticleRegistry.STREAM_CODEC.list()).also { entries.add(it) }
             val VILLAGER_DATA = Type(index++, VillagerData.STREAM_CODEC).also { entries.add(it) }
@@ -60,8 +60,11 @@ class MetadataEntry<T>(
             val PAINTING_VARIANT = Type(index++, PaintingVariantRegistry.STREAM_CODEC).also { entries.add(it) }
             val SNIFFER_STATE = Type(index++, EnumStreamCodec<SnifferMeta.State>()).also { entries.add(it) }
             val ARMADILLO_STATE = Type(index++, EnumStreamCodec<ArmadilloMeta.State>()).also { entries.add(it) }
+            val COPPER_GOLEM_STATE = Type(index++, EnumStreamCodec<CopperGolemMeta.State>()).also { entries.add(it) }
+            val WEATHER_STATE = Type(index++, EnumStreamCodec<CopperGolemMeta.WeatherState>()).also { entries.add(it) }
             val VECTOR3 = Type(index++, LocationCodecs.VEC_3D_FLOAT).also { entries.add(it) }
             val QUATERNION = Type(index++, LocationCodecs.QUATERNION).also { entries.add(it) }
+            val RESOLVABLE_PROFILE = Type(index++, ResolvableProfile.STREAM_CODEC).also { entries.add(it) }
 
             fun fromIndex(index: Int): Type<*> {
                 return entries[index]

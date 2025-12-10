@@ -625,6 +625,30 @@ public object Items {
 
   public val BRICKS: Item = ItemRegistry["minecraft:bricks"]
 
+  public val ACACIA_SHELF: Item = ItemRegistry["minecraft:acacia_shelf"]
+
+  public val BAMBOO_SHELF: Item = ItemRegistry["minecraft:bamboo_shelf"]
+
+  public val BIRCH_SHELF: Item = ItemRegistry["minecraft:birch_shelf"]
+
+  public val CHERRY_SHELF: Item = ItemRegistry["minecraft:cherry_shelf"]
+
+  public val CRIMSON_SHELF: Item = ItemRegistry["minecraft:crimson_shelf"]
+
+  public val DARK_OAK_SHELF: Item = ItemRegistry["minecraft:dark_oak_shelf"]
+
+  public val JUNGLE_SHELF: Item = ItemRegistry["minecraft:jungle_shelf"]
+
+  public val MANGROVE_SHELF: Item = ItemRegistry["minecraft:mangrove_shelf"]
+
+  public val OAK_SHELF: Item = ItemRegistry["minecraft:oak_shelf"]
+
+  public val PALE_OAK_SHELF: Item = ItemRegistry["minecraft:pale_oak_shelf"]
+
+  public val SPRUCE_SHELF: Item = ItemRegistry["minecraft:spruce_shelf"]
+
+  public val WARPED_SHELF: Item = ItemRegistry["minecraft:warped_shelf"]
+
   public val BOOKSHELF: Item = ItemRegistry["minecraft:bookshelf"]
 
   public val CHISELED_BOOKSHELF: Item = ItemRegistry["minecraft:chiseled_bookshelf"]
@@ -723,6 +747,8 @@ public object Items {
 
   public val SOUL_TORCH: Item = ItemRegistry["minecraft:soul_torch"]
 
+  public val COPPER_TORCH: Item = ItemRegistry["minecraft:copper_torch"]
+
   public val GLOWSTONE: Item = ItemRegistry["minecraft:glowstone"]
 
   public val INFESTED_STONE: Item = ItemRegistry["minecraft:infested_stone"]
@@ -774,7 +800,42 @@ public object Items {
 
   public val IRON_BARS: Item = ItemRegistry["minecraft:iron_bars"]
 
-  public val CHAIN: Item = ItemRegistry["minecraft:chain"]
+  public val COPPER_BARS: Item = ItemRegistry["minecraft:copper_bars"]
+
+  public val EXPOSED_COPPER_BARS: Item = ItemRegistry["minecraft:exposed_copper_bars"]
+
+  public val WEATHERED_COPPER_BARS: Item = ItemRegistry["minecraft:weathered_copper_bars"]
+
+  public val OXIDIZED_COPPER_BARS: Item = ItemRegistry["minecraft:oxidized_copper_bars"]
+
+  public val WAXED_COPPER_BARS: Item = ItemRegistry["minecraft:waxed_copper_bars"]
+
+  public val WAXED_EXPOSED_COPPER_BARS: Item = ItemRegistry["minecraft:waxed_exposed_copper_bars"]
+
+  public val WAXED_WEATHERED_COPPER_BARS: Item =
+      ItemRegistry["minecraft:waxed_weathered_copper_bars"]
+
+  public val WAXED_OXIDIZED_COPPER_BARS: Item = ItemRegistry["minecraft:waxed_oxidized_copper_bars"]
+
+  public val IRON_CHAIN: Item = ItemRegistry["minecraft:iron_chain"]
+
+  public val COPPER_CHAIN: Item = ItemRegistry["minecraft:copper_chain"]
+
+  public val EXPOSED_COPPER_CHAIN: Item = ItemRegistry["minecraft:exposed_copper_chain"]
+
+  public val WEATHERED_COPPER_CHAIN: Item = ItemRegistry["minecraft:weathered_copper_chain"]
+
+  public val OXIDIZED_COPPER_CHAIN: Item = ItemRegistry["minecraft:oxidized_copper_chain"]
+
+  public val WAXED_COPPER_CHAIN: Item = ItemRegistry["minecraft:waxed_copper_chain"]
+
+  public val WAXED_EXPOSED_COPPER_CHAIN: Item = ItemRegistry["minecraft:waxed_exposed_copper_chain"]
+
+  public val WAXED_WEATHERED_COPPER_CHAIN: Item =
+      ItemRegistry["minecraft:waxed_weathered_copper_chain"]
+
+  public val WAXED_OXIDIZED_COPPER_CHAIN: Item =
+      ItemRegistry["minecraft:waxed_oxidized_copper_chain"]
 
   public val GLASS_PANE: Item = ItemRegistry["minecraft:glass_pane"]
 
@@ -1434,6 +1495,23 @@ public object Items {
 
   public val LIGHTNING_ROD: Item = ItemRegistry["minecraft:lightning_rod"]
 
+  public val EXPOSED_LIGHTNING_ROD: Item = ItemRegistry["minecraft:exposed_lightning_rod"]
+
+  public val WEATHERED_LIGHTNING_ROD: Item = ItemRegistry["minecraft:weathered_lightning_rod"]
+
+  public val OXIDIZED_LIGHTNING_ROD: Item = ItemRegistry["minecraft:oxidized_lightning_rod"]
+
+  public val WAXED_LIGHTNING_ROD: Item = ItemRegistry["minecraft:waxed_lightning_rod"]
+
+  public val WAXED_EXPOSED_LIGHTNING_ROD: Item =
+      ItemRegistry["minecraft:waxed_exposed_lightning_rod"]
+
+  public val WAXED_WEATHERED_LIGHTNING_ROD: Item =
+      ItemRegistry["minecraft:waxed_weathered_lightning_rod"]
+
+  public val WAXED_OXIDIZED_LIGHTNING_ROD: Item =
+      ItemRegistry["minecraft:waxed_oxidized_lightning_rod"]
+
   public val DAYLIGHT_DETECTOR: Item = ItemRegistry["minecraft:daylight_detector"]
 
   public val SCULK_SENSOR: Item = ItemRegistry["minecraft:sculk_sensor"]
@@ -1791,6 +1869,16 @@ public object Items {
 
   public val WOODEN_HOE: Item = ItemRegistry["minecraft:wooden_hoe"]
 
+  public val COPPER_SWORD: Item = ItemRegistry["minecraft:copper_sword"]
+
+  public val COPPER_SHOVEL: Item = ItemRegistry["minecraft:copper_shovel"]
+
+  public val COPPER_PICKAXE: Item = ItemRegistry["minecraft:copper_pickaxe"]
+
+  public val COPPER_AXE: Item = ItemRegistry["minecraft:copper_axe"]
+
+  public val COPPER_HOE: Item = ItemRegistry["minecraft:copper_hoe"]
+
   public val STONE_SWORD: Item = ItemRegistry["minecraft:stone_sword"]
 
   public val STONE_SHOVEL: Item = ItemRegistry["minecraft:stone_shovel"]
@@ -1864,6 +1952,14 @@ public object Items {
   public val LEATHER_LEGGINGS: Item = ItemRegistry["minecraft:leather_leggings"]
 
   public val LEATHER_BOOTS: Item = ItemRegistry["minecraft:leather_boots"]
+
+  public val COPPER_HELMET: Item = ItemRegistry["minecraft:copper_helmet"]
+
+  public val COPPER_CHESTPLATE: Item = ItemRegistry["minecraft:copper_chestplate"]
+
+  public val COPPER_LEGGINGS: Item = ItemRegistry["minecraft:copper_leggings"]
+
+  public val COPPER_BOOTS: Item = ItemRegistry["minecraft:copper_boots"]
 
   public val CHAINMAIL_HELMET: Item = ItemRegistry["minecraft:chainmail_helmet"]
 
@@ -2227,6 +2323,8 @@ public object Items {
 
   public val COD_SPAWN_EGG: Item = ItemRegistry["minecraft:cod_spawn_egg"]
 
+  public val COPPER_GOLEM_SPAWN_EGG: Item = ItemRegistry["minecraft:copper_golem_spawn_egg"]
+
   public val COW_SPAWN_EGG: Item = ItemRegistry["minecraft:cow_spawn_egg"]
 
   public val CREEPER_SPAWN_EGG: Item = ItemRegistry["minecraft:creeper_spawn_egg"]
@@ -2441,6 +2539,8 @@ public object Items {
 
   public val ARMOR_STAND: Item = ItemRegistry["minecraft:armor_stand"]
 
+  public val COPPER_HORSE_ARMOR: Item = ItemRegistry["minecraft:copper_horse_armor"]
+
   public val IRON_HORSE_ARMOR: Item = ItemRegistry["minecraft:iron_horse_armor"]
 
   public val GOLDEN_HORSE_ARMOR: Item = ItemRegistry["minecraft:golden_horse_armor"]
@@ -2524,6 +2624,8 @@ public object Items {
   public val SHULKER_SHELL: Item = ItemRegistry["minecraft:shulker_shell"]
 
   public val IRON_NUGGET: Item = ItemRegistry["minecraft:iron_nugget"]
+
+  public val COPPER_NUGGET: Item = ItemRegistry["minecraft:copper_nugget"]
 
   public val KNOWLEDGE_BOOK: Item = ItemRegistry["minecraft:knowledge_book"]
 
@@ -2633,6 +2735,25 @@ public object Items {
   public val LANTERN: Item = ItemRegistry["minecraft:lantern"]
 
   public val SOUL_LANTERN: Item = ItemRegistry["minecraft:soul_lantern"]
+
+  public val COPPER_LANTERN: Item = ItemRegistry["minecraft:copper_lantern"]
+
+  public val EXPOSED_COPPER_LANTERN: Item = ItemRegistry["minecraft:exposed_copper_lantern"]
+
+  public val WEATHERED_COPPER_LANTERN: Item = ItemRegistry["minecraft:weathered_copper_lantern"]
+
+  public val OXIDIZED_COPPER_LANTERN: Item = ItemRegistry["minecraft:oxidized_copper_lantern"]
+
+  public val WAXED_COPPER_LANTERN: Item = ItemRegistry["minecraft:waxed_copper_lantern"]
+
+  public val WAXED_EXPOSED_COPPER_LANTERN: Item =
+      ItemRegistry["minecraft:waxed_exposed_copper_lantern"]
+
+  public val WAXED_WEATHERED_COPPER_LANTERN: Item =
+      ItemRegistry["minecraft:waxed_weathered_copper_lantern"]
+
+  public val WAXED_OXIDIZED_COPPER_LANTERN: Item =
+      ItemRegistry["minecraft:waxed_oxidized_copper_lantern"]
 
   public val SWEET_BERRIES: Item = ItemRegistry["minecraft:sweet_berries"]
 
@@ -2881,6 +3002,46 @@ public object Items {
       ItemRegistry["minecraft:waxed_weathered_copper_bulb"]
 
   public val WAXED_OXIDIZED_COPPER_BULB: Item = ItemRegistry["minecraft:waxed_oxidized_copper_bulb"]
+
+  public val COPPER_CHEST: Item = ItemRegistry["minecraft:copper_chest"]
+
+  public val EXPOSED_COPPER_CHEST: Item = ItemRegistry["minecraft:exposed_copper_chest"]
+
+  public val WEATHERED_COPPER_CHEST: Item = ItemRegistry["minecraft:weathered_copper_chest"]
+
+  public val OXIDIZED_COPPER_CHEST: Item = ItemRegistry["minecraft:oxidized_copper_chest"]
+
+  public val WAXED_COPPER_CHEST: Item = ItemRegistry["minecraft:waxed_copper_chest"]
+
+  public val WAXED_EXPOSED_COPPER_CHEST: Item = ItemRegistry["minecraft:waxed_exposed_copper_chest"]
+
+  public val WAXED_WEATHERED_COPPER_CHEST: Item =
+      ItemRegistry["minecraft:waxed_weathered_copper_chest"]
+
+  public val WAXED_OXIDIZED_COPPER_CHEST: Item =
+      ItemRegistry["minecraft:waxed_oxidized_copper_chest"]
+
+  public val COPPER_GOLEM_STATUE: Item = ItemRegistry["minecraft:copper_golem_statue"]
+
+  public val EXPOSED_COPPER_GOLEM_STATUE: Item =
+      ItemRegistry["minecraft:exposed_copper_golem_statue"]
+
+  public val WEATHERED_COPPER_GOLEM_STATUE: Item =
+      ItemRegistry["minecraft:weathered_copper_golem_statue"]
+
+  public val OXIDIZED_COPPER_GOLEM_STATUE: Item =
+      ItemRegistry["minecraft:oxidized_copper_golem_statue"]
+
+  public val WAXED_COPPER_GOLEM_STATUE: Item = ItemRegistry["minecraft:waxed_copper_golem_statue"]
+
+  public val WAXED_EXPOSED_COPPER_GOLEM_STATUE: Item =
+      ItemRegistry["minecraft:waxed_exposed_copper_golem_statue"]
+
+  public val WAXED_WEATHERED_COPPER_GOLEM_STATUE: Item =
+      ItemRegistry["minecraft:waxed_weathered_copper_golem_statue"]
+
+  public val WAXED_OXIDIZED_COPPER_GOLEM_STATUE: Item =
+      ItemRegistry["minecraft:waxed_oxidized_copper_golem_statue"]
 
   public val TRIAL_SPAWNER: Item = ItemRegistry["minecraft:trial_spawner"]
 

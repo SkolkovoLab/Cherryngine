@@ -15,6 +15,8 @@ public object Particles {
 
   public val CLOUD: Particle = ParticleRegistry["minecraft:cloud"]
 
+  public val COPPER_FIRE_FLAME: Particle = ParticleRegistry["minecraft:copper_fire_flame"]
+
   public val CRIT: Particle = ParticleRegistry["minecraft:crit"]
 
   public val DAMAGE_INDICATOR: Particle = ParticleRegistry["minecraft:damage_indicator"]

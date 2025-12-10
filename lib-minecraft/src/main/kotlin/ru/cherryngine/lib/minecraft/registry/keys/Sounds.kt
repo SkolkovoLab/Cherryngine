@@ -163,6 +163,8 @@ public object Sounds {
 
   public val ITEM_ARMOR_EQUIP_LEATHER: Key = Key.key("minecraft:item.armor.equip_leather")
 
+  public val ITEM_ARMOR_EQUIP_COPPER: Key = Key.key("minecraft:item.armor.equip_copper")
+
   public val ITEM_ARMOR_EQUIP_NETHERITE: Key = Key.key("minecraft:item.armor.equip_netherite")
 
   public val ITEM_ARMOR_EQUIP_TURTLE: Key = Key.key("minecraft:item.armor.equip_turtle")
@@ -760,9 +762,89 @@ public object Sounds {
 
   public val BLOCK_COPPER_FALL: Key = Key.key("minecraft:block.copper.fall")
 
+  public val BLOCK_COPPER_CHEST_CLOSE: Key = Key.key("minecraft:block.copper_chest.close")
+
+  public val BLOCK_COPPER_CHEST_OPEN: Key = Key.key("minecraft:block.copper_chest.open")
+
+  public val BLOCK_COPPER_CHEST_WEATHERED_CLOSE: Key =
+      Key.key("minecraft:block.copper_chest_weathered.close")
+
+  public val BLOCK_COPPER_CHEST_WEATHERED_OPEN: Key =
+      Key.key("minecraft:block.copper_chest_weathered.open")
+
+  public val BLOCK_COPPER_CHEST_OXIDIZED_CLOSE: Key =
+      Key.key("minecraft:block.copper_chest_oxidized.close")
+
+  public val BLOCK_COPPER_CHEST_OXIDIZED_OPEN: Key =
+      Key.key("minecraft:block.copper_chest_oxidized.open")
+
   public val BLOCK_COPPER_DOOR_CLOSE: Key = Key.key("minecraft:block.copper_door.close")
 
   public val BLOCK_COPPER_DOOR_OPEN: Key = Key.key("minecraft:block.copper_door.open")
+
+  public val ENTITY_COPPER_GOLEM_STEP: Key = Key.key("minecraft:entity.copper_golem.step")
+
+  public val ENTITY_COPPER_GOLEM_HURT: Key = Key.key("minecraft:entity.copper_golem.hurt")
+
+  public val ENTITY_COPPER_GOLEM_DEATH: Key = Key.key("minecraft:entity.copper_golem.death")
+
+  public val ENTITY_COPPER_GOLEM_WEATHERED_STEP: Key =
+      Key.key("minecraft:entity.copper_golem_weathered.step")
+
+  public val ENTITY_COPPER_GOLEM_WEATHERED_HURT: Key =
+      Key.key("minecraft:entity.copper_golem_weathered.hurt")
+
+  public val ENTITY_COPPER_GOLEM_WEATHERED_DEATH: Key =
+      Key.key("minecraft:entity.copper_golem_weathered.death")
+
+  public val ENTITY_COPPER_GOLEM_OXIDIZED_STEP: Key =
+      Key.key("minecraft:entity.copper_golem_oxidized.step")
+
+  public val ENTITY_COPPER_GOLEM_OXIDIZED_HURT: Key =
+      Key.key("minecraft:entity.copper_golem_oxidized.hurt")
+
+  public val ENTITY_COPPER_GOLEM_OXIDIZED_DEATH: Key =
+      Key.key("minecraft:entity.copper_golem_oxidized.death")
+
+  public val ENTITY_COPPER_GOLEM_SPIN: Key = Key.key("minecraft:entity.copper_golem.spin")
+
+  public val ENTITY_COPPER_GOLEM_WEATHERED_SPIN: Key =
+      Key.key("minecraft:entity.copper_golem_weathered.spin")
+
+  public val ENTITY_COPPER_GOLEM_OXIDIZED_SPIN: Key =
+      Key.key("minecraft:entity.copper_golem_oxidized.spin")
+
+  public val ENTITY_COPPER_GOLEM_NO_ITEM_GET: Key =
+      Key.key("minecraft:entity.copper_golem.no_item_get")
+
+  public val ENTITY_COPPER_GOLEM_NO_ITEM_NO_GET: Key =
+      Key.key("minecraft:entity.copper_golem.no_item_no_get")
+
+  public val ENTITY_COPPER_GOLEM_ITEM_DROP: Key = Key.key("minecraft:entity.copper_golem.item_drop")
+
+  public val ENTITY_COPPER_GOLEM_ITEM_NO_DROP: Key =
+      Key.key("minecraft:entity.copper_golem.item_no_drop")
+
+  public val ENTITY_COPPER_GOLEM_BECOME_STATUE: Key =
+      Key.key("minecraft:entity.copper_golem_become_statue")
+
+  public val BLOCK_COPPER_GOLEM_STATUE_BREAK: Key =
+      Key.key("minecraft:block.copper_golem_statue.break")
+
+  public val BLOCK_COPPER_GOLEM_STATUE_PLACE: Key =
+      Key.key("minecraft:block.copper_golem_statue.place")
+
+  public val BLOCK_COPPER_GOLEM_STATUE_HIT: Key = Key.key("minecraft:block.copper_golem_statue.hit")
+
+  public val BLOCK_COPPER_GOLEM_STATUE_STEP: Key =
+      Key.key("minecraft:block.copper_golem_statue.step")
+
+  public val BLOCK_COPPER_GOLEM_STATUE_FALL: Key =
+      Key.key("minecraft:block.copper_golem_statue.fall")
+
+  public val ENTITY_COPPER_GOLEM_SPAWN: Key = Key.key("minecraft:entity.copper_golem.spawn")
+
+  public val ENTITY_COPPER_GOLEM_SHEAR: Key = Key.key("minecraft:entity.copper_golem.shear")
 
   public val BLOCK_COPPER_GRATE_BREAK: Key = Key.key("minecraft:block.copper_grate.break")
 
@@ -2752,6 +2834,28 @@ public object Sounds {
 
   public val ITEM_SHEARS_SNIP: Key = Key.key("minecraft:item.shears.snip")
 
+  public val BLOCK_SHELF_ACTIVATE: Key = Key.key("minecraft:block.shelf.activate")
+
+  public val BLOCK_SHELF_BREAK: Key = Key.key("minecraft:block.shelf.break")
+
+  public val BLOCK_SHELF_DEACTIVATE: Key = Key.key("minecraft:block.shelf.deactivate")
+
+  public val BLOCK_SHELF_FALL: Key = Key.key("minecraft:block.shelf.fall")
+
+  public val BLOCK_SHELF_HIT: Key = Key.key("minecraft:block.shelf.hit")
+
+  public val BLOCK_SHELF_MULTI_SWAP: Key = Key.key("minecraft:block.shelf.multi_swap")
+
+  public val BLOCK_SHELF_PLACE: Key = Key.key("minecraft:block.shelf.place")
+
+  public val BLOCK_SHELF_PLACE_ITEM: Key = Key.key("minecraft:block.shelf.place_item")
+
+  public val BLOCK_SHELF_SINGLE_SWAP: Key = Key.key("minecraft:block.shelf.single_swap")
+
+  public val BLOCK_SHELF_STEP: Key = Key.key("minecraft:block.shelf.step")
+
+  public val BLOCK_SHELF_TAKE_ITEM: Key = Key.key("minecraft:block.shelf.take_item")
+
   public val ITEM_SHIELD_BLOCK: Key = Key.key("minecraft:item.shield.block")
 
   public val ITEM_SHIELD_BREAK: Key = Key.key("minecraft:item.shield.break")
@@ -3376,6 +3480,8 @@ public object Sounds {
       Key.key("minecraft:block.sign.waxed_interact_fail")
 
   public val BLOCK_WATER_AMBIENT: Key = Key.key("minecraft:block.water.ambient")
+
+  public val WEATHER_END_FLASH: Key = Key.key("minecraft:weather.end_flash")
 
   public val WEATHER_RAIN: Key = Key.key("minecraft:weather.rain")
 

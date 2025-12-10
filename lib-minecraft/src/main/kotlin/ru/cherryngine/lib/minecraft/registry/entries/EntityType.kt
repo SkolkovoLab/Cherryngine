@@ -17,6 +17,7 @@ data class EntityType(
     val acceleration: Float = 0.08f,
     val fireImmune: Boolean = false,
     val clientTrackingRange: Int,
+    val defaultAttributes: Map<String, Double> = mapOf(),
 ) : RegistryEntry {
     override fun getEntryIdentifier(): String {
         return identifier

@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft
 
 object ServerConsts {
-    const val MINECRAFT_VERSION = "1.21.8"
-    const val PROTOCOL_VERSION = 772
+    const val MINECRAFT_VERSION = "1.21.10"
+    const val PROTOCOL_VERSION = 773
 }

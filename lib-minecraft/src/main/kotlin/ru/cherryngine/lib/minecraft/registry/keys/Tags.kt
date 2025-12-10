@@ -9,124 +9,118 @@ import ru.cherryngine.lib.minecraft.registry.registries.tags.FluidTagRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.tags.ItemTagRegistry
 
 public object Tags {
-  public val BIOME_IS_FOREST: Tag = BiomeTagRegistry["minecraft:is_forest"]
-
-  public val BIOME_MORE_FREQUENT_DROWNED_SPAWNS: Tag =
-      BiomeTagRegistry["minecraft:more_frequent_drowned_spawns"]
-
-  public val BIOME_SPAWNS_WARM_VARIANT_FARM_ANIMALS: Tag =
-      BiomeTagRegistry["minecraft:spawns_warm_variant_farm_animals"]
-
-  public val BIOME_IS_MOUNTAIN: Tag = BiomeTagRegistry["minecraft:is_mountain"]
-
-  public val BIOME_ALLOWS_SURFACE_SLIME_SPAWNS: Tag =
-      BiomeTagRegistry["minecraft:allows_surface_slime_spawns"]
-
-  public val BIOME_SPAWNS_COLD_VARIANT_FROGS: Tag =
-      BiomeTagRegistry["minecraft:spawns_cold_variant_frogs"]
+  public val BIOME_SNOW_GOLEM_MELTS: Tag = BiomeTagRegistry["minecraft:snow_golem_melts"]
 
   public val BIOME_HAS_CLOSER_WATER_FOG: Tag = BiomeTagRegistry["minecraft:has_closer_water_fog"]
 
-  public val BIOME_WATER_ON_MAP_OUTLINES: Tag = BiomeTagRegistry["minecraft:water_on_map_outlines"]
-
-  public val BIOME_SPAWNS_WARM_VARIANT_FROGS: Tag =
-      BiomeTagRegistry["minecraft:spawns_warm_variant_frogs"]
+  public val BIOME_IS_OCEAN: Tag = BiomeTagRegistry["minecraft:is_ocean"]
 
   public val BIOME_WITHOUT_WANDERING_TRADER_SPAWNS: Tag =
       BiomeTagRegistry["minecraft:without_wandering_trader_spawns"]
 
-  public val BIOME_SPAWNS_WHITE_RABBITS: Tag = BiomeTagRegistry["minecraft:spawns_white_rabbits"]
+  public val BIOME_IS_SAVANNA: Tag = BiomeTagRegistry["minecraft:is_savanna"]
 
-  public val BIOME_SPAWNS_SNOW_FOXES: Tag = BiomeTagRegistry["minecraft:spawns_snow_foxes"]
+  public val BIOME_SPAWNS_WHITE_RABBITS: Tag = BiomeTagRegistry["minecraft:spawns_white_rabbits"]
 
   public val BIOME_IS_NETHER: Tag = BiomeTagRegistry["minecraft:is_nether"]
 
   public val BIOME_ALLOWS_TROPICAL_FISH_SPAWNS_AT_ANY_HEIGHT: Tag =
       BiomeTagRegistry["minecraft:allows_tropical_fish_spawns_at_any_height"]
 
-  public val BIOME_IS_BADLANDS: Tag = BiomeTagRegistry["minecraft:is_badlands"]
-
-  public val BIOME_WITHOUT_ZOMBIE_SIEGES: Tag = BiomeTagRegistry["minecraft:without_zombie_sieges"]
-
-  public val BIOME_INCREASED_FIRE_BURNOUT: Tag =
-      BiomeTagRegistry["minecraft:increased_fire_burnout"]
+  public val BIOME_IS_HILL: Tag = BiomeTagRegistry["minecraft:is_hill"]
 
   public val BIOME_IS_BEACH: Tag = BiomeTagRegistry["minecraft:is_beach"]
 
-  public val BIOME_MINESHAFT_BLOCKING: Tag = BiomeTagRegistry["minecraft:mineshaft_blocking"]
+  public val BIOME_IS_RIVER: Tag = BiomeTagRegistry["minecraft:is_river"]
 
-  public val BIOME_IS_DEEP_OCEAN: Tag = BiomeTagRegistry["minecraft:is_deep_ocean"]
+  public val BIOME_IS_BADLANDS: Tag = BiomeTagRegistry["minecraft:is_badlands"]
 
   public val BIOME_WITHOUT_PATROL_SPAWNS: Tag = BiomeTagRegistry["minecraft:without_patrol_spawns"]
 
-  public val BIOME_REQUIRED_OCEAN_MONUMENT_SURROUNDING: Tag =
-      BiomeTagRegistry["minecraft:required_ocean_monument_surrounding"]
+  public val BIOME_WITHOUT_ZOMBIE_SIEGES: Tag = BiomeTagRegistry["minecraft:without_zombie_sieges"]
 
-  public val BIOME_SPAWNS_GOLD_RABBITS: Tag = BiomeTagRegistry["minecraft:spawns_gold_rabbits"]
-
-  public val BIOME_IS_HILL: Tag = BiomeTagRegistry["minecraft:is_hill"]
-
-  public val BIOME_IS_OVERWORLD: Tag = BiomeTagRegistry["minecraft:is_overworld"]
-
-  public val BIOME_PLAYS_UNDERWATER_MUSIC: Tag =
-      BiomeTagRegistry["minecraft:plays_underwater_music"]
-
-  public val BIOME_IS_RIVER: Tag = BiomeTagRegistry["minecraft:is_river"]
-
-  public val BIOME_SPAWNS_COLD_VARIANT_FARM_ANIMALS: Tag =
-      BiomeTagRegistry["minecraft:spawns_cold_variant_farm_animals"]
-
-  public val BIOME_IS_SAVANNA: Tag = BiomeTagRegistry["minecraft:is_savanna"]
-
-  public val BIOME_STRONGHOLD_BIASED_TO: Tag = BiomeTagRegistry["minecraft:stronghold_biased_to"]
-
-  public val BIOME_HAS_STRUCTURE_STRONGHOLD: Tag =
-      BiomeTagRegistry["minecraft:has_structure/stronghold"]
-
-  public val BIOME_HAS_STRUCTURE_SHIPWRECK_BEACHED: Tag =
-      BiomeTagRegistry["minecraft:has_structure/shipwreck_beached"]
-
-  public val BIOME_HAS_STRUCTURE_BURIED_TREASURE: Tag =
-      BiomeTagRegistry["minecraft:has_structure/buried_treasure"]
-
-  public val BIOME_HAS_STRUCTURE_RUINED_PORTAL_STANDARD: Tag =
-      BiomeTagRegistry["minecraft:has_structure/ruined_portal_standard"]
-
-  public val BIOME_HAS_STRUCTURE_RUINED_PORTAL_MOUNTAIN: Tag =
-      BiomeTagRegistry["minecraft:has_structure/ruined_portal_mountain"]
+  public val BIOME_MORE_FREQUENT_DROWNED_SPAWNS: Tag =
+      BiomeTagRegistry["minecraft:more_frequent_drowned_spawns"]
 
   public val BIOME_HAS_STRUCTURE_DESERT_PYRAMID: Tag =
       BiomeTagRegistry["minecraft:has_structure/desert_pyramid"]
 
-  public val BIOME_HAS_STRUCTURE_VILLAGE_DESERT: Tag =
-      BiomeTagRegistry["minecraft:has_structure/village_desert"]
-
-  public val BIOME_HAS_STRUCTURE_VILLAGE_TAIGA: Tag =
-      BiomeTagRegistry["minecraft:has_structure/village_taiga"]
-
-  public val BIOME_HAS_STRUCTURE_RUINED_PORTAL_OCEAN: Tag =
-      BiomeTagRegistry["minecraft:has_structure/ruined_portal_ocean"]
-
   public val BIOME_HAS_STRUCTURE_RUINED_PORTAL_NETHER: Tag =
       BiomeTagRegistry["minecraft:has_structure/ruined_portal_nether"]
-
-  public val BIOME_HAS_STRUCTURE_MINESHAFT: Tag =
-      BiomeTagRegistry["minecraft:has_structure/mineshaft"]
-
-  public val BIOME_HAS_STRUCTURE_BASTION_REMNANT: Tag =
-      BiomeTagRegistry["minecraft:has_structure/bastion_remnant"]
-
-  public val BIOME_HAS_STRUCTURE_SWAMP_HUT: Tag =
-      BiomeTagRegistry["minecraft:has_structure/swamp_hut"]
-
-  public val BIOME_HAS_STRUCTURE_RUINED_PORTAL_JUNGLE: Tag =
-      BiomeTagRegistry["minecraft:has_structure/ruined_portal_jungle"]
 
   public val BIOME_HAS_STRUCTURE_RUINED_PORTAL_SWAMP: Tag =
       BiomeTagRegistry["minecraft:has_structure/ruined_portal_swamp"]
 
+  public val BIOME_HAS_STRUCTURE_BASTION_REMNANT: Tag =
+      BiomeTagRegistry["minecraft:has_structure/bastion_remnant"]
+
+  public val BIOME_HAS_STRUCTURE_RUINED_PORTAL_JUNGLE: Tag =
+      BiomeTagRegistry["minecraft:has_structure/ruined_portal_jungle"]
+
+  public val BIOME_HAS_STRUCTURE_WOODLAND_MANSION: Tag =
+      BiomeTagRegistry["minecraft:has_structure/woodland_mansion"]
+
+  public val BIOME_HAS_STRUCTURE_STRONGHOLD: Tag =
+      BiomeTagRegistry["minecraft:has_structure/stronghold"]
+
+  public val BIOME_HAS_STRUCTURE_JUNGLE_TEMPLE: Tag =
+      BiomeTagRegistry["minecraft:has_structure/jungle_temple"]
+
+  public val BIOME_HAS_STRUCTURE_VILLAGE_PLAINS: Tag =
+      BiomeTagRegistry["minecraft:has_structure/village_plains"]
+
+  public val BIOME_HAS_STRUCTURE_OCEAN_MONUMENT: Tag =
+      BiomeTagRegistry["minecraft:has_structure/ocean_monument"]
+
+  public val BIOME_HAS_STRUCTURE_VILLAGE_DESERT: Tag =
+      BiomeTagRegistry["minecraft:has_structure/village_desert"]
+
+  public val BIOME_HAS_STRUCTURE_OCEAN_RUIN_WARM: Tag =
+      BiomeTagRegistry["minecraft:has_structure/ocean_ruin_warm"]
+
+  public val BIOME_HAS_STRUCTURE_VILLAGE_SNOWY: Tag =
+      BiomeTagRegistry["minecraft:has_structure/village_snowy"]
+
   public val BIOME_HAS_STRUCTURE_NETHER_FOSSIL: Tag =
       BiomeTagRegistry["minecraft:has_structure/nether_fossil"]
+
+  public val BIOME_HAS_STRUCTURE_SHIPWRECK_BEACHED: Tag =
+      BiomeTagRegistry["minecraft:has_structure/shipwreck_beached"]
+
+  public val BIOME_HAS_STRUCTURE_NETHER_FORTRESS: Tag =
+      BiomeTagRegistry["minecraft:has_structure/nether_fortress"]
+
+  public val BIOME_HAS_STRUCTURE_RUINED_PORTAL_OCEAN: Tag =
+      BiomeTagRegistry["minecraft:has_structure/ruined_portal_ocean"]
+
+  public val BIOME_HAS_STRUCTURE_TRIAL_CHAMBERS: Tag =
+      BiomeTagRegistry["minecraft:has_structure/trial_chambers"]
+
+  public val BIOME_HAS_STRUCTURE_RUINED_PORTAL_STANDARD: Tag =
+      BiomeTagRegistry["minecraft:has_structure/ruined_portal_standard"]
+
+  public val BIOME_HAS_STRUCTURE_SHIPWRECK: Tag =
+      BiomeTagRegistry["minecraft:has_structure/shipwreck"]
+
+  public val BIOME_HAS_STRUCTURE_RUINED_PORTAL_MOUNTAIN: Tag =
+      BiomeTagRegistry["minecraft:has_structure/ruined_portal_mountain"]
+
+  public val BIOME_HAS_STRUCTURE_SWAMP_HUT: Tag =
+      BiomeTagRegistry["minecraft:has_structure/swamp_hut"]
+
+  public val BIOME_HAS_STRUCTURE_IGLOO: Tag = BiomeTagRegistry["minecraft:has_structure/igloo"]
+
+  public val BIOME_HAS_STRUCTURE_END_CITY: Tag =
+      BiomeTagRegistry["minecraft:has_structure/end_city"]
+
+  public val BIOME_HAS_STRUCTURE_BURIED_TREASURE: Tag =
+      BiomeTagRegistry["minecraft:has_structure/buried_treasure"]
+
+  public val BIOME_HAS_STRUCTURE_RUINED_PORTAL_DESERT: Tag =
+      BiomeTagRegistry["minecraft:has_structure/ruined_portal_desert"]
+
+  public val BIOME_HAS_STRUCTURE_PILLAGER_OUTPOST: Tag =
+      BiomeTagRegistry["minecraft:has_structure/pillager_outpost"]
 
   public val BIOME_HAS_STRUCTURE_ANCIENT_CITY: Tag =
       BiomeTagRegistry["minecraft:has_structure/ancient_city"]
@@ -134,592 +128,552 @@ public object Tags {
   public val BIOME_HAS_STRUCTURE_MINESHAFT_MESA: Tag =
       BiomeTagRegistry["minecraft:has_structure/mineshaft_mesa"]
 
-  public val BIOME_HAS_STRUCTURE_JUNGLE_TEMPLE: Tag =
-      BiomeTagRegistry["minecraft:has_structure/jungle_temple"]
-
   public val BIOME_HAS_STRUCTURE_TRAIL_RUINS: Tag =
       BiomeTagRegistry["minecraft:has_structure/trail_ruins"]
 
-  public val BIOME_HAS_STRUCTURE_TRIAL_CHAMBERS: Tag =
-      BiomeTagRegistry["minecraft:has_structure/trial_chambers"]
-
-  public val BIOME_HAS_STRUCTURE_VILLAGE_SAVANNA: Tag =
-      BiomeTagRegistry["minecraft:has_structure/village_savanna"]
-
-  public val BIOME_HAS_STRUCTURE_RUINED_PORTAL_DESERT: Tag =
-      BiomeTagRegistry["minecraft:has_structure/ruined_portal_desert"]
-
-  public val BIOME_HAS_STRUCTURE_SHIPWRECK: Tag =
-      BiomeTagRegistry["minecraft:has_structure/shipwreck"]
-
-  public val BIOME_HAS_STRUCTURE_WOODLAND_MANSION: Tag =
-      BiomeTagRegistry["minecraft:has_structure/woodland_mansion"]
-
-  public val BIOME_HAS_STRUCTURE_NETHER_FORTRESS: Tag =
-      BiomeTagRegistry["minecraft:has_structure/nether_fortress"]
-
-  public val BIOME_HAS_STRUCTURE_VILLAGE_PLAINS: Tag =
-      BiomeTagRegistry["minecraft:has_structure/village_plains"]
+  public val BIOME_HAS_STRUCTURE_MINESHAFT: Tag =
+      BiomeTagRegistry["minecraft:has_structure/mineshaft"]
 
   public val BIOME_HAS_STRUCTURE_OCEAN_RUIN_COLD: Tag =
       BiomeTagRegistry["minecraft:has_structure/ocean_ruin_cold"]
 
-  public val BIOME_HAS_STRUCTURE_END_CITY: Tag =
-      BiomeTagRegistry["minecraft:has_structure/end_city"]
+  public val BIOME_HAS_STRUCTURE_VILLAGE_TAIGA: Tag =
+      BiomeTagRegistry["minecraft:has_structure/village_taiga"]
 
-  public val BIOME_HAS_STRUCTURE_PILLAGER_OUTPOST: Tag =
-      BiomeTagRegistry["minecraft:has_structure/pillager_outpost"]
+  public val BIOME_HAS_STRUCTURE_VILLAGE_SAVANNA: Tag =
+      BiomeTagRegistry["minecraft:has_structure/village_savanna"]
 
-  public val BIOME_HAS_STRUCTURE_VILLAGE_SNOWY: Tag =
-      BiomeTagRegistry["minecraft:has_structure/village_snowy"]
+  public val BIOME_STRONGHOLD_BIASED_TO: Tag = BiomeTagRegistry["minecraft:stronghold_biased_to"]
 
-  public val BIOME_HAS_STRUCTURE_IGLOO: Tag = BiomeTagRegistry["minecraft:has_structure/igloo"]
-
-  public val BIOME_HAS_STRUCTURE_OCEAN_RUIN_WARM: Tag =
-      BiomeTagRegistry["minecraft:has_structure/ocean_ruin_warm"]
-
-  public val BIOME_HAS_STRUCTURE_OCEAN_MONUMENT: Tag =
-      BiomeTagRegistry["minecraft:has_structure/ocean_monument"]
-
-  public val BIOME_PRODUCES_CORALS_FROM_BONEMEAL: Tag =
-      BiomeTagRegistry["minecraft:produces_corals_from_bonemeal"]
+  public val BIOME_IS_MOUNTAIN: Tag = BiomeTagRegistry["minecraft:is_mountain"]
 
   public val BIOME_IS_JUNGLE: Tag = BiomeTagRegistry["minecraft:is_jungle"]
 
-  public val BIOME_REDUCE_WATER_AMBIENT_SPAWNS: Tag =
-      BiomeTagRegistry["minecraft:reduce_water_ambient_spawns"]
+  public val BIOME_IS_DEEP_OCEAN: Tag = BiomeTagRegistry["minecraft:is_deep_ocean"]
 
-  public val BIOME_SNOW_GOLEM_MELTS: Tag = BiomeTagRegistry["minecraft:snow_golem_melts"]
+  public val BIOME_IS_FOREST: Tag = BiomeTagRegistry["minecraft:is_forest"]
 
-  public val BIOME_IS_TAIGA: Tag = BiomeTagRegistry["minecraft:is_taiga"]
+  public val BIOME_IS_OVERWORLD: Tag = BiomeTagRegistry["minecraft:is_overworld"]
+
+  public val BIOME_REQUIRED_OCEAN_MONUMENT_SURROUNDING: Tag =
+      BiomeTagRegistry["minecraft:required_ocean_monument_surrounding"]
+
+  public val BIOME_SPAWNS_GOLD_RABBITS: Tag = BiomeTagRegistry["minecraft:spawns_gold_rabbits"]
 
   public val BIOME_POLAR_BEARS_SPAWN_ON_ALTERNATE_BLOCKS: Tag =
       BiomeTagRegistry["minecraft:polar_bears_spawn_on_alternate_blocks"]
 
-  public val BIOME_IS_OCEAN: Tag = BiomeTagRegistry["minecraft:is_ocean"]
+  public val BIOME_PLAYS_UNDERWATER_MUSIC: Tag =
+      BiomeTagRegistry["minecraft:plays_underwater_music"]
+
+  public val BIOME_WATER_ON_MAP_OUTLINES: Tag = BiomeTagRegistry["minecraft:water_on_map_outlines"]
 
   public val BIOME_IS_END: Tag = BiomeTagRegistry["minecraft:is_end"]
 
-  public val BLOCK_OVERWORLD_NATURAL_LOGS: Tag =
-      BlockTagRegistry["minecraft:overworld_natural_logs"]
+  public val BIOME_SPAWNS_WARM_VARIANT_FROGS: Tag =
+      BiomeTagRegistry["minecraft:spawns_warm_variant_frogs"]
 
-  public val BLOCK_LOGS: Tag = BlockTagRegistry["minecraft:logs"]
+  public val BIOME_MINESHAFT_BLOCKING: Tag = BiomeTagRegistry["minecraft:mineshaft_blocking"]
 
-  public val BLOCK_MOB_INTERACTABLE_DOORS: Tag =
-      BlockTagRegistry["minecraft:mob_interactable_doors"]
+  public val BIOME_SPAWNS_COLD_VARIANT_FROGS: Tag =
+      BiomeTagRegistry["minecraft:spawns_cold_variant_frogs"]
 
-  public val BLOCK_SNOW_LAYER_CAN_SURVIVE_ON: Tag =
-      BlockTagRegistry["minecraft:snow_layer_can_survive_on"]
+  public val BIOME_ALLOWS_SURFACE_SLIME_SPAWNS: Tag =
+      BiomeTagRegistry["minecraft:allows_surface_slime_spawns"]
 
-  public val BLOCK_GEODE_INVALID_BLOCKS: Tag = BlockTagRegistry["minecraft:geode_invalid_blocks"]
+  public val BIOME_SPAWNS_WARM_VARIANT_FARM_ANIMALS: Tag =
+      BiomeTagRegistry["minecraft:spawns_warm_variant_farm_animals"]
 
-  public val BLOCK_HOGLIN_REPELLENTS: Tag = BlockTagRegistry["minecraft:hoglin_repellents"]
+  public val BIOME_IS_TAIGA: Tag = BiomeTagRegistry["minecraft:is_taiga"]
 
-  public val BLOCK_NETHER_CARVER_REPLACEABLES: Tag =
-      BlockTagRegistry["minecraft:nether_carver_replaceables"]
+  public val BIOME_SPAWNS_SNOW_FOXES: Tag = BiomeTagRegistry["minecraft:spawns_snow_foxes"]
 
-  public val BLOCK_GUARDED_BY_PIGLINS: Tag = BlockTagRegistry["minecraft:guarded_by_piglins"]
+  public val BIOME_INCREASED_FIRE_BURNOUT: Tag =
+      BiomeTagRegistry["minecraft:increased_fire_burnout"]
 
-  public val BLOCK_STANDING_SIGNS: Tag = BlockTagRegistry["minecraft:standing_signs"]
+  public val BIOME_REDUCE_WATER_AMBIENT_SPAWNS: Tag =
+      BiomeTagRegistry["minecraft:reduce_water_ambient_spawns"]
 
-  public val BLOCK_BEEHIVES: Tag = BlockTagRegistry["minecraft:beehives"]
+  public val BIOME_SPAWNS_COLD_VARIANT_FARM_ANIMALS: Tag =
+      BiomeTagRegistry["minecraft:spawns_cold_variant_farm_animals"]
 
-  public val BLOCK_PARROTS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:parrots_spawnable_on"]
+  public val BIOME_PRODUCES_CORALS_FROM_BONEMEAL: Tag =
+      BiomeTagRegistry["minecraft:produces_corals_from_bonemeal"]
 
-  public val BLOCK_REPLACEABLE_BY_TREES: Tag = BlockTagRegistry["minecraft:replaceable_by_trees"]
+  public val BLOCK_REDSTONE_ORES: Tag = BlockTagRegistry["minecraft:redstone_ores"]
 
-  public val BLOCK_OCCLUDES_VIBRATION_SIGNALS: Tag =
-      BlockTagRegistry["minecraft:occludes_vibration_signals"]
-
-  public val BLOCK_WOOL: Tag = BlockTagRegistry["minecraft:wool"]
-
-  public val BLOCK_REPLACEABLE: Tag = BlockTagRegistry["minecraft:replaceable"]
-
-  public val BLOCK_INFINIBURN_OVERWORLD: Tag = BlockTagRegistry["minecraft:infiniburn_overworld"]
-
-  public val BLOCK_IRON_ORES: Tag = BlockTagRegistry["minecraft:iron_ores"]
-
-  public val BLOCK_NEEDS_DIAMOND_TOOL: Tag = BlockTagRegistry["minecraft:needs_diamond_tool"]
-
-  public val BLOCK_BLOCKS_WIND_CHARGE_EXPLOSIONS: Tag =
-      BlockTagRegistry["minecraft:blocks_wind_charge_explosions"]
-
-  public val BLOCK_CORALS: Tag = BlockTagRegistry["minecraft:corals"]
-
-  public val BLOCK_CROPS: Tag = BlockTagRegistry["minecraft:crops"]
-
-  public val BLOCK_REPLACEABLE_BY_MUSHROOMS: Tag =
-      BlockTagRegistry["minecraft:replaceable_by_mushrooms"]
-
-  public val BLOCK_WALL_POST_OVERRIDE: Tag = BlockTagRegistry["minecraft:wall_post_override"]
-
-  public val BLOCK_SPRUCE_LOGS: Tag = BlockTagRegistry["minecraft:spruce_logs"]
-
-  public val BLOCK_CANDLES: Tag = BlockTagRegistry["minecraft:candles"]
-
-  public val BLOCK_DOES_NOT_BLOCK_HOPPERS: Tag =
-      BlockTagRegistry["minecraft:does_not_block_hoppers"]
-
-  public val BLOCK_CRIMSON_STEMS: Tag = BlockTagRegistry["minecraft:crimson_stems"]
-
-  public val BLOCK_DRY_VEGETATION_MAY_PLACE_ON: Tag =
-      BlockTagRegistry["minecraft:dry_vegetation_may_place_on"]
-
-  public val BLOCK_HAPPY_GHAST_AVOIDS: Tag = BlockTagRegistry["minecraft:happy_ghast_avoids"]
-
-  public val BLOCK_STONE_ORE_REPLACEABLES: Tag =
-      BlockTagRegistry["minecraft:stone_ore_replaceables"]
-
-  public val BLOCK_WALL_HANGING_SIGNS: Tag = BlockTagRegistry["minecraft:wall_hanging_signs"]
-
-  public val BLOCK_INFINIBURN_END: Tag = BlockTagRegistry["minecraft:infiniburn_end"]
-
-  public val BLOCK_INCORRECT_FOR_NETHERITE_TOOL: Tag =
-      BlockTagRegistry["minecraft:incorrect_for_netherite_tool"]
-
-  public val BLOCK_SMELTS_TO_GLASS: Tag = BlockTagRegistry["minecraft:smelts_to_glass"]
-
-  public val BLOCK_AIR: Tag = BlockTagRegistry["minecraft:air"]
-
-  public val BLOCK_INCORRECT_FOR_IRON_TOOL: Tag =
-      BlockTagRegistry["minecraft:incorrect_for_iron_tool"]
-
-  public val BLOCK_SHULKER_BOXES: Tag = BlockTagRegistry["minecraft:shulker_boxes"]
-
-  public val BLOCK_MAINTAINS_FARMLAND: Tag = BlockTagRegistry["minecraft:maintains_farmland"]
-
-  public val BLOCK_BASE_STONE_NETHER: Tag = BlockTagRegistry["minecraft:base_stone_nether"]
-
-  public val BLOCK_GOATS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:goats_spawnable_on"]
-
-  public val BLOCK_CONVERTABLE_TO_MUD: Tag = BlockTagRegistry["minecraft:convertable_to_mud"]
-
-  public val BLOCK_EMERALD_ORES: Tag = BlockTagRegistry["minecraft:emerald_ores"]
-
-  public val BLOCK_SNIFFER_DIGGABLE_BLOCK: Tag =
-      BlockTagRegistry["minecraft:sniffer_diggable_block"]
-
-  public val BLOCK_ARMADILLO_SPAWNABLE_ON: Tag =
-      BlockTagRegistry["minecraft:armadillo_spawnable_on"]
-
-  public val BLOCK_BASE_STONE_OVERWORLD: Tag = BlockTagRegistry["minecraft:base_stone_overworld"]
-
-  public val BLOCK_INCORRECT_FOR_GOLD_TOOL: Tag =
-      BlockTagRegistry["minecraft:incorrect_for_gold_tool"]
-
-  public val BLOCK_VALID_SPAWN: Tag = BlockTagRegistry["minecraft:valid_spawn"]
-
-  public val BLOCK_WARPED_STEMS: Tag = BlockTagRegistry["minecraft:warped_stems"]
-
-  public val BLOCK_BAMBOO_BLOCKS: Tag = BlockTagRegistry["minecraft:bamboo_blocks"]
-
-  public val BLOCK_CAMELS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:camels_spawnable_on"]
-
-  public val BLOCK_AZALEA_ROOT_REPLACEABLE: Tag =
-      BlockTagRegistry["minecraft:azalea_root_replaceable"]
-
-  public val BLOCK_CAMPFIRES: Tag = BlockTagRegistry["minecraft:campfires"]
-
-  public val BLOCK_SWORD_EFFICIENT: Tag = BlockTagRegistry["minecraft:sword_efficient"]
-
-  public val BLOCK_STRIDER_WARM_BLOCKS: Tag = BlockTagRegistry["minecraft:strider_warm_blocks"]
-
-  public val BLOCK_SLABS: Tag = BlockTagRegistry["minecraft:slabs"]
-
-  public val BLOCK_INCORRECT_FOR_DIAMOND_TOOL: Tag =
-      BlockTagRegistry["minecraft:incorrect_for_diamond_tool"]
-
-  public val BLOCK_PRESSURE_PLATES: Tag = BlockTagRegistry["minecraft:pressure_plates"]
-
-  public val BLOCK_CRYSTAL_SOUND_BLOCKS: Tag = BlockTagRegistry["minecraft:crystal_sound_blocks"]
-
-  public val BLOCK_SNIFFER_EGG_HATCH_BOOST: Tag =
-      BlockTagRegistry["minecraft:sniffer_egg_hatch_boost"]
-
-  public val BLOCK_NYLIUM: Tag = BlockTagRegistry["minecraft:nylium"]
-
-  public val BLOCK_DRAGON_TRANSPARENT: Tag = BlockTagRegistry["minecraft:dragon_transparent"]
+  public val BLOCK_PORTALS: Tag = BlockTagRegistry["minecraft:portals"]
 
   public val BLOCK_DEEPSLATE_ORE_REPLACEABLES: Tag =
       BlockTagRegistry["minecraft:deepslate_ore_replaceables"]
 
-  public val BLOCK_MOOSHROOMS_SPAWNABLE_ON: Tag =
-      BlockTagRegistry["minecraft:mooshrooms_spawnable_on"]
-
-  public val BLOCK_NEEDS_STONE_TOOL: Tag = BlockTagRegistry["minecraft:needs_stone_tool"]
-
-  public val BLOCK_FENCE_GATES: Tag = BlockTagRegistry["minecraft:fence_gates"]
-
-  public val BLOCK_COAL_ORES: Tag = BlockTagRegistry["minecraft:coal_ores"]
-
-  public val BLOCK_TRAIL_RUINS_REPLACEABLE: Tag =
-      BlockTagRegistry["minecraft:trail_ruins_replaceable"]
-
-  public val BLOCK_WART_BLOCKS: Tag = BlockTagRegistry["minecraft:wart_blocks"]
-
-  public val BLOCK_JUNGLE_LOGS: Tag = BlockTagRegistry["minecraft:jungle_logs"]
-
-  public val BLOCK_ACACIA_LOGS: Tag = BlockTagRegistry["minecraft:acacia_logs"]
-
-  public val BLOCK_ANCIENT_CITY_REPLACEABLE: Tag =
-      BlockTagRegistry["minecraft:ancient_city_replaceable"]
-
-  public val BLOCK_VIBRATION_RESONATORS: Tag = BlockTagRegistry["minecraft:vibration_resonators"]
-
   public val BLOCK_SNOW_LAYER_CANNOT_SURVIVE_ON: Tag =
       BlockTagRegistry["minecraft:snow_layer_cannot_survive_on"]
 
-  public val BLOCK_CORAL_PLANTS: Tag = BlockTagRegistry["minecraft:coral_plants"]
+  public val BLOCK_FIRE: Tag = BlockTagRegistry["minecraft:fire"]
 
-  public val BLOCK_LAVA_POOL_STONE_CANNOT_REPLACE: Tag =
-      BlockTagRegistry["minecraft:lava_pool_stone_cannot_replace"]
+  public val BLOCK_RABBITS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:rabbits_spawnable_on"]
 
-  public val BLOCK_LUSH_GROUND_REPLACEABLE: Tag =
-      BlockTagRegistry["minecraft:lush_ground_replaceable"]
+  public val BLOCK_NYLIUM: Tag = BlockTagRegistry["minecraft:nylium"]
 
-  public val BLOCK_SAPLINGS: Tag = BlockTagRegistry["minecraft:saplings"]
+  public val BLOCK_INCORRECT_FOR_STONE_TOOL: Tag =
+      BlockTagRegistry["minecraft:incorrect_for_stone_tool"]
 
-  public val BLOCK_COMPLETES_FIND_TREE_TUTORIAL: Tag =
-      BlockTagRegistry["minecraft:completes_find_tree_tutorial"]
+  public val BLOCK_WART_BLOCKS: Tag = BlockTagRegistry["minecraft:wart_blocks"]
 
-  public val BLOCK_ALL_HANGING_SIGNS: Tag = BlockTagRegistry["minecraft:all_hanging_signs"]
+  public val BLOCK_CROPS: Tag = BlockTagRegistry["minecraft:crops"]
 
-  public val BLOCK_SNOW: Tag = BlockTagRegistry["minecraft:snow"]
+  public val BLOCK_SAND: Tag = BlockTagRegistry["minecraft:sand"]
 
-  public val BLOCK_SCULK_REPLACEABLE_WORLD_GEN: Tag =
-      BlockTagRegistry["minecraft:sculk_replaceable_world_gen"]
-
-  public val BLOCK_UNDERWATER_BONEMEALS: Tag = BlockTagRegistry["minecraft:underwater_bonemeals"]
-
-  public val BLOCK_AZALEA_GROWS_ON: Tag = BlockTagRegistry["minecraft:azalea_grows_on"]
-
-  public val BLOCK_RAILS: Tag = BlockTagRegistry["minecraft:rails"]
-
-  public val BLOCK_SOUL_FIRE_BASE_BLOCKS: Tag = BlockTagRegistry["minecraft:soul_fire_base_blocks"]
-
-  public val BLOCK_WOODEN_BUTTONS: Tag = BlockTagRegistry["minecraft:wooden_buttons"]
-
-  public val BLOCK_REDSTONE_ORES: Tag = BlockTagRegistry["minecraft:redstone_ores"]
-
-  public val BLOCK_MANGROVE_ROOTS_CAN_GROW_THROUGH: Tag =
-      BlockTagRegistry["minecraft:mangrove_roots_can_grow_through"]
-
-  public val BLOCK_BEE_ATTRACTIVE: Tag = BlockTagRegistry["minecraft:bee_attractive"]
-
-  public val BLOCK_BAMBOO_PLANTABLE_ON: Tag = BlockTagRegistry["minecraft:bamboo_plantable_on"]
-
-  public val BLOCK_TRIGGERS_AMBIENT_DESERT_SAND_BLOCK_SOUNDS: Tag =
-      BlockTagRegistry["minecraft:triggers_ambient_desert_sand_block_sounds"]
-
-  public val BLOCK_CANDLE_CAKES: Tag = BlockTagRegistry["minecraft:candle_cakes"]
-
-  public val BLOCK_GOLD_ORES: Tag = BlockTagRegistry["minecraft:gold_ores"]
-
-  public val BLOCK_TRIGGERS_AMBIENT_DESERT_DRY_VEGETATION_BLOCK_SOUNDS: Tag =
-      BlockTagRegistry["minecraft:triggers_ambient_desert_dry_vegetation_block_sounds"]
-
-  public val BLOCK_WOODEN_DOORS: Tag = BlockTagRegistry["minecraft:wooden_doors"]
-
-  public val BLOCK_ALL_SIGNS: Tag = BlockTagRegistry["minecraft:all_signs"]
-
-  public val BLOCK_WALLS: Tag = BlockTagRegistry["minecraft:walls"]
-
-  public val BLOCK_CAULDRONS: Tag = BlockTagRegistry["minecraft:cauldrons"]
-
-  public val BLOCK_UNSTABLE_BOTTOM_CENTER: Tag =
-      BlockTagRegistry["minecraft:unstable_bottom_center"]
-
-  public val BLOCK_FENCES: Tag = BlockTagRegistry["minecraft:fences"]
-
-  public val BLOCK_LEAVES: Tag = BlockTagRegistry["minecraft:leaves"]
-
-  public val BLOCK_BATS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:bats_spawnable_on"]
-
-  public val BLOCK_FOXES_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:foxes_spawnable_on"]
-
-  public val BLOCK_STONE_BRICKS: Tag = BlockTagRegistry["minecraft:stone_bricks"]
+  public val BLOCK_CAMEL_SAND_STEP_SOUND_BLOCKS: Tag =
+      BlockTagRegistry["minecraft:camel_sand_step_sound_blocks"]
 
   public val BLOCK_MUSHROOM_GROW_BLOCK: Tag = BlockTagRegistry["minecraft:mushroom_grow_block"]
 
-  public val BLOCK_SMALL_FLOWERS: Tag = BlockTagRegistry["minecraft:small_flowers"]
-
   public val BLOCK_STAIRS: Tag = BlockTagRegistry["minecraft:stairs"]
+
+  public val BLOCK_PREVENT_MOB_SPAWNING_INSIDE: Tag =
+      BlockTagRegistry["minecraft:prevent_mob_spawning_inside"]
+
+  public val BLOCK_INCORRECT_FOR_DIAMOND_TOOL: Tag =
+      BlockTagRegistry["minecraft:incorrect_for_diamond_tool"]
+
+  public val BLOCK_STANDING_SIGNS: Tag = BlockTagRegistry["minecraft:standing_signs"]
+
+  public val BLOCK_STONE_BRICKS: Tag = BlockTagRegistry["minecraft:stone_bricks"]
+
+  public val BLOCK_SOUL_SPEED_BLOCKS: Tag = BlockTagRegistry["minecraft:soul_speed_blocks"]
+
+  public val BLOCK_AZALEA_GROWS_ON: Tag = BlockTagRegistry["minecraft:azalea_grows_on"]
+
+  public val BLOCK_BASE_STONE_NETHER: Tag = BlockTagRegistry["minecraft:base_stone_nether"]
+
+  public val BLOCK_CHERRY_LOGS: Tag = BlockTagRegistry["minecraft:cherry_logs"]
+
+  public val BLOCK_BANNERS: Tag = BlockTagRegistry["minecraft:banners"]
+
+  public val BLOCK_WOODEN_PRESSURE_PLATES: Tag =
+      BlockTagRegistry["minecraft:wooden_pressure_plates"]
+
+  public val BLOCK_EMERALD_ORES: Tag = BlockTagRegistry["minecraft:emerald_ores"]
+
+  public val BLOCK_LOGS: Tag = BlockTagRegistry["minecraft:logs"]
+
+  public val BLOCK_COPPER_CHESTS: Tag = BlockTagRegistry["minecraft:copper_chests"]
 
   public val BLOCK_ENCHANTMENT_POWER_TRANSMITTER: Tag =
       BlockTagRegistry["minecraft:enchantment_power_transmitter"]
 
-  public val BLOCK_BEACON_BASE_BLOCKS: Tag = BlockTagRegistry["minecraft:beacon_base_blocks"]
+  public val BLOCK_OVERWORLD_NATURAL_LOGS: Tag =
+      BlockTagRegistry["minecraft:overworld_natural_logs"]
 
-  public val BLOCK_WOODEN_TRAPDOORS: Tag = BlockTagRegistry["minecraft:wooden_trapdoors"]
+  public val BLOCK_INFINIBURN_OVERWORLD: Tag = BlockTagRegistry["minecraft:infiniburn_overworld"]
+
+  public val BLOCK_BARS: Tag = BlockTagRegistry["minecraft:bars"]
+
+  public val BLOCK_UNDERWATER_BONEMEALS: Tag = BlockTagRegistry["minecraft:underwater_bonemeals"]
+
+  public val BLOCK_NETHER_CARVER_REPLACEABLES: Tag =
+      BlockTagRegistry["minecraft:nether_carver_replaceables"]
+
+  public val BLOCK_ANVIL: Tag = BlockTagRegistry["minecraft:anvil"]
+
+  public val BLOCK_WALLS: Tag = BlockTagRegistry["minecraft:walls"]
+
+  public val BLOCK_BAMBOO_BLOCKS: Tag = BlockTagRegistry["minecraft:bamboo_blocks"]
+
+  public val BLOCK_MOOSHROOMS_SPAWNABLE_ON: Tag =
+      BlockTagRegistry["minecraft:mooshrooms_spawnable_on"]
+
+  public val BLOCK_WOODEN_SHELVES: Tag = BlockTagRegistry["minecraft:wooden_shelves"]
+
+  public val BLOCK_SIGNS: Tag = BlockTagRegistry["minecraft:signs"]
+
+  public val BLOCK_SCULK_REPLACEABLE: Tag = BlockTagRegistry["minecraft:sculk_replaceable"]
+
+  public val BLOCK_PLANKS: Tag = BlockTagRegistry["minecraft:planks"]
+
+  public val BLOCK_COMPLETES_FIND_TREE_TUTORIAL: Tag =
+      BlockTagRegistry["minecraft:completes_find_tree_tutorial"]
+
+  public val BLOCK_SAPLINGS: Tag = BlockTagRegistry["minecraft:saplings"]
+
+  public val BLOCK_HOGLIN_REPELLENTS: Tag = BlockTagRegistry["minecraft:hoglin_repellents"]
+
+  public val BLOCK_DIAMOND_ORES: Tag = BlockTagRegistry["minecraft:diamond_ores"]
+
+  public val BLOCK_WOODEN_STAIRS: Tag = BlockTagRegistry["minecraft:wooden_stairs"]
+
+  public val BLOCK_FROGS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:frogs_spawnable_on"]
+
+  public val BLOCK_WOODEN_DOORS: Tag = BlockTagRegistry["minecraft:wooden_doors"]
+
+  public val BLOCK_CRYSTAL_SOUND_BLOCKS: Tag = BlockTagRegistry["minecraft:crystal_sound_blocks"]
+
+  public val BLOCK_STONE_BUTTONS: Tag = BlockTagRegistry["minecraft:stone_buttons"]
+
+  public val BLOCK_COPPER: Tag = BlockTagRegistry["minecraft:copper"]
+
+  public val BLOCK_BLOCKS_WIND_CHARGE_EXPLOSIONS: Tag =
+      BlockTagRegistry["minecraft:blocks_wind_charge_explosions"]
+
+  public val BLOCK_SNIFFER_EGG_HATCH_BOOST: Tag =
+      BlockTagRegistry["minecraft:sniffer_egg_hatch_boost"]
+
+  public val BLOCK_LUSH_GROUND_REPLACEABLE: Tag =
+      BlockTagRegistry["minecraft:lush_ground_replaceable"]
 
   public val BLOCK_ENCHANTMENT_POWER_PROVIDER: Tag =
       BlockTagRegistry["minecraft:enchantment_power_provider"]
 
-  public val BLOCK_COPPER_ORES: Tag = BlockTagRegistry["minecraft:copper_ores"]
+  public val BLOCK_GOLD_ORES: Tag = BlockTagRegistry["minecraft:gold_ores"]
+
+  public val BLOCK_EDIBLE_FOR_SHEEP: Tag = BlockTagRegistry["minecraft:edible_for_sheep"]
+
+  public val BLOCK_BEE_GROWABLES: Tag = BlockTagRegistry["minecraft:bee_growables"]
+
+  public val BLOCK_STONE_PRESSURE_PLATES: Tag = BlockTagRegistry["minecraft:stone_pressure_plates"]
+
+  public val BLOCK_SPRUCE_LOGS: Tag = BlockTagRegistry["minecraft:spruce_logs"]
+
+  public val BLOCK_INFINIBURN_END: Tag = BlockTagRegistry["minecraft:infiniburn_end"]
+
+  public val BLOCK_WOOL: Tag = BlockTagRegistry["minecraft:wool"]
+
+  public val BLOCK_SMELTS_TO_GLASS: Tag = BlockTagRegistry["minecraft:smelts_to_glass"]
+
+  public val BLOCK_ARMADILLO_SPAWNABLE_ON: Tag =
+      BlockTagRegistry["minecraft:armadillo_spawnable_on"]
+
+  public val BLOCK_OAK_LOGS: Tag = BlockTagRegistry["minecraft:oak_logs"]
+
+  public val BLOCK_TRAIL_RUINS_REPLACEABLE: Tag =
+      BlockTagRegistry["minecraft:trail_ruins_replaceable"]
+
+  public val BLOCK_ICE: Tag = BlockTagRegistry["minecraft:ice"]
+
+  public val BLOCK_DOORS: Tag = BlockTagRegistry["minecraft:doors"]
+
+  public val BLOCK_PALE_OAK_LOGS: Tag = BlockTagRegistry["minecraft:pale_oak_logs"]
+
+  public val BLOCK_WALL_SIGNS: Tag = BlockTagRegistry["minecraft:wall_signs"]
+
+  public val BLOCK_WOODEN_SLABS: Tag = BlockTagRegistry["minecraft:wooden_slabs"]
+
+  public val BLOCK_REPLACEABLE_BY_MUSHROOMS: Tag =
+      BlockTagRegistry["minecraft:replaceable_by_mushrooms"]
+
+  public val BLOCK_INCORRECT_FOR_IRON_TOOL: Tag =
+      BlockTagRegistry["minecraft:incorrect_for_iron_tool"]
+
+  public val BLOCK_INCORRECT_FOR_COPPER_TOOL: Tag =
+      BlockTagRegistry["minecraft:incorrect_for_copper_tool"]
+
+  public val BLOCK_SCULK_REPLACEABLE_WORLD_GEN: Tag =
+      BlockTagRegistry["minecraft:sculk_replaceable_world_gen"]
+
+  public val BLOCK_SMALL_DRIPLEAF_PLACEABLE: Tag =
+      BlockTagRegistry["minecraft:small_dripleaf_placeable"]
+
+  public val BLOCK_FROG_PREFER_JUMP_TO: Tag = BlockTagRegistry["minecraft:frog_prefer_jump_to"]
+
+  public val BLOCK_TRAPDOORS: Tag = BlockTagRegistry["minecraft:trapdoors"]
+
+  public val BLOCK_OVERWORLD_CARVER_REPLACEABLES: Tag =
+      BlockTagRegistry["minecraft:overworld_carver_replaceables"]
+
+  public val BLOCK_STONE_ORE_REPLACEABLES: Tag =
+      BlockTagRegistry["minecraft:stone_ore_replaceables"]
+
+  public val BLOCK_RAILS: Tag = BlockTagRegistry["minecraft:rails"]
+
+  public val BLOCK_DRIPSTONE_REPLACEABLE_BLOCKS: Tag =
+      BlockTagRegistry["minecraft:dripstone_replaceable_blocks"]
+
+  public val BLOCK_FLOWER_POTS: Tag = BlockTagRegistry["minecraft:flower_pots"]
+
+  public val BLOCK_ANCIENT_CITY_REPLACEABLE: Tag =
+      BlockTagRegistry["minecraft:ancient_city_replaceable"]
+
+  public val BLOCK_WOODEN_BUTTONS: Tag = BlockTagRegistry["minecraft:wooden_buttons"]
+
+  public val BLOCK_GOATS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:goats_spawnable_on"]
+
+  public val BLOCK_SMALL_FLOWERS: Tag = BlockTagRegistry["minecraft:small_flowers"]
+
+  public val BLOCK_INFINIBURN_NETHER: Tag = BlockTagRegistry["minecraft:infiniburn_nether"]
 
   public val BLOCK_DARK_OAK_LOGS: Tag = BlockTagRegistry["minecraft:dark_oak_logs"]
+
+  public val BLOCK_DOES_NOT_BLOCK_HOPPERS: Tag =
+      BlockTagRegistry["minecraft:does_not_block_hoppers"]
+
+  public val BLOCK_SNOW_LAYER_CAN_SURVIVE_ON: Tag =
+      BlockTagRegistry["minecraft:snow_layer_can_survive_on"]
+
+  public val BLOCK_MOB_INTERACTABLE_DOORS: Tag =
+      BlockTagRegistry["minecraft:mob_interactable_doors"]
+
+  public val BLOCK_SHULKER_BOXES: Tag = BlockTagRegistry["minecraft:shulker_boxes"]
+
+  public val BLOCK_COPPER_ORES: Tag = BlockTagRegistry["minecraft:copper_ores"]
+
+  public val BLOCK_BAMBOO_PLANTABLE_ON: Tag = BlockTagRegistry["minecraft:bamboo_plantable_on"]
+
+  public val BLOCK_VALID_SPAWN: Tag = BlockTagRegistry["minecraft:valid_spawn"]
+
+  public val BLOCK_CORALS: Tag = BlockTagRegistry["minecraft:corals"]
+
+  public val BLOCK_WARPED_STEMS: Tag = BlockTagRegistry["minecraft:warped_stems"]
+
+  public val BLOCK_POLAR_BEARS_SPAWNABLE_ON_ALTERNATE: Tag =
+      BlockTagRegistry["minecraft:polar_bears_spawnable_on_alternate"]
+
+  public val BLOCK_HAPPY_GHAST_AVOIDS: Tag = BlockTagRegistry["minecraft:happy_ghast_avoids"]
+
+  public val BLOCK_NEEDS_STONE_TOOL: Tag = BlockTagRegistry["minecraft:needs_stone_tool"]
+
+  public val BLOCK_DAMPENS_VIBRATIONS: Tag = BlockTagRegistry["minecraft:dampens_vibrations"]
+
+  public val BLOCK_DRAGON_TRANSPARENT: Tag = BlockTagRegistry["minecraft:dragon_transparent"]
+
+  public val BLOCK_CEILING_HANGING_SIGNS: Tag = BlockTagRegistry["minecraft:ceiling_hanging_signs"]
+
+  public val BLOCK_WITHER_IMMUNE: Tag = BlockTagRegistry["minecraft:wither_immune"]
+
+  public val BLOCK_GUARDED_BY_PIGLINS: Tag = BlockTagRegistry["minecraft:guarded_by_piglins"]
+
+  public val BLOCK_COPPER_GOLEM_STATUES: Tag = BlockTagRegistry["minecraft:copper_golem_statues"]
+
+  public val BLOCK_BIG_DRIPLEAF_PLACEABLE: Tag =
+      BlockTagRegistry["minecraft:big_dripleaf_placeable"]
+
+  public val BLOCK_LEAVES: Tag = BlockTagRegistry["minecraft:leaves"]
+
+  public val BLOCK_LOGS_THAT_BURN: Tag = BlockTagRegistry["minecraft:logs_that_burn"]
+
+  public val BLOCK_FENCE_GATES: Tag = BlockTagRegistry["minecraft:fence_gates"]
+
+  public val BLOCK_FOXES_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:foxes_spawnable_on"]
+
+  public val BLOCK_BEEHIVES: Tag = BlockTagRegistry["minecraft:beehives"]
+
+  public val BLOCK_INCORRECT_FOR_GOLD_TOOL: Tag =
+      BlockTagRegistry["minecraft:incorrect_for_gold_tool"]
+
+  public val BLOCK_INCORRECT_FOR_WOODEN_TOOL: Tag =
+      BlockTagRegistry["minecraft:incorrect_for_wooden_tool"]
+
+  public val BLOCK_CANDLE_CAKES: Tag = BlockTagRegistry["minecraft:candle_cakes"]
+
+  public val BLOCK_FALL_DAMAGE_RESETTING: Tag = BlockTagRegistry["minecraft:fall_damage_resetting"]
+
+  public val BLOCK_CORAL_PLANTS: Tag = BlockTagRegistry["minecraft:coral_plants"]
+
+  public val BLOCK_ALL_SIGNS: Tag = BlockTagRegistry["minecraft:all_signs"]
+
+  public val BLOCK_CHAINS: Tag = BlockTagRegistry["minecraft:chains"]
+
+  public val BLOCK_DRAGON_IMMUNE: Tag = BlockTagRegistry["minecraft:dragon_immune"]
+
+  public val BLOCK_REPLACEABLE: Tag = BlockTagRegistry["minecraft:replaceable"]
+
+  public val BLOCK_CONCRETE_POWDER: Tag = BlockTagRegistry["minecraft:concrete_powder"]
+
+  public val BLOCK_LAPIS_ORES: Tag = BlockTagRegistry["minecraft:lapis_ores"]
+
+  public val BLOCK_UNSTABLE_BOTTOM_CENTER: Tag =
+      BlockTagRegistry["minecraft:unstable_bottom_center"]
+
+  public val BLOCK_BADLANDS_TERRACOTTA: Tag = BlockTagRegistry["minecraft:badlands_terracotta"]
+
+  public val BLOCK_BATS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:bats_spawnable_on"]
+
+  public val BLOCK_ALL_HANGING_SIGNS: Tag = BlockTagRegistry["minecraft:all_hanging_signs"]
+
+  public val BLOCK_PARROTS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:parrots_spawnable_on"]
+
+  public val BLOCK_CONVERTABLE_TO_MUD: Tag = BlockTagRegistry["minecraft:convertable_to_mud"]
+
+  public val BLOCK_IMPERMEABLE: Tag = BlockTagRegistry["minecraft:impermeable"]
+
+  public val BLOCK_MOSS_REPLACEABLE: Tag = BlockTagRegistry["minecraft:moss_replaceable"]
+
+  public val BLOCK_WOODEN_TRAPDOORS: Tag = BlockTagRegistry["minecraft:wooden_trapdoors"]
+
+  public val BLOCK_SNIFFER_DIGGABLE_BLOCK: Tag =
+      BlockTagRegistry["minecraft:sniffer_diggable_block"]
+
+  public val BLOCK_AXOLOTLS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:axolotls_spawnable_on"]
+
+  public val BLOCK_BEDS: Tag = BlockTagRegistry["minecraft:beds"]
+
+  public val BLOCK_LAVA_POOL_STONE_CANNOT_REPLACE: Tag =
+      BlockTagRegistry["minecraft:lava_pool_stone_cannot_replace"]
+
+  public val BLOCK_ANIMALS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:animals_spawnable_on"]
+
+  public val BLOCK_JUNGLE_LOGS: Tag = BlockTagRegistry["minecraft:jungle_logs"]
+
+  public val BLOCK_WOLVES_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:wolves_spawnable_on"]
+
+  public val BLOCK_LIGHTNING_RODS: Tag = BlockTagRegistry["minecraft:lightning_rods"]
+
+  public val BLOCK_SNOW: Tag = BlockTagRegistry["minecraft:snow"]
+
+  public val BLOCK_TRIGGERS_AMBIENT_DESERT_SAND_BLOCK_SOUNDS: Tag =
+      BlockTagRegistry["minecraft:triggers_ambient_desert_sand_block_sounds"]
+
+  public val BLOCK_FENCES: Tag = BlockTagRegistry["minecraft:fences"]
+
+  public val BLOCK_SNAPS_GOAT_HORN: Tag = BlockTagRegistry["minecraft:snaps_goat_horn"]
+
+  public val BLOCK_WOOL_CARPETS: Tag = BlockTagRegistry["minecraft:wool_carpets"]
+
+  public val BLOCK_MAINTAINS_FARMLAND: Tag = BlockTagRegistry["minecraft:maintains_farmland"]
+
+  public val BLOCK_IRON_ORES: Tag = BlockTagRegistry["minecraft:iron_ores"]
+
+  public val BLOCK_BEACON_BASE_BLOCKS: Tag = BlockTagRegistry["minecraft:beacon_base_blocks"]
+
+  public val BLOCK_INSIDE_STEP_SOUND_BLOCKS: Tag =
+      BlockTagRegistry["minecraft:inside_step_sound_blocks"]
+
+  public val BLOCK_CLIMBABLE: Tag = BlockTagRegistry["minecraft:climbable"]
+
+  public val BLOCK_FLOWERS: Tag = BlockTagRegistry["minecraft:flowers"]
+
+  public val BLOCK_DRY_VEGETATION_MAY_PLACE_ON: Tag =
+      BlockTagRegistry["minecraft:dry_vegetation_may_place_on"]
+
+  public val BLOCK_INVALID_SPAWN_INSIDE: Tag = BlockTagRegistry["minecraft:invalid_spawn_inside"]
+
+  public val BLOCK_OCCLUDES_VIBRATION_SIGNALS: Tag =
+      BlockTagRegistry["minecraft:occludes_vibration_signals"]
+
+  public val BLOCK_CAMELS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:camels_spawnable_on"]
+
+  public val BLOCK_INCORRECT_FOR_NETHERITE_TOOL: Tag =
+      BlockTagRegistry["minecraft:incorrect_for_netherite_tool"]
+
+  public val BLOCK_COAL_ORES: Tag = BlockTagRegistry["minecraft:coal_ores"]
+
+  public val BLOCK_SLABS: Tag = BlockTagRegistry["minecraft:slabs"]
+
+  public val BLOCK_WALL_CORALS: Tag = BlockTagRegistry["minecraft:wall_corals"]
+
+  public val BLOCK_COMBINATION_STEP_SOUND_BLOCKS: Tag =
+      BlockTagRegistry["minecraft:combination_step_sound_blocks"]
+
+  public val BLOCK_CAMPFIRES: Tag = BlockTagRegistry["minecraft:campfires"]
+
+  public val BLOCK_CANDLES: Tag = BlockTagRegistry["minecraft:candles"]
+
+  public val BLOCK_FEATURES_CANNOT_REPLACE: Tag =
+      BlockTagRegistry["minecraft:features_cannot_replace"]
+
+  public val BLOCK_WALL_POST_OVERRIDE: Tag = BlockTagRegistry["minecraft:wall_post_override"]
+
+  public val BLOCK_TRIGGERS_AMBIENT_DRIED_GHAST_BLOCK_SOUNDS: Tag =
+      BlockTagRegistry["minecraft:triggers_ambient_dried_ghast_block_sounds"]
+
+  public val BLOCK_MANGROVE_LOGS_CAN_GROW_THROUGH: Tag =
+      BlockTagRegistry["minecraft:mangrove_logs_can_grow_through"]
+
+  public val BLOCK_WITHER_SUMMON_BASE_BLOCKS: Tag =
+      BlockTagRegistry["minecraft:wither_summon_base_blocks"]
+
+  public val BLOCK_ENDERMAN_HOLDABLE: Tag = BlockTagRegistry["minecraft:enderman_holdable"]
+
+  public val BLOCK_ACACIA_LOGS: Tag = BlockTagRegistry["minecraft:acacia_logs"]
+
+  public val BLOCK_SWORD_INSTANTLY_MINES: Tag = BlockTagRegistry["minecraft:sword_instantly_mines"]
+
+  public val BLOCK_BUTTONS: Tag = BlockTagRegistry["minecraft:buttons"]
+
+  public val BLOCK_CAVE_VINES: Tag = BlockTagRegistry["minecraft:cave_vines"]
+
+  public val BLOCK_TRIGGERS_AMBIENT_DESERT_DRY_VEGETATION_BLOCK_SOUNDS: Tag =
+      BlockTagRegistry["minecraft:triggers_ambient_desert_dry_vegetation_block_sounds"]
+
+  public val BLOCK_BIRCH_LOGS: Tag = BlockTagRegistry["minecraft:birch_logs"]
+
+  public val BLOCK_STRIDER_WARM_BLOCKS: Tag = BlockTagRegistry["minecraft:strider_warm_blocks"]
+
+  public val BLOCK_PIGLIN_REPELLENTS: Tag = BlockTagRegistry["minecraft:piglin_repellents"]
+
+  public val BLOCK_WALL_HANGING_SIGNS: Tag = BlockTagRegistry["minecraft:wall_hanging_signs"]
+
+  public val BLOCK_AIR: Tag = BlockTagRegistry["minecraft:air"]
+
+  public val BLOCK_SWORD_EFFICIENT: Tag = BlockTagRegistry["minecraft:sword_efficient"]
+
+  public val BLOCK_AZALEA_ROOT_REPLACEABLE: Tag =
+      BlockTagRegistry["minecraft:azalea_root_replaceable"]
+
+  public val BLOCK_BEE_ATTRACTIVE: Tag = BlockTagRegistry["minecraft:bee_attractive"]
+
+  public val BLOCK_REPLACEABLE_BY_TREES: Tag = BlockTagRegistry["minecraft:replaceable_by_trees"]
+
+  public val BLOCK_TERRACOTTA: Tag = BlockTagRegistry["minecraft:terracotta"]
 
   public val BLOCK_MINEABLE_HOE: Tag = BlockTagRegistry["minecraft:mineable/hoe"]
 
   public val BLOCK_MINEABLE_AXE: Tag = BlockTagRegistry["minecraft:mineable/axe"]
 
-  public val BLOCK_MINEABLE_PICKAXE: Tag = BlockTagRegistry["minecraft:mineable/pickaxe"]
-
   public val BLOCK_MINEABLE_SHOVEL: Tag = BlockTagRegistry["minecraft:mineable/shovel"]
 
-  public val BLOCK_MANGROVE_LOGS: Tag = BlockTagRegistry["minecraft:mangrove_logs"]
+  public val BLOCK_MINEABLE_PICKAXE: Tag = BlockTagRegistry["minecraft:mineable/pickaxe"]
 
-  public val BLOCK_INSIDE_STEP_SOUND_BLOCKS: Tag =
-      BlockTagRegistry["minecraft:inside_step_sound_blocks"]
-
-  public val BLOCK_SAND: Tag = BlockTagRegistry["minecraft:sand"]
-
-  public val BLOCK_FLOWER_POTS: Tag = BlockTagRegistry["minecraft:flower_pots"]
-
-  public val BLOCK_INFINIBURN_NETHER: Tag = BlockTagRegistry["minecraft:infiniburn_nether"]
-
-  public val BLOCK_WOODEN_SLABS: Tag = BlockTagRegistry["minecraft:wooden_slabs"]
-
-  public val BLOCK_AXOLOTLS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:axolotls_spawnable_on"]
-
-  public val BLOCK_CHERRY_LOGS: Tag = BlockTagRegistry["minecraft:cherry_logs"]
-
-  public val BLOCK_TRIGGERS_AMBIENT_DRIED_GHAST_BLOCK_SOUNDS: Tag =
-      BlockTagRegistry["minecraft:triggers_ambient_dried_ghast_block_sounds"]
-
-  public val BLOCK_OVERWORLD_CARVER_REPLACEABLES: Tag =
-      BlockTagRegistry["minecraft:overworld_carver_replaceables"]
-
-  public val BLOCK_SIGNS: Tag = BlockTagRegistry["minecraft:signs"]
-
-  public val BLOCK_TRAPDOORS: Tag = BlockTagRegistry["minecraft:trapdoors"]
-
-  public val BLOCK_WITHER_SUMMON_BASE_BLOCKS: Tag =
-      BlockTagRegistry["minecraft:wither_summon_base_blocks"]
-
-  public val BLOCK_PALE_OAK_LOGS: Tag = BlockTagRegistry["minecraft:pale_oak_logs"]
-
-  public val BLOCK_WOODEN_PRESSURE_PLATES: Tag =
-      BlockTagRegistry["minecraft:wooden_pressure_plates"]
+  public val BLOCK_BASE_STONE_OVERWORLD: Tag = BlockTagRegistry["minecraft:base_stone_overworld"]
 
   public val BLOCK_NEEDS_IRON_TOOL: Tag = BlockTagRegistry["minecraft:needs_iron_tool"]
 
-  public val BLOCK_CAVE_VINES: Tag = BlockTagRegistry["minecraft:cave_vines"]
-
-  public val BLOCK_WOOL_CARPETS: Tag = BlockTagRegistry["minecraft:wool_carpets"]
-
-  public val BLOCK_FEATURES_CANNOT_REPLACE: Tag =
-      BlockTagRegistry["minecraft:features_cannot_replace"]
-
-  public val BLOCK_STONE_PRESSURE_PLATES: Tag = BlockTagRegistry["minecraft:stone_pressure_plates"]
-
-  public val BLOCK_FROG_PREFER_JUMP_TO: Tag = BlockTagRegistry["minecraft:frog_prefer_jump_to"]
-
-  public val BLOCK_LOGS_THAT_BURN: Tag = BlockTagRegistry["minecraft:logs_that_burn"]
-
-  public val BLOCK_WALL_CORALS: Tag = BlockTagRegistry["minecraft:wall_corals"]
-
   public val BLOCK_WOODEN_FENCES: Tag = BlockTagRegistry["minecraft:wooden_fences"]
-
-  public val BLOCK_PREVENT_MOB_SPAWNING_INSIDE: Tag =
-      BlockTagRegistry["minecraft:prevent_mob_spawning_inside"]
-
-  public val BLOCK_INCORRECT_FOR_WOODEN_TOOL: Tag =
-      BlockTagRegistry["minecraft:incorrect_for_wooden_tool"]
-
-  public val BLOCK_INVALID_SPAWN_INSIDE: Tag = BlockTagRegistry["minecraft:invalid_spawn_inside"]
-
-  public val BLOCK_DOORS: Tag = BlockTagRegistry["minecraft:doors"]
-
-  public val BLOCK_RABBITS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:rabbits_spawnable_on"]
-
-  public val BLOCK_OAK_LOGS: Tag = BlockTagRegistry["minecraft:oak_logs"]
 
   public val BLOCK_DIRT: Tag = BlockTagRegistry["minecraft:dirt"]
 
-  public val BLOCK_POLAR_BEARS_SPAWNABLE_ON_ALTERNATE: Tag =
-      BlockTagRegistry["minecraft:polar_bears_spawnable_on_alternate"]
+  public val BLOCK_LANTERNS: Tag = BlockTagRegistry["minecraft:lanterns"]
 
-  public val BLOCK_WALL_SIGNS: Tag = BlockTagRegistry["minecraft:wall_signs"]
+  public val BLOCK_MANGROVE_ROOTS_CAN_GROW_THROUGH: Tag =
+      BlockTagRegistry["minecraft:mangrove_roots_can_grow_through"]
 
-  public val BLOCK_SWORD_INSTANTLY_MINES: Tag = BlockTagRegistry["minecraft:sword_instantly_mines"]
+  public val BLOCK_MANGROVE_LOGS: Tag = BlockTagRegistry["minecraft:mangrove_logs"]
 
-  public val BLOCK_CEILING_HANGING_SIGNS: Tag = BlockTagRegistry["minecraft:ceiling_hanging_signs"]
+  public val BLOCK_GEODE_INVALID_BLOCKS: Tag = BlockTagRegistry["minecraft:geode_invalid_blocks"]
 
-  public val BLOCK_INCORRECT_FOR_STONE_TOOL: Tag =
-      BlockTagRegistry["minecraft:incorrect_for_stone_tool"]
+  public val BLOCK_SOUL_FIRE_BASE_BLOCKS: Tag = BlockTagRegistry["minecraft:soul_fire_base_blocks"]
 
-  public val BLOCK_PIGLIN_REPELLENTS: Tag = BlockTagRegistry["minecraft:piglin_repellents"]
+  public val BLOCK_NEEDS_DIAMOND_TOOL: Tag = BlockTagRegistry["minecraft:needs_diamond_tool"]
 
-  public val BLOCK_DAMPENS_VIBRATIONS: Tag = BlockTagRegistry["minecraft:dampens_vibrations"]
+  public val BLOCK_CAULDRONS: Tag = BlockTagRegistry["minecraft:cauldrons"]
 
-  public val BLOCK_CAMEL_SAND_STEP_SOUND_BLOCKS: Tag =
-      BlockTagRegistry["minecraft:camel_sand_step_sound_blocks"]
+  public val BLOCK_CRIMSON_STEMS: Tag = BlockTagRegistry["minecraft:crimson_stems"]
 
-  public val BLOCK_COMBINATION_STEP_SOUND_BLOCKS: Tag =
-      BlockTagRegistry["minecraft:combination_step_sound_blocks"]
+  public val BLOCK_VIBRATION_RESONATORS: Tag = BlockTagRegistry["minecraft:vibration_resonators"]
 
-  public val BLOCK_SCULK_REPLACEABLE: Tag = BlockTagRegistry["minecraft:sculk_replaceable"]
-
-  public val BLOCK_BEE_GROWABLES: Tag = BlockTagRegistry["minecraft:bee_growables"]
-
-  public val BLOCK_TERRACOTTA: Tag = BlockTagRegistry["minecraft:terracotta"]
-
-  public val BLOCK_STONE_BUTTONS: Tag = BlockTagRegistry["minecraft:stone_buttons"]
-
-  public val BLOCK_FALL_DAMAGE_RESETTING: Tag = BlockTagRegistry["minecraft:fall_damage_resetting"]
-
-  public val BLOCK_DRIPSTONE_REPLACEABLE_BLOCKS: Tag =
-      BlockTagRegistry["minecraft:dripstone_replaceable_blocks"]
-
-  public val BLOCK_BUTTONS: Tag = BlockTagRegistry["minecraft:buttons"]
-
-  public val BLOCK_BEDS: Tag = BlockTagRegistry["minecraft:beds"]
-
-  public val BLOCK_WOODEN_STAIRS: Tag = BlockTagRegistry["minecraft:wooden_stairs"]
-
-  public val BLOCK_IMPERMEABLE: Tag = BlockTagRegistry["minecraft:impermeable"]
+  public val BLOCK_PRESSURE_PLATES: Tag = BlockTagRegistry["minecraft:pressure_plates"]
 
   public val BLOCK_CORAL_BLOCKS: Tag = BlockTagRegistry["minecraft:coral_blocks"]
-
-  public val BLOCK_PLANKS: Tag = BlockTagRegistry["minecraft:planks"]
-
-  public val BLOCK_PORTALS: Tag = BlockTagRegistry["minecraft:portals"]
-
-  public val BLOCK_FIRE: Tag = BlockTagRegistry["minecraft:fire"]
-
-  public val BLOCK_CONCRETE_POWDER: Tag = BlockTagRegistry["minecraft:concrete_powder"]
-
-  public val BLOCK_DRAGON_IMMUNE: Tag = BlockTagRegistry["minecraft:dragon_immune"]
-
-  public val BLOCK_WOLVES_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:wolves_spawnable_on"]
-
-  public val BLOCK_SMALL_DRIPLEAF_PLACEABLE: Tag =
-      BlockTagRegistry["minecraft:small_dripleaf_placeable"]
-
-  public val BLOCK_BIG_DRIPLEAF_PLACEABLE: Tag =
-      BlockTagRegistry["minecraft:big_dripleaf_placeable"]
-
-  public val BLOCK_BIRCH_LOGS: Tag = BlockTagRegistry["minecraft:birch_logs"]
-
-  public val BLOCK_SNAPS_GOAT_HORN: Tag = BlockTagRegistry["minecraft:snaps_goat_horn"]
-
-  public val BLOCK_FLOWERS: Tag = BlockTagRegistry["minecraft:flowers"]
-
-  public val BLOCK_EDIBLE_FOR_SHEEP: Tag = BlockTagRegistry["minecraft:edible_for_sheep"]
-
-  public val BLOCK_BADLANDS_TERRACOTTA: Tag = BlockTagRegistry["minecraft:badlands_terracotta"]
-
-  public val BLOCK_FROGS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:frogs_spawnable_on"]
-
-  public val BLOCK_LAPIS_ORES: Tag = BlockTagRegistry["minecraft:lapis_ores"]
-
-  public val BLOCK_MOSS_REPLACEABLE: Tag = BlockTagRegistry["minecraft:moss_replaceable"]
-
-  public val BLOCK_ICE: Tag = BlockTagRegistry["minecraft:ice"]
-
-  public val BLOCK_ANIMALS_SPAWNABLE_ON: Tag = BlockTagRegistry["minecraft:animals_spawnable_on"]
-
-  public val BLOCK_SOUL_SPEED_BLOCKS: Tag = BlockTagRegistry["minecraft:soul_speed_blocks"]
-
-  public val BLOCK_ANVIL: Tag = BlockTagRegistry["minecraft:anvil"]
-
-  public val BLOCK_MANGROVE_LOGS_CAN_GROW_THROUGH: Tag =
-      BlockTagRegistry["minecraft:mangrove_logs_can_grow_through"]
-
-  public val BLOCK_DIAMOND_ORES: Tag = BlockTagRegistry["minecraft:diamond_ores"]
-
-  public val BLOCK_CLIMBABLE: Tag = BlockTagRegistry["minecraft:climbable"]
-
-  public val BLOCK_WITHER_IMMUNE: Tag = BlockTagRegistry["minecraft:wither_immune"]
-
-  public val BLOCK_ENDERMAN_HOLDABLE: Tag = BlockTagRegistry["minecraft:enderman_holdable"]
-
-  public val BLOCK_BANNERS: Tag = BlockTagRegistry["minecraft:banners"]
-
-  public val ENTITY_TYPE_SENSITIVE_TO_IMPALING: Tag =
-      EntityTypeTagRegistry["minecraft:sensitive_to_impaling"]
-
-  public val ENTITY_TYPE_SENSITIVE_TO_BANE_OF_ARTHROPODS: Tag =
-      EntityTypeTagRegistry["minecraft:sensitive_to_bane_of_arthropods"]
-
-  public val ENTITY_TYPE_AXOLOTL_HUNT_TARGETS: Tag =
-      EntityTypeTagRegistry["minecraft:axolotl_hunt_targets"]
-
-  public val ENTITY_TYPE_AXOLOTL_ALWAYS_HOSTILES: Tag =
-      EntityTypeTagRegistry["minecraft:axolotl_always_hostiles"]
 
   public val ENTITY_TYPE_SENSITIVE_TO_SMITE: Tag =
       EntityTypeTagRegistry["minecraft:sensitive_to_smite"]
 
-  public val ENTITY_TYPE_IMMUNE_TO_INFESTED: Tag =
-      EntityTypeTagRegistry["minecraft:immune_to_infested"]
+  public val ENTITY_TYPE_ACCEPTS_IRON_GOLEM_GIFT: Tag =
+      EntityTypeTagRegistry["minecraft:accepts_iron_golem_gift"]
 
-  public val ENTITY_TYPE_FREEZE_IMMUNE_ENTITY_TYPES: Tag =
-      EntityTypeTagRegistry["minecraft:freeze_immune_entity_types"]
-
-  public val ENTITY_TYPE_ILLAGER_FRIENDS: Tag = EntityTypeTagRegistry["minecraft:illager_friends"]
+  public val ENTITY_TYPE_AQUATIC: Tag = EntityTypeTagRegistry["minecraft:aquatic"]
 
   public val ENTITY_TYPE_SKELETONS: Tag = EntityTypeTagRegistry["minecraft:skeletons"]
-
-  public val ENTITY_TYPE_CAN_EQUIP_SADDLE: Tag = EntityTypeTagRegistry["minecraft:can_equip_saddle"]
-
-  public val ENTITY_TYPE_FROG_FOOD: Tag = EntityTypeTagRegistry["minecraft:frog_food"]
-
-  public val ENTITY_TYPE_BEEHIVE_INHABITORS: Tag =
-      EntityTypeTagRegistry["minecraft:beehive_inhabitors"]
-
-  public val ENTITY_TYPE_IMPACT_PROJECTILES: Tag =
-      EntityTypeTagRegistry["minecraft:impact_projectiles"]
-
-  public val ENTITY_TYPE_ARTHROPOD: Tag = EntityTypeTagRegistry["minecraft:arthropod"]
-
-  public val ENTITY_TYPE_IGNORES_POISON_AND_REGEN: Tag =
-      EntityTypeTagRegistry["minecraft:ignores_poison_and_regen"]
-
-  public val ENTITY_TYPE_FALL_DAMAGE_IMMUNE: Tag =
-      EntityTypeTagRegistry["minecraft:fall_damage_immune"]
 
   public val ENTITY_TYPE_CAN_TURN_IN_BOATS: Tag =
       EntityTypeTagRegistry["minecraft:can_turn_in_boats"]
 
-  public val ENTITY_TYPE_NON_CONTROLLING_RIDER: Tag =
-      EntityTypeTagRegistry["minecraft:non_controlling_rider"]
-
-  public val ENTITY_TYPE_ZOMBIES: Tag = EntityTypeTagRegistry["minecraft:zombies"]
-
-  public val ENTITY_TYPE_ARROWS: Tag = EntityTypeTagRegistry["minecraft:arrows"]
-
-  public val ENTITY_TYPE_NOT_SCARY_FOR_PUFFERFISH: Tag =
-      EntityTypeTagRegistry["minecraft:not_scary_for_pufferfish"]
-
-  public val ENTITY_TYPE_CAN_EQUIP_HARNESS: Tag =
-      EntityTypeTagRegistry["minecraft:can_equip_harness"]
-
-  public val ENTITY_TYPE_UNDEAD: Tag = EntityTypeTagRegistry["minecraft:undead"]
-
-  public val ENTITY_TYPE_BOAT: Tag = EntityTypeTagRegistry["minecraft:boat"]
-
-  public val ENTITY_TYPE_IMMUNE_TO_OOZING: Tag = EntityTypeTagRegistry["minecraft:immune_to_oozing"]
-
-  public val ENTITY_TYPE_AQUATIC: Tag = EntityTypeTagRegistry["minecraft:aquatic"]
-
-  public val ENTITY_TYPE_RAIDERS: Tag = EntityTypeTagRegistry["minecraft:raiders"]
-
-  public val ENTITY_TYPE_FOLLOWABLE_FRIENDLY_MOBS: Tag =
-      EntityTypeTagRegistry["minecraft:followable_friendly_mobs"]
-
-  public val ENTITY_TYPE_FREEZE_HURTS_EXTRA_TYPES: Tag =
-      EntityTypeTagRegistry["minecraft:freeze_hurts_extra_types"]
-
   public val ENTITY_TYPE_POWDER_SNOW_WALKABLE_MOBS: Tag =
       EntityTypeTagRegistry["minecraft:powder_snow_walkable_mobs"]
 
-  public val ENTITY_TYPE_CAN_WEAR_HORSE_ARMOR: Tag =
-      EntityTypeTagRegistry["minecraft:can_wear_horse_armor"]
-
-  public val ENTITY_TYPE_REDIRECTABLE_PROJECTILE: Tag =
-      EntityTypeTagRegistry["minecraft:redirectable_projectile"]
+  public val ENTITY_TYPE_AXOLOTL_ALWAYS_HOSTILES: Tag =
+      EntityTypeTagRegistry["minecraft:axolotl_always_hostiles"]
 
   public val ENTITY_TYPE_NO_ANGER_FROM_WIND_CHARGE: Tag =
       EntityTypeTagRegistry["minecraft:no_anger_from_wind_charge"]
@@ -727,401 +681,498 @@ public object Tags {
   public val ENTITY_TYPE_INVERTED_HEALING_AND_HARM: Tag =
       EntityTypeTagRegistry["minecraft:inverted_healing_and_harm"]
 
+  public val ENTITY_TYPE_CAN_EQUIP_HARNESS: Tag =
+      EntityTypeTagRegistry["minecraft:can_equip_harness"]
+
+  public val ENTITY_TYPE_REDIRECTABLE_PROJECTILE: Tag =
+      EntityTypeTagRegistry["minecraft:redirectable_projectile"]
+
+  public val ENTITY_TYPE_AXOLOTL_HUNT_TARGETS: Tag =
+      EntityTypeTagRegistry["minecraft:axolotl_hunt_targets"]
+
+  public val ENTITY_TYPE_ZOMBIES: Tag = EntityTypeTagRegistry["minecraft:zombies"]
+
+  public val ENTITY_TYPE_UNDEAD: Tag = EntityTypeTagRegistry["minecraft:undead"]
+
   public val ENTITY_TYPE_CAN_BREATHE_UNDER_WATER: Tag =
       EntityTypeTagRegistry["minecraft:can_breathe_under_water"]
+
+  public val ENTITY_TYPE_ARTHROPOD: Tag = EntityTypeTagRegistry["minecraft:arthropod"]
+
+  public val ENTITY_TYPE_WITHER_FRIENDS: Tag = EntityTypeTagRegistry["minecraft:wither_friends"]
+
+  public val ENTITY_TYPE_IMMUNE_TO_OOZING: Tag = EntityTypeTagRegistry["minecraft:immune_to_oozing"]
+
+  public val ENTITY_TYPE_FALL_DAMAGE_IMMUNE: Tag =
+      EntityTypeTagRegistry["minecraft:fall_damage_immune"]
+
+  public val ENTITY_TYPE_BOAT: Tag = EntityTypeTagRegistry["minecraft:boat"]
+
+  public val ENTITY_TYPE_IMPACT_PROJECTILES: Tag =
+      EntityTypeTagRegistry["minecraft:impact_projectiles"]
+
+  public val ENTITY_TYPE_FREEZE_IMMUNE_ENTITY_TYPES: Tag =
+      EntityTypeTagRegistry["minecraft:freeze_immune_entity_types"]
+
+  public val ENTITY_TYPE_DISMOUNTS_UNDERWATER: Tag =
+      EntityTypeTagRegistry["minecraft:dismounts_underwater"]
+
+  public val ENTITY_TYPE_CANDIDATE_FOR_IRON_GOLEM_GIFT: Tag =
+      EntityTypeTagRegistry["minecraft:candidate_for_iron_golem_gift"]
 
   public val ENTITY_TYPE_DEFLECTS_PROJECTILES: Tag =
       EntityTypeTagRegistry["minecraft:deflects_projectiles"]
 
-  public val ENTITY_TYPE_WITHER_FRIENDS: Tag = EntityTypeTagRegistry["minecraft:wither_friends"]
+  public val ENTITY_TYPE_FREEZE_HURTS_EXTRA_TYPES: Tag =
+      EntityTypeTagRegistry["minecraft:freeze_hurts_extra_types"]
 
   public val ENTITY_TYPE_ILLAGER: Tag = EntityTypeTagRegistry["minecraft:illager"]
 
-  public val ENTITY_TYPE_DISMOUNTS_UNDERWATER: Tag =
-      EntityTypeTagRegistry["minecraft:dismounts_underwater"]
+  public val ENTITY_TYPE_BEEHIVE_INHABITORS: Tag =
+      EntityTypeTagRegistry["minecraft:beehive_inhabitors"]
+
+  public val ENTITY_TYPE_RAIDERS: Tag = EntityTypeTagRegistry["minecraft:raiders"]
+
+  public val ENTITY_TYPE_CANNOT_BE_PUSHED_ONTO_BOATS: Tag =
+      EntityTypeTagRegistry["minecraft:cannot_be_pushed_onto_boats"]
+
+  public val ENTITY_TYPE_SENSITIVE_TO_BANE_OF_ARTHROPODS: Tag =
+      EntityTypeTagRegistry["minecraft:sensitive_to_bane_of_arthropods"]
+
+  public val ENTITY_TYPE_ILLAGER_FRIENDS: Tag = EntityTypeTagRegistry["minecraft:illager_friends"]
+
+  public val ENTITY_TYPE_ARROWS: Tag = EntityTypeTagRegistry["minecraft:arrows"]
+
+  public val ENTITY_TYPE_NON_CONTROLLING_RIDER: Tag =
+      EntityTypeTagRegistry["minecraft:non_controlling_rider"]
+
+  public val ENTITY_TYPE_FOLLOWABLE_FRIENDLY_MOBS: Tag =
+      EntityTypeTagRegistry["minecraft:followable_friendly_mobs"]
+
+  public val ENTITY_TYPE_FROG_FOOD: Tag = EntityTypeTagRegistry["minecraft:frog_food"]
+
+  public val ENTITY_TYPE_IGNORES_POISON_AND_REGEN: Tag =
+      EntityTypeTagRegistry["minecraft:ignores_poison_and_regen"]
+
+  public val ENTITY_TYPE_NOT_SCARY_FOR_PUFFERFISH: Tag =
+      EntityTypeTagRegistry["minecraft:not_scary_for_pufferfish"]
+
+  public val ENTITY_TYPE_IMMUNE_TO_INFESTED: Tag =
+      EntityTypeTagRegistry["minecraft:immune_to_infested"]
+
+  public val ENTITY_TYPE_CAN_WEAR_HORSE_ARMOR: Tag =
+      EntityTypeTagRegistry["minecraft:can_wear_horse_armor"]
+
+  public val ENTITY_TYPE_CAN_EQUIP_SADDLE: Tag = EntityTypeTagRegistry["minecraft:can_equip_saddle"]
+
+  public val ENTITY_TYPE_SENSITIVE_TO_IMPALING: Tag =
+      EntityTypeTagRegistry["minecraft:sensitive_to_impaling"]
 
   public val FLUID_WATER: Tag = FluidTagRegistry["minecraft:water"]
 
   public val FLUID_LAVA: Tag = FluidTagRegistry["minecraft:lava"]
 
-  public val ITEM_LOGS: Tag = ItemTagRegistry["minecraft:logs"]
-
-  public val ITEM_VILLAGER_PLANTABLE_SEEDS: Tag =
-      ItemTagRegistry["minecraft:villager_plantable_seeds"]
-
-  public val ITEM_SKELETON_PREFERRED_WEAPONS: Tag =
-      ItemTagRegistry["minecraft:skeleton_preferred_weapons"]
-
-  public val ITEM_WOODEN_TOOL_MATERIALS: Tag = ItemTagRegistry["minecraft:wooden_tool_materials"]
-
-  public val ITEM_MEAT: Tag = ItemTagRegistry["minecraft:meat"]
-
-  public val ITEM_WOOL: Tag = ItemTagRegistry["minecraft:wool"]
-
-  public val ITEM_REPAIRS_DIAMOND_ARMOR: Tag = ItemTagRegistry["minecraft:repairs_diamond_armor"]
-
-  public val ITEM_ENCHANTABLE_EQUIPPABLE: Tag = ItemTagRegistry["minecraft:enchantable/equippable"]
-
-  public val ITEM_ENCHANTABLE_FISHING: Tag = ItemTagRegistry["minecraft:enchantable/fishing"]
-
-  public val ITEM_ENCHANTABLE_CROSSBOW: Tag = ItemTagRegistry["minecraft:enchantable/crossbow"]
-
-  public val ITEM_ENCHANTABLE_FIRE_ASPECT: Tag =
-      ItemTagRegistry["minecraft:enchantable/fire_aspect"]
-
-  public val ITEM_ENCHANTABLE_DURABILITY: Tag = ItemTagRegistry["minecraft:enchantable/durability"]
-
-  public val ITEM_ENCHANTABLE_HEAD_ARMOR: Tag = ItemTagRegistry["minecraft:enchantable/head_armor"]
-
-  public val ITEM_ENCHANTABLE_TRIDENT: Tag = ItemTagRegistry["minecraft:enchantable/trident"]
-
-  public val ITEM_ENCHANTABLE_CHEST_ARMOR: Tag =
-      ItemTagRegistry["minecraft:enchantable/chest_armor"]
-
-  public val ITEM_ENCHANTABLE_ARMOR: Tag = ItemTagRegistry["minecraft:enchantable/armor"]
-
-  public val ITEM_ENCHANTABLE_MINING: Tag = ItemTagRegistry["minecraft:enchantable/mining"]
-
-  public val ITEM_ENCHANTABLE_WEAPON: Tag = ItemTagRegistry["minecraft:enchantable/weapon"]
-
-  public val ITEM_ENCHANTABLE_BOW: Tag = ItemTagRegistry["minecraft:enchantable/bow"]
-
-  public val ITEM_ENCHANTABLE_FOOT_ARMOR: Tag = ItemTagRegistry["minecraft:enchantable/foot_armor"]
-
-  public val ITEM_ENCHANTABLE_VANISHING: Tag = ItemTagRegistry["minecraft:enchantable/vanishing"]
-
-  public val ITEM_ENCHANTABLE_MACE: Tag = ItemTagRegistry["minecraft:enchantable/mace"]
-
-  public val ITEM_ENCHANTABLE_SWORD: Tag = ItemTagRegistry["minecraft:enchantable/sword"]
-
-  public val ITEM_ENCHANTABLE_MINING_LOOT: Tag =
-      ItemTagRegistry["minecraft:enchantable/mining_loot"]
-
-  public val ITEM_ENCHANTABLE_SHARP_WEAPON: Tag =
-      ItemTagRegistry["minecraft:enchantable/sharp_weapon"]
-
-  public val ITEM_ENCHANTABLE_LEG_ARMOR: Tag = ItemTagRegistry["minecraft:enchantable/leg_armor"]
-
-  public val ITEM_PIGLIN_LOVED: Tag = ItemTagRegistry["minecraft:piglin_loved"]
-
-  public val ITEM_IRON_ORES: Tag = ItemTagRegistry["minecraft:iron_ores"]
-
-  public val ITEM_BUNDLES: Tag = ItemTagRegistry["minecraft:bundles"]
-
-  public val ITEM_DECORATED_POT_SHERDS: Tag = ItemTagRegistry["minecraft:decorated_pot_sherds"]
-
-  public val ITEM_SPRUCE_LOGS: Tag = ItemTagRegistry["minecraft:spruce_logs"]
-
-  public val ITEM_VILLAGER_PICKS_UP: Tag = ItemTagRegistry["minecraft:villager_picks_up"]
-
-  public val ITEM_ARMADILLO_FOOD: Tag = ItemTagRegistry["minecraft:armadillo_food"]
-
-  public val ITEM_CANDLES: Tag = ItemTagRegistry["minecraft:candles"]
-
-  public val ITEM_CRIMSON_STEMS: Tag = ItemTagRegistry["minecraft:crimson_stems"]
-
-  public val ITEM_GOAT_FOOD: Tag = ItemTagRegistry["minecraft:goat_food"]
-
-  public val ITEM_COALS: Tag = ItemTagRegistry["minecraft:coals"]
-
-  public val ITEM_TRIM_MATERIALS: Tag = ItemTagRegistry["minecraft:trim_materials"]
-
-  public val ITEM_HOES: Tag = ItemTagRegistry["minecraft:hoes"]
-
-  public val ITEM_SMELTS_TO_GLASS: Tag = ItemTagRegistry["minecraft:smelts_to_glass"]
-
-  public val ITEM_BREAKS_DECORATED_POTS: Tag = ItemTagRegistry["minecraft:breaks_decorated_pots"]
-
-  public val ITEM_SHULKER_BOXES: Tag = ItemTagRegistry["minecraft:shulker_boxes"]
-
-  public val ITEM_AXES: Tag = ItemTagRegistry["minecraft:axes"]
-
-  public val ITEM_DROWNED_PREFERRED_WEAPONS: Tag =
-      ItemTagRegistry["minecraft:drowned_preferred_weapons"]
-
-  public val ITEM_FOX_FOOD: Tag = ItemTagRegistry["minecraft:fox_food"]
-
-  public val ITEM_EMERALD_ORES: Tag = ItemTagRegistry["minecraft:emerald_ores"]
-
-  public val ITEM_STRIDER_TEMPT_ITEMS: Tag = ItemTagRegistry["minecraft:strider_tempt_items"]
-
-  public val ITEM_HEAD_ARMOR: Tag = ItemTagRegistry["minecraft:head_armor"]
-
-  public val ITEM_IRON_TOOL_MATERIALS: Tag = ItemTagRegistry["minecraft:iron_tool_materials"]
-
-  public val ITEM_FROG_FOOD: Tag = ItemTagRegistry["minecraft:frog_food"]
-
-  public val ITEM_HANGING_SIGNS: Tag = ItemTagRegistry["minecraft:hanging_signs"]
-
-  public val ITEM_WARPED_STEMS: Tag = ItemTagRegistry["minecraft:warped_stems"]
-
-  public val ITEM_PIG_FOOD: Tag = ItemTagRegistry["minecraft:pig_food"]
-
-  public val ITEM_BAMBOO_BLOCKS: Tag = ItemTagRegistry["minecraft:bamboo_blocks"]
-
-  public val ITEM_REPAIRS_CHAIN_ARMOR: Tag = ItemTagRegistry["minecraft:repairs_chain_armor"]
-
-  public val ITEM_WOLF_FOOD: Tag = ItemTagRegistry["minecraft:wolf_food"]
-
-  public val ITEM_DIAMOND_TOOL_MATERIALS: Tag = ItemTagRegistry["minecraft:diamond_tool_materials"]
-
-  public val ITEM_SLABS: Tag = ItemTagRegistry["minecraft:slabs"]
-
-  public val ITEM_HAPPY_GHAST_TEMPT_ITEMS: Tag =
-      ItemTagRegistry["minecraft:happy_ghast_tempt_items"]
-
-  public val ITEM_REPAIRS_GOLD_ARMOR: Tag = ItemTagRegistry["minecraft:repairs_gold_armor"]
-
-  public val ITEM_EGGS: Tag = ItemTagRegistry["minecraft:eggs"]
-
-  public val ITEM_WITHER_SKELETON_DISLIKED_WEAPONS: Tag =
-      ItemTagRegistry["minecraft:wither_skeleton_disliked_weapons"]
-
-  public val ITEM_PANDA_FOOD: Tag = ItemTagRegistry["minecraft:panda_food"]
-
-  public val ITEM_FISHES: Tag = ItemTagRegistry["minecraft:fishes"]
+  public val ITEM_REDSTONE_ORES: Tag = ItemTagRegistry["minecraft:redstone_ores"]
 
   public val ITEM_PIGLIN_SAFE_ARMOR: Tag = ItemTagRegistry["minecraft:piglin_safe_armor"]
 
-  public val ITEM_FENCE_GATES: Tag = ItemTagRegistry["minecraft:fence_gates"]
-
-  public val ITEM_COAL_ORES: Tag = ItemTagRegistry["minecraft:coal_ores"]
-
-  public val ITEM_BEE_FOOD: Tag = ItemTagRegistry["minecraft:bee_food"]
-
-  public val ITEM_WART_BLOCKS: Tag = ItemTagRegistry["minecraft:wart_blocks"]
-
-  public val ITEM_HAPPY_GHAST_FOOD: Tag = ItemTagRegistry["minecraft:happy_ghast_food"]
-
-  public val ITEM_JUNGLE_LOGS: Tag = ItemTagRegistry["minecraft:jungle_logs"]
-
-  public val ITEM_HORSE_FOOD: Tag = ItemTagRegistry["minecraft:horse_food"]
-
-  public val ITEM_ACACIA_LOGS: Tag = ItemTagRegistry["minecraft:acacia_logs"]
-
-  public val ITEM_NON_FLAMMABLE_WOOD: Tag = ItemTagRegistry["minecraft:non_flammable_wood"]
-
-  public val ITEM_DECORATED_POT_INGREDIENTS: Tag =
-      ItemTagRegistry["minecraft:decorated_pot_ingredients"]
-
-  public val ITEM_PANDA_EATS_FROM_GROUND: Tag = ItemTagRegistry["minecraft:panda_eats_from_ground"]
-
-  public val ITEM_SAPLINGS: Tag = ItemTagRegistry["minecraft:saplings"]
-
-  public val ITEM_COMPLETES_FIND_TREE_TUTORIAL: Tag =
-      ItemTagRegistry["minecraft:completes_find_tree_tutorial"]
-
-  public val ITEM_RAILS: Tag = ItemTagRegistry["minecraft:rails"]
-
-  public val ITEM_BOOK_CLONING_TARGET: Tag = ItemTagRegistry["minecraft:book_cloning_target"]
-
-  public val ITEM_SOUL_FIRE_BASE_BLOCKS: Tag = ItemTagRegistry["minecraft:soul_fire_base_blocks"]
-
-  public val ITEM_CHEST_ARMOR: Tag = ItemTagRegistry["minecraft:chest_armor"]
-
-  public val ITEM_HARNESSES: Tag = ItemTagRegistry["minecraft:harnesses"]
-
-  public val ITEM_WOODEN_BUTTONS: Tag = ItemTagRegistry["minecraft:wooden_buttons"]
-
-  public val ITEM_REDSTONE_ORES: Tag = ItemTagRegistry["minecraft:redstone_ores"]
-
-  public val ITEM_GOLD_ORES: Tag = ItemTagRegistry["minecraft:gold_ores"]
-
-  public val ITEM_ARROWS: Tag = ItemTagRegistry["minecraft:arrows"]
-
-  public val ITEM_OCELOT_FOOD: Tag = ItemTagRegistry["minecraft:ocelot_food"]
-
-  public val ITEM_WOODEN_DOORS: Tag = ItemTagRegistry["minecraft:wooden_doors"]
-
-  public val ITEM_WALLS: Tag = ItemTagRegistry["minecraft:walls"]
-
-  public val ITEM_HOGLIN_FOOD: Tag = ItemTagRegistry["minecraft:hoglin_food"]
-
-  public val ITEM_FENCES: Tag = ItemTagRegistry["minecraft:fences"]
-
-  public val ITEM_LEAVES: Tag = ItemTagRegistry["minecraft:leaves"]
-
-  public val ITEM_STONE_BRICKS: Tag = ItemTagRegistry["minecraft:stone_bricks"]
-
-  public val ITEM_SHEEP_FOOD: Tag = ItemTagRegistry["minecraft:sheep_food"]
-
-  public val ITEM_SMALL_FLOWERS: Tag = ItemTagRegistry["minecraft:small_flowers"]
-
-  public val ITEM_STAIRS: Tag = ItemTagRegistry["minecraft:stairs"]
-
-  public val ITEM_CHEST_BOATS: Tag = ItemTagRegistry["minecraft:chest_boats"]
-
-  public val ITEM_WOODEN_TRAPDOORS: Tag = ItemTagRegistry["minecraft:wooden_trapdoors"]
-
-  public val ITEM_COPPER_ORES: Tag = ItemTagRegistry["minecraft:copper_ores"]
-
-  public val ITEM_DARK_OAK_LOGS: Tag = ItemTagRegistry["minecraft:dark_oak_logs"]
-
-  public val ITEM_MANGROVE_LOGS: Tag = ItemTagRegistry["minecraft:mangrove_logs"]
-
-  public val ITEM_BOATS: Tag = ItemTagRegistry["minecraft:boats"]
-
-  public val ITEM_PIGLIN_FOOD: Tag = ItemTagRegistry["minecraft:piglin_food"]
-
-  public val ITEM_SAND: Tag = ItemTagRegistry["minecraft:sand"]
-
-  public val ITEM_WOODEN_SLABS: Tag = ItemTagRegistry["minecraft:wooden_slabs"]
-
-  public val ITEM_CHERRY_LOGS: Tag = ItemTagRegistry["minecraft:cherry_logs"]
-
-  public val ITEM_SIGNS: Tag = ItemTagRegistry["minecraft:signs"]
-
-  public val ITEM_CLUSTER_MAX_HARVESTABLES: Tag =
-      ItemTagRegistry["minecraft:cluster_max_harvestables"]
-
-  public val ITEM_CAT_FOOD: Tag = ItemTagRegistry["minecraft:cat_food"]
-
-  public val ITEM_CREEPER_DROP_MUSIC_DISCS: Tag =
-      ItemTagRegistry["minecraft:creeper_drop_music_discs"]
-
-  public val ITEM_TRAPDOORS: Tag = ItemTagRegistry["minecraft:trapdoors"]
-
-  public val ITEM_PALE_OAK_LOGS: Tag = ItemTagRegistry["minecraft:pale_oak_logs"]
-
-  public val ITEM_STONE_CRAFTING_MATERIALS: Tag =
-      ItemTagRegistry["minecraft:stone_crafting_materials"]
-
-  public val ITEM_WOODEN_PRESSURE_PLATES: Tag = ItemTagRegistry["minecraft:wooden_pressure_plates"]
-
-  public val ITEM_PILLAGER_PREFERRED_WEAPONS: Tag =
-      ItemTagRegistry["minecraft:pillager_preferred_weapons"]
-
-  public val ITEM_BREWING_FUEL: Tag = ItemTagRegistry["minecraft:brewing_fuel"]
-
-  public val ITEM_WOOL_CARPETS: Tag = ItemTagRegistry["minecraft:wool_carpets"]
-
-  public val ITEM_REPAIRS_LEATHER_ARMOR: Tag = ItemTagRegistry["minecraft:repairs_leather_armor"]
-
-  public val ITEM_LOGS_THAT_BURN: Tag = ItemTagRegistry["minecraft:logs_that_burn"]
-
-  public val ITEM_WOODEN_FENCES: Tag = ItemTagRegistry["minecraft:wooden_fences"]
-
-  public val ITEM_CAMEL_FOOD: Tag = ItemTagRegistry["minecraft:camel_food"]
-
-  public val ITEM_DOORS: Tag = ItemTagRegistry["minecraft:doors"]
-
-  public val ITEM_NOTEBLOCK_TOP_INSTRUMENTS: Tag =
-      ItemTagRegistry["minecraft:noteblock_top_instruments"]
-
-  public val ITEM_FOOT_ARMOR: Tag = ItemTagRegistry["minecraft:foot_armor"]
-
-  public val ITEM_STONE_TOOL_MATERIALS: Tag = ItemTagRegistry["minecraft:stone_tool_materials"]
-
-  public val ITEM_OAK_LOGS: Tag = ItemTagRegistry["minecraft:oak_logs"]
-
-  public val ITEM_DIRT: Tag = ItemTagRegistry["minecraft:dirt"]
-
-  public val ITEM_BEACON_PAYMENT_ITEMS: Tag = ItemTagRegistry["minecraft:beacon_payment_items"]
-
-  public val ITEM_REPAIRS_WOLF_ARMOR: Tag = ItemTagRegistry["minecraft:repairs_wolf_armor"]
-
-  public val ITEM_SHOVELS: Tag = ItemTagRegistry["minecraft:shovels"]
-
-  public val ITEM_REPAIRS_IRON_ARMOR: Tag = ItemTagRegistry["minecraft:repairs_iron_armor"]
-
-  public val ITEM_SWORDS: Tag = ItemTagRegistry["minecraft:swords"]
-
-  public val ITEM_PIGLIN_REPELLENTS: Tag = ItemTagRegistry["minecraft:piglin_repellents"]
-
-  public val ITEM_DAMPENS_VIBRATIONS: Tag = ItemTagRegistry["minecraft:dampens_vibrations"]
-
-  public val ITEM_GOLD_TOOL_MATERIALS: Tag = ItemTagRegistry["minecraft:gold_tool_materials"]
-
-  public val ITEM_SNIFFER_FOOD: Tag = ItemTagRegistry["minecraft:sniffer_food"]
-
-  public val ITEM_IGNORED_BY_PIGLIN_BABIES: Tag =
-      ItemTagRegistry["minecraft:ignored_by_piglin_babies"]
-
-  public val ITEM_LLAMA_FOOD: Tag = ItemTagRegistry["minecraft:llama_food"]
-
-  public val ITEM_COW_FOOD: Tag = ItemTagRegistry["minecraft:cow_food"]
-
-  public val ITEM_GAZE_DISGUISE_EQUIPMENT: Tag =
-      ItemTagRegistry["minecraft:gaze_disguise_equipment"]
-
-  public val ITEM_DYEABLE: Tag = ItemTagRegistry["minecraft:dyeable"]
-
-  public val ITEM_TERRACOTTA: Tag = ItemTagRegistry["minecraft:terracotta"]
-
-  public val ITEM_STONE_BUTTONS: Tag = ItemTagRegistry["minecraft:stone_buttons"]
-
-  public val ITEM_SKULLS: Tag = ItemTagRegistry["minecraft:skulls"]
-
-  public val ITEM_BUTTONS: Tag = ItemTagRegistry["minecraft:buttons"]
-
-  public val ITEM_BEDS: Tag = ItemTagRegistry["minecraft:beds"]
-
-  public val ITEM_MAP_INVISIBILITY_EQUIPMENT: Tag =
-      ItemTagRegistry["minecraft:map_invisibility_equipment"]
-
-  public val ITEM_PICKAXES: Tag = ItemTagRegistry["minecraft:pickaxes"]
-
-  public val ITEM_REPAIRS_NETHERITE_ARMOR: Tag =
-      ItemTagRegistry["minecraft:repairs_netherite_armor"]
-
-  public val ITEM_HORSE_TEMPT_ITEMS: Tag = ItemTagRegistry["minecraft:horse_tempt_items"]
-
-  public val ITEM_AXOLOTL_FOOD: Tag = ItemTagRegistry["minecraft:axolotl_food"]
-
-  public val ITEM_COMPASSES: Tag = ItemTagRegistry["minecraft:compasses"]
-
-  public val ITEM_WOODEN_STAIRS: Tag = ItemTagRegistry["minecraft:wooden_stairs"]
-
-  public val ITEM_PLANKS: Tag = ItemTagRegistry["minecraft:planks"]
-
-  public val ITEM_PARROT_FOOD: Tag = ItemTagRegistry["minecraft:parrot_food"]
-
-  public val ITEM_BOOKSHELF_BOOKS: Tag = ItemTagRegistry["minecraft:bookshelf_books"]
-
-  public val ITEM_REPAIRS_TURTLE_HELMET: Tag = ItemTagRegistry["minecraft:repairs_turtle_helmet"]
-
-  public val ITEM_TURTLE_FOOD: Tag = ItemTagRegistry["minecraft:turtle_food"]
-
-  public val ITEM_LLAMA_TEMPT_ITEMS: Tag = ItemTagRegistry["minecraft:llama_tempt_items"]
-
-  public val ITEM_PARROT_POISONOUS_FOOD: Tag = ItemTagRegistry["minecraft:parrot_poisonous_food"]
-
-  public val ITEM_BIRCH_LOGS: Tag = ItemTagRegistry["minecraft:birch_logs"]
-
-  public val ITEM_FLOWERS: Tag = ItemTagRegistry["minecraft:flowers"]
-
-  public val ITEM_FREEZE_IMMUNE_WEARABLES: Tag =
-      ItemTagRegistry["minecraft:freeze_immune_wearables"]
-
-  public val ITEM_CREEPER_IGNITERS: Tag = ItemTagRegistry["minecraft:creeper_igniters"]
-
-  public val ITEM_LAPIS_ORES: Tag = ItemTagRegistry["minecraft:lapis_ores"]
-
-  public val ITEM_NETHERITE_TOOL_MATERIALS: Tag =
-      ItemTagRegistry["minecraft:netherite_tool_materials"]
-
   public val ITEM_DUPLICATES_ALLAYS: Tag = ItemTagRegistry["minecraft:duplicates_allays"]
-
-  public val ITEM_ANVIL: Tag = ItemTagRegistry["minecraft:anvil"]
-
-  public val ITEM_STRIDER_FOOD: Tag = ItemTagRegistry["minecraft:strider_food"]
-
-  public val ITEM_DIAMOND_ORES: Tag = ItemTagRegistry["minecraft:diamond_ores"]
-
-  public val ITEM_FURNACE_MINECART_FUEL: Tag = ItemTagRegistry["minecraft:furnace_minecart_fuel"]
-
-  public val ITEM_LECTERN_BOOKS: Tag = ItemTagRegistry["minecraft:lectern_books"]
-
-  public val ITEM_RABBIT_FOOD: Tag = ItemTagRegistry["minecraft:rabbit_food"]
 
   public val ITEM_PIGLIN_PREFERRED_WEAPONS: Tag =
       ItemTagRegistry["minecraft:piglin_preferred_weapons"]
 
-  public val ITEM_TRIMMABLE_ARMOR: Tag = ItemTagRegistry["minecraft:trimmable_armor"]
+  public val ITEM_CLUSTER_MAX_HARVESTABLES: Tag =
+      ItemTagRegistry["minecraft:cluster_max_harvestables"]
+
+  public val ITEM_WART_BLOCKS: Tag = ItemTagRegistry["minecraft:wart_blocks"]
+
+  public val ITEM_SAND: Tag = ItemTagRegistry["minecraft:sand"]
+
+  public val ITEM_STAIRS: Tag = ItemTagRegistry["minecraft:stairs"]
+
+  public val ITEM_HORSE_FOOD: Tag = ItemTagRegistry["minecraft:horse_food"]
+
+  public val ITEM_COALS: Tag = ItemTagRegistry["minecraft:coals"]
+
+  public val ITEM_LLAMA_TEMPT_ITEMS: Tag = ItemTagRegistry["minecraft:llama_tempt_items"]
+
+  public val ITEM_STONE_BRICKS: Tag = ItemTagRegistry["minecraft:stone_bricks"]
+
+  public val ITEM_REPAIRS_NETHERITE_ARMOR: Tag =
+      ItemTagRegistry["minecraft:repairs_netherite_armor"]
+
+  public val ITEM_BEE_FOOD: Tag = ItemTagRegistry["minecraft:bee_food"]
+
+  public val ITEM_CHERRY_LOGS: Tag = ItemTagRegistry["minecraft:cherry_logs"]
 
   public val ITEM_BANNERS: Tag = ItemTagRegistry["minecraft:banners"]
 
+  public val ITEM_PARROT_FOOD: Tag = ItemTagRegistry["minecraft:parrot_food"]
+
+  public val ITEM_PILLAGER_PREFERRED_WEAPONS: Tag =
+      ItemTagRegistry["minecraft:pillager_preferred_weapons"]
+
+  public val ITEM_STONE_CRAFTING_MATERIALS: Tag =
+      ItemTagRegistry["minecraft:stone_crafting_materials"]
+
+  public val ITEM_CHEST_ARMOR: Tag = ItemTagRegistry["minecraft:chest_armor"]
+
+  public val ITEM_WOODEN_PRESSURE_PLATES: Tag = ItemTagRegistry["minecraft:wooden_pressure_plates"]
+
+  public val ITEM_EMERALD_ORES: Tag = ItemTagRegistry["minecraft:emerald_ores"]
+
+  public val ITEM_LOGS: Tag = ItemTagRegistry["minecraft:logs"]
+
+  public val ITEM_DIAMOND_TOOL_MATERIALS: Tag = ItemTagRegistry["minecraft:diamond_tool_materials"]
+
+  public val ITEM_COPPER_CHESTS: Tag = ItemTagRegistry["minecraft:copper_chests"]
+
+  public val ITEM_BARS: Tag = ItemTagRegistry["minecraft:bars"]
+
+  public val ITEM_ANVIL: Tag = ItemTagRegistry["minecraft:anvil"]
+
+  public val ITEM_WALLS: Tag = ItemTagRegistry["minecraft:walls"]
+
+  public val ITEM_FOOT_ARMOR: Tag = ItemTagRegistry["minecraft:foot_armor"]
+
+  public val ITEM_SKELETON_PREFERRED_WEAPONS: Tag =
+      ItemTagRegistry["minecraft:skeleton_preferred_weapons"]
+
+  public val ITEM_BAMBOO_BLOCKS: Tag = ItemTagRegistry["minecraft:bamboo_blocks"]
+
+  public val ITEM_REPAIRS_GOLD_ARMOR: Tag = ItemTagRegistry["minecraft:repairs_gold_armor"]
+
+  public val ITEM_DECORATED_POT_SHERDS: Tag = ItemTagRegistry["minecraft:decorated_pot_sherds"]
+
+  public val ITEM_STRIDER_TEMPT_ITEMS: Tag = ItemTagRegistry["minecraft:strider_tempt_items"]
+
+  public val ITEM_WOODEN_SHELVES: Tag = ItemTagRegistry["minecraft:wooden_shelves"]
+
+  public val ITEM_SIGNS: Tag = ItemTagRegistry["minecraft:signs"]
+
+  public val ITEM_REPAIRS_DIAMOND_ARMOR: Tag = ItemTagRegistry["minecraft:repairs_diamond_armor"]
+
+  public val ITEM_BUNDLES: Tag = ItemTagRegistry["minecraft:bundles"]
+
+  public val ITEM_PLANKS: Tag = ItemTagRegistry["minecraft:planks"]
+
+  public val ITEM_COMPLETES_FIND_TREE_TUTORIAL: Tag =
+      ItemTagRegistry["minecraft:completes_find_tree_tutorial"]
+
+  public val ITEM_SAPLINGS: Tag = ItemTagRegistry["minecraft:saplings"]
+
+  public val ITEM_CREEPER_IGNITERS: Tag = ItemTagRegistry["minecraft:creeper_igniters"]
+
+  public val ITEM_NOTEBLOCK_TOP_INSTRUMENTS: Tag =
+      ItemTagRegistry["minecraft:noteblock_top_instruments"]
+
+  public val ITEM_NON_FLAMMABLE_WOOD: Tag = ItemTagRegistry["minecraft:non_flammable_wood"]
+
+  public val ITEM_DIAMOND_ORES: Tag = ItemTagRegistry["minecraft:diamond_ores"]
+
+  public val ITEM_WOODEN_STAIRS: Tag = ItemTagRegistry["minecraft:wooden_stairs"]
+
+  public val ITEM_HORSE_TEMPT_ITEMS: Tag = ItemTagRegistry["minecraft:horse_tempt_items"]
+
+  public val ITEM_NETHERITE_TOOL_MATERIALS: Tag =
+      ItemTagRegistry["minecraft:netherite_tool_materials"]
+
+  public val ITEM_WOODEN_DOORS: Tag = ItemTagRegistry["minecraft:wooden_doors"]
+
+  public val ITEM_HOES: Tag = ItemTagRegistry["minecraft:hoes"]
+
+  public val ITEM_STONE_BUTTONS: Tag = ItemTagRegistry["minecraft:stone_buttons"]
+
+  public val ITEM_COPPER: Tag = ItemTagRegistry["minecraft:copper"]
+
+  public val ITEM_GOLD_ORES: Tag = ItemTagRegistry["minecraft:gold_ores"]
+
+  public val ITEM_RABBIT_FOOD: Tag = ItemTagRegistry["minecraft:rabbit_food"]
+
+  public val ITEM_ARMADILLO_FOOD: Tag = ItemTagRegistry["minecraft:armadillo_food"]
+
+  public val ITEM_SPRUCE_LOGS: Tag = ItemTagRegistry["minecraft:spruce_logs"]
+
+  public val ITEM_CAT_FOOD: Tag = ItemTagRegistry["minecraft:cat_food"]
+
+  public val ITEM_WOOL: Tag = ItemTagRegistry["minecraft:wool"]
+
+  public val ITEM_SMELTS_TO_GLASS: Tag = ItemTagRegistry["minecraft:smelts_to_glass"]
+
+  public val ITEM_OAK_LOGS: Tag = ItemTagRegistry["minecraft:oak_logs"]
+
+  public val ITEM_GOLD_TOOL_MATERIALS: Tag = ItemTagRegistry["minecraft:gold_tool_materials"]
+
+  public val ITEM_DOORS: Tag = ItemTagRegistry["minecraft:doors"]
+
+  public val ITEM_PALE_OAK_LOGS: Tag = ItemTagRegistry["minecraft:pale_oak_logs"]
+
+  public val ITEM_CHEST_BOATS: Tag = ItemTagRegistry["minecraft:chest_boats"]
+
+  public val ITEM_WOODEN_SLABS: Tag = ItemTagRegistry["minecraft:wooden_slabs"]
+
+  public val ITEM_STONE_TOOL_MATERIALS: Tag = ItemTagRegistry["minecraft:stone_tool_materials"]
+
+  public val ITEM_SWORDS: Tag = ItemTagRegistry["minecraft:swords"]
+
+  public val ITEM_SHEARABLE_FROM_COPPER_GOLEM: Tag =
+      ItemTagRegistry["minecraft:shearable_from_copper_golem"]
+
+  public val ITEM_PIG_FOOD: Tag = ItemTagRegistry["minecraft:pig_food"]
+
+  public val ITEM_TRAPDOORS: Tag = ItemTagRegistry["minecraft:trapdoors"]
+
+  public val ITEM_RAILS: Tag = ItemTagRegistry["minecraft:rails"]
+
+  public val ITEM_HOGLIN_FOOD: Tag = ItemTagRegistry["minecraft:hoglin_food"]
+
+  public val ITEM_REPAIRS_LEATHER_ARMOR: Tag = ItemTagRegistry["minecraft:repairs_leather_armor"]
+
+  public val ITEM_REPAIRS_CHAIN_ARMOR: Tag = ItemTagRegistry["minecraft:repairs_chain_armor"]
+
+  public val ITEM_ENCHANTABLE_EQUIPPABLE: Tag = ItemTagRegistry["minecraft:enchantable/equippable"]
+
+  public val ITEM_ENCHANTABLE_MINING: Tag = ItemTagRegistry["minecraft:enchantable/mining"]
+
+  public val ITEM_ENCHANTABLE_MINING_LOOT: Tag =
+      ItemTagRegistry["minecraft:enchantable/mining_loot"]
+
+  public val ITEM_ENCHANTABLE_CHEST_ARMOR: Tag =
+      ItemTagRegistry["minecraft:enchantable/chest_armor"]
+
+  public val ITEM_ENCHANTABLE_FOOT_ARMOR: Tag = ItemTagRegistry["minecraft:enchantable/foot_armor"]
+
+  public val ITEM_ENCHANTABLE_SWORD: Tag = ItemTagRegistry["minecraft:enchantable/sword"]
+
+  public val ITEM_ENCHANTABLE_FISHING: Tag = ItemTagRegistry["minecraft:enchantable/fishing"]
+
+  public val ITEM_ENCHANTABLE_SHARP_WEAPON: Tag =
+      ItemTagRegistry["minecraft:enchantable/sharp_weapon"]
+
+  public val ITEM_ENCHANTABLE_ARMOR: Tag = ItemTagRegistry["minecraft:enchantable/armor"]
+
+  public val ITEM_ENCHANTABLE_WEAPON: Tag = ItemTagRegistry["minecraft:enchantable/weapon"]
+
+  public val ITEM_ENCHANTABLE_CROSSBOW: Tag = ItemTagRegistry["minecraft:enchantable/crossbow"]
+
+  public val ITEM_ENCHANTABLE_MACE: Tag = ItemTagRegistry["minecraft:enchantable/mace"]
+
+  public val ITEM_ENCHANTABLE_BOW: Tag = ItemTagRegistry["minecraft:enchantable/bow"]
+
+  public val ITEM_ENCHANTABLE_FIRE_ASPECT: Tag =
+      ItemTagRegistry["minecraft:enchantable/fire_aspect"]
+
+  public val ITEM_ENCHANTABLE_VANISHING: Tag = ItemTagRegistry["minecraft:enchantable/vanishing"]
+
+  public val ITEM_ENCHANTABLE_DURABILITY: Tag = ItemTagRegistry["minecraft:enchantable/durability"]
+
+  public val ITEM_ENCHANTABLE_TRIDENT: Tag = ItemTagRegistry["minecraft:enchantable/trident"]
+
+  public val ITEM_ENCHANTABLE_LEG_ARMOR: Tag = ItemTagRegistry["minecraft:enchantable/leg_armor"]
+
+  public val ITEM_ENCHANTABLE_HEAD_ARMOR: Tag = ItemTagRegistry["minecraft:enchantable/head_armor"]
+
+  public val ITEM_WOODEN_BUTTONS: Tag = ItemTagRegistry["minecraft:wooden_buttons"]
+
+  public val ITEM_STRIDER_FOOD: Tag = ItemTagRegistry["minecraft:strider_food"]
+
+  public val ITEM_SMALL_FLOWERS: Tag = ItemTagRegistry["minecraft:small_flowers"]
+
+  public val ITEM_DARK_OAK_LOGS: Tag = ItemTagRegistry["minecraft:dark_oak_logs"]
+
+  public val ITEM_FISHES: Tag = ItemTagRegistry["minecraft:fishes"]
+
+  public val ITEM_SHULKER_BOXES: Tag = ItemTagRegistry["minecraft:shulker_boxes"]
+
+  public val ITEM_COPPER_ORES: Tag = ItemTagRegistry["minecraft:copper_ores"]
+
+  public val ITEM_WITHER_SKELETON_DISLIKED_WEAPONS: Tag =
+      ItemTagRegistry["minecraft:wither_skeleton_disliked_weapons"]
+
+  public val ITEM_HAPPY_GHAST_TEMPT_ITEMS: Tag =
+      ItemTagRegistry["minecraft:happy_ghast_tempt_items"]
+
+  public val ITEM_BREWING_FUEL: Tag = ItemTagRegistry["minecraft:brewing_fuel"]
+
+  public val ITEM_OCELOT_FOOD: Tag = ItemTagRegistry["minecraft:ocelot_food"]
+
+  public val ITEM_WARPED_STEMS: Tag = ItemTagRegistry["minecraft:warped_stems"]
+
+  public val ITEM_DAMPENS_VIBRATIONS: Tag = ItemTagRegistry["minecraft:dampens_vibrations"]
+
+  public val ITEM_SHEEP_FOOD: Tag = ItemTagRegistry["minecraft:sheep_food"]
+
+  public val ITEM_LLAMA_FOOD: Tag = ItemTagRegistry["minecraft:llama_food"]
+
+  public val ITEM_COPPER_GOLEM_STATUES: Tag = ItemTagRegistry["minecraft:copper_golem_statues"]
+
+  public val ITEM_PIGLIN_LOVED: Tag = ItemTagRegistry["minecraft:piglin_loved"]
+
+  public val ITEM_LEAVES: Tag = ItemTagRegistry["minecraft:leaves"]
+
+  public val ITEM_LOGS_THAT_BURN: Tag = ItemTagRegistry["minecraft:logs_that_burn"]
+
+  public val ITEM_COMPASSES: Tag = ItemTagRegistry["minecraft:compasses"]
+
+  public val ITEM_PARROT_POISONOUS_FOOD: Tag = ItemTagRegistry["minecraft:parrot_poisonous_food"]
+
+  public val ITEM_FENCE_GATES: Tag = ItemTagRegistry["minecraft:fence_gates"]
+
+  public val ITEM_PANDA_EATS_FROM_GROUND: Tag = ItemTagRegistry["minecraft:panda_eats_from_ground"]
+
+  public val ITEM_ARROWS: Tag = ItemTagRegistry["minecraft:arrows"]
+
   public val ITEM_CHICKEN_FOOD: Tag = ItemTagRegistry["minecraft:chicken_food"]
 
+  public val ITEM_FOX_FOOD: Tag = ItemTagRegistry["minecraft:fox_food"]
+
+  public val ITEM_CAMEL_FOOD: Tag = ItemTagRegistry["minecraft:camel_food"]
+
+  public val ITEM_CHAINS: Tag = ItemTagRegistry["minecraft:chains"]
+
+  public val ITEM_BOATS: Tag = ItemTagRegistry["minecraft:boats"]
+
+  public val ITEM_BOOKSHELF_BOOKS: Tag = ItemTagRegistry["minecraft:bookshelf_books"]
+
+  public val ITEM_LAPIS_ORES: Tag = ItemTagRegistry["minecraft:lapis_ores"]
+
+  public val ITEM_GAZE_DISGUISE_EQUIPMENT: Tag =
+      ItemTagRegistry["minecraft:gaze_disguise_equipment"]
+
+  public val ITEM_FROG_FOOD: Tag = ItemTagRegistry["minecraft:frog_food"]
+
+  public val ITEM_SNIFFER_FOOD: Tag = ItemTagRegistry["minecraft:sniffer_food"]
+
+  public val ITEM_AXOLOTL_FOOD: Tag = ItemTagRegistry["minecraft:axolotl_food"]
+
+  public val ITEM_COW_FOOD: Tag = ItemTagRegistry["minecraft:cow_food"]
+
+  public val ITEM_TRIM_MATERIALS: Tag = ItemTagRegistry["minecraft:trim_materials"]
+
+  public val ITEM_IRON_TOOL_MATERIALS: Tag = ItemTagRegistry["minecraft:iron_tool_materials"]
+
+  public val ITEM_MEAT: Tag = ItemTagRegistry["minecraft:meat"]
+
+  public val ITEM_HARNESSES: Tag = ItemTagRegistry["minecraft:harnesses"]
+
+  public val ITEM_PIGLIN_FOOD: Tag = ItemTagRegistry["minecraft:piglin_food"]
+
+  public val ITEM_FURNACE_MINECART_FUEL: Tag = ItemTagRegistry["minecraft:furnace_minecart_fuel"]
+
+  public val ITEM_VILLAGER_PICKS_UP: Tag = ItemTagRegistry["minecraft:villager_picks_up"]
+
+  public val ITEM_WOODEN_TRAPDOORS: Tag = ItemTagRegistry["minecraft:wooden_trapdoors"]
+
+  public val ITEM_TRIMMABLE_ARMOR: Tag = ItemTagRegistry["minecraft:trimmable_armor"]
+
+  public val ITEM_IGNORED_BY_PIGLIN_BABIES: Tag =
+      ItemTagRegistry["minecraft:ignored_by_piglin_babies"]
+
+  public val ITEM_BREAKS_DECORATED_POTS: Tag = ItemTagRegistry["minecraft:breaks_decorated_pots"]
+
+  public val ITEM_PICKAXES: Tag = ItemTagRegistry["minecraft:pickaxes"]
+
+  public val ITEM_BEDS: Tag = ItemTagRegistry["minecraft:beds"]
+
+  public val ITEM_TURTLE_FOOD: Tag = ItemTagRegistry["minecraft:turtle_food"]
+
+  public val ITEM_JUNGLE_LOGS: Tag = ItemTagRegistry["minecraft:jungle_logs"]
+
+  public val ITEM_HAPPY_GHAST_FOOD: Tag = ItemTagRegistry["minecraft:happy_ghast_food"]
+
+  public val ITEM_LIGHTNING_RODS: Tag = ItemTagRegistry["minecraft:lightning_rods"]
+
+  public val ITEM_FREEZE_IMMUNE_WEARABLES: Tag =
+      ItemTagRegistry["minecraft:freeze_immune_wearables"]
+
+  public val ITEM_VILLAGER_PLANTABLE_SEEDS: Tag =
+      ItemTagRegistry["minecraft:villager_plantable_seeds"]
+
+  public val ITEM_FENCES: Tag = ItemTagRegistry["minecraft:fences"]
+
+  public val ITEM_WOOL_CARPETS: Tag = ItemTagRegistry["minecraft:wool_carpets"]
+
+  public val ITEM_REPAIRS_WOLF_ARMOR: Tag = ItemTagRegistry["minecraft:repairs_wolf_armor"]
+
+  public val ITEM_IRON_ORES: Tag = ItemTagRegistry["minecraft:iron_ores"]
+
+  public val ITEM_GOAT_FOOD: Tag = ItemTagRegistry["minecraft:goat_food"]
+
+  public val ITEM_FLOWERS: Tag = ItemTagRegistry["minecraft:flowers"]
+
+  public val ITEM_DECORATED_POT_INGREDIENTS: Tag =
+      ItemTagRegistry["minecraft:decorated_pot_ingredients"]
+
+  public val ITEM_REPAIRS_IRON_ARMOR: Tag = ItemTagRegistry["minecraft:repairs_iron_armor"]
+
+  public val ITEM_COAL_ORES: Tag = ItemTagRegistry["minecraft:coal_ores"]
+
+  public val ITEM_SLABS: Tag = ItemTagRegistry["minecraft:slabs"]
+
+  public val ITEM_SHOVELS: Tag = ItemTagRegistry["minecraft:shovels"]
+
+  public val ITEM_CANDLES: Tag = ItemTagRegistry["minecraft:candles"]
+
+  public val ITEM_BOOK_CLONING_TARGET: Tag = ItemTagRegistry["minecraft:book_cloning_target"]
+
+  public val ITEM_ACACIA_LOGS: Tag = ItemTagRegistry["minecraft:acacia_logs"]
+
+  public val ITEM_BUTTONS: Tag = ItemTagRegistry["minecraft:buttons"]
+
+  public val ITEM_CREEPER_DROP_MUSIC_DISCS: Tag =
+      ItemTagRegistry["minecraft:creeper_drop_music_discs"]
+
+  public val ITEM_BIRCH_LOGS: Tag = ItemTagRegistry["minecraft:birch_logs"]
+
+  public val ITEM_MAP_INVISIBILITY_EQUIPMENT: Tag =
+      ItemTagRegistry["minecraft:map_invisibility_equipment"]
+
+  public val ITEM_WOLF_FOOD: Tag = ItemTagRegistry["minecraft:wolf_food"]
+
+  public val ITEM_SKULLS: Tag = ItemTagRegistry["minecraft:skulls"]
+
+  public val ITEM_PIGLIN_REPELLENTS: Tag = ItemTagRegistry["minecraft:piglin_repellents"]
+
   public val ITEM_LEG_ARMOR: Tag = ItemTagRegistry["minecraft:leg_armor"]
+
+  public val ITEM_COPPER_TOOL_MATERIALS: Tag = ItemTagRegistry["minecraft:copper_tool_materials"]
+
+  public val ITEM_DROWNED_PREFERRED_WEAPONS: Tag =
+      ItemTagRegistry["minecraft:drowned_preferred_weapons"]
+
+  public val ITEM_BEACON_PAYMENT_ITEMS: Tag = ItemTagRegistry["minecraft:beacon_payment_items"]
+
+  public val ITEM_TERRACOTTA: Tag = ItemTagRegistry["minecraft:terracotta"]
+
+  public val ITEM_WOODEN_TOOL_MATERIALS: Tag = ItemTagRegistry["minecraft:wooden_tool_materials"]
+
+  public val ITEM_EGGS: Tag = ItemTagRegistry["minecraft:eggs"]
+
+  public val ITEM_DYEABLE: Tag = ItemTagRegistry["minecraft:dyeable"]
+
+  public val ITEM_WOODEN_FENCES: Tag = ItemTagRegistry["minecraft:wooden_fences"]
+
+  public val ITEM_REPAIRS_COPPER_ARMOR: Tag = ItemTagRegistry["minecraft:repairs_copper_armor"]
+
+  public val ITEM_DIRT: Tag = ItemTagRegistry["minecraft:dirt"]
+
+  public val ITEM_LANTERNS: Tag = ItemTagRegistry["minecraft:lanterns"]
+
+  public val ITEM_HANGING_SIGNS: Tag = ItemTagRegistry["minecraft:hanging_signs"]
+
+  public val ITEM_MANGROVE_LOGS: Tag = ItemTagRegistry["minecraft:mangrove_logs"]
+
+  public val ITEM_PANDA_FOOD: Tag = ItemTagRegistry["minecraft:panda_food"]
+
+  public val ITEM_SOUL_FIRE_BASE_BLOCKS: Tag = ItemTagRegistry["minecraft:soul_fire_base_blocks"]
+
+  public val ITEM_HEAD_ARMOR: Tag = ItemTagRegistry["minecraft:head_armor"]
+
+  public val ITEM_LECTERN_BOOKS: Tag = ItemTagRegistry["minecraft:lectern_books"]
+
+  public val ITEM_REPAIRS_TURTLE_HELMET: Tag = ItemTagRegistry["minecraft:repairs_turtle_helmet"]
+
+  public val ITEM_CRIMSON_STEMS: Tag = ItemTagRegistry["minecraft:crimson_stems"]
+
+  public val ITEM_AXES: Tag = ItemTagRegistry["minecraft:axes"]
 }

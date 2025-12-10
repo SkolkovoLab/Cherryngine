@@ -131,6 +131,8 @@ object PolarWorldGenerator {
                 blockId = blockId.take(bracketPos)
             }
 
+            if (blockId == "minecraft:chain") blockId = "minecraft:iron_chain"
+
             val registryBlock = BlockRegistry[blockId]
 
             // Парсим свойства

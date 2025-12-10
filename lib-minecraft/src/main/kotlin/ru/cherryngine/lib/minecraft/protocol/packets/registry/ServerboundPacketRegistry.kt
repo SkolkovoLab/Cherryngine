@@ -33,6 +33,7 @@ class ServerboundPacketRegistry : AbstractPacketRegistry() {
         register(ProtocolState.CONFIGURATION, ServerboundResourcePackPacket::class, ServerboundResourcePackPacket.STREAM_CODEC)
         skip(ProtocolState.CONFIGURATION, "known packs")
         register(ProtocolState.CONFIGURATION, ServerboundCustomClickActionPacket::class, ServerboundCustomClickActionPacket.STREAM_CODEC)
+        skip(ProtocolState.CONFIGURATION, "ClientAcceptCodeOfConductPacket")
 
         register(ProtocolState.PLAY, ServerboundAcceptTeleportationPacket::class, ServerboundAcceptTeleportationPacket.STREAM_CODEC)
         skip(ProtocolState.PLAY, "query block nbt")
