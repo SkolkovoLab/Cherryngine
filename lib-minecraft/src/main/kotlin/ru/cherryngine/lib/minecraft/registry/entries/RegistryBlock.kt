@@ -2,8 +2,16 @@ package ru.cherryngine.lib.minecraft.registry.entries
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import kotlinx.serialization.Contextual
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import net.kyori.adventure.nbt.CompoundBinaryTag
+import ru.cherryngine.lib.math.Cuboid
+import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.minecraft.extentions.reversed
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
@@ -12,38 +20,56 @@ import ru.cherryngine.lib.minecraft.world.block.Block
 @Serializable
 data class RegistryBlock(
     val identifier: String,
-    val displayName: String,
+    val translationKey: String,
     val explosionResistance: Float,
-    val destroyTime: Float,
-    val isSignalSource: Boolean,
-    val lightEmission: Int,
-    val isBlockEntity: Boolean,
-    val blockEntityId: Int?,
-    val lightFilter: Int,
-    val isAir: Boolean,
-    val isSolid: Boolean,
-    val isLiquid: Boolean,
-    val isFlammable: Boolean,
-    val breakSpeed: Float,
-    val requiresToolToBreak: Boolean,
-    val canOcclude: Boolean,
-    val replaceable: Boolean,
-    val states: List<RegistryBlockState>,
-    val defaultBlockStateId: Int,
-    val minBlockStateId: Int,
-    val maxBlockStateId: Int,
-    val sounds: RegistryBlockSounds,
-    val tags: List<String>,
-    val possibleStates: Map<String, Int>,
-    val shape: Map<Int, String>,
-    val collisionShape: Map<Int, String>,
-    val interactionShape: Map<Int, String>,
-    val occlusionShape: Map<Int, String>,
-    val visualShape: Map<Int, String>,
+    val friction: Float,
+    val speedFactor: Float = 1f,
+    val jumpFactor: Float = 1f,
+    val defaultStateId: Int,
+    val gravity: Boolean = false,
+    val correspondingItem: String? = null,
+    val maxHorizontalOffset: Float = 0f,
+    val maxVerticalOffset: Float = 0f,
+    val canRespawnIn: Boolean,
+    val hardness: Float,
+    val lightEmission: Int = 0,
+    val pushReaction: String, // TODO enum
+    val mapColorId: Int,
+    val occludes: Boolean,
+    val requiresTool: Boolean,
+    val blocksMotion: Boolean,
+    val flammable: Boolean,
+    val liquid: Boolean = false,
+    val air: Boolean = false,
+    val replaceable: Boolean = false,
+    val solid: Boolean,
+    val solidBlocking: Boolean,
+    val soundType: String,
+    @Serializable(ShapeSerializer::class)
+    val shape: Shape,
+    @Serializable(ShapeSerializer::class)
+    val collisionShape: Shape,
+    @Serializable(ShapeSerializer::class)
+    val interactionShape: Shape,
+    @Serializable(ShapeSerializer::class)
+    val occlusionShape: Shape,
+    @Serializable(ShapeSerializer::class)
+    val visualShape: Shape,
+    val redstoneConductor: Boolean,
+    val signalSource: Boolean = false,
+    val properties: Map<String, List<String>> = emptyMap(),
+    val states: Map<String, RegistryBlockState>,
+    val blockEntity: RegistryBlockEntity? = null
 ) : RegistryEntry {
 
     override fun getEntryIdentifier(): String {
         return identifier
+    }
+
+    @Contextual
+    val possibleStates = states.asSequence().associate {
+        val stateKey = if (it.key == "[]") identifier else identifier + it.key
+        stateKey to it.value.stateId
     }
 
     @Contextual
@@ -78,8 +104,118 @@ data class RegistryBlock(
 
     @Serializable
     data class RegistryBlockState(
-        val name: String,
-        val type: String,
-        val values: List<String>? = null,
+        val stateId: Int,
+        val canRespawnIn: Boolean? = null,
+        val blocksMotion: Boolean? = null,
+        val lightEmission: Int? = null,
+        val mapColorId: Int? = null,
+        val flammable: Boolean? = null,
+        val solid: Boolean? = null,
+        val solidBlocking: Boolean? = null,
+        val soundType: String? = null,
+        @Serializable(ShapeSerializer::class)
+        val shape: Shape? = null,
+        @Serializable(ShapeSerializer::class)
+        val collisionShape: Shape? = null,
+        @Serializable(ShapeSerializer::class)
+        val interactionShape: Shape? = null,
+        @Serializable(ShapeSerializer::class)
+        val occlusionShape: Shape? = null,
+        @Serializable(ShapeSerializer::class)
+        val visualShape: Shape? = null,
+        val redstoneConductor: Boolean? = null
+    )
+
+    @Serializable
+    data class RegistryBlockEntity(
+        val namespace: String,
+        val id: Int
     )
 }
+
+data class Shape(
+    val cuboids: List<Cuboid>,
+)
+
+object ShapeSerializer : KSerializer<Shape> {
+
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("CuboidList", PrimitiveKind.STRING)
+
+    override fun deserialize(decoder: Decoder): Shape {
+        val raw = decoder.decodeString().trim()
+        if (raw.isBlank() || raw == "[]") return Shape(emptyList())
+
+        val content = raw.removePrefix("[").removeSuffix("]")
+
+        val parts = splitTopLevel(content)
+            .filter { it.isNotEmpty() }
+
+        val cuboids = parts.map { part ->
+            // Ожидается "AABB[min] -> [max]"
+            val cleaned = part.removePrefix("AABB").trim()
+
+            val (minStr, maxStr) = cleaned.split("->")
+                .map { it.trim() }
+
+            Cuboid(
+                min = parseVec(minStr),
+                max = parseVec(maxStr)
+            )
+        }
+
+        return Shape(cuboids)
+    }
+
+    private fun parseVec(s: String): Vec3D {
+        val nums = s.removePrefix("[")
+            .removeSuffix("]")
+            .split(",")
+            .map { it.trim().toDouble() }
+
+        return Vec3D(nums[0], nums[1], nums[2])
+    }
+
+    private fun splitTopLevel(str: String): List<String> {
+        val result = mutableListOf<String>()
+        val sb = StringBuilder()
+        var depth = 0
+
+        for (c in str) {
+            when (c) {
+                '[' -> {
+                    depth++
+                    sb.append(c)
+                }
+
+                ']' -> {
+                    depth--
+                    sb.append(c)
+                }
+
+                ',' -> {
+                    if (depth == 0) {
+                        result += sb.toString().trim()
+                        sb.clear()
+                    } else sb.append(c)
+                }
+
+                else -> sb.append(c)
+            }
+        }
+
+        if (sb.isNotEmpty()) {
+            result += sb.toString().trim()
+        }
+
+        return result
+    }
+
+    override fun serialize(encoder: Encoder, value: Shape) {
+        val result = value.cuboids.joinToString(prefix = "[", postfix = "]") { c ->
+            "AABB[${c.min.x}, ${c.min.y}, ${c.min.z}] -> [${c.max.x}, ${c.max.y}, ${c.max.z}]"
+        }
+        encoder.encodeString(result)
+    }
+}
+

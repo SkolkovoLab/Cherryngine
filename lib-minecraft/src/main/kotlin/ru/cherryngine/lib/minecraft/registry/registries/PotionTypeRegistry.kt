@@ -4,7 +4,7 @@ import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.entries.PotionType
 
 object PotionTypeRegistry : DataDrivenRegistry<PotionType>(
-    "minecraft:potion",
-    "registry/potion_type_registry.json.gz",
+    "minecraft:potion_type",
+    "potion_type.json",
     PotionType.serializer()
 )

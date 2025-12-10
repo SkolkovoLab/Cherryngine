@@ -5,6 +5,6 @@ import ru.cherryngine.lib.minecraft.registry.entries.Particle
 
 object ParticleRegistry : DataDrivenRegistry<Particle>(
     "minecraft:particle",
-    "registry/particle_registry.json.gz",
+    "particle.json",
     Particle.serializer()
 )

@@ -5,6 +5,6 @@ import ru.cherryngine.lib.minecraft.registry.entries.FrogVariant
 
 object FrogVariantRegistry : DataDrivenRegistry<FrogVariant>(
     "minecraft:frog_variant",
-    "registry/frog_variant.json.gz",
+    "frog_variant.json",
     FrogVariant.serializer()
 )

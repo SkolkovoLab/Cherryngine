@@ -10,8 +10,8 @@ data class Attribute(
     val translationKey: String,
     val defaultValue: Double,
     val clientSync: Boolean,
-    val minValue: Double? = null,
-    val maxValue: Double? = null,
+    val maxValue: Double,
+    val minValue: Double,
 ) : RegistryEntry {
 
     override fun getNbt(): BinaryTag? {

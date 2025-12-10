@@ -8,8 +8,7 @@ import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 @Serializable
 data class Tag(
     val identifier: String,
-    val tags: Set<String>,
-    val registryIdentifier: String,
+    val values: Set<String>,
 ) : RegistryEntry {
     override fun getNbt(): BinaryTag? = null
 
@@ -18,28 +17,41 @@ data class Tag(
     }
 
     operator fun contains(identifier: String): Boolean {
-        return tags.contains(identifier)
+        return values.contains(identifier)
     }
 
     override fun toString(): String {
         return "#$identifier"
     }
 
-    companion object {
-        val STREAM_CODEC = object : StreamCodec<Tag> {
-            override fun write(buffer: ByteBuf, value: Tag) {
-                val registry = RegistryManager.getFromIdentifier<Registry<RegistryEntry>>(value.registryIdentifier)
-                StreamCodec.STRING.write(buffer, value.identifier)
-                val intTags = value.tags.map { tag ->
-                    val entry = registry[tag]
-                    registry.getProtocolIdByEntry(entry)
-                }
-                StreamCodec.VAR_INT.list().write(buffer, intTags)
+    fun unwrappedValues(registry: TagRegistry): Set<String> {
+        val result = mutableSetOf<String>()
+        values.forEach { value ->
+            if (value.startsWith('#')) {
+                result += registry[value.removePrefix("#")].unwrappedValues(registry)
+            } else {
+                result += value
             }
+        }
+        return result
+    }
 
-            override fun read(buffer: ByteBuf): Tag {
-                TODO("Not yet implemented")
+    class TagStreamCodec(
+        val tagRegistry: TagRegistry,
+    ) : StreamCodec<Tag> {
+        override fun write(buffer: ByteBuf, value: Tag) {
+            StreamCodec.STRING.write(buffer, value.identifier)
+            @Suppress("UNCHECKED_CAST")
+            val registry = tagRegistry.parentRegistry as Registry<RegistryEntry>
+            val intTags = value.unwrappedValues(tagRegistry).map { tag ->
+                val entry = registry[tag]
+                registry.getProtocolIdByEntry(entry)
             }
+            StreamCodec.VAR_INT.list().write(buffer, intTags)
+        }
+
+        override fun read(buffer: ByteBuf): Tag {
+            TODO("Not yet implemented")
         }
     }
 }

@@ -7,10 +7,7 @@ import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 @Serializable
 data class Fluid(
     val identifier: String,
-    val dripParticle: String?,
-    val pickupSound: String,
-    val explosionResistance: Float,
-    val block: String,
+    val bucketId: String,
 ) : RegistryEntry {
     override fun getNbt(): CompoundBinaryTag? = null
 

@@ -5,6 +5,6 @@ import ru.cherryngine.lib.minecraft.registry.entries.TrimPattern
 
 object TrimPatternRegistry : DataDrivenRegistry<TrimPattern>(
     "minecraft:trim_pattern",
-    "registry/trim_pattern_registry.json.gz",
+    "trim_pattern.json",
     TrimPattern.serializer()
 )

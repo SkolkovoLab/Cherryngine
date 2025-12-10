@@ -5,6 +5,6 @@ import ru.cherryngine.lib.minecraft.registry.entries.Attribute
 
 object AttributeRegistry : DataDrivenRegistry<Attribute>(
     "minecraft:attribute",
-    "registry/attribute_registry.json.gz",
+    "attribute.json",
     Attribute.serializer()
 )

@@ -5,7 +5,7 @@ import ru.cherryngine.lib.minecraft.registry.entries.DamageType
 
 object DamageTypeRegistry : DataDrivenRegistry<DamageType>(
     "minecraft:damage_type",
-    "registry/damage_type_registry.json.gz",
+    "damage_type.json",
     DamageType.serializer()
 )
 

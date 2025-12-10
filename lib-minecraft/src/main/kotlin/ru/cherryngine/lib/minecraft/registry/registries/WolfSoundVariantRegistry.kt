@@ -5,6 +5,6 @@ import ru.cherryngine.lib.minecraft.registry.entries.WolfSoundVariant
 
 object WolfSoundVariantRegistry : DataDrivenRegistry<WolfSoundVariant>(
     "minecraft:wolf_sound_variant",
-    "registry/wolf_sound_variant.json.gz",
+    "wolf_sound_variant.json",
     WolfSoundVariant.serializer()
 )

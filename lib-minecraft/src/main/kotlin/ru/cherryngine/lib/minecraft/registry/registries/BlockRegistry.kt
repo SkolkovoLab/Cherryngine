@@ -7,7 +7,7 @@ import ru.cherryngine.lib.minecraft.world.block.Block
 
 object BlockRegistry : DataDrivenRegistry<RegistryBlock>(
     "minecraft:block",
-    "registry/block_registry.json.gz",
+    "block.json",
     RegistryBlock.serializer()
 ) {
     val AIR get() = this["minecraft:air"]

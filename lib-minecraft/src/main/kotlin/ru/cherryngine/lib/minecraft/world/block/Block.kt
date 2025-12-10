@@ -6,6 +6,7 @@ import ru.cherryngine.lib.minecraft.registry.entries.RegistryBlock
 import ru.cherryngine.lib.minecraft.registry.keys.Blocks
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
+import ru.cherryngine.lib.minecraft.registry.registries.tags.BlockTagRegistry
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 data class Block(
@@ -14,7 +15,7 @@ data class Block(
 ) {
     val identifier = registryBlock.identifier
 
-    val tags = registryBlock.tags
+    val tags get() = BlockTagRegistry.reversed[identifier] ?: emptySet()
 
     override fun equals(other: Any?): Boolean {
         if (other !is Block) return false
@@ -26,17 +27,17 @@ data class Block(
     }
 
     fun getStateId(): Int {
-        if (blockStates.isEmpty()) return registryBlock.defaultBlockStateId
-        if (registryBlock.states.isEmpty()) return registryBlock.defaultBlockStateId
+        if (blockStates.isEmpty()) return registryBlock.defaultStateId
+        if (registryBlock.states.isEmpty()) return registryBlock.defaultStateId
 
         val id = registryBlock.possibleStates[this.asString()]
-        return id ?: registryBlock.defaultBlockStateId
+        return id ?: registryBlock.defaultStateId
     }
 
     fun asString(): String {
         if (registryBlock.states.isEmpty()) return identifier
 
-        val baseBlockStatesString = registryBlock.possibleStatesReversed[registryBlock.defaultBlockStateId]!!
+        val baseBlockStatesString = registryBlock.possibleStatesReversed[registryBlock.defaultStateId]!!
         val (_, baseStates) = parseBlockStateString(baseBlockStatesString)
 
         val states = mutableMapOf<String, String>()
@@ -105,7 +106,7 @@ data class Block(
 
             val registryBlock = BlockRegistry.getByStateIdOrNull(stateId)
             if (registryBlock != null) {
-                val states = registryBlock.possibleStatesReversed[registryBlock.defaultBlockStateId]!!
+                val states = registryBlock.possibleStatesReversed[registryBlock.defaultStateId]!!
                 val parsed = parseBlockStateString(states).second.toMutableMap()
                 return Block(registryBlock, parsed)
             }

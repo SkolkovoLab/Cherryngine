@@ -5,6 +5,6 @@ import ru.cherryngine.lib.minecraft.registry.entries.PigVariant
 
 object PigVariantRegistry : DataDrivenRegistry<PigVariant>(
     "minecraft:pig_variant",
-    "registry/pig_variant.json.gz",
+    "pig_variant.json",
     PigVariant.serializer()
 )

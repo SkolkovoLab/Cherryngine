@@ -5,7 +5,7 @@ import ru.cherryngine.lib.minecraft.registry.entries.Fluid
 
 object FluidRegistry : DataDrivenRegistry<Fluid>(
     "minecraft:fluid",
-    "registry/fluid_registry.json.gz",
+    "fluid.json",
     Fluid.serializer()
 )
 

@@ -5,7 +5,7 @@ import ru.cherryngine.lib.minecraft.registry.entries.ChickenVariant
 
 object ChickenVariantRegistry : DataDrivenRegistry<ChickenVariant>(
     "minecraft:chicken_variant",
-    "registry/chicken_variant.json.gz",
+    "chicken_variant.json",
     ChickenVariant.serializer()
 )
 

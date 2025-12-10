@@ -5,7 +5,7 @@ import ru.cherryngine.lib.minecraft.registry.entries.CowVariant
 
 object CowVariantRegistry : DataDrivenRegistry<CowVariant>(
     "minecraft:cow_variant",
-    "registry/cow_variant.json.gz",
+    "cow_variant.json",
     CowVariant.serializer()
 )
 

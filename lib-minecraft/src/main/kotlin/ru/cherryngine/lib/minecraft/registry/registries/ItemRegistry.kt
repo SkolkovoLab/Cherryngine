@@ -5,6 +5,6 @@ import ru.cherryngine.lib.minecraft.registry.entries.Item
 
 object ItemRegistry : DataDrivenRegistry<Item>(
     "minecraft:item",
-    "registry/item_registry.json.gz",
+    "item.json",
     Item.serializer()
 )

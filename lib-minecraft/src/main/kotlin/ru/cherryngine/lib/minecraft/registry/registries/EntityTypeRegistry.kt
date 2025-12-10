@@ -5,6 +5,6 @@ import ru.cherryngine.lib.minecraft.registry.entries.EntityType
 
 object EntityTypeRegistry : DataDrivenRegistry<EntityType>(
     "minecraft:entity_type",
-    "registry/entity_type_registry.json.gz",
+    "entity_type.json",
     EntityType.serializer()
 )

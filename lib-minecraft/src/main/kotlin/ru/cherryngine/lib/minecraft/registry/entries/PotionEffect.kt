@@ -15,18 +15,11 @@ import ru.cherryngine.lib.minecraft.utils.CustomColor
 @Serializable
 data class PotionEffect(
     val identifier: String,
-    val name: String,
-    val type: Type,
-    val isInstant: Boolean,
+    val translationKey: String,
     @Serializable(with = CustomColorIntSerializer::class)
     val color: CustomColor,
-    ) : RegistryEntry {
-
-    enum class Type {
-        BENEFICIAL,
-        HARMFUL,
-        NEUTRAL
-    }
+    val instantaneous: Boolean,
+) : RegistryEntry {
 
     override fun getEntryIdentifier(): String {
         return identifier
@@ -41,7 +34,7 @@ data class PotionEffect(
         }
 
         override fun deserialize(decoder: Decoder): CustomColor {
-            return CustomColor.Companion.fromRGBInt(decoder.decodeInt())
+            return CustomColor.fromRGBInt(decoder.decodeInt())
         }
     }
 }

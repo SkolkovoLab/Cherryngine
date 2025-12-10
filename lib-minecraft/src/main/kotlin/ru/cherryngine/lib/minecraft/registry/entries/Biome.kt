@@ -1,5 +1,6 @@
 package ru.cherryngine.lib.minecraft.registry.entries
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.nbt.BinaryTagTypes
@@ -13,22 +14,50 @@ import ru.cherryngine.lib.minecraft.utils.kotlinx.KeySerializer
 
 @Serializable
 data class Biome(
-    var identifier: String,
-    val downfall: Float = 1f,
-    var effects: Effects,
-    val hasRain: Boolean = false,
+    val identifier: String,
     val temperature: Float = 1f,
+    val downfall: Float = 1f,
+    @SerialName("has_precipitation")
+    val hasPrecipitation: Boolean = false,
     val temperatureModifier: String? = null,
+    val fogColor: Int? = null,
+    val foliageColor: Int? = null,
+    val grassColor: Int? = null,
+    val grassColorModifier: String? = null,
+    val moodSound: MoodSound? = null,
+    val music: List<WeightedBackgroundMusic>? = null,
+    val musicVolume: Float? = null,
+    val ambientAdditions: AmbientAdditions? = null,
+    val ambientLoop: String? = null,
+    val particle: BiomeParticles? = null,
+    val skyColor: Int,
+    val waterColor: Int,
+    val waterFogColor: Int,
 ) : RegistryEntry {
     override fun getEntryIdentifier(): String {
         return identifier
     }
 
     override fun getNbt(): CompoundBinaryTag {
+        val effects = nbt {
+            if (fogColor != null) withInt("fog_color", fogColor)
+            if (foliageColor != null) withInt("foliage_color", foliageColor)
+            if (grassColor != null) withInt("grass_color", grassColor)
+            if (grassColorModifier != null) withString("grass_color_modifier", grassColorModifier)
+            if (moodSound != null) withCompound("mood_sound", moodSound.toNBT())
+            if (music != null) withList("music", BinaryTagTypes.COMPOUND, music.map { music -> music.getNbt() })
+            if (musicVolume != null) withFloat("music_volume", musicVolume)
+            if (ambientAdditions != null) withCompound("additions_sound", ambientAdditions.toNBT())
+            if (particle != null) withCompound("particle", particle.toNBT())
+            if (ambientLoop != null) withString("ambient_sound", ambientLoop)
+            withInt("sky_color", skyColor)
+            withInt("water_color", waterColor)
+            withInt("water_fog_color", waterFogColor)
+        }
         return nbt {
             withFloat("downfall", downfall)
-            withCompound("effects", effects.toNBT())
-            withBoolean("has_precipitation", hasRain)
+            withCompound("effects", effects)
+            withBoolean("has_precipitation", hasPrecipitation)
             withFloat("temperature", temperature)
             if (temperatureModifier != null) withString("temperature_modifier", temperatureModifier)
         }
@@ -120,39 +149,4 @@ data class Biome(
     data class ParticleOptions(
         val type: String,
     )
-
-    @Serializable
-    data class Effects(
-        val fogColor: Int? = null,
-        val foliageColor: Int? = null,
-        val grassColor: Int? = null,
-        val grassColorModifier: String? = null,
-        val moodSound: MoodSound? = null,
-        val music: List<WeightedBackgroundMusic>? = null,
-        val musicVolume: Float? = null,
-        val ambientAdditions: AmbientAdditions? = null,
-        val ambientLoop: String? = null,
-        val particle: BiomeParticles? = null,
-        val skyColor: Int,
-        val waterColor: Int,
-        val waterFogColor: Int,
-    ) {
-        fun toNBT(): CompoundBinaryTag {
-            return nbt {
-                if (fogColor != null) withInt("fog_color", fogColor)
-                if (foliageColor != null) withInt("foliage_color", foliageColor)
-                if (grassColor != null) withInt("grass_color", grassColor)
-                if (grassColorModifier != null) withString("grass_color_modifier", grassColorModifier)
-                if (moodSound != null) withCompound("mood_sound", moodSound.toNBT())
-                if (music != null) withList("music", BinaryTagTypes.COMPOUND, music.map { music -> music.getNbt() })
-                if (musicVolume != null) withFloat("music_volume", musicVolume)
-                if (ambientAdditions != null) withCompound("additions_sound", ambientAdditions.toNBT())
-                if (particle != null) withCompound("particle", particle.toNBT())
-                if (ambientLoop != null) withString("ambient_sound", ambientLoop)
-                withInt("sky_color", skyColor)
-                withInt("water_color", waterColor)
-                withInt("water_fog_color", waterFogColor)
-            }
-        }
-    }
 }

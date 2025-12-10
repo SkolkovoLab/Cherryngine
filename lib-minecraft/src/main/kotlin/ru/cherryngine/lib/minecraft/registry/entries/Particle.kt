@@ -6,7 +6,7 @@ import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 @Serializable
 data class Particle(
     val identifier: String,
-    val overrideLimiter: Boolean,
+    val hasData: Boolean,
 ) : RegistryEntry {
     override fun getEntryIdentifier(): String {
         return identifier

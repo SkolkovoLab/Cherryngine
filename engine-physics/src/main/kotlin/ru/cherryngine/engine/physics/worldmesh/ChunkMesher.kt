@@ -70,7 +70,7 @@ class ChunkMesher {
 
         private fun getFaces(chunk: Chunk, chunkPos: ChunkPos, relBlockPos: Vec3I): List<Face>? {
             val block = chunk.getBlock(relBlockPos)
-            if (block.isAir() || block.registryBlock.isLiquid) return null
+            if (block.isAir() || block.registryBlock.liquid) return null
 
             val faces = ArrayList<Face>()
 
@@ -112,7 +112,7 @@ class ChunkMesher {
         }
 
         private fun isFull(block: Block): Boolean {
-            if (block.isAir() || block.registryBlock.isLiquid) return false
+            if (block.isAir() || block.registryBlock.liquid) return false
             return true // TODO
         }
     }

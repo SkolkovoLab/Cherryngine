@@ -5,7 +5,7 @@ import ru.cherryngine.lib.minecraft.registry.entries.BannerPattern
 
 object BannerPatternRegistry : DataDrivenRegistry<BannerPattern>(
     "minecraft:banner_pattern",
-    "registry/banner_pattern_registry.json.gz",
+    "banner_pattern.json",
     BannerPattern.serializer()
 )
 

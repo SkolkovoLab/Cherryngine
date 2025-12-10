@@ -131,7 +131,7 @@ class LightEngine(
                     val neighborBlockId = section.getBlock(neighborX, neighborY, neighborZ)
                     val neighborBlock = Block.getBlockByStateId(neighborBlockId).registryBlock
 
-                    if (!neighborBlock.canOcclude) {
+                    if (!neighborBlock.occludes) {
                         val neighborCurrentLight = get(neighborX, neighborY, neighborZ)
 
                         if (newLightLevel > neighborCurrentLight) {

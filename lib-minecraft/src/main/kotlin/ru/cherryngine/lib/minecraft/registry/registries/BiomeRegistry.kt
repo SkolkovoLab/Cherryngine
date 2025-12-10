@@ -5,6 +5,6 @@ import ru.cherryngine.lib.minecraft.registry.entries.Biome
 
 object BiomeRegistry : DataDrivenRegistry<Biome>(
     "minecraft:worldgen/biome",
-    "registry/biome_registry.json.gz",
+    "worldgen/biome.json",
     Biome.serializer()
 )

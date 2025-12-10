@@ -6,8 +6,8 @@ import java.util.function.Predicate
 
 enum class ChunkHeightmapType(val id: Int, val predicate: Predicate<Block>) {
     WORLD_SURFACE(1, { block -> !block.isAir() }),
-    MOTION_BLOCKING(4, { block -> block.registryBlock.isSolid || block.registryBlock.isLiquid }),
-    MOTION_BLOCKING_NO_LEAVES(5, { block -> block.registryBlock.isSolid && !block.identifier.endsWith("_leaves") });
+    MOTION_BLOCKING(4, { block -> block.registryBlock.solid || block.registryBlock.liquid }),
+    MOTION_BLOCKING_NO_LEAVES(5, { block -> block.registryBlock.solid && !block.identifier.endsWith("_leaves") });
 
     companion object {
         val BY_ID = entries.associateBy { it.id }

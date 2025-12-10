@@ -5,6 +5,6 @@ import ru.cherryngine.lib.minecraft.registry.entries.WolfVariant
 
 object WolfVariantRegistry : DataDrivenRegistry<WolfVariant>(
     "minecraft:wolf_variant",
-    "registry/wolf_variant.json.gz",
+    "wolf_variant.json",
     WolfVariant.serializer()
 )

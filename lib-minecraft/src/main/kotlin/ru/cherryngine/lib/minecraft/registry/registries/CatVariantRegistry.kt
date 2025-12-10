@@ -5,6 +5,6 @@ import ru.cherryngine.lib.minecraft.registry.entries.CatVariant
 
 object CatVariantRegistry : DataDrivenRegistry<CatVariant>(
     "minecraft:cat_variant",
-    "registry/cat_variant.json.gz",
+    "cat_variant.json",
     CatVariant.serializer()
 )

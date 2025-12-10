@@ -5,6 +5,6 @@ import ru.cherryngine.lib.minecraft.registry.entries.PotionEffect
 
 object PotionEffectRegistry : DataDrivenRegistry<PotionEffect>(
     "minecraft:potion_effect",
-    "registry/potion_effect_registry.json.gz",
+    "potion_effect.json",
     PotionEffect.serializer()
 )
