@@ -7,17 +7,17 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import ru.cherryngine.lib.minecraft.extentions.fromRGBInt
-import ru.cherryngine.lib.minecraft.extentions.getPackedInt
+import net.kyori.adventure.util.RGBLike
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
-import ru.cherryngine.lib.minecraft.utils.CustomColor
+import ru.cherryngine.lib.minecraft.utils.color.asARGB
+import ru.cherryngine.lib.minecraft.utils.color.rgbLikeOf
 
 @Serializable
 data class PotionEffect(
     val identifier: String,
     val translationKey: String,
     @Serializable(with = CustomColorIntSerializer::class)
-    val color: CustomColor,
+    val color: RGBLike,
     val instantaneous: Boolean,
 ) : RegistryEntry {
 
@@ -25,16 +25,16 @@ data class PotionEffect(
         return identifier
     }
 
-    object CustomColorIntSerializer : KSerializer<CustomColor> {
+    object CustomColorIntSerializer : KSerializer<RGBLike> {
         override val descriptor: SerialDescriptor =
             PrimitiveSerialDescriptor("CustomColorInt", PrimitiveKind.INT)
 
-        override fun serialize(encoder: Encoder, value: CustomColor) {
-            encoder.encodeInt(value.getPackedInt())
+        override fun serialize(encoder: Encoder, value: RGBLike) {
+            encoder.encodeInt(value.asARGB())
         }
 
-        override fun deserialize(decoder: Decoder): CustomColor {
-            return CustomColor.fromRGBInt(decoder.decodeInt())
+        override fun deserialize(decoder: Decoder): RGBLike {
+            return rgbLikeOf(decoder.decodeInt())
         }
     }
 }

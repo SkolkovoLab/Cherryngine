@@ -18,8 +18,10 @@ import ru.cherryngine.lib.minecraft.tide.codec.StructCodec
 import ru.cherryngine.lib.minecraft.tide.codec.TypedMapCodec
 import ru.cherryngine.lib.minecraft.tide.transcoder.Transcoder
 import ru.cherryngine.lib.minecraft.tide.types.Either
-import ru.cherryngine.lib.minecraft.utils.AlphaColor
-import ru.cherryngine.lib.minecraft.utils.Color
+import ru.cherryngine.lib.minecraft.utils.color.ARGBLikeImpl
+import ru.cherryngine.lib.minecraft.utils.color.RGBLikeImpl
+import ru.cherryngine.lib.minecraft.utils.color.argbLikeOf
+import ru.cherryngine.lib.minecraft.utils.color.rgbLikeOf
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.math.max
 import kotlin.math.min
@@ -28,24 +30,24 @@ import kotlin.math.min
 
 object EnvironmentAttributeRegistry : DynamicRegistry<EnvironmentAttribute<*>>("minecraft:environment_attribute") {
     init {
-        register("visual/fog_color", Type.RGB_COLOR, Color.BLACK)
+        register("visual/fog_color", Type.RGB_COLOR, RGBLikeImpl.BLACK)
         register("visual/fog_start_distance", Type.FLOAT, 0f)
         register("visual/fog_end_distance", Type.FLOAT, 1024f)
         register("visual/sky_fog_end_distance", Type.FLOAT, 512f)
         register("visual/cloud_fog_end_distance", Type.FLOAT, 2048f)
-        register("visual/water_fog_color", Type.RGB_COLOR, Color(0x050533))
+        register("visual/water_fog_color", Type.RGB_COLOR, rgbLikeOf(0x050533))
         register("visual/water_fog_start_distance", Type.FLOAT, -8f)
         register("visual/water_fog_end_distance", Type.FLOAT, 96f)
-        register("visual/sky_color", Type.RGB_COLOR, Color.BLACK)
-        register("visual/sunrise_sunset_color", Type.ARGB_COLOR, AlphaColor.TRANSPARENT)
-        register("visual/cloud_color", Type.ARGB_COLOR, AlphaColor.TRANSPARENT)
+        register("visual/sky_color", Type.RGB_COLOR, RGBLikeImpl.BLACK)
+        register("visual/sunrise_sunset_color", Type.ARGB_COLOR, ARGBLikeImpl.TRANSPARENT)
+        register("visual/cloud_color", Type.ARGB_COLOR, ARGBLikeImpl.TRANSPARENT)
         register("visual/cloud_height", Type.FLOAT, 192.33f)
         register("visual/sun_angle", Type.ANGLE_DEGREES, 0f)
         register("visual/moon_angle", Type.ANGLE_DEGREES, 0f)
         register("visual/star_angle", Type.ANGLE_DEGREES, 0f)
         register("visual/moon_phase", Type.MOON_PHASE, MoonPhase.FULL_MOON)
         register("visual/star_brightness", Type.FLOAT, 0f)
-        register("visual/sky_light_color", Type.RGB_COLOR, Color.WHITE)
+        register("visual/sky_light_color", Type.RGB_COLOR, RGBLikeImpl.WHITE)
         register("visual/sky_light_factor", Type.FLOAT, 1f)
         register("visual/default_dripstone_particle", Type.PARTICLE, Particles.DRIPPING_DRIPSTONE_WATER)
         register("visual/ambient_particles", Type.AMBIENT_PARTICLES, emptyList())
@@ -170,8 +172,8 @@ data class Type<T>(
         val TRI_STATE = register("tri_state", TriStateCodec, mapOf())
         val FLOAT = register("float", Codec.FLOAT, Modifier.FLOAT_OPERATORS)
         val ANGLE_DEGREES = register("angle_degrees", Codec.FLOAT, Modifier.FLOAT_OPERATORS)
-        val RGB_COLOR = register("rgb_color", Color.STRING_CODEC, Modifier.RGB_OPERATORS)
-        val ARGB_COLOR = register("argb_color", AlphaColor.STRING_CODEC, Modifier.ARGB_OPERATORS)
+        val RGB_COLOR = register("rgb_color", RGBLikeImpl.STRING_CODEC, Modifier.RGB_OPERATORS)
+        val ARGB_COLOR = register("argb_color", ARGBLikeImpl.STRING_CODEC, Modifier.ARGB_OPERATORS)
         val MOON_PHASE = register("moon_phase", MoonPhase.CODEC, mapOf())
         val ACTIVITY: Type<EntityActivity> = register("activity", EntityActivity.CODEC, mapOf())
         val BED_RULE: Type<BedRule> = register("bed_rule", BedRule.CODEC, mapOf())
@@ -510,7 +512,7 @@ interface ColorModifier<Arg> : Modifier<RGBLike, Arg> {
 
     companion object {
         val MAYBE_ARGB_CODEC: Codec<RGBLike> =
-            EitherCodec(AlphaColor.STRING_CODEC, Color.STRING_CODEC)
+            EitherCodec(ARGBLikeImpl.STRING_CODEC, RGBLikeImpl.STRING_CODEC)
                 .transform(
                     { either ->
                         either.unify({ it }, { it })
@@ -530,14 +532,14 @@ interface ColorModifier<Arg> : Modifier<RGBLike, Arg> {
                 }
 
                 override fun argumentCodec(): Codec<ARGBLike> =
-                    AlphaColor.STRING_CODEC
+                    ARGBLikeImpl.STRING_CODEC
             }
 
         val ADD: ColorModifier<RGBLike> =
             object : ColorModifier<RGBLike> {
                 override fun modify(subject: RGBLike, argument: RGBLike): RGBLike {
                     val alpha = (subject as? ARGBLike)?.alpha() ?: 255
-                    return AlphaColor(
+                    return argbLikeOf(
                         alpha,
                         min(255, subject.red() + argument.red()),
                         min(255, subject.green() + argument.green()),
@@ -553,7 +555,7 @@ interface ColorModifier<Arg> : Modifier<RGBLike, Arg> {
             object : ColorModifier<RGBLike> {
                 override fun modify(subject: RGBLike, argument: RGBLike): RGBLike {
                     val alpha = (subject as? ARGBLike)?.alpha() ?: 255
-                    return AlphaColor(
+                    return argbLikeOf(
                         alpha,
                         max(0, subject.red() - argument.red()),
                         max(0, subject.green() - argument.green()),
@@ -570,7 +572,7 @@ interface ColorModifier<Arg> : Modifier<RGBLike, Arg> {
                 override fun modify(subject: RGBLike, argument: RGBLike): RGBLike {
                     val subA = (subject as? ARGBLike)?.alpha() ?: 255
                     val argA = (argument as? ARGBLike)?.alpha() ?: 255
-                    return AlphaColor(
+                    return argbLikeOf(
                         (subA * argA) / 255,
                         (subject.red() * argument.red()) / 255,
                         (subject.green() * argument.green()) / 255,
@@ -579,7 +581,7 @@ interface ColorModifier<Arg> : Modifier<RGBLike, Arg> {
                 }
 
                 override fun argumentCodec(): Codec<RGBLike> =
-                    Color.STRING_CODEC
+                    RGBLikeImpl.STRING_CODEC
             }
 
         val MULTIPLY_ARGB: ColorModifier<ARGBLike> =
@@ -587,7 +589,7 @@ interface ColorModifier<Arg> : Modifier<RGBLike, Arg> {
                 override fun modify(subject: RGBLike, argument: ARGBLike): RGBLike {
                     val subA = (subject as? ARGBLike)?.alpha() ?: 255
                     val argA = argument.alpha()
-                    return AlphaColor(
+                    return argbLikeOf(
                         (subA * argA) / 255,
                         (subject.red() * argument.red()) / 255,
                         (subject.green() * argument.green()) / 255,
@@ -596,7 +598,7 @@ interface ColorModifier<Arg> : Modifier<RGBLike, Arg> {
                 }
 
                 override fun argumentCodec(): Codec<ARGBLike> =
-                    AlphaColor.STRING_CODEC
+                    ARGBLikeImpl.STRING_CODEC
             }
 
         val BLEND_TO_GRAY: ColorModifier<BlendToGray> =

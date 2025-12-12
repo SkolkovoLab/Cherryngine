@@ -4,10 +4,10 @@ import net.kyori.adventure.nbt.BinaryTag
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.nbt.NBTComponentSerializer
-import ru.cherryngine.lib.minecraft.extentions.asRGB
+import net.kyori.adventure.util.RGBLike
 import ru.cherryngine.lib.minecraft.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
-import ru.cherryngine.lib.minecraft.utils.CustomColor
+import ru.cherryngine.lib.minecraft.utils.color.asRGB
 
 object CRC32CHasher {
 
@@ -70,7 +70,7 @@ object CRC32CHasher {
         return hashed
     }
 
-    fun ofColor(color: CustomColor): Int {
+    fun ofColor(color: RGBLike): Int {
         return ofInt(color.asRGB())
     }
 

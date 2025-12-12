@@ -12,7 +12,7 @@ import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.registry.registries.EnvironmentAttributeMap
 import ru.cherryngine.lib.minecraft.tide.codec.Codec
 import ru.cherryngine.lib.minecraft.tide.codec.StructCodec
-import ru.cherryngine.lib.minecraft.utils.Color
+import ru.cherryngine.lib.minecraft.utils.color.RGBLikeImpl
 import ru.cherryngine.lib.minecraft.utils.kotlinx.KeySerializer
 
 data class Biome(
@@ -166,10 +166,10 @@ data class Biome(
     ) {
         companion object {
             val CODEC: StructCodec<BiomeSpecialEffects> = StructCodec.of(
-                "water_color", Color.STRING_CODEC, BiomeSpecialEffects::waterColor,
-                "foliage_color", Color.STRING_CODEC.optional(), BiomeSpecialEffects::foliageColorOverride,
-                "dry_foliage_color", Color.STRING_CODEC.optional(), BiomeSpecialEffects::dryFoliageColorOverride,
-                "grass_color", Color.STRING_CODEC.optional(), BiomeSpecialEffects::grassColorOverride,
+                "water_color", RGBLikeImpl.STRING_CODEC, BiomeSpecialEffects::waterColor,
+                "foliage_color", RGBLikeImpl.STRING_CODEC.optional(), BiomeSpecialEffects::foliageColorOverride,
+                "dry_foliage_color", RGBLikeImpl.STRING_CODEC.optional(), BiomeSpecialEffects::dryFoliageColorOverride,
+                "grass_color", RGBLikeImpl.STRING_CODEC.optional(), BiomeSpecialEffects::grassColorOverride,
                 "grass_color_modifier", GrassColorModifier.CODEC.optional(), BiomeSpecialEffects::grassColorModifier,
                 ::BiomeSpecialEffects
             )

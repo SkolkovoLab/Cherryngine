@@ -1,17 +1,16 @@
 package ru.cherryngine.lib.minecraft.data.components
 
+import net.kyori.adventure.util.RGBLike
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.extentions.fromRGBInt
-import ru.cherryngine.lib.minecraft.extentions.getPackedInt
 import ru.cherryngine.lib.minecraft.tide.stream.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
-import ru.cherryngine.lib.minecraft.utils.CustomColor
+import ru.cherryngine.lib.minecraft.utils.color.RGBLikeImpl
 
 class FireworkExplosionComponent(
     val shape: Shape,
-    val colors: List<CustomColor>,
-    val fadeColors: List<CustomColor>,
+    val colors: List<RGBLike>,
+    val fadeColors: List<RGBLike>,
     val hasTrail: Boolean,
     val hasTwinkle: Boolean
 ) : DataComponent() {
@@ -20,15 +19,10 @@ class FireworkExplosionComponent(
     }
 
     companion object {
-        private val customColorStreamCodec = StreamCodec.INT.transform(
-            CustomColor::fromRGBInt,
-            CustomColor::getPackedInt
-        )
-
         val STREAM_CODEC = StreamCodec.of(
             EnumStreamCodec<Shape>(), FireworkExplosionComponent::shape,
-            customColorStreamCodec.list(), FireworkExplosionComponent::colors,
-            customColorStreamCodec.list(), FireworkExplosionComponent::fadeColors,
+            RGBLikeImpl.NETWORK_TYPE.list(), FireworkExplosionComponent::colors,
+            RGBLikeImpl.NETWORK_TYPE.list(), FireworkExplosionComponent::fadeColors,
             StreamCodec.BOOLEAN, FireworkExplosionComponent::hasTrail,
             StreamCodec.BOOLEAN, FireworkExplosionComponent::hasTwinkle,
             ::FireworkExplosionComponent
