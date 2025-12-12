@@ -1,0 +1,18 @@
+package ru.cherryngine.lib.minecraft.registry.registries.envattr
+
+import ru.cherryngine.lib.minecraft.tide.codec.Codec
+
+enum class MoonPhase {
+    FULL_MOON,
+    WANING_GIBBOUS,
+    THIRD_QUARTER,
+    WANING_CRESCENT,
+    NEW_MOON,
+    WAXING_CRESCENT,
+    FIRST_QUARTER,
+    WAXING_GIBBOUS;
+
+    companion object {
+        val CODEC: Codec<MoonPhase> = Codec.enum<MoonPhase>()
+    }
+}
