@@ -1,11 +1,11 @@
 package ru.cherryngine.lib.minecraft.registry.registries
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
-import ru.cherryngine.lib.minecraft.registry.DataDrivenRegistry
+import ru.cherryngine.lib.minecraft.registry.KtJsonDataDrivenRegistry
 import ru.cherryngine.lib.minecraft.registry.entries.RegistryBlock
 import ru.cherryngine.lib.minecraft.world.block.Block
 
-object BlockRegistry : DataDrivenRegistry<RegistryBlock>(
+object BlockRegistry : KtJsonDataDrivenRegistry<RegistryBlock>(
     "minecraft:block",
     "block.json",
     RegistryBlock.serializer()

@@ -2,7 +2,7 @@ package ru.cherryngine.lib.minecraft.tide.transcoder
 
 import com.google.gson.*
 
-object JsonTranscoder : Transcoder<JsonElement> {
+object GsonTranscoder : Transcoder<JsonElement> {
     override fun encodeNull(): JsonElement {
         return JsonNull.INSTANCE
     }

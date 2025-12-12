@@ -17,6 +17,10 @@ interface Codec<T> {
         return ListCodec<T>(this)
     }
 
+    fun listOrSingle(): Codec<List<T>> {
+        return list().orElse(transform({ listOf(it) }, { it.single() }))
+    }
+
     fun <V> mapTo(valueCodec: Codec<V>): Codec<Map<T, V>> {
         return MapCodec<T, V>(this, valueCodec)
     }
@@ -37,8 +41,17 @@ interface Codec<T> {
         return union("type", keyCodec, serializers, keyFunc)
     }
 
-    fun <R> union(keyFiled: String, keyCodec: Codec<T>, serializers: (T) -> StructCodec<out R>, keyFunc: (R) -> T): StructCodec<R> {
+    fun <R> union(
+        keyFiled: String,
+        keyCodec: Codec<T>,
+        serializers: (T) -> StructCodec<out R>,
+        keyFunc: (R) -> T,
+    ): StructCodec<R> {
         return UnionCodec<T, R>(keyFiled, keyCodec, serializers, keyFunc)
+    }
+
+    fun orElse(valueCodec: Codec<T>): Codec<T> {
+        return OrElseCodec(this, valueCodec)
     }
 
     class EncodingException(override val message: String) : Exception()
@@ -128,7 +141,7 @@ interface Codec<T> {
 
     private class PrimitiveCodec<T>(
         private val encoder: (Transcoder<Any?>, T) -> Any?,
-        private val decoder: (Transcoder<Any?>, Any?) -> T
+        private val decoder: (Transcoder<Any?>, Any?) -> T,
     ) : Codec<T> {
 
         @Suppress("UNCHECKED_CAST")

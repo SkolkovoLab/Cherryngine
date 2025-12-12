@@ -7,7 +7,7 @@ abstract class TagRegistry(
     identifier: String,
     resource: String,
     val parentRegistry: Registry<*>,
-) : DataDrivenRegistry<Tag>(identifier, resource, Tag.serializer()) {
+) : KtJsonDataDrivenRegistry<Tag>(identifier, resource, Tag.serializer()) {
     val reversed by lazy {
         entries.keyToValue().values
             .flatMap { value -> value.values.map { it to value.identifier } }
