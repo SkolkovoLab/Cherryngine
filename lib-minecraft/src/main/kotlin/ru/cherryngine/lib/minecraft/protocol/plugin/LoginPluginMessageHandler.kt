@@ -2,7 +2,6 @@ package ru.cherryngine.lib.minecraft.protocol.plugin
 
 import io.netty.channel.ChannelHandlerContext
 import org.slf4j.LoggerFactory
-import ru.cherryngine.lib.minecraft.extentions.sendPacket
 import ru.cherryngine.lib.minecraft.protocol.packets.login.ClientboundLoginCustomQueryPacket
 import ru.cherryngine.lib.minecraft.server.Connection
 import java.util.concurrent.CompletableFuture
@@ -74,7 +73,7 @@ class LoginPluginMessageHandler(val networkManager: Connection) {
         val request = Request(channel, requestPayload)
         val id = REQUEST_ID.getAndIncrement()
         requestByMessage[id] = request
-        connection.sendPacket(ClientboundLoginCustomQueryPacket(id, channel, requestPayload), networkManager)
+        connection.writeAndFlush(ClientboundLoginCustomQueryPacket(id, channel, requestPayload))
         return request.future
     }
 

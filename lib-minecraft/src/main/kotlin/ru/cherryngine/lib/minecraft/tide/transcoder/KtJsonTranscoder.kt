@@ -85,8 +85,6 @@ object KtJsonTranscoder : Transcoder<JsonElement> {
             }
 
             override fun getValue(key: String): JsonElement {
-                println("keys = ${value.keys}")
-                println("key = $key")
                 return value[key]!!
             }
         }
