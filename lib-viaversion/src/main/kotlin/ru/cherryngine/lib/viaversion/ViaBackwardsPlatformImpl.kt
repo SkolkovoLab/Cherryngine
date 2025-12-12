@@ -38,6 +38,7 @@ import com.viaversion.viabackwards.protocol.v1_20_2to1_20.Protocol1_20_2To1_20
 import com.viaversion.viabackwards.protocol.v1_20_3to1_20_2.Protocol1_20_3To1_20_2
 import com.viaversion.viabackwards.protocol.v1_20_5to1_20_3.Protocol1_20_5To1_20_3
 import com.viaversion.viabackwards.protocol.v1_20to1_19_4.Protocol1_20To1_19_4
+import com.viaversion.viabackwards.protocol.v1_21_11to1_21_9.Protocol1_21_11To1_21_9
 import com.viaversion.viabackwards.protocol.v1_21_2to1_21.Protocol1_21_2To1_21
 import com.viaversion.viabackwards.protocol.v1_21_4to1_21_2.Protocol1_21_4To1_21_2
 import com.viaversion.viabackwards.protocol.v1_21_5to1_21_4.Protocol1_21_5To1_21_4
@@ -142,5 +143,6 @@ class ViaBackwardsPlatformImpl(
         protocolManager.registerProtocol(Protocol1_21_6To1_21_5(), ProtocolVersion.v1_21_5, ProtocolVersion.v1_21_6)
         protocolManager.registerProtocol(Protocol1_21_7To1_21_6(), ProtocolVersion.v1_21_6, ProtocolVersion.v1_21_7)
         protocolManager.registerProtocol(Protocol1_21_9To1_21_7(), ProtocolVersion.v1_21_7, ProtocolVersion.v1_21_9)
+        protocolManager.registerProtocol(Protocol1_21_11To1_21_9(), ProtocolVersion.v1_21_9, ProtocolVersion.v1_21_11)
     }
 }

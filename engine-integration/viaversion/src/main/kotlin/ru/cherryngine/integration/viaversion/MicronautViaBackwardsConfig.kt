@@ -82,6 +82,10 @@ class MicronautViaBackwardsConfig(
         return resolverWrapper.getBoolean("suppress-emulation-warnings", false)
     }
 
+    override fun dialogsViaChests(): Boolean {
+        return resolverWrapper.getBoolean("dialogs-via-chests", true)
+    }
+
     override fun dialogStyleConfig(): DialogStyleConfig {
         return resolverWrapper.section("dialog-style").loadDialogStyleConfig()
     }
