@@ -4,7 +4,7 @@ import com.viaversion.viaversion.ViaManagerImpl
 import com.viaversion.viaversion.api.Via
 import jakarta.annotation.PostConstruct
 import jakarta.inject.Singleton
-import ru.cherryngine.lib.minecraft.server.NettyServer
+import ru.cherryngine.lib.minecraft.network.NettyServer
 import ru.cherryngine.lib.viaversion.*
 
 @Singleton

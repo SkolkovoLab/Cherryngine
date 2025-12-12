@@ -13,8 +13,8 @@ import ru.cherryngine.engine.ecs.components.PlayerComponent
 import ru.cherryngine.engine.ecs.components.PositionComponent
 import ru.cherryngine.engine.ecs.components.ViewableComponent
 import ru.cherryngine.engine.ecs.events.ViewableProvidersEvent
-import ru.cherryngine.lib.minecraft.protocol.packets.ProtocolState
-import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.network.protocol.packets.ProtocolState
+import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 
 class ViewSystem(

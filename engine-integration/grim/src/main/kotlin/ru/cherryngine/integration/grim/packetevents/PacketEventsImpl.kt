@@ -21,8 +21,8 @@ import net.kyori.adventure.text.format.NamedTextColor
 import ru.cherryngine.integration.grim.packetevents.injector.PipelineInjectorImpl
 import ru.cherryngine.integration.grim.packetevents.manager.PlayerManagerImpl
 import ru.cherryngine.integration.grim.packetevents.manager.ServerManagerImpl
-import ru.cherryngine.lib.minecraft.server.Connection
-import ru.cherryngine.lib.minecraft.server.NettyServer
+import ru.cherryngine.lib.minecraft.network.Connection
+import ru.cherryngine.lib.minecraft.network.NettyServer
 import java.util.logging.Level
 import java.util.logging.Logger
 

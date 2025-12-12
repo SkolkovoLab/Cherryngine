@@ -9,7 +9,7 @@ import ru.cherryngine.lib.minecraft.dialog.body.PlainMessage
 import ru.cherryngine.lib.minecraft.dialog.input.*
 import ru.cherryngine.lib.minecraft.item.ItemStack
 import ru.cherryngine.lib.minecraft.nbt.nbt
-import ru.cherryngine.lib.minecraft.protocol.NbtWritable
+import ru.cherryngine.lib.minecraft.network.protocol.NbtWritable
 import ru.cherryngine.lib.minecraft.registry.entries.DialogType
 import ru.cherryngine.lib.minecraft.registry.entries.Item
 import ru.cherryngine.lib.minecraft.utils.toNBT

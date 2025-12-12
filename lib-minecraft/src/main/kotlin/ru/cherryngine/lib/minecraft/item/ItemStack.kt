@@ -4,12 +4,12 @@ import io.netty.buffer.ByteBuf
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import ru.cherryngine.lib.minecraft.data.DataComponentPatch
 import ru.cherryngine.lib.minecraft.nbt.nbt
-import ru.cherryngine.lib.minecraft.protocol.DataComponentHashable
-import ru.cherryngine.lib.minecraft.protocol.NbtWritable
+import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
+import ru.cherryngine.lib.minecraft.network.protocol.NbtWritable
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.entries.Item
 import ru.cherryngine.lib.minecraft.registry.keys.Items
 import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 data class ItemStack(
     var material: Item,

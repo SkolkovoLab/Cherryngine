@@ -5,10 +5,10 @@
 //import ru.cherryngine.lib.minecraft.data.HashHolder
 //import ru.cherryngine.lib.minecraft.data.StaticHash
 //import ru.cherryngine.lib.minecraft.extentions.*
-//import ru.cherryngine.lib.minecraft.protocol.DataComponentHashable
-//import ru.cherryngine.lib.minecraft.protocol.NetworkReadable
-//import ru.cherryngine.lib.minecraft.protocol.NetworkWritable
-//import ru.cherryngine.lib.minecraft.protocol.types.writeList
+//import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
+//import ru.cherryngine.lib.minecraft.network.protocol.NetworkReadable
+//import ru.cherryngine.lib.minecraft.network.protocol.NetworkWritable
+//import ru.cherryngine.lib.minecraft.network.protocol.types.writeList
 //import ru.cherryngine.lib.minecraft.registry.entries.PotionEffect
 //import ru.cherryngine.lib.minecraft.registry.registries.PotionEffectRegistry
 //import ru.cherryngine.lib.minecraft.scheduler.runnables.inWholeMinecraftTicks

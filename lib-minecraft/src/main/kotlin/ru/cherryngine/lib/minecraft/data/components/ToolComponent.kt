@@ -3,9 +3,9 @@ package ru.cherryngine.lib.minecraft.data.components
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.protocol.DataComponentHashable
-import ru.cherryngine.lib.minecraft.protocol.types.predicate.BlockTypeFilter
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
+import ru.cherryngine.lib.minecraft.network.protocol.types.predicate.BlockTypeFilter
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 class ToolComponent(
     val rules: List<Rule>,

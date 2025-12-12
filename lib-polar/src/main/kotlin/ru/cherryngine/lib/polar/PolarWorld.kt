@@ -2,7 +2,7 @@ package ru.cherryngine.lib.polar
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap
-import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 
 /**
  * A Java type representing the latest version of the world format.

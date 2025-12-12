@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import ru.cherryngine.lib.minecraft.protocol.types.PlayerHand
+import ru.cherryngine.lib.minecraft.network.protocol.types.PlayerHand
 
 @Suppress("PropertyName")
 sealed class LivingEntityMeta : EntityMeta() {

@@ -2,7 +2,7 @@ package ru.cherryngine.lib.minecraft.registry.registries.envattr
 
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.key.Keyed
-import ru.cherryngine.lib.minecraft.tide.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.Codec
 
 enum class EntityActivity : Keyed {
     CORE,

@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import ru.cherryngine.lib.minecraft.data.components.*
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import kotlin.reflect.KClass
 
 object DataComponentRegistry {

@@ -4,12 +4,12 @@ import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.HashList
-import ru.cherryngine.lib.minecraft.protocol.DataComponentHashable
-import ru.cherryngine.lib.minecraft.protocol.types.DyeColor
+import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
+import ru.cherryngine.lib.minecraft.network.protocol.types.DyeColor
+import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.entries.BannerPattern
 import ru.cherryngine.lib.minecraft.registry.registries.BannerPatternRegistry
-import ru.cherryngine.lib.minecraft.tide.stream.EnumStreamCodec
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 class BannerPatternsComponent(val layers: List<Layer>) : DataComponent() {
     override fun hashStruct(): HashHolder {

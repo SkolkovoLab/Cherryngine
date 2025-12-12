@@ -5,9 +5,9 @@
 //import ru.cherryngine.lib.minecraft.data.HashHolder
 //import ru.cherryngine.lib.minecraft.effects.AppliedPotionEffect
 //import ru.cherryngine.lib.minecraft.extentions.*
-//import ru.cherryngine.lib.minecraft.protocol.NetworkReadable
-//import ru.cherryngine.lib.minecraft.protocol.readOptional
-//import ru.cherryngine.lib.minecraft.protocol.writeOptional
+//import ru.cherryngine.lib.minecraft.network.protocol.NetworkReadable
+//import ru.cherryngine.lib.minecraft.network.protocol.readOptional
+//import ru.cherryngine.lib.minecraft.network.protocol.writeOptional
 //import ru.cherryngine.lib.minecraft.registry.entries.PotionType
 //import ru.cherryngine.lib.minecraft.registry.registries.PotionTypeRegistry
 //import ru.cherryngine.lib.minecraft.scroll.CustomColor

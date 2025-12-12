@@ -1,7 +1,7 @@
 package ru.cherryngine.engine.ecs.events
 
 import com.github.quillraven.fleks.ComponentType
-import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
+import ru.cherryngine.lib.minecraft.network.protocol.packets.ServerboundPacket
 
 class PacketsEvent(
     val packets: List<ServerboundPacket>,

@@ -4,10 +4,10 @@ import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.entries.Item
 import ru.cherryngine.lib.minecraft.registry.keys.Items
 import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 data class PotDecorationsComponent(
     val back: Item,

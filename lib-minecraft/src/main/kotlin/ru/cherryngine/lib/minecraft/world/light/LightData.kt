@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.world.light
 
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import java.util.*
 
 class LightData(

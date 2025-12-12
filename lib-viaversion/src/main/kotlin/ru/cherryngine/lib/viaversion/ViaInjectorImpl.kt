@@ -6,9 +6,9 @@ import com.viaversion.viaversion.connection.UserConnectionImpl
 import com.viaversion.viaversion.protocol.ProtocolPipelineImpl
 import io.netty.channel.Channel
 import ru.cherryngine.lib.minecraft.ServerConsts
-import ru.cherryngine.lib.minecraft.server.ChannelHandlers
-import ru.cherryngine.lib.minecraft.server.ChannelInjector
-import ru.cherryngine.lib.minecraft.server.NettyServer
+import ru.cherryngine.lib.minecraft.network.ChannelHandlers
+import ru.cherryngine.lib.minecraft.network.ChannelInjector
+import ru.cherryngine.lib.minecraft.network.NettyServer
 
 class ViaInjectorImpl(
     private val nettyServer: NettyServer,

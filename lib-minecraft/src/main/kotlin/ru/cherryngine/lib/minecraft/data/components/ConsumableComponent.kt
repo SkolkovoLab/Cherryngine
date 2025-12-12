@@ -4,14 +4,14 @@
 //import ru.cherryngine.lib.minecraft.data.DataComponent
 //import ru.cherryngine.lib.minecraft.data.HashHolder
 //import ru.cherryngine.lib.minecraft.data.StaticHash
-//import ru.cherryngine.lib.minecraft.protocol.NetworkReadable
-//import ru.cherryngine.lib.minecraft.protocol.types.ConsumeEffect
+//import ru.cherryngine.lib.minecraft.network.protocol.NetworkReadable
+//import ru.cherryngine.lib.minecraft.network.protocol.types.ConsumeEffect
 //import ru.cherryngine.lib.minecraft.registry.keys.Sounds
-//import ru.cherryngine.lib.minecraft.protocol.types.BuiltinSoundEvent
-//import ru.cherryngine.lib.minecraft.protocol.types.SoundEvent
-//import ru.cherryngine.lib.minecraft.tide.codec.Codec
-//import ru.cherryngine.lib.minecraft.tide.codec.StructCodec
-//import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+//import ru.cherryngine.lib.minecraft.network.protocol.types.BuiltinSoundEvent
+//import ru.cherryngine.lib.minecraft.network.protocol.types.SoundEvent
+//import ru.cherryngine.lib.minecraft.codec.Codec
+//import ru.cherryngine.lib.minecraft.codec.StructCodec
+//import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 //import io.netty.buffer.ByteBuf
 //
 //data class ConsumableComponent(

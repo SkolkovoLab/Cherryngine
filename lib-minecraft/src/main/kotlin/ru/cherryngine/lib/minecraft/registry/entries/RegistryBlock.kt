@@ -12,9 +12,9 @@ import kotlinx.serialization.encoding.Encoder
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Vec3D
-import ru.cherryngine.lib.minecraft.extentions.reversed
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
+import ru.cherryngine.lib.minecraft.utils.extentions.reversed
 import ru.cherryngine.lib.minecraft.world.block.Block
 
 @Serializable

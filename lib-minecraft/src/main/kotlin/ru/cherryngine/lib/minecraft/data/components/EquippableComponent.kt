@@ -3,13 +3,13 @@ package ru.cherryngine.lib.minecraft.data.components
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.protocol.types.EquipmentSlot
-import ru.cherryngine.lib.minecraft.protocol.types.SoundEvent
+import ru.cherryngine.lib.minecraft.network.protocol.types.EquipmentSlot
+import ru.cherryngine.lib.minecraft.network.protocol.types.SoundEvent
+import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.entries.EntityType
 import ru.cherryngine.lib.minecraft.registry.keys.Sounds
 import ru.cherryngine.lib.minecraft.registry.registries.EntityTypeRegistry
-import ru.cherryngine.lib.minecraft.tide.stream.EnumStreamCodec
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 class EquippableComponent(
     val equipmentSlot: EquipmentSlot,

@@ -3,8 +3,8 @@ package ru.cherryngine.lib.minecraft.utils.color
 
 import net.kyori.adventure.text.format.ShadowColor
 import net.kyori.adventure.util.ARGBLike
-import ru.cherryngine.lib.minecraft.tide.codec.Codec
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 data class ARGBLikeImpl(
     val alpha: Int,

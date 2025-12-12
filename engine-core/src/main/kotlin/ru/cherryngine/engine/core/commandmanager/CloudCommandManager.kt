@@ -21,11 +21,11 @@ import ru.cherryngine.engine.core.events.PacketEvent
 import ru.cherryngine.engine.core.player.Player
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.utils.component
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundCommandSuggestionsPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundChatCommandPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundCommandSuggestionPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundPlayerLoadedPacket
-import ru.cherryngine.lib.minecraft.server.Connection
+import ru.cherryngine.lib.minecraft.network.Connection
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundCommandSuggestionsPacket
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.serverbound.ServerboundChatCommandPacket
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.serverbound.ServerboundCommandSuggestionPacket
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.serverbound.ServerboundPlayerLoadedPacket
 
 @Singleton
 class CloudCommandManager(

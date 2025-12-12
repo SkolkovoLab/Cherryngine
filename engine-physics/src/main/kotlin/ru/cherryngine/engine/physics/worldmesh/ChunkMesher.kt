@@ -7,8 +7,8 @@ import com.github.stephengold.joltjni.enumerate.EMotionType
 import ru.cherryngine.engine.physics.Layers
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.protocol.types.Direction
+import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.network.protocol.types.Direction
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.world.Chunk
 

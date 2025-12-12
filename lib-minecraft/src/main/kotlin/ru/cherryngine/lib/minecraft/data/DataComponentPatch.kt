@@ -4,9 +4,9 @@ import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap
-import ru.cherryngine.lib.minecraft.extentions.getOrThrow
-import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils.byteBufBytes
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.codec.CodecUtils.byteBufBytes
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
+import ru.cherryngine.lib.minecraft.utils.extentions.getOrThrow
 import kotlin.reflect.KClass
 
 // Component list stored as a patch of added and removed components (even if none are removed)
@@ -40,8 +40,8 @@ class DataComponentPatch(
         }
 
         fun read(buffer: ByteBuf, isPatch: Boolean, isTrusted: Boolean): DataComponentPatch {
-            val added = StreamCodec.VAR_INT.read(buffer)
-            val removed = if (isPatch) StreamCodec.VAR_INT.read(buffer) else 0
+            val added = _root_ide_package_.ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec.VAR_INT.read(buffer)
+            val removed = if (isPatch) _root_ide_package_.ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec.VAR_INT.read(buffer) else 0
 
             if (added + removed > 256) throw IllegalStateException("Data component map too large: ${added + removed} > 256")
             val patch: Int2ObjectMap<DataComponent?> = Int2ObjectArrayMap(added + removed)

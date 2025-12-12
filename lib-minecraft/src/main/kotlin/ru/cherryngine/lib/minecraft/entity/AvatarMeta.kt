@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import ru.cherryngine.lib.minecraft.protocol.types.ClientSettings
+import ru.cherryngine.lib.minecraft.network.protocol.types.ClientSettings
 
 @Suppress("PropertyName")
 sealed class AvatarMeta : LivingEntityMeta() {

@@ -5,7 +5,7 @@ import net.kyori.adventure.nbt.CompoundBinaryTag
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.nbt.NBTComponentSerializer
 import net.kyori.adventure.util.RGBLike
-import ru.cherryngine.lib.minecraft.protocol.DataComponentHashable
+import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.utils.color.asRGB
 

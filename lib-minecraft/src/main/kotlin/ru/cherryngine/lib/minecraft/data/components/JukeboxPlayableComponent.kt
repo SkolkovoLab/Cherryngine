@@ -2,9 +2,9 @@ package ru.cherryngine.lib.minecraft.data.components
 
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.entries.JukeboxSong
 import ru.cherryngine.lib.minecraft.registry.registries.JukeboxSongRegistry
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 class JukeboxPlayableComponent(
     val jukeboxSong: JukeboxSong,

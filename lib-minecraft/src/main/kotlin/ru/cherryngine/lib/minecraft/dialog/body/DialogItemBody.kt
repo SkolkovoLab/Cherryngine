@@ -2,10 +2,10 @@ package ru.cherryngine.lib.minecraft.dialog.body
 
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import net.kyori.adventure.text.Component
-import ru.cherryngine.lib.minecraft.extentions.modify
 import ru.cherryngine.lib.minecraft.item.ItemStack
 import ru.cherryngine.lib.minecraft.registry.entries.DialogBodyType
 import ru.cherryngine.lib.minecraft.registry.keys.DialogBodyTypes
+import ru.cherryngine.lib.minecraft.utils.extentions.modify
 
 /**
  * @param showDecorations show item count and durability

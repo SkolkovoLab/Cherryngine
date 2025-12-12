@@ -1,13 +1,13 @@
 package ru.cherryngine.lib.minecraft.world.block
 
 import io.netty.buffer.ByteBuf
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.entries.Item
 import ru.cherryngine.lib.minecraft.registry.entries.RegistryBlock
 import ru.cherryngine.lib.minecraft.registry.keys.Blocks
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.tags.BlockTagRegistry
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 data class Block(
     val registryBlock: RegistryBlock,

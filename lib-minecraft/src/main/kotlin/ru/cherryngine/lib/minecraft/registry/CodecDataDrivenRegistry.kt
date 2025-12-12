@@ -4,8 +4,8 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromStream
-import ru.cherryngine.lib.minecraft.tide.codec.Codec
-import ru.cherryngine.lib.minecraft.tide.transcoder.KtJsonTranscoder
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.transcoder.KtJsonTranscoder
 
 @Suppress("UNCHECKED_CAST")
 @OptIn(ExperimentalSerializationApi::class)

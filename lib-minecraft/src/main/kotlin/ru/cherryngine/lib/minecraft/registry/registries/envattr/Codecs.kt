@@ -2,10 +2,10 @@ package ru.cherryngine.lib.minecraft.registry.registries.envattr
 
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.util.TriState
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.StructCodec
+import ru.cherryngine.lib.minecraft.codec.transcoder.Transcoder
 import ru.cherryngine.lib.minecraft.registry.registries.ParticleRegistry
-import ru.cherryngine.lib.minecraft.tide.codec.Codec
-import ru.cherryngine.lib.minecraft.tide.codec.StructCodec
-import ru.cherryngine.lib.minecraft.tide.transcoder.Transcoder
 
 val TMP_PARTICLE_CODEC = StructCodec.of(
     "type", Codec.KEY, { Key.key(it.identifier) },

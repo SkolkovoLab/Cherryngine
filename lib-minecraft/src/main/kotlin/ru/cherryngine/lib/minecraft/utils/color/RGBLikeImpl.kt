@@ -3,8 +3,8 @@ package ru.cherryngine.lib.minecraft.utils.color
 import io.netty.buffer.ByteBuf
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.util.RGBLike
-import ru.cherryngine.lib.minecraft.tide.codec.Codec
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 data class RGBLikeImpl(
     val red: Int,

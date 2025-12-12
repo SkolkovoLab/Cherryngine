@@ -1,7 +1,7 @@
 package ru.cherryngine.engine.core.view
 
 import ru.cherryngine.engine.core.player.Player
-import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 
 interface Viewable {
     val chunkPos: ChunkPos

@@ -7,11 +7,11 @@ import net.kyori.adventure.text.Component
 import ru.cherryngine.lib.minecraft.dialog.body.DialogBody
 import ru.cherryngine.lib.minecraft.dialog.button.DialogButton
 import ru.cherryngine.lib.minecraft.dialog.input.DialogInput
-import ru.cherryngine.lib.minecraft.extentions.putList
 import ru.cherryngine.lib.minecraft.registry.entries.DialogEntry
 import ru.cherryngine.lib.minecraft.registry.entries.DialogType
 import ru.cherryngine.lib.minecraft.registry.keys.DialogTypes
 import ru.cherryngine.lib.minecraft.registry.registries.DialogRegistry
+import ru.cherryngine.lib.minecraft.utils.extentions.putList
 
 class DialogListDialog(
     override val title: Component,

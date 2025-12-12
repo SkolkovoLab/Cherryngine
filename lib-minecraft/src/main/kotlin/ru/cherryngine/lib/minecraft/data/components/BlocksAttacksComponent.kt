@@ -1,20 +1,20 @@
 package ru.cherryngine.lib.minecraft.data.components
 
+import ru.cherryngine.lib.minecraft.codec.Codec
 import ru.cherryngine.lib.minecraft.codec.RegistryCodec
+import ru.cherryngine.lib.minecraft.codec.StructCodec
 import ru.cherryngine.lib.minecraft.codec.transcoder.CRC32CTranscoder
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
-import ru.cherryngine.lib.minecraft.protocol.DataComponentHashable
-import ru.cherryngine.lib.minecraft.protocol.types.SoundEvent
+import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
+import ru.cherryngine.lib.minecraft.network.protocol.types.SoundEvent
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.entries.DamageType
 import ru.cherryngine.lib.minecraft.registry.entries.EntityType
 import ru.cherryngine.lib.minecraft.registry.registries.DamageTypeRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.EntityTypeRegistry
-import ru.cherryngine.lib.minecraft.tide.codec.Codec
-import ru.cherryngine.lib.minecraft.tide.codec.StructCodec
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 data class BlocksAttacksComponent(
     val blocksDelaySeconds: Float,

@@ -1,13 +1,13 @@
 package ru.cherryngine.lib.minecraft.data.components
 
 import net.kyori.adventure.nbt.CompoundBinaryTag
-import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.HashList
-import ru.cherryngine.lib.minecraft.protocol.DataComponentHashable
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
+import ru.cherryngine.lib.minecraft.network.stream_codec.BinaryTagStreamCodecs
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 class BeesComponent(val bees: List<Bee>) : DataComponent() {
     override fun hashStruct(): HashHolder {
@@ -36,7 +36,7 @@ class BeesComponent(val bees: List<Bee>) : DataComponent() {
 
         companion object {
             val STREAM_CODEC = StreamCodec.of(
-                StreamCodecNBT.COMPOUND_STREAM, Bee::entityData,
+                BinaryTagStreamCodecs.COMPOUND_STREAM, Bee::entityData,
                 StreamCodec.VAR_INT, Bee::ticksInHive,
                 StreamCodec.VAR_INT, Bee::minTicksInHive,
                 ::Bee

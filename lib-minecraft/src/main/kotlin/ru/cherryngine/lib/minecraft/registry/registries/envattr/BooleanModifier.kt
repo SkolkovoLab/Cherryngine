@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.registry.registries.envattr
 
-import ru.cherryngine.lib.minecraft.tide.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.Codec
 
 fun interface BooleanModifier : Modifier<Boolean, Boolean> {
 

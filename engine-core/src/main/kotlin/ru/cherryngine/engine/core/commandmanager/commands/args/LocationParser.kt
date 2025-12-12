@@ -12,7 +12,7 @@ import org.incendo.cloud.type.range.Range
 import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.engine.core.commandmanager.SArgumentParser
 import ru.cherryngine.lib.math.Vec3D
-import ru.cherryngine.lib.minecraft.protocol.types.ArgumentParserType
+import ru.cherryngine.lib.minecraft.network.protocol.types.ArgumentParserType
 import java.util.stream.Collectors
 
 @Singleton

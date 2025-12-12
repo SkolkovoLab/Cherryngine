@@ -2,7 +2,7 @@ package ru.cherryngine.engine.physics.worldmesh
 
 import com.github.stephengold.joltjni.Triangle
 import com.github.stephengold.joltjni.Vec3
-import ru.cherryngine.lib.minecraft.protocol.types.Direction
+import ru.cherryngine.lib.minecraft.network.protocol.types.Direction
 
 data class Face(
     val blockFace: Direction,

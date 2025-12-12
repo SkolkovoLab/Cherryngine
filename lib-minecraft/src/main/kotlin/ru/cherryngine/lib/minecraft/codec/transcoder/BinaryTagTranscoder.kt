@@ -1,8 +1,7 @@
 package ru.cherryngine.lib.minecraft.codec.transcoder
 
 import net.kyori.adventure.nbt.*
-import ru.cherryngine.lib.minecraft.tide.codec.Codec
-import ru.cherryngine.lib.minecraft.tide.transcoder.Transcoder
+import ru.cherryngine.lib.minecraft.codec.Codec
 import java.util.*
 
 object BinaryTagTranscoder : Transcoder<BinaryTag> {

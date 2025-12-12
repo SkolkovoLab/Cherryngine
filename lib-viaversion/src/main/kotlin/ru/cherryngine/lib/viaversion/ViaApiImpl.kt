@@ -3,7 +3,7 @@ package ru.cherryngine.lib.viaversion
 import com.viaversion.viaversion.ViaAPIBase
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion
 import io.netty.buffer.ByteBuf
-import ru.cherryngine.lib.minecraft.server.Connection
+import ru.cherryngine.lib.minecraft.network.Connection
 
 class ViaApiImpl : ViaAPIBase<Connection>() {
     override fun getPlayerProtocolVersion(player: Connection): ProtocolVersion {

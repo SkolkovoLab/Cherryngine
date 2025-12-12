@@ -2,7 +2,7 @@ package ru.cherryngine.lib.minecraft.registry.registries.envattr
 
 import net.kyori.adventure.util.ARGBLike
 import net.kyori.adventure.util.RGBLike
-import ru.cherryngine.lib.minecraft.tide.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.Codec
 
 @Suppress("UNCHECKED_CAST")
 sealed interface Modifier<Sub, Arg> {

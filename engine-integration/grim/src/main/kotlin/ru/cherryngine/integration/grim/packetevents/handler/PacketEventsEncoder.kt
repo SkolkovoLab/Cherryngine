@@ -20,7 +20,7 @@ import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelOutboundHandlerAdapter
 import io.netty.channel.ChannelPromise
 import net.kyori.adventure.text.Component
-import ru.cherryngine.lib.minecraft.server.Connection
+import ru.cherryngine.lib.minecraft.network.Connection
 
 @ChannelHandler.Sharable
 class PacketEventsEncoder(

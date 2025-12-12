@@ -4,7 +4,7 @@ import com.github.retrooper.packetevents.PacketEvents
 import com.github.retrooper.packetevents.manager.protocol.ProtocolManager
 import io.github.retrooper.packetevents.impl.netty.manager.player.PlayerManagerAbstract
 import io.netty.channel.Channel
-import ru.cherryngine.lib.minecraft.server.Connection
+import ru.cherryngine.lib.minecraft.network.Connection
 
 class PlayerManagerImpl : PlayerManagerAbstract() {
     override fun getPing(player: Any): Int {

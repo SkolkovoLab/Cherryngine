@@ -5,9 +5,9 @@ import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.nbt.CompoundBinaryTag
-import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
-import ru.cherryngine.lib.minecraft.tide.stream.StringStreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.BinaryTagStreamCodecs
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StringStreamCodec
 import ru.cherryngine.lib.minecraft.world.palette.PaletteUtils
 import kotlin.math.ceil
 import kotlin.math.ln
@@ -209,7 +209,7 @@ object PolarReader {
 
         var nbt: CompoundBinaryTag = CompoundBinaryTag.empty()
         if (version <= PolarWorld.VERSION_USERDATA_OPT_BLOCK_ENT_NBT || buffer.readBoolean()) {
-            nbt = StreamCodecNBT.COMPOUND_STREAM.read(buffer)
+            nbt = BinaryTagStreamCodecs.COMPOUND_STREAM.read(buffer)
         }
 
         if (dataVersion < dataConverter.dataVersion()) {

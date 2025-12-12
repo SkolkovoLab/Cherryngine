@@ -1,16 +1,16 @@
 package ru.cherryngine.lib.minecraft.data.components
 
 import ru.cherryngine.lib.minecraft.codec.RegistryCodec
+import ru.cherryngine.lib.minecraft.codec.StructCodec
 import ru.cherryngine.lib.minecraft.codec.transcoder.CRC32CTranscoder
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.entries.TrimMaterial
 import ru.cherryngine.lib.minecraft.registry.entries.TrimPattern
 import ru.cherryngine.lib.minecraft.registry.registries.TrimMaterialRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.TrimPatternRegistry
-import ru.cherryngine.lib.minecraft.tide.codec.StructCodec
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 
 data class ArmorTrimComponent(
     val material: TrimMaterial,

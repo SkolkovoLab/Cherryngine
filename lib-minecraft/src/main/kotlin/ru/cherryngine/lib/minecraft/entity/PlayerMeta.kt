@@ -1,8 +1,5 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import net.kyori.adventure.nbt.CompoundBinaryTag
-import ru.cherryngine.lib.minecraft.protocol.types.ClientSettings
-
 @Suppress("PropertyName")
 sealed class PlayerMeta : AvatarMeta() {
     companion object : PlayerMeta()

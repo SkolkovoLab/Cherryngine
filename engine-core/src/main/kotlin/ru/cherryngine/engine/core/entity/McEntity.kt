@@ -5,9 +5,9 @@ import ru.cherryngine.engine.core.view.Viewable
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.entity.MetadataContainer
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.*
-import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.protocol.types.TeleportFlags
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.*
+import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.network.protocol.types.TeleportFlags
 import ru.cherryngine.lib.minecraft.registry.entries.Attribute
 import ru.cherryngine.lib.minecraft.registry.entries.EntityType
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils

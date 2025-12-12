@@ -3,9 +3,9 @@ package ru.cherryngine.engine.core.world
 import ru.cherryngine.engine.core.player.Player
 import ru.cherryngine.engine.core.view.BlocksViewable
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundForgetLevelChunkPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
-import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundForgetLevelChunkPacket
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
+import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.entries.DimensionType
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData

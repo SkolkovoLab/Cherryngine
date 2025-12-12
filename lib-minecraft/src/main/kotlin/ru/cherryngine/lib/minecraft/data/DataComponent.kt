@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.data
 
-import ru.cherryngine.lib.minecraft.protocol.DataComponentHashable
+import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 
 abstract class DataComponent(
     val isSingleField: Boolean = false

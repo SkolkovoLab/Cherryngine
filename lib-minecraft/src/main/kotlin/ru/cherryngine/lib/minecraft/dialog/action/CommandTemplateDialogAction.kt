@@ -1,9 +1,9 @@
 package ru.cherryngine.lib.minecraft.dialog.action
 
 import net.kyori.adventure.nbt.CompoundBinaryTag
-import ru.cherryngine.lib.minecraft.extentions.modify
 import ru.cherryngine.lib.minecraft.registry.entries.DialogActionType
 import ru.cherryngine.lib.minecraft.registry.keys.DialogActionTypes
+import ru.cherryngine.lib.minecraft.utils.extentions.modify
 
 /**
  * Command template will be processed by the client and then executed as a command

@@ -2,9 +2,9 @@ package ru.cherryngine.lib.minecraft.world.palette
 
 import io.netty.buffer.ByteBuf
 import org.jetbrains.annotations.ApiStatus
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.utils.bitsToRepresent
 import java.util.function.IntUnaryOperator
 

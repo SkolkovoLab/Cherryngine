@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.world.chunk
 
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.world.block.Block
 import java.util.function.Predicate
 

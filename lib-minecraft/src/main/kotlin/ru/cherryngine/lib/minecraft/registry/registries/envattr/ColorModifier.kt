@@ -2,9 +2,9 @@ package ru.cherryngine.lib.minecraft.registry.registries.envattr
 
 import net.kyori.adventure.util.ARGBLike
 import net.kyori.adventure.util.RGBLike
-import ru.cherryngine.lib.minecraft.tide.codec.Codec
-import ru.cherryngine.lib.minecraft.tide.codec.EitherCodec
-import ru.cherryngine.lib.minecraft.tide.types.Either
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.EitherCodec
+import ru.cherryngine.lib.minecraft.utils.Either
 import ru.cherryngine.lib.minecraft.utils.color.ARGBLikeImpl
 import ru.cherryngine.lib.minecraft.utils.color.RGBLikeImpl
 import ru.cherryngine.lib.minecraft.utils.color.argbLikeOf

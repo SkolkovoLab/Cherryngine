@@ -12,8 +12,8 @@ import io.netty.channel.Channel
 import io.netty.channel.ChannelFutureListener
 import ru.cherryngine.integration.grim.packetevents.handler.PacketEventsDecoder
 import ru.cherryngine.integration.grim.packetevents.handler.PacketEventsEncoder
-import ru.cherryngine.lib.minecraft.server.ChannelHandlers
-import ru.cherryngine.lib.minecraft.server.ChannelInjector
+import ru.cherryngine.lib.minecraft.network.ChannelHandlers
+import ru.cherryngine.lib.minecraft.network.ChannelInjector
 import ru.cherryngine.lib.viaversion.ViaChannelHandlers
 
 object ServerConnectionInitializer : ChannelInjector {

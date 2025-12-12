@@ -2,7 +2,7 @@ package ru.cherryngine.lib.minecraft.registry.registries.envattr
 
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.key.KeyPattern
-import ru.cherryngine.lib.minecraft.tide.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.Codec
 import ru.cherryngine.lib.minecraft.utils.color.ARGBLikeImpl
 import ru.cherryngine.lib.minecraft.utils.color.RGBLikeImpl
 

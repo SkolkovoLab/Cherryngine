@@ -1,10 +1,9 @@
 package ru.cherryngine.lib.minecraft.utils
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
-import ru.cherryngine.lib.minecraft.protocol.types.GameProfile
+import ru.cherryngine.lib.minecraft.network.protocol.types.GameProfile
 import java.io.IOException
 import java.net.URI
 import java.net.URLEncoder

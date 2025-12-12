@@ -3,11 +3,11 @@ package ru.cherryngine.lib.minecraft.world.block
 import io.netty.buffer.ByteBuf
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
-import ru.cherryngine.lib.minecraft.protocol.types.BlockEntityType
-import ru.cherryngine.lib.minecraft.tide.stream.EnumStreamCodec
-import ru.cherryngine.lib.minecraft.tide.stream.MapStreamCodec
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.network.protocol.types.BlockEntityType
+import ru.cherryngine.lib.minecraft.network.stream_codec.BinaryTagStreamCodecs
+import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.MapStreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 data class BlockEntity(
     val blockEntityType: BlockEntityType,
@@ -16,7 +16,7 @@ data class BlockEntity(
     companion object {
         val STREAM_CODEC = StreamCodec.of(
             EnumStreamCodec<BlockEntityType>(), BlockEntity::blockEntityType,
-            StreamCodecNBT.COMPOUND_STREAM, BlockEntity::data,
+            BinaryTagStreamCodecs.COMPOUND_STREAM, BlockEntity::data,
             ::BlockEntity
         )
 

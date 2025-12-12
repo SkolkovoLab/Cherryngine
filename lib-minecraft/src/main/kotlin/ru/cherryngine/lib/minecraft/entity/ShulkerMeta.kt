@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import ru.cherryngine.lib.minecraft.protocol.types.Direction
-import ru.cherryngine.lib.minecraft.protocol.types.DyeColor
+import ru.cherryngine.lib.minecraft.network.protocol.types.Direction
+import ru.cherryngine.lib.minecraft.network.protocol.types.DyeColor
 
 @Suppress("PropertyName")
 sealed class ShulkerMeta : MobMeta() {

@@ -9,7 +9,7 @@ import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToMessageDecoder
-import ru.cherryngine.lib.minecraft.server.Connection
+import ru.cherryngine.lib.minecraft.network.Connection
 
 @ChannelHandler.Sharable
 class PacketEventsDecoder(

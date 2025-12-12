@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.registry
 
-import ru.cherryngine.lib.minecraft.protocol.packets.configurations.ClientboundRegistryDataPacket
+import ru.cherryngine.lib.minecraft.network.protocol.packets.configurations.ClientboundRegistryDataPacket
 
 abstract class DynamicRegistry<T : RegistryEntry>(
     identifier: String,

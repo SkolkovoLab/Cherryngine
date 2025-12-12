@@ -4,13 +4,13 @@ import io.netty.buffer.Unpooled
 import net.kyori.adventure.key.Key
 import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.protocol.types.BlockEntityType
-import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.network.protocol.types.BlockEntityType
+import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.entries.Biome
 import ru.cherryngine.lib.minecraft.registry.keys.Biomes
 import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection

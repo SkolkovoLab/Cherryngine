@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.minecraft.entity
 
 import net.kyori.adventure.text.Component
-import ru.cherryngine.lib.minecraft.protocol.types.ResolvableProfile
+import ru.cherryngine.lib.minecraft.network.protocol.types.ResolvableProfile
 
 @Suppress("PropertyName")
 sealed class MannequinMeta : AvatarMeta() {

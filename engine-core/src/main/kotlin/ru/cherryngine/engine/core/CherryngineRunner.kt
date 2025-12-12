@@ -3,7 +3,7 @@ package ru.cherryngine.engine.core
 import io.micronaut.context.event.ApplicationEventListener
 import io.micronaut.context.event.StartupEvent
 import jakarta.inject.Singleton
-import ru.cherryngine.lib.minecraft.server.NettyServer
+import ru.cherryngine.lib.minecraft.network.NettyServer
 
 @Singleton
 class CherryngineRunner(

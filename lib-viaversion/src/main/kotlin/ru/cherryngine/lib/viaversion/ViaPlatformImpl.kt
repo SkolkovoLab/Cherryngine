@@ -6,7 +6,7 @@ import com.viaversion.viaversion.api.platform.PlatformTask
 import com.viaversion.viaversion.api.platform.ViaPlatform
 import com.viaversion.viaversion.util.VersionInfo
 import kotlinx.coroutines.*
-import ru.cherryngine.lib.minecraft.server.Connection
+import ru.cherryngine.lib.minecraft.network.Connection
 import java.io.File
 import java.util.logging.Logger as JulLogger
 

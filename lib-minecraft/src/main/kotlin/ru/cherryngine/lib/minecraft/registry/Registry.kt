@@ -4,9 +4,9 @@ import io.netty.buffer.ByteBuf
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import net.kyori.adventure.key.Key
-import ru.cherryngine.lib.minecraft.codec.RegistryStreamCodec
-import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.BinaryTagStreamCodecs
+import ru.cherryngine.lib.minecraft.network.stream_codec.RegistryStreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.utils.BiMap
 import ru.cherryngine.lib.minecraft.utils.MutableBiMap
 
@@ -76,7 +76,7 @@ abstract class Registry<T : RegistryEntry>(
                 StreamCodec.VAR_INT.write(buffer, size)
                 value.protocolEntries.forEach { entry ->
                     StreamCodec.STRING.write(buffer, entry.getEntryIdentifier())
-                    StreamCodecNBT.STREAM.optional().write(buffer, entry.getNbt())
+                    BinaryTagStreamCodecs.STREAM.optional().write(buffer, entry.getNbt())
                 }
             }
 

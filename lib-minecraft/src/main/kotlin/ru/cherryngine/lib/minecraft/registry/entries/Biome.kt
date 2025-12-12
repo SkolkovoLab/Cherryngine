@@ -4,14 +4,14 @@ import kotlinx.serialization.Serializable
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import net.kyori.adventure.util.RGBLike
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.StructCodec
 import ru.cherryngine.lib.minecraft.codec.transcoder.BinaryTagTranscoder
 import ru.cherryngine.lib.minecraft.nbt.nbt
-import ru.cherryngine.lib.minecraft.protocol.NbtWritable
-import ru.cherryngine.lib.minecraft.protocol.types.SoundEvent
+import ru.cherryngine.lib.minecraft.network.protocol.NbtWritable
+import ru.cherryngine.lib.minecraft.network.protocol.types.SoundEvent
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.registry.registries.envattr.EnvironmentAttributeMap
-import ru.cherryngine.lib.minecraft.tide.codec.Codec
-import ru.cherryngine.lib.minecraft.tide.codec.StructCodec
 import ru.cherryngine.lib.minecraft.utils.color.RGBLikeImpl
 import ru.cherryngine.lib.minecraft.utils.kotlinx.KeySerializer
 

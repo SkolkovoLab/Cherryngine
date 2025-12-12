@@ -2,10 +2,10 @@ package ru.cherryngine.lib.minecraft.world.chunk
 
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
+import ru.cherryngine.lib.minecraft.codec.CodecUtils.byteBufBytes
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.keys.Biomes
 import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
-import ru.cherryngine.lib.minecraft.tide.codec.CodecUtils.byteBufBytes
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.utils.use
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.palette.Palette

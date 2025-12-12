@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.minecraft.registry
 
 import io.netty.buffer.ByteBuf
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 abstract class TagRegistry(
     identifier: String,

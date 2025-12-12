@@ -3,7 +3,7 @@ package ru.cherryngine.lib.minecraft.dialog.button
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import net.kyori.adventure.text.Component
 import ru.cherryngine.lib.minecraft.nbt.nbt
-import ru.cherryngine.lib.minecraft.protocol.NbtWritable
+import ru.cherryngine.lib.minecraft.network.protocol.NbtWritable
 import ru.cherryngine.lib.minecraft.utils.toNBT
 
 sealed class AbstractDialogButton : NbtWritable {

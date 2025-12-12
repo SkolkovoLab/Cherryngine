@@ -5,8 +5,8 @@ import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.entity.SalmonMeta
-import ru.cherryngine.lib.minecraft.tide.stream.EnumStreamCodec
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 data class SalmonSizeComponent(
     val size: SalmonMeta.Size,

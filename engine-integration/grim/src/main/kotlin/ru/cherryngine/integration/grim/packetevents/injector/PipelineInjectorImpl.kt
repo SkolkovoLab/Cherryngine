@@ -5,8 +5,8 @@ import com.github.retrooper.packetevents.protocol.player.User
 import io.netty.channel.Channel
 import ru.cherryngine.integration.grim.packetevents.handler.PacketEventsDecoder
 import ru.cherryngine.integration.grim.packetevents.handler.PacketEventsEncoder
-import ru.cherryngine.lib.minecraft.server.Connection
-import ru.cherryngine.lib.minecraft.server.NettyServer
+import ru.cherryngine.lib.minecraft.network.Connection
+import ru.cherryngine.lib.minecraft.network.NettyServer
 import com.github.retrooper.packetevents.injector.ChannelInjector as PacketEventsChannelInjector
 
 class PipelineInjectorImpl(

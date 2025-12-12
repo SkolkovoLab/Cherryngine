@@ -1,10 +1,10 @@
 package ru.cherryngine.lib.minecraft.data.components
 
 import net.kyori.adventure.nbt.CompoundBinaryTag
-import ru.cherryngine.lib.minecraft.codec.StreamCodecNBT
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.BinaryTagStreamCodecs
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 class BucketEntityDataComponent(
     val nbt: CompoundBinaryTag
@@ -15,7 +15,7 @@ class BucketEntityDataComponent(
 
     companion object {
         val STREAM_CODEC = StreamCodec.of(
-            StreamCodecNBT.COMPOUND_STREAM, BucketEntityDataComponent::nbt,
+            BinaryTagStreamCodecs.COMPOUND_STREAM, BucketEntityDataComponent::nbt,
             ::BucketEntityDataComponent
         )
     }

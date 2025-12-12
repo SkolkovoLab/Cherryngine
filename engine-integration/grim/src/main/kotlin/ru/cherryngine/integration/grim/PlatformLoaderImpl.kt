@@ -21,8 +21,8 @@ import ru.cherryngine.engine.core.events.PacketEvent
 import ru.cherryngine.engine.core.events.PlayerCreatedEvent
 import ru.cherryngine.integration.grim.command.CommandManagerImpl
 import ru.cherryngine.integration.grim.packetevents.PacketEventsImpl
-import ru.cherryngine.lib.minecraft.protocol.packets.play.serverbound.ServerboundClientTickEndPacket
-import ru.cherryngine.lib.minecraft.server.NettyServer
+import ru.cherryngine.lib.minecraft.network.NettyServer
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.serverbound.ServerboundClientTickEndPacket
 import java.io.File
 import java.util.logging.Logger
 import ac.grim.grimac.platform.api.sender.Sender as GrimSender

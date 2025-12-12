@@ -2,7 +2,7 @@ package ru.cherryngine.lib.minecraft.utils
 
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.sqrt

@@ -3,7 +3,7 @@ package ru.cherryngine.lib.minecraft.registry
 import io.netty.buffer.ByteBuf
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.nbt.BinaryTag
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 @Serializable
 data class Tag(

@@ -3,7 +3,6 @@ package ru.cherryngine.lib.minecraft.codec.transcoder
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher.EMPTY
 import ru.cherryngine.lib.minecraft.data.Hasher
-import ru.cherryngine.lib.minecraft.tide.transcoder.Transcoder
 
 object CRC32CTranscoder : Transcoder<Int> {
 

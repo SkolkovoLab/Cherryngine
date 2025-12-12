@@ -1,16 +1,16 @@
 package ru.cherryngine.lib.minecraft.entity
 
 import io.netty.buffer.ByteBuf
-import ru.cherryngine.lib.minecraft.codec.ComponentCodecs
-import ru.cherryngine.lib.minecraft.codec.LocationCodecs
 import ru.cherryngine.lib.minecraft.item.ItemStack
-import ru.cherryngine.lib.minecraft.protocol.types.ClientSettings
-import ru.cherryngine.lib.minecraft.protocol.types.Direction
-import ru.cherryngine.lib.minecraft.protocol.types.ResolvableProfile
-import ru.cherryngine.lib.minecraft.protocol.types.VillagerData
+import ru.cherryngine.lib.minecraft.network.protocol.types.ClientSettings
+import ru.cherryngine.lib.minecraft.network.protocol.types.Direction
+import ru.cherryngine.lib.minecraft.network.protocol.types.ResolvableProfile
+import ru.cherryngine.lib.minecraft.network.protocol.types.VillagerData
+import ru.cherryngine.lib.minecraft.network.stream_codec.ComponentStreamCodecs
+import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.LocationStreamCodecs
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.registries.*
-import ru.cherryngine.lib.minecraft.tide.stream.EnumStreamCodec
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.world.block.Block
 
 @Suppress("UNCHECKED_CAST")
@@ -33,13 +33,13 @@ class MetadataEntry<T>(
             val VAR_LONG = Type(index++, StreamCodec.VAR_LONG).also { entries.add(it) }
             val FLOAT = Type(index++, StreamCodec.FLOAT).also { entries.add(it) }
             val STRING = Type(index++, StreamCodec.STRING).also { entries.add(it) }
-            val COMPONENT = Type(index++, ComponentCodecs.NBT).also { entries.add(it) }
-            val OPT_COMPONENT = Type(index++, ComponentCodecs.NBT.optional()).also { entries.add(it) }
+            val COMPONENT = Type(index++, ComponentStreamCodecs.NBT).also { entries.add(it) }
+            val OPT_COMPONENT = Type(index++, ComponentStreamCodecs.NBT.optional()).also { entries.add(it) }
             val ITEM_STACK = Type(index++, ItemStack.STREAM_CODEC).also { entries.add(it) }
             val BOOLEAN = Type(index++, StreamCodec.BOOLEAN).also { entries.add(it) }
-            val ROTATION = Type(index++, LocationCodecs.VEC_3D).also { entries.add(it) }
-            val BLOCK_POSITION = Type(index++, LocationCodecs.BLOCK_POSITION).also { entries.add(it) }
-            val OPT_BLOCK_POSITION = Type(index++, LocationCodecs.BLOCK_POSITION.optional()).also { entries.add(it) }
+            val ROTATION = Type(index++, LocationStreamCodecs.VEC_3D).also { entries.add(it) }
+            val BLOCK_POSITION = Type(index++, LocationStreamCodecs.BLOCK_POSITION).also { entries.add(it) }
+            val OPT_BLOCK_POSITION = Type(index++, LocationStreamCodecs.BLOCK_POSITION.optional()).also { entries.add(it) }
             val DIRECTION = Type(index++, EnumStreamCodec<Direction>()).also { entries.add(it) }
             val OPT_UUID = Type(index++, StreamCodec.UUID.optional()).also { entries.add(it) }
             val BLOCK_STATE = Type(index++, Block.STREAM_CODEC).also { entries.add(it) }
@@ -63,8 +63,8 @@ class MetadataEntry<T>(
             val ARMADILLO_STATE = Type(index++, EnumStreamCodec<ArmadilloMeta.State>()).also { entries.add(it) }
             val COPPER_GOLEM_STATE = Type(index++, EnumStreamCodec<CopperGolemMeta.State>()).also { entries.add(it) }
             val WEATHER_STATE = Type(index++, EnumStreamCodec<CopperGolemMeta.WeatherState>()).also { entries.add(it) }
-            val VECTOR3 = Type(index++, LocationCodecs.VEC_3D_FLOAT).also { entries.add(it) }
-            val QUATERNION = Type(index++, LocationCodecs.QUATERNION).also { entries.add(it) }
+            val VECTOR3 = Type(index++, LocationStreamCodecs.VEC_3D_FLOAT).also { entries.add(it) }
+            val QUATERNION = Type(index++, LocationStreamCodecs.QUATERNION).also { entries.add(it) }
             val RESOLVABLE_PROFILE = Type(index++, ResolvableProfile.STREAM_CODEC).also { entries.add(it) }
             val MAIN_HAND = Type(index++, EnumStreamCodec<ClientSettings.MainHand>()).also { entries.add(it) }
 

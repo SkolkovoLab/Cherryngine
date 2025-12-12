@@ -1,9 +1,8 @@
 package ru.cherryngine.lib.minecraft.codec
 
+import ru.cherryngine.lib.minecraft.codec.transcoder.Transcoder
 import ru.cherryngine.lib.minecraft.registry.Registry
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
-import ru.cherryngine.lib.minecraft.tide.codec.Codec
-import ru.cherryngine.lib.minecraft.tide.transcoder.Transcoder
 
 object RegistryCodec {
     fun <T : RegistryEntry> codec(registry: Registry<T>): Codec<T> {

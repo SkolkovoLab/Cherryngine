@@ -1,9 +1,9 @@
 package ru.cherryngine.lib.minecraft.world.chunk
 
 import ru.cherryngine.lib.math.Vec3I
+import ru.cherryngine.lib.minecraft.network.stream_codec.MapStreamCodec
+import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.entries.DimensionType
-import ru.cherryngine.lib.minecraft.tide.stream.MapStreamCodec
-import ru.cherryngine.lib.minecraft.tide.stream.StreamCodec
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity
 import java.util.*
 

@@ -4,9 +4,9 @@
 //import ru.cherryngine.lib.minecraft.data.DataComponent
 //import ru.cherryngine.lib.minecraft.data.HashHolder
 //import ru.cherryngine.lib.minecraft.data.HashList
-//import ru.cherryngine.lib.minecraft.protocol.NetworkReadable
-//import ru.cherryngine.lib.minecraft.protocol.types.readList
-//import ru.cherryngine.lib.minecraft.protocol.types.writeList
+//import ru.cherryngine.lib.minecraft.network.protocol.NetworkReadable
+//import ru.cherryngine.lib.minecraft.network.protocol.types.readList
+//import ru.cherryngine.lib.minecraft.network.protocol.types.writeList
 //import io.netty.buffer.ByteBuf
 //
 //class AttributeModifiersComponent(val attributes: List<Modifier>) : DataComponent(true) {

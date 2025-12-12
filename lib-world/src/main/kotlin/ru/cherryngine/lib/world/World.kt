@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.world
 
-import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.entries.DimensionType
 
 class World(

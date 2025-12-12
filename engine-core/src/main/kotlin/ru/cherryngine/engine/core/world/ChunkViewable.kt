@@ -3,8 +3,8 @@ package ru.cherryngine.engine.core.world
 import ru.cherryngine.engine.core.player.Player
 import ru.cherryngine.engine.core.view.BlocksViewable
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.*
-import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.*
+import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils.globalToSectionRelative
 import ru.cherryngine.lib.minecraft.world.block.Block

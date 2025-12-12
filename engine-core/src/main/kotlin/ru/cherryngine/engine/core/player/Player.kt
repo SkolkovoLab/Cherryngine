@@ -7,12 +7,12 @@ import ru.cherryngine.engine.core.view.Viewable
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.math.YawPitch
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundPlayerPositionPacket
-import ru.cherryngine.lib.minecraft.protocol.packets.play.clientbound.ClientboundSystemChatPacket
-import ru.cherryngine.lib.minecraft.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.protocol.types.MovePlayerFlags
-import ru.cherryngine.lib.minecraft.protocol.types.TeleportFlags
-import ru.cherryngine.lib.minecraft.server.Connection
+import ru.cherryngine.lib.minecraft.network.Connection
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundPlayerPositionPacket
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSystemChatPacket
+import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.network.protocol.types.MovePlayerFlags
+import ru.cherryngine.lib.minecraft.network.protocol.types.TeleportFlags
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.world.block.Block
 

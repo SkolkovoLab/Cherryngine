@@ -1,7 +1,7 @@
 package ru.cherryngine.engine.core.events
 
-import ru.cherryngine.lib.minecraft.protocol.packets.ServerboundPacket
-import ru.cherryngine.lib.minecraft.server.Connection
+import ru.cherryngine.lib.minecraft.network.Connection
+import ru.cherryngine.lib.minecraft.network.protocol.packets.ServerboundPacket
 
 data class PacketEvent(
     val connection: Connection,
