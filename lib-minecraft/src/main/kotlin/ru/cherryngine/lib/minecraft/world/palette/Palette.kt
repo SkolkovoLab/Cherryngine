@@ -3,7 +3,7 @@ package ru.cherryngine.lib.minecraft.world.palette
 import io.netty.buffer.ByteBuf
 import org.jetbrains.annotations.ApiStatus
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
+import ru.cherryngine.lib.minecraft.r2.Registries
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
 import ru.cherryngine.lib.minecraft.utils.bitsToRepresent
 import java.util.function.IntUnaryOperator
@@ -25,7 +25,7 @@ sealed interface Palette {
         const val BIOME_PALETTE_MAX_BITS = 3
 
         // TODO биомы могут меняться в рантайме
-        val BIOME_PALETTE_DIRECT_BITS = bitsToRepresent(BiomeRegistry.getMaxProtocolId())
+        val BIOME_PALETTE_DIRECT_BITS = bitsToRepresent(Registries.biome.size)
 
         fun blocks(bitsPerEntry: Int): Palette = sized(
             BLOCK_DIMENSION,

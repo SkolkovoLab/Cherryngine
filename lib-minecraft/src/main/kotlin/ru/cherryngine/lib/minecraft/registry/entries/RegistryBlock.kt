@@ -9,16 +9,20 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.nbt.CompoundBinaryTag
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.lib.minecraft.r2.StaticProtocolObject
 import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
 import ru.cherryngine.lib.minecraft.utils.extentions.reversed
+import ru.cherryngine.lib.minecraft.utils.toKey
 import ru.cherryngine.lib.minecraft.world.block.Block
 
 @Serializable
 data class RegistryBlock(
+    override val id: Int,
     val identifier: String,
     val translationKey: String,
     val explosionResistance: Float,
@@ -59,8 +63,8 @@ data class RegistryBlock(
     val signalSource: Boolean = false,
     val properties: Map<String, List<String>> = emptyMap(),
     val states: Map<String, RegistryBlockState>,
-    val blockEntity: RegistryBlockEntity? = null
-) : RegistryEntry {
+    val blockEntity: RegistryBlockEntity? = null,
+) : RegistryEntry, StaticProtocolObject {
 
     override fun getEntryIdentifier(): String {
         return identifier
@@ -93,6 +97,10 @@ data class RegistryBlock(
 
     override fun getNbt(): CompoundBinaryTag? = null
 
+    override fun key(): Key {
+        return identifier.toKey()
+    }
+
     @Serializable
     data class RegistryBlockSounds(
         val breakSound: String,
@@ -123,13 +131,13 @@ data class RegistryBlock(
         val occlusionShape: Shape? = null,
         @Serializable(ShapeSerializer::class)
         val visualShape: Shape? = null,
-        val redstoneConductor: Boolean? = null
+        val redstoneConductor: Boolean? = null,
     )
 
     @Serializable
     data class RegistryBlockEntity(
         val namespace: String,
-        val id: Int
+        val id: Int,
     )
 }
 

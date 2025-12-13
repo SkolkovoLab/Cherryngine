@@ -7,8 +7,8 @@ import org.incendo.cloud.context.CommandInput
 import org.incendo.cloud.parser.ArgumentParseResult
 import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.engine.core.commandmanager.SArgumentParser
-import ru.cherryngine.engine.core.utils.toKey
 import ru.cherryngine.lib.minecraft.network.protocol.types.ArgumentParserType
+import ru.cherryngine.lib.minecraft.utils.toKey
 
 @Singleton
 class KeyParser() : SArgumentParser<Key> {

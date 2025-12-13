@@ -1,4 +1,4 @@
-package ru.cherryngine.engine.core.utils
+package ru.cherryngine.lib.minecraft.utils
 
 import net.kyori.adventure.key.Key
 

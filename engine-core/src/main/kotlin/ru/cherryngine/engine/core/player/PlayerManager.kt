@@ -23,7 +23,7 @@ import ru.cherryngine.lib.minecraft.network.protocol.packets.status.ClientboundS
 import ru.cherryngine.lib.minecraft.network.protocol.packets.status.ServerboundStatusRequestPacket
 import ru.cherryngine.lib.minecraft.network.protocol.types.MovePlayerFlags
 import ru.cherryngine.lib.minecraft.network.protocol.types.ServerStatus
-import ru.cherryngine.lib.minecraft.registry.RegistryManager
+import ru.cherryngine.lib.minecraft.r2.Registries
 import ru.cherryngine.lib.minecraft.registry.registries.tags.*
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -93,7 +93,7 @@ class PlayerManager(
                 )
                 connection.sendPacket(cachedTagPacket)
 
-                RegistryManager.dynamicRegistries.values.forEach { registry ->
+                Registries.dynamicRegistries.forEach { registry ->
                     connection.sendPacket(ClientboundRegistryDataPacket(registry))
                 }
 

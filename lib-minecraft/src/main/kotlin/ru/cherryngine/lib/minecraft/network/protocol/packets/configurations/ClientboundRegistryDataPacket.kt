@@ -2,14 +2,14 @@ package ru.cherryngine.lib.minecraft.network.protocol.packets.configurations
 
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.Registry
+import ru.cherryngine.lib.minecraft.r2.DynamicRegistry
 
 data class ClientboundRegistryDataPacket(
-    val registry: Registry<*>
+    val registry: DynamicRegistry<*>,
 ) : ClientboundPacket {
     companion object {
         val STREAM_CODEC = StreamCodec.of(
-            Registry.STREAM_CODEC, ClientboundRegistryDataPacket::registry,
+            DynamicRegistry.STREAM_CODEC, ClientboundRegistryDataPacket::registry,
             ::ClientboundRegistryDataPacket
         )
     }

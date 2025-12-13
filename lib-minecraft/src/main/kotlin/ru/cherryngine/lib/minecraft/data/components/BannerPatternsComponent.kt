@@ -8,8 +8,9 @@ import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.network.protocol.types.DyeColor
 import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.entries.BannerPattern
-import ru.cherryngine.lib.minecraft.registry.registries.BannerPatternRegistry
+import ru.cherryngine.lib.minecraft.r2.BannerPattern
+import ru.cherryngine.lib.minecraft.r2.Registries
+import ru.cherryngine.lib.minecraft.r2.Registry2StreamCodec
 
 class BannerPatternsComponent(val layers: List<Layer>) : DataComponent() {
     override fun hashStruct(): HashHolder {
@@ -36,7 +37,7 @@ class BannerPatternsComponent(val layers: List<Layer>) : DataComponent() {
 
         companion object {
             val STREAM_CODEC = StreamCodec.of(
-                BannerPatternRegistry.STREAM_CODEC, Layer::pattern,
+                Registry2StreamCodec(Registries.bannerPattern), Layer::pattern,
                 EnumStreamCodec<DyeColor>(), Layer::color,
                 ::Layer,
             )

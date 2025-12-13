@@ -3,6 +3,7 @@ package ru.cherryngine.lib.minecraft.registry
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.*
+import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
 
 @Suppress("UNCHECKED_CAST")
 @OptIn(ExperimentalSerializationApi::class)
@@ -19,7 +20,7 @@ abstract class KtJsonDataDrivenRegistry<T : RegistryEntry>(
 
         parsed.entries.forEachIndexed { index, (key, value) ->
             val obj = value.toMutableMap()
-            if ("id" in obj) {
+            if ("id" in obj && this !is BlockRegistry) {
                 val removed = obj.remove("id")
                 val id = removed!!.jsonPrimitive.int
                 check(id == index)

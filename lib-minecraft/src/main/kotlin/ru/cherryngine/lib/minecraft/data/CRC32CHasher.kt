@@ -94,8 +94,9 @@ object CRC32CHasher {
         return hashed
     }
 
-    fun ofRegistryEntry(entry: RegistryEntry): Int {
-        return ofString(entry.getEntryIdentifier())
+    fun ofRegistryEntry(entry: Any): Int {
+        if (entry is RegistryEntry) return ofString(entry.getEntryIdentifier())
+        TODO()
     }
 
     inline fun <reified T : Enum<T>> ofEnum(enum: T): Int {

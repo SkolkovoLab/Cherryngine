@@ -4,8 +4,8 @@ import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import ru.cherryngine.lib.minecraft.codec.CodecUtils.byteBufBytes
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
+import ru.cherryngine.lib.minecraft.r2.Registries
 import ru.cherryngine.lib.minecraft.registry.keys.Biomes
-import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
 import ru.cherryngine.lib.minecraft.utils.use
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.palette.Palette
@@ -53,7 +53,7 @@ class ChunkSection(
             val defaultBlocks = Palette.blocks()
             val defaultBiomes = Palette.biomes()
             defaultBlocks.fill(Block.AIR.getStateId())
-            defaultBiomes.fill(BiomeRegistry.getProtocolIdByEntry(Biomes.THE_VOID))
+            defaultBiomes.fill(Registries.biome.getId(Biomes.THE_VOID))
             return ChunkSection(defaultBlocks, defaultBiomes)
         }
 
