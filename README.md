@@ -1,5 +1,7 @@
 # Cherryngine
 
+### [English README](https://github.com/SkolkovoLab/Cherryngine/blob/master/README_EN.md)
+
 Крч в будущем это мега иновационное ядро для создания серваков
 
 Ну вы видели CounterMine, а если не видели, то посмотрите https://cherry.pizza/
