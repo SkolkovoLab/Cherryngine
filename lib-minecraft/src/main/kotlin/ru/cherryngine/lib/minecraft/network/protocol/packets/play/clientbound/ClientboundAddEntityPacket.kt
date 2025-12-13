@@ -5,8 +5,8 @@ import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.LocationStreamCodecs
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
+import ru.cherryngine.lib.minecraft.r2.Registries
 import ru.cherryngine.lib.minecraft.registry.entries.EntityType
-import ru.cherryngine.lib.minecraft.registry.registries.EntityTypeRegistry
 import java.util.*
 
 data class ClientboundAddEntityPacket(
@@ -23,7 +23,7 @@ data class ClientboundAddEntityPacket(
         val STREAM_CODEC = StreamCodec.of(
             StreamCodec.VAR_INT, ClientboundAddEntityPacket::entityId,
             StreamCodec.UUID, ClientboundAddEntityPacket::entityUUID,
-            EntityTypeRegistry.STREAM_CODEC, ClientboundAddEntityPacket::entityType,
+            Registries.entityType.streamCodec, ClientboundAddEntityPacket::entityType,
             LocationStreamCodecs.VEC_3D, ClientboundAddEntityPacket::location,
             LocationStreamCodecs.ANGLE_PITCH_YAW, ClientboundAddEntityPacket::yawPitch,
             LocationStreamCodecs.ANGLE, ClientboundAddEntityPacket::headYaw,

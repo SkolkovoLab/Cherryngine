@@ -2,20 +2,17 @@ package ru.cherryngine.lib.minecraft.world.block
 
 import io.netty.buffer.ByteBuf
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
+import ru.cherryngine.lib.minecraft.r2.Registries
 import ru.cherryngine.lib.minecraft.registry.entries.Item
 import ru.cherryngine.lib.minecraft.registry.entries.RegistryBlock
 import ru.cherryngine.lib.minecraft.registry.keys.Blocks
 import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.tags.BlockTagRegistry
 
 data class Block(
     val registryBlock: RegistryBlock,
     val blockStates: Map<String, String> = mapOf(),
 ) {
-    val identifier = registryBlock.identifier
-
-    val tags get() = BlockTagRegistry.reversed[identifier] ?: emptySet()
+    val identifier = registryBlock.key.toString()
 
     override fun equals(other: Any?): Boolean {
         if (other !is Block) return false
@@ -23,7 +20,7 @@ data class Block(
     }
 
     fun toItem(): Item {
-        return ItemRegistry[identifier]
+        return Registries.item[identifier]
     }
 
     fun getStateId(): Int {
@@ -111,7 +108,7 @@ data class Block(
                 return Block(registryBlock, parsed)
             }
 
-            for (block in BlockRegistry.getProtocolEntries()) {
+            for (block in Registries.block.values) {
                 val cachedState = block.possibleStatesReversed
                 if (cachedState.isEmpty()) continue
                 if (!cachedState.containsKey(stateId)) continue
@@ -124,7 +121,7 @@ data class Block(
 
         fun getBlockFromStateString(identifier: String): Block {
             val blockIdentifier = identifier.split("[")[0]
-            val registryBlock = BlockRegistry[blockIdentifier]
+            val registryBlock = Registries.block[blockIdentifier]
 
             //if no block state ids, no need to look up the block state ids map
             if (registryBlock.states.isEmpty()) {
@@ -132,13 +129,13 @@ data class Block(
             }
 
             val id = registryBlock.possibleStates[identifier]
-                ?: throw kotlin.IllegalArgumentException("No matching state sequence found on ${registryBlock.identifier}")
+                ?: throw kotlin.IllegalArgumentException("No matching state sequence found on ${registryBlock.key}")
             return getBlockByStateId(id)
         }
 
         fun getBlockFromStateStringFast(identifier: String, block: RegistryBlock): Block {
             val id = block.possibleStates[identifier]
-                ?: throw kotlin.IllegalArgumentException("No matching state sequence found on ${block.identifier}")
+                ?: throw kotlin.IllegalArgumentException("No matching state sequence found on ${block.key}")
             return getBlockByStateId(id)
         }
     }

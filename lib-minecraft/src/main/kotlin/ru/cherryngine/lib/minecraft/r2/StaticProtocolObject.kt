@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.minecraft.r2
 
-import net.kyori.adventure.key.Keyed
+import ru.cherryngine.lib.minecraft.utils.KeyedKt
 
-interface StaticProtocolObject : Keyed {
+interface StaticProtocolObject : KeyedKt {
     val id: Int
 }

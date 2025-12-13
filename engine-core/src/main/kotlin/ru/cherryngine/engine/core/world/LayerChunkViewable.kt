@@ -6,8 +6,8 @@ import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundBlockUpdatePacket
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSectionBlocksUpdatePacket
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.r2.Registries
 import ru.cherryngine.lib.minecraft.registry.keys.Blocks
-import ru.cherryngine.lib.minecraft.registry.keys.DimensionTypes
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils.sectionIndexFromSectionPos
 import ru.cherryngine.lib.minecraft.world.block.Block
@@ -34,7 +34,7 @@ class LayerChunkViewable(
     }
 
     override fun show(player: Player) {
-        val dimensionType = DimensionTypes.OVERWORLD // TODO оно должно браться откуда-нибудь
+        val dimensionType = Registries.dimensionType["overworld"] // TODO оно должно браться откуда-нибудь
         val minSection = dimensionType.minY / 16
         val sVoidBlockId = Blocks.STRUCTURE_VOID.defaultStateId
         chunk.sections.forEachIndexed { sectionIndex, section ->

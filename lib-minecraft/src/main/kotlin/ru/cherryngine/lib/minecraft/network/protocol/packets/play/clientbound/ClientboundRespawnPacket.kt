@@ -6,8 +6,8 @@ import ru.cherryngine.lib.minecraft.network.protocol.types.GameMode
 import ru.cherryngine.lib.minecraft.network.protocol.types.WorldPosition
 import ru.cherryngine.lib.minecraft.network.stream_codec.ByteEnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.entries.DimensionType
-import ru.cherryngine.lib.minecraft.registry.registries.DimensionTypeRegistry
+import ru.cherryngine.lib.minecraft.r2.DimensionType
+import ru.cherryngine.lib.minecraft.r2.Registries
 
 data class ClientboundRespawnPacket(
     val dimensionType: DimensionType,
@@ -24,7 +24,7 @@ data class ClientboundRespawnPacket(
 ) : ClientboundPacket {
     companion object {
         val STREAM_CODEC = StreamCodec.of(
-            DimensionTypeRegistry.STREAM_CODEC, ClientboundRespawnPacket::dimensionType,
+            Registries.dimensionType.streamCodec, ClientboundRespawnPacket::dimensionType,
             StreamCodec.KEY, ClientboundRespawnPacket::dimensionName,
             StreamCodec.LONG, ClientboundRespawnPacket::hashedSeed,
             ByteEnumStreamCodec<GameMode>(), ClientboundRespawnPacket::gameMode,

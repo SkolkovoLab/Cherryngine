@@ -1,14 +1,15 @@
 package ru.cherryngine.lib.minecraft.r2
 
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.decodeFromStream
+import kotlinx.serialization.json.*
 import net.kyori.adventure.key.Key
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.utils.toKey
 
 class StaticRegistry<T : StaticProtocolObject>(
-    val key: Key,
+    override val key: Key,
     entries: List<T>,
+    override val tags: Map<Key, List<Key>>,
 ) : Registry<T> {
     private val keyToValue = entries.associateBy { it.key() }
     private val valueToKey = entries.associateWith { RegistryKey.Impl<T>(it.key()) }
@@ -19,8 +20,6 @@ class StaticRegistry<T : StaticProtocolObject>(
             check(index == value.id)
         }
     }
-
-    override fun key(): Key = key
 
     override fun getOrNull(id: Int): T? {
         return idToValue.getOrNull(id)
@@ -44,8 +43,8 @@ class StaticRegistry<T : StaticProtocolObject>(
         return RegistryKey.Impl(key)
     }
 
-    override fun getIdOrNull(key: RegistryKey<T>): Int? {
-        val value = keyToValue[key.key()] ?: return null
+    override fun getIdOrNull(key: Key): Int? {
+        val value = keyToValue[key] ?: return null
         return value.id
     }
 
@@ -56,15 +55,21 @@ class StaticRegistry<T : StaticProtocolObject>(
     override val values: Collection<T>
         get() = valueToKey.keys
 
+    override val keyCodec: Codec<T> = Codec.KEY.transform(
+        { get(it) },
+        { getKey(it).key() }
+    )
+    override val streamCodec = Registry2StreamCodec(this)
+
     companion object {
         @OptIn(ExperimentalSerializationApi::class)
         fun <T : StaticProtocolObject> create(
             key: Key,
             loader: (key: String, jsonObject: JsonObject) -> T,
-            resource: String,
+            resourceName: String,
         ): StaticRegistry<T> {
-            val resource = ClassLoader.getSystemResource(resource)
-                ?: throw IllegalStateException("Resource $resource not found for registry $key")
+            val resource = ClassLoader.getSystemResource(resourceName)
+                ?: throw IllegalStateException("Resource $resourceName not found for registry $key")
 
             val map: Map<String, JsonObject> = resource.openStream().use {
                 Json.decodeFromStream<Map<String, JsonObject>>(it)
@@ -72,7 +77,32 @@ class StaticRegistry<T : StaticProtocolObject>(
 
             val entries = map.map { (key, value) -> loader(key, value) }.sortedBy { it.id }
 
-            return StaticRegistry(key, entries)
+            val tags = createTags("tags/$resourceName")
+
+            return StaticRegistry(key, entries, tags)
+        }
+
+        @OptIn(ExperimentalSerializationApi::class)
+        fun createTags(resourceName: String): Map<Key, List<Key>> {
+            val resource = ClassLoader.getSystemResource(resourceName) ?: return mapOf()
+
+            val map: Map<String, JsonObject> = resource.openStream().use {
+                Json.decodeFromStream<Map<String, JsonObject>>(it)
+            }
+
+            fun getRealValues(value: String): List<Key> {
+                if (!value.startsWith('#')) return listOf(value.toKey())
+                val key = value.substring(1)
+                return map[key]!!["values"]!!.jsonArray
+                    .map { it.jsonPrimitive.content }
+                    .flatMap { getRealValues(it) }
+            }
+
+            val tags = map.keys.associate {
+                it.toKey() to getRealValues("#$it")
+            }
+
+            return tags
         }
     }
 }

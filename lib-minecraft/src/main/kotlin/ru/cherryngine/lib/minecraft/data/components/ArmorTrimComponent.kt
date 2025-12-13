@@ -1,20 +1,18 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.codec.RegistryCodec
 import ru.cherryngine.lib.minecraft.codec.StructCodec
 import ru.cherryngine.lib.minecraft.codec.transcoder.CRC32CTranscoder
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.entries.TrimMaterial
-import ru.cherryngine.lib.minecraft.registry.entries.TrimPattern
-import ru.cherryngine.lib.minecraft.registry.registries.TrimMaterialRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.TrimPatternRegistry
+import ru.cherryngine.lib.minecraft.r2.Registries
+import ru.cherryngine.lib.minecraft.r2.TrimMaterial
+import ru.cherryngine.lib.minecraft.r2.TrimPattern
 
 data class ArmorTrimComponent(
     val material: TrimMaterial,
-    val pattern: TrimPattern
+    val pattern: TrimPattern,
 ) : DataComponent() {
     override fun hashStruct(): HashHolder {
         return StaticHash(CODEC.encode(CRC32CTranscoder, this))
@@ -22,14 +20,14 @@ data class ArmorTrimComponent(
 
     companion object {
         val CODEC = StructCodec.of(
-            "material", RegistryCodec.codec(TrimMaterialRegistry), ArmorTrimComponent::material,
-            "pattern", RegistryCodec.codec(TrimPatternRegistry), ArmorTrimComponent::pattern,
+            "material", Registries.trimMaterial.keyCodec, ArmorTrimComponent::material,
+            "pattern", Registries.trimPattern.keyCodec, ArmorTrimComponent::pattern,
             ::ArmorTrimComponent
         )
 
         val STREAM_CODEC = StreamCodec.of(
-            TrimMaterialRegistry.STREAM_CODEC, ArmorTrimComponent::material,
-            TrimPatternRegistry.STREAM_CODEC, ArmorTrimComponent::pattern,
+            Registries.trimMaterial.streamCodec, ArmorTrimComponent::material,
+            Registries.trimPattern.streamCodec, ArmorTrimComponent::pattern,
             ::ArmorTrimComponent
         )
     }

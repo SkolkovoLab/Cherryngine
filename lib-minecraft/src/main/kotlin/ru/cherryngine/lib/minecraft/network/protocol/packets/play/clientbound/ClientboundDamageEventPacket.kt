@@ -4,8 +4,8 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.LocationStreamCodecs
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.entries.DamageType
-import ru.cherryngine.lib.minecraft.registry.registries.DamageTypeRegistry
+import ru.cherryngine.lib.minecraft.r2.DamageType
+import ru.cherryngine.lib.minecraft.r2.Registries
 
 data class ClientboundDamageEventPacket(
     val entityId: Int,
@@ -17,7 +17,7 @@ data class ClientboundDamageEventPacket(
     companion object {
         val STREAM_CODEC = StreamCodec.of(
             StreamCodec.VAR_INT, ClientboundDamageEventPacket::entityId,
-            DamageTypeRegistry.STREAM_CODEC, ClientboundDamageEventPacket::type,
+            Registries.damageType.streamCodec, ClientboundDamageEventPacket::type,
             StreamCodec.OPT_INT, ClientboundDamageEventPacket::attacker,
             StreamCodec.OPT_INT, ClientboundDamageEventPacket::projectile,
             LocationStreamCodecs.VEC_3D.optional(), ClientboundDamageEventPacket::location,

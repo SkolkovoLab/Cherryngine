@@ -75,7 +75,7 @@ interface BlockTypeFilter : Predicate<Block>, DataComponentHashable {
 
     data class Tag(val tag: String) : BlockTypeFilter {
         override fun test(t: Block): Boolean {
-            return t.tags.contains(tag)
+            return false // TODO
         }
     }
 }

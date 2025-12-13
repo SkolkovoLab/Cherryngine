@@ -3,10 +3,9 @@ package ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound
 import net.kyori.adventure.key.Key
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.ByteEnumStreamCodec
-import ru.cherryngine.lib.minecraft.network.stream_codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.entries.Attribute
-import ru.cherryngine.lib.minecraft.registry.registries.AttributeRegistry
+import ru.cherryngine.lib.minecraft.r2.Attribute
+import ru.cherryngine.lib.minecraft.r2.Registries
 
 data class ClientboundUpdateAttributesPacket(
     val entityId: Int,
@@ -27,7 +26,7 @@ data class ClientboundUpdateAttributesPacket(
     ) {
         companion object {
             val STREAM_CODEC = StreamCodec.of(
-                RegistryStreamCodec(AttributeRegistry), Property::attribute,
+                Registries.attribute.streamCodec, Property::attribute,
                 StreamCodec.DOUBLE, Property::value,
                 Modifier.STREAM_CODEC.list(), Property::modifiers,
                 ::Property

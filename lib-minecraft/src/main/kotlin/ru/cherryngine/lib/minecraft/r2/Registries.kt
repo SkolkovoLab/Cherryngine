@@ -4,15 +4,58 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.decodeFromJsonElement
+import ru.cherryngine.lib.minecraft.registry.entries.EntityType
+import ru.cherryngine.lib.minecraft.registry.entries.Item
 import ru.cherryngine.lib.minecraft.registry.entries.RegistryBlock
 import ru.cherryngine.lib.minecraft.utils.toKey
 
 object Registries {
-    val blocks = StaticRegistry.create("block".toKey(), { key, value ->
+    val attribute: StaticRegistry<Attribute> = StaticRegistry.create("attribute".toKey(), { key, value ->
         val obj = value.toMutableMap()
-        obj["identifier"] = JsonPrimitive(key)
+        obj["key"] = JsonPrimitive(key)
+        Json.decodeFromJsonElement<Attribute>(JsonObject(obj))
+    }, "attribute.json")
+    val block = StaticRegistry.create("block".toKey(), { key, value ->
+        val obj = value.toMutableMap()
+        obj["key"] = JsonPrimitive(key)
         Json.decodeFromJsonElement<RegistryBlock>(JsonObject(obj))
     }, "block.json")
+    val soundEvent = StaticRegistry.create("sound_event".toKey(), { key, value ->
+        val obj = value.toMutableMap()
+        obj["key"] = JsonPrimitive(key)
+        Json.decodeFromJsonElement<SoundEvent.Builtin>(JsonObject(obj))
+    }, "sound_event.json")
+    val potionEffect = StaticRegistry.create("potion_effect".toKey(), { key, value ->
+        val obj = value.toMutableMap()
+        obj["key"] = JsonPrimitive(key)
+        Json.decodeFromJsonElement<PotionEffect>(JsonObject(obj))
+    }, "potion_effect.json")
+    val potionType = StaticRegistry.create("potion_type".toKey(), { key, value ->
+        val obj = value.toMutableMap()
+        obj["key"] = JsonPrimitive(key)
+        Json.decodeFromJsonElement<PotionType>(JsonObject(obj))
+    }, "potion_type.json")
+    val particle = StaticRegistry.create("particle".toKey(), { key, value ->
+        val obj = value.toMutableMap()
+        obj["key"] = JsonPrimitive(key)
+        Json.decodeFromJsonElement<Particle>(JsonObject(obj))
+    }, "particle.json")
+    val fluid = StaticRegistry.create("fluid".toKey(), { key, value ->
+        val obj = value.toMutableMap()
+        obj["key"] = JsonPrimitive(key)
+        Json.decodeFromJsonElement<Fluid>(JsonObject(obj))
+    }, "fluid.json")
+    val entityType = StaticRegistry.create("entity_type".toKey(), { key, value ->
+        val obj = value.toMutableMap()
+        obj["key"] = JsonPrimitive(key)
+        Json.decodeFromJsonElement<EntityType>(JsonObject(obj))
+    }, "entity_type.json")
+    val item = StaticRegistry.create("item".toKey(), { key, value ->
+        val obj = value.toMutableMap()
+        obj["key"] = JsonPrimitive(key)
+        Json.decodeFromJsonElement<Item>(JsonObject(obj))
+    }, "item.json")
+
 
     val bannerPattern = DynamicRegistry.create(
         "banner_pattern".toKey(), BannerPattern.CODEC, "banner_pattern.json",
@@ -25,6 +68,9 @@ object Registries {
     )
     val catVariant = DynamicRegistry.create(
         "cat_variant".toKey(), CatVariant.CODEC, "cat_variant.json",
+    )
+    val chatType = DynamicRegistry.create(
+        "chat_type".toKey(), ChatType.CODEC, "chat_type.json",
     )
     val chickenVariant = DynamicRegistry.create(
         "chicken_variant".toKey(), ChickenVariant.CODEC, "chicken_variant.json",
@@ -70,6 +116,7 @@ object Registries {
         bannerPattern,
         biome,
         catVariant,
+        chatType,
         chickenVariant,
         cowVariant,
         damageType,

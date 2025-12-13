@@ -1,12 +1,10 @@
 package ru.cherryngine.lib.minecraft.r2
 
 import net.kyori.adventure.key.Key
-import net.kyori.adventure.key.Keyed
+import ru.cherryngine.lib.minecraft.utils.KeyedKt
 
-interface RegistryKey<T> : Keyed {
+interface RegistryKey<T> : KeyedKt {
     data class Impl<T>(
-        val key: Key,
-    ) : RegistryKey<T> {
-        override fun key(): Key = key
-    }
+        override val key: Key,
+    ) : RegistryKey<T>
 }

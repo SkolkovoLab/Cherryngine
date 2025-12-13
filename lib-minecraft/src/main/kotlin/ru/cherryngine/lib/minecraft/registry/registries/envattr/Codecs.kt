@@ -1,18 +1,17 @@
 package ru.cherryngine.lib.minecraft.registry.registries.envattr
 
-import net.kyori.adventure.key.Key
 import net.kyori.adventure.util.TriState
 import ru.cherryngine.lib.minecraft.codec.Codec
 import ru.cherryngine.lib.minecraft.codec.StructCodec
 import ru.cherryngine.lib.minecraft.codec.transcoder.Transcoder
-import ru.cherryngine.lib.minecraft.registry.registries.ParticleRegistry
+import ru.cherryngine.lib.minecraft.r2.Registries
 
 val TMP_PARTICLE_CODEC = StructCodec.of(
-    "type", Codec.KEY, { Key.key(it.identifier) },
-    { ParticleRegistry[it] }
+    "type", Codec.KEY, { it.key },
+    { Registries.particle[it] }
 )
 
-val TRI_STATE_CODEC = object  : Codec<TriState> {
+val TRI_STATE_CODEC = object : Codec<TriState> {
     override fun <D> decode(transcoder: Transcoder<D>, value: D): TriState {
         // Try boolean first
         val boolResult = runCatching { transcoder.decodeBoolean(value) }

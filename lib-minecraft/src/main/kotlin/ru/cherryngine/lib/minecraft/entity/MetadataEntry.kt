@@ -10,7 +10,7 @@ import ru.cherryngine.lib.minecraft.network.stream_codec.ComponentStreamCodecs
 import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.LocationStreamCodecs
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.registries.*
+import ru.cherryngine.lib.minecraft.r2.Registries
 import ru.cherryngine.lib.minecraft.world.block.Block
 
 @Suppress("UNCHECKED_CAST")
@@ -44,21 +44,21 @@ class MetadataEntry<T>(
             val OPT_UUID = Type(index++, StreamCodec.UUID.optional()).also { entries.add(it) }
             val BLOCK_STATE = Type(index++, Block.STREAM_CODEC).also { entries.add(it) }
             val OPT_BLOCK_STATE = Type(index++, Block.STREAM_CODEC).also { entries.add(it) }
-            val PARTICLE = Type(index++, ParticleRegistry.STREAM_CODEC).also { entries.add(it) }
-            val PARTICLE_LIST = Type(index++, ParticleRegistry.STREAM_CODEC.list()).also { entries.add(it) }
+            val PARTICLE = Type(index++, Registries.particle.streamCodec).also { entries.add(it) }
+            val PARTICLE_LIST = Type(index++, Registries.particle.streamCodec.list()).also { entries.add(it) }
             val VILLAGER_DATA = Type(index++, VillagerData.STREAM_CODEC).also { entries.add(it) }
             val OPT_VAR_INT = Type(index++, StreamCodec.OPT_VAR_INT).also { entries.add(it) }
             val ENTITY_POSE = Type(index++, EnumStreamCodec<EntityMeta.Pose>()).also { entries.add(it) }
-            val CAT_VARIANT = Type(index++, CatVariantRegistry.STREAM_CODEC).also { entries.add(it) }
-            val COW_VARIANT = Type(index++, CowVariantRegistry.STREAM_CODEC).also { entries.add(it) }
-            val WOLF_VARIANT = Type(index++, WolfVariantRegistry.STREAM_CODEC).also { entries.add(it) }
-            val WOLF_SOUND_VARIANT = Type(index++, WolfSoundVariantRegistry.STREAM_CODEC).also { entries.add(it) }
-            val FROG_VARIANT = Type(index++, FrogVariantRegistry.STREAM_CODEC).also { entries.add(it) }
-            val PIG_VARIANT = Type(index++, PigVariantRegistry.STREAM_CODEC).also { entries.add(it) }
-            val CHICKEN_VARIANT = Type(index++, ChickenVariantRegistry.STREAM_CODEC).also { entries.add(it) }
-            val ZOMBIE_NAUTILUS_VARIANT = Type(index++, ZombieNautilusVariantRegistry.STREAM_CODEC).also { entries.add(it) }
+            val CAT_VARIANT = Type(index++, Registries.catVariant.streamCodec).also { entries.add(it) }
+            val COW_VARIANT = Type(index++, Registries.cowVariant.streamCodec).also { entries.add(it) }
+            val WOLF_VARIANT = Type(index++, Registries.wolfVariant.streamCodec).also { entries.add(it) }
+            val WOLF_SOUND_VARIANT = Type(index++, Registries.wolfSoundVariant.streamCodec).also { entries.add(it) }
+            val FROG_VARIANT = Type(index++, Registries.frogVariant.streamCodec).also { entries.add(it) }
+            val PIG_VARIANT = Type(index++, Registries.pigVariant.streamCodec).also { entries.add(it) }
+            val CHICKEN_VARIANT = Type(index++, Registries.chickenVariant.streamCodec).also { entries.add(it) }
+            val ZOMBIE_NAUTILUS_VARIANT = Type(index++, Registries.zombieNautilusVariant.streamCodec).also { entries.add(it) }
             val OPT_GLOBAL_POSITION = Type(index++, StreamCodec.UNIT).also { entries.add(it) } // Unused by protocol it seems
-            val PAINTING_VARIANT = Type(index++, PaintingVariantRegistry.STREAM_CODEC).also { entries.add(it) }
+            val PAINTING_VARIANT = Type(index++, Registries.paintingVariant.streamCodec).also { entries.add(it) }
             val SNIFFER_STATE = Type(index++, EnumStreamCodec<SnifferMeta.State>()).also { entries.add(it) }
             val ARMADILLO_STATE = Type(index++, EnumStreamCodec<ArmadilloMeta.State>()).also { entries.add(it) }
             val COPPER_GOLEM_STATE = Type(index++, EnumStreamCodec<CopperGolemMeta.State>()).also { entries.add(it) }

@@ -5,8 +5,8 @@ import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.entries.CatVariant
-import ru.cherryngine.lib.minecraft.registry.registries.CatVariantRegistry
+import ru.cherryngine.lib.minecraft.r2.CatVariant
+import ru.cherryngine.lib.minecraft.r2.Registries
 
 data class CatVariantComponent(
     val variant: CatVariant,
@@ -17,7 +17,7 @@ data class CatVariantComponent(
 
     companion object {
         val STREAM_CODEC = StreamCodec.of(
-            CatVariantRegistry.STREAM_CODEC, CatVariantComponent::variant,
+            Registries.catVariant.streamCodec, CatVariantComponent::variant,
             ::CatVariantComponent
         )
     }

@@ -2,7 +2,7 @@ package ru.cherryngine.lib.minecraft.network.protocol.packets.common
 
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.TagRegistry
+import ru.cherryngine.lib.minecraft.r2.TagRegistry
 
 data class ClientboundUpdateTagsPacket(
     val registries: List<TagRegistry>

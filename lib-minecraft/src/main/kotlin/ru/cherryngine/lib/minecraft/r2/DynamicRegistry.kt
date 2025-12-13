@@ -14,16 +14,16 @@ import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.utils.toKey
 
 class DynamicRegistry<T : Any>(
-    val key: Key,
+    override val key: Key,
     val codec: Codec<T>,
 ) : Registry<T> {
     private val idToValue: MutableList<T> = arrayListOf()
     private val idToKey: MutableList<RegistryKey<T>> = arrayListOf()
-    private val keyToId: MutableMap<RegistryKey<T>, Int> = hashMapOf()
+    private val keyToId: MutableMap<Key, Int> = hashMapOf()
     private val keyToValue: MutableMap<Key, T> = hashMapOf()
     private val valueToKey: MutableMap<T, RegistryKey<T>> = hashMapOf()
 
-    override fun key(): Key = key
+    override val tags: MutableMap<Key, MutableList<Key>> = hashMapOf()
 
     override fun getOrNull(id: Int): T? {
         return idToValue.getOrNull(id)
@@ -46,7 +46,7 @@ class DynamicRegistry<T : Any>(
         return RegistryKey.Impl(key)
     }
 
-    override fun getIdOrNull(key: RegistryKey<T>): Int? {
+    override fun getIdOrNull(key: Key): Int? {
         return keyToId[key]
     }
 
@@ -60,22 +60,28 @@ class DynamicRegistry<T : Any>(
     fun register(key: Key, value: T): RegistryKey<T> {
         val registryKey: RegistryKey<T> = RegistryKey.Impl(key)
         synchronized(REGISTRY_LOCK) {
-            val id = keyToId[registryKey] // Array set at home
+            val id = keyToId[key] // Array set at home
             keyToValue[key] = value
             valueToKey[value] = registryKey
             if (id == null) {
                 idToValue.add(value)
                 idToKey.add(registryKey)
-                keyToId[registryKey] = idToValue.lastIndex
+                keyToId[key] = idToValue.lastIndex
             } else {
                 idToValue[id] = value
                 idToKey[id] = registryKey
-                keyToId[registryKey] = id
+                keyToId[key] = id
             }
 
             return registryKey
         }
     }
+
+    override val keyCodec: Codec<T> = Codec.KEY.transform(
+        { get(it) },
+        { getKey(it).key() }
+    )
+    override val streamCodec = Registry2StreamCodec(this)
 
     companion object {
         private val REGISTRY_LOCK: Any = Any()
@@ -84,21 +90,25 @@ class DynamicRegistry<T : Any>(
         fun <T : Any> create(
             key: Key,
             codec: Codec<T>,
-            resource: String,
+            resourceName: String,
             idComparator: Comparator<String> = Comparator.naturalOrder(),
         ): DynamicRegistry<T> {
-            val registry = DynamicRegistry(key, codec)
-
-            val resource = ClassLoader.getSystemResource(resource)
-                ?: throw IllegalStateException("Resource $resource not found for registry $key")
+            val resource = ClassLoader.getSystemResource(resourceName)
+                ?: throw IllegalStateException("Resource $resourceName not found for registry $key")
 
             val map: Map<String, JsonObject> = resource.openStream().use {
                 Json.decodeFromStream<Map<String, JsonObject>>(it)
             }
 
+            val registry = DynamicRegistry(key, codec)
+
             map.entries.sortedWith(compareBy(idComparator) { it.key }).forEach { (key, value) ->
                 val entry = codec.decode(KtJsonTranscoder, value)
                 registry.register(key.toKey(), entry)
+            }
+
+            StaticRegistry.createTags("tags/$resourceName").forEach { (key, value) ->
+                registry.tags.computeIfAbsent(key) { arrayListOf() }.addAll(value)
             }
 
             return registry
@@ -118,7 +128,20 @@ class DynamicRegistry<T : Any>(
             }
 
             override fun read(buffer: ByteBuf): DynamicRegistry<*> {
-                TODO("Not yet implemented")
+                val key = StreamCodec.KEY.read(buffer)
+                val size = StreamCodec.VAR_INT.read(buffer)
+
+                val codec: Codec<Any> = TODO()
+                val registry = DynamicRegistry(key, codec)
+
+                repeat(size) {
+                    val entryKey = StreamCodec.KEY.read(buffer)
+                    val entryValueNbt = BinaryTagStreamCodecs.STREAM.optional().read(buffer) ?: TODO()
+                    val entryValue = codec.decode(BinaryTagTranscoder, entryValueNbt)
+                    registry.register(entryKey, entryValue)
+                }
+
+                return registry
             }
         }
     }

@@ -10,20 +10,19 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import net.kyori.adventure.key.Key
-import net.kyori.adventure.nbt.CompoundBinaryTag
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.lib.minecraft.r2.Registries
 import ru.cherryngine.lib.minecraft.r2.StaticProtocolObject
-import ru.cherryngine.lib.minecraft.registry.RegistryEntry
-import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
 import ru.cherryngine.lib.minecraft.utils.extentions.reversed
-import ru.cherryngine.lib.minecraft.utils.toKey
+import ru.cherryngine.lib.minecraft.utils.kotlinx.KeySerializer
 import ru.cherryngine.lib.minecraft.world.block.Block
 
 @Serializable
 data class RegistryBlock(
+    @Serializable(KeySerializer::class)
+    override val key: Key,
     override val id: Int,
-    val identifier: String,
     val translationKey: String,
     val explosionResistance: Float,
     val friction: Float,
@@ -64,15 +63,10 @@ data class RegistryBlock(
     val properties: Map<String, List<String>> = emptyMap(),
     val states: Map<String, RegistryBlockState>,
     val blockEntity: RegistryBlockEntity? = null,
-) : RegistryEntry, StaticProtocolObject {
-
-    override fun getEntryIdentifier(): String {
-        return identifier
-    }
-
+) : StaticProtocolObject {
     @Contextual
     val possibleStates = states.asSequence().associate {
-        val stateKey = if (it.key == "[]") identifier else identifier + it.key
+        val stateKey = if (it.key == "[]") key.toString() else key.toString() + it.key
         stateKey to it.value.stateId
     }
 
@@ -80,7 +74,7 @@ data class RegistryBlock(
     val possibleStatesReversed = Int2ObjectOpenHashMap(possibleStates.reversed())
 
     fun toItem(): Item {
-        return ItemRegistry[identifier]
+        return Registries.item[key]
     }
 
     fun toBlock(): Block {
@@ -93,12 +87,6 @@ data class RegistryBlock(
 
     fun withBlockStates(states: Map<String, String>): Block {
         return Block(this, states.toMap())
-    }
-
-    override fun getNbt(): CompoundBinaryTag? = null
-
-    override fun key(): Key {
-        return identifier.toKey()
     }
 
     @Serializable

@@ -1,12 +1,15 @@
 package ru.cherryngine.lib.minecraft.registry.entries
 
 import kotlinx.serialization.Serializable
-import net.kyori.adventure.nbt.CompoundBinaryTag
-import ru.cherryngine.lib.minecraft.registry.RegistryEntry
+import net.kyori.adventure.key.Key
+import ru.cherryngine.lib.minecraft.r2.StaticProtocolObject
+import ru.cherryngine.lib.minecraft.utils.kotlinx.KeySerializer
 
 @Serializable
 data class EntityType(
-    val identifier: String,
+    @Serializable(KeySerializer::class)
+    override val key: Key,
+    override val id: Int,
     val translationKey: String,
     val packetType: String,
     val width: Float,
@@ -18,10 +21,4 @@ data class EntityType(
     val fireImmune: Boolean = false,
     val clientTrackingRange: Int,
     val defaultAttributes: Map<String, Double> = mapOf(),
-) : RegistryEntry {
-    override fun getEntryIdentifier(): String {
-        return identifier
-    }
-
-    override fun getNbt(): CompoundBinaryTag? = null
-}
+) : StaticProtocolObject

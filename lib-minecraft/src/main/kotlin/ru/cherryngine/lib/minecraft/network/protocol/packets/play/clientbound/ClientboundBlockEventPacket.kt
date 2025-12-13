@@ -19,7 +19,7 @@ data class ClientboundBlockEventPacket(
             LocationStreamCodecs.BLOCK_POSITION, ClientboundBlockEventPacket::location,
             StreamCodec.BYTE, ClientboundBlockEventPacket::blockAction,
             StreamCodec.BYTE, ClientboundBlockEventPacket::actionParameter,
-            Registry2StreamCodec(Registries.blocks), ClientboundBlockEventPacket::blockType,
+            Registry2StreamCodec(Registries.block), ClientboundBlockEventPacket::blockType,
             ::ClientboundBlockEventPacket
         )
     }

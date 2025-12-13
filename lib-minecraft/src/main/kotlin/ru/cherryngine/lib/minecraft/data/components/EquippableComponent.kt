@@ -4,12 +4,11 @@ import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.network.protocol.types.EquipmentSlot
-import ru.cherryngine.lib.minecraft.network.protocol.types.SoundEvent
 import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
+import ru.cherryngine.lib.minecraft.r2.Registries
+import ru.cherryngine.lib.minecraft.r2.SoundEvent
 import ru.cherryngine.lib.minecraft.registry.entries.EntityType
-import ru.cherryngine.lib.minecraft.registry.keys.Sounds
-import ru.cherryngine.lib.minecraft.registry.registries.EntityTypeRegistry
 
 class EquippableComponent(
     val equipmentSlot: EquipmentSlot,
@@ -41,15 +40,15 @@ class EquippableComponent(
     }
 
     companion object {
-        val DEFAULT_EQUIP_SOUND get() = SoundEvent.BuiltinSoundEvent(Sounds.ITEM_ARMOR_EQUIP_GENERIC)
-        val DEFAULT_SHEARING_SOUND get() = SoundEvent.BuiltinSoundEvent(Sounds.ITEM_SHEARS_SNIP)
+        val DEFAULT_EQUIP_SOUND get() = Registries.soundEvent["item_armor_equip_generic"]
+        val DEFAULT_SHEARING_SOUND get() = Registries.soundEvent["item_shears_snip"]
 
         val STREAM_CODEC = StreamCodec.of(
             EnumStreamCodec<EquipmentSlot>(), EquippableComponent::equipmentSlot,
             SoundEvent.STREAM_CODEC, EquippableComponent::equipSound,
             StreamCodec.STRING.optional(), EquippableComponent::assetId,
             StreamCodec.STRING.optional(), EquippableComponent::cameraOverlay,
-            EntityTypeRegistry.STREAM_CODEC.list().optional(), EquippableComponent::allowedEntities,
+            Registries.entityType.streamCodec.list().optional(), EquippableComponent::allowedEntities,
             StreamCodec.BOOLEAN, EquippableComponent::dispensable,
             StreamCodec.BOOLEAN, EquippableComponent::swappable,
             StreamCodec.BOOLEAN, EquippableComponent::damageOnHurt,

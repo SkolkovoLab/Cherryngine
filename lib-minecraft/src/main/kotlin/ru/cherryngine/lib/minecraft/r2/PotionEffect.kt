@@ -1,4 +1,4 @@
-package ru.cherryngine.lib.minecraft.registry.entries
+package ru.cherryngine.lib.minecraft.r2
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -7,24 +7,22 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.util.RGBLike
-import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.utils.color.asARGB
 import ru.cherryngine.lib.minecraft.utils.color.rgbLikeOf
+import ru.cherryngine.lib.minecraft.utils.kotlinx.KeySerializer
 
 @Serializable
 data class PotionEffect(
-    val identifier: String,
+    @Serializable(KeySerializer::class)
+    override val key: Key,
+    override val id: Int,
     val translationKey: String,
     @Serializable(with = CustomColorIntSerializer::class)
     val color: RGBLike,
     val instantaneous: Boolean,
-) : RegistryEntry {
-
-    override fun getEntryIdentifier(): String {
-        return identifier
-    }
-
+) : StaticProtocolObject {
     object CustomColorIntSerializer : KSerializer<RGBLike> {
         override val descriptor: SerialDescriptor =
             PrimitiveSerialDescriptor("CustomColorInt", PrimitiveKind.INT)

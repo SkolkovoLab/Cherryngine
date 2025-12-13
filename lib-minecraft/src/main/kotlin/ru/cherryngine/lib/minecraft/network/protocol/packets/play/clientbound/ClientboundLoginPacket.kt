@@ -6,8 +6,8 @@ import ru.cherryngine.lib.minecraft.network.protocol.types.GameMode
 import ru.cherryngine.lib.minecraft.network.protocol.types.WorldPosition
 import ru.cherryngine.lib.minecraft.network.stream_codec.ByteEnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.entries.DimensionType
-import ru.cherryngine.lib.minecraft.registry.registries.DimensionTypeRegistry
+import ru.cherryngine.lib.minecraft.r2.DimensionType
+import ru.cherryngine.lib.minecraft.r2.Registries
 
 data class ClientboundLoginPacket(
     val entityId: Int,
@@ -42,7 +42,7 @@ data class ClientboundLoginPacket(
             StreamCodec.BOOLEAN, ClientboundLoginPacket::reducedDebugInfo,
             StreamCodec.BOOLEAN, ClientboundLoginPacket::enableRespawnScreen,
             StreamCodec.BOOLEAN, ClientboundLoginPacket::doLimitedCrafting,
-            DimensionTypeRegistry.STREAM_CODEC, ClientboundLoginPacket::dimensionType,
+            Registries.dimensionType.streamCodec, ClientboundLoginPacket::dimensionType,
             StreamCodec.STRING, ClientboundLoginPacket::dimensionName,
             StreamCodec.LONG, ClientboundLoginPacket::hashedSeed,
             ByteEnumStreamCodec<GameMode>(), ClientboundLoginPacket::gameMode,

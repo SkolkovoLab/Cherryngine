@@ -5,2532 +5,2532 @@ import ru.cherryngine.lib.minecraft.r2.Registries
 import ru.cherryngine.lib.minecraft.registry.entries.RegistryBlock
 
 public object Blocks {
-  public val AIR: RegistryBlock = Registries.blocks["minecraft:air"]
+  public val AIR: RegistryBlock = Registries.block["minecraft:air"]
 
-  public val STONE: RegistryBlock = Registries.blocks["minecraft:stone"]
+  public val STONE: RegistryBlock = Registries.block["minecraft:stone"]
 
-  public val GRANITE: RegistryBlock = Registries.blocks["minecraft:granite"]
+  public val GRANITE: RegistryBlock = Registries.block["minecraft:granite"]
 
-  public val POLISHED_GRANITE: RegistryBlock = Registries.blocks["minecraft:polished_granite"]
+  public val POLISHED_GRANITE: RegistryBlock = Registries.block["minecraft:polished_granite"]
 
-  public val DIORITE: RegistryBlock = Registries.blocks["minecraft:diorite"]
+  public val DIORITE: RegistryBlock = Registries.block["minecraft:diorite"]
 
-  public val POLISHED_DIORITE: RegistryBlock = Registries.blocks["minecraft:polished_diorite"]
+  public val POLISHED_DIORITE: RegistryBlock = Registries.block["minecraft:polished_diorite"]
 
-  public val ANDESITE: RegistryBlock = Registries.blocks["minecraft:andesite"]
+  public val ANDESITE: RegistryBlock = Registries.block["minecraft:andesite"]
 
-  public val POLISHED_ANDESITE: RegistryBlock = Registries.blocks["minecraft:polished_andesite"]
+  public val POLISHED_ANDESITE: RegistryBlock = Registries.block["minecraft:polished_andesite"]
 
-  public val GRASS_BLOCK: RegistryBlock = Registries.blocks["minecraft:grass_block"]
+  public val GRASS_BLOCK: RegistryBlock = Registries.block["minecraft:grass_block"]
 
-  public val DIRT: RegistryBlock = Registries.blocks["minecraft:dirt"]
+  public val DIRT: RegistryBlock = Registries.block["minecraft:dirt"]
 
-  public val COARSE_DIRT: RegistryBlock = Registries.blocks["minecraft:coarse_dirt"]
+  public val COARSE_DIRT: RegistryBlock = Registries.block["minecraft:coarse_dirt"]
 
-  public val PODZOL: RegistryBlock = Registries.blocks["minecraft:podzol"]
+  public val PODZOL: RegistryBlock = Registries.block["minecraft:podzol"]
 
-  public val COBBLESTONE: RegistryBlock = Registries.blocks["minecraft:cobblestone"]
+  public val COBBLESTONE: RegistryBlock = Registries.block["minecraft:cobblestone"]
 
-  public val OAK_PLANKS: RegistryBlock = Registries.blocks["minecraft:oak_planks"]
+  public val OAK_PLANKS: RegistryBlock = Registries.block["minecraft:oak_planks"]
 
-  public val SPRUCE_PLANKS: RegistryBlock = Registries.blocks["minecraft:spruce_planks"]
+  public val SPRUCE_PLANKS: RegistryBlock = Registries.block["minecraft:spruce_planks"]
 
-  public val BIRCH_PLANKS: RegistryBlock = Registries.blocks["minecraft:birch_planks"]
+  public val BIRCH_PLANKS: RegistryBlock = Registries.block["minecraft:birch_planks"]
 
-  public val JUNGLE_PLANKS: RegistryBlock = Registries.blocks["minecraft:jungle_planks"]
+  public val JUNGLE_PLANKS: RegistryBlock = Registries.block["minecraft:jungle_planks"]
 
-  public val ACACIA_PLANKS: RegistryBlock = Registries.blocks["minecraft:acacia_planks"]
+  public val ACACIA_PLANKS: RegistryBlock = Registries.block["minecraft:acacia_planks"]
 
-  public val CHERRY_PLANKS: RegistryBlock = Registries.blocks["minecraft:cherry_planks"]
+  public val CHERRY_PLANKS: RegistryBlock = Registries.block["minecraft:cherry_planks"]
 
-  public val DARK_OAK_PLANKS: RegistryBlock = Registries.blocks["minecraft:dark_oak_planks"]
+  public val DARK_OAK_PLANKS: RegistryBlock = Registries.block["minecraft:dark_oak_planks"]
 
-  public val PALE_OAK_WOOD: RegistryBlock = Registries.blocks["minecraft:pale_oak_wood"]
+  public val PALE_OAK_WOOD: RegistryBlock = Registries.block["minecraft:pale_oak_wood"]
 
-  public val PALE_OAK_PLANKS: RegistryBlock = Registries.blocks["minecraft:pale_oak_planks"]
+  public val PALE_OAK_PLANKS: RegistryBlock = Registries.block["minecraft:pale_oak_planks"]
 
-  public val MANGROVE_PLANKS: RegistryBlock = Registries.blocks["minecraft:mangrove_planks"]
+  public val MANGROVE_PLANKS: RegistryBlock = Registries.block["minecraft:mangrove_planks"]
 
-  public val BAMBOO_PLANKS: RegistryBlock = Registries.blocks["minecraft:bamboo_planks"]
+  public val BAMBOO_PLANKS: RegistryBlock = Registries.block["minecraft:bamboo_planks"]
 
-  public val BAMBOO_MOSAIC: RegistryBlock = Registries.blocks["minecraft:bamboo_mosaic"]
+  public val BAMBOO_MOSAIC: RegistryBlock = Registries.block["minecraft:bamboo_mosaic"]
 
-  public val OAK_SAPLING: RegistryBlock = Registries.blocks["minecraft:oak_sapling"]
+  public val OAK_SAPLING: RegistryBlock = Registries.block["minecraft:oak_sapling"]
 
-  public val SPRUCE_SAPLING: RegistryBlock = Registries.blocks["minecraft:spruce_sapling"]
+  public val SPRUCE_SAPLING: RegistryBlock = Registries.block["minecraft:spruce_sapling"]
 
-  public val BIRCH_SAPLING: RegistryBlock = Registries.blocks["minecraft:birch_sapling"]
+  public val BIRCH_SAPLING: RegistryBlock = Registries.block["minecraft:birch_sapling"]
 
-  public val JUNGLE_SAPLING: RegistryBlock = Registries.blocks["minecraft:jungle_sapling"]
+  public val JUNGLE_SAPLING: RegistryBlock = Registries.block["minecraft:jungle_sapling"]
 
-  public val ACACIA_SAPLING: RegistryBlock = Registries.blocks["minecraft:acacia_sapling"]
+  public val ACACIA_SAPLING: RegistryBlock = Registries.block["minecraft:acacia_sapling"]
 
-  public val CHERRY_SAPLING: RegistryBlock = Registries.blocks["minecraft:cherry_sapling"]
+  public val CHERRY_SAPLING: RegistryBlock = Registries.block["minecraft:cherry_sapling"]
 
-  public val DARK_OAK_SAPLING: RegistryBlock = Registries.blocks["minecraft:dark_oak_sapling"]
+  public val DARK_OAK_SAPLING: RegistryBlock = Registries.block["minecraft:dark_oak_sapling"]
 
-  public val PALE_OAK_SAPLING: RegistryBlock = Registries.blocks["minecraft:pale_oak_sapling"]
+  public val PALE_OAK_SAPLING: RegistryBlock = Registries.block["minecraft:pale_oak_sapling"]
 
-  public val MANGROVE_PROPAGULE: RegistryBlock = Registries.blocks["minecraft:mangrove_propagule"]
+  public val MANGROVE_PROPAGULE: RegistryBlock = Registries.block["minecraft:mangrove_propagule"]
 
-  public val BEDROCK: RegistryBlock = Registries.blocks["minecraft:bedrock"]
+  public val BEDROCK: RegistryBlock = Registries.block["minecraft:bedrock"]
 
-  public val WATER: RegistryBlock = Registries.blocks["minecraft:water"]
+  public val WATER: RegistryBlock = Registries.block["minecraft:water"]
 
-  public val LAVA: RegistryBlock = Registries.blocks["minecraft:lava"]
+  public val LAVA: RegistryBlock = Registries.block["minecraft:lava"]
 
-  public val SAND: RegistryBlock = Registries.blocks["minecraft:sand"]
+  public val SAND: RegistryBlock = Registries.block["minecraft:sand"]
 
-  public val SUSPICIOUS_SAND: RegistryBlock = Registries.blocks["minecraft:suspicious_sand"]
+  public val SUSPICIOUS_SAND: RegistryBlock = Registries.block["minecraft:suspicious_sand"]
 
-  public val RED_SAND: RegistryBlock = Registries.blocks["minecraft:red_sand"]
+  public val RED_SAND: RegistryBlock = Registries.block["minecraft:red_sand"]
 
-  public val GRAVEL: RegistryBlock = Registries.blocks["minecraft:gravel"]
+  public val GRAVEL: RegistryBlock = Registries.block["minecraft:gravel"]
 
-  public val SUSPICIOUS_GRAVEL: RegistryBlock = Registries.blocks["minecraft:suspicious_gravel"]
+  public val SUSPICIOUS_GRAVEL: RegistryBlock = Registries.block["minecraft:suspicious_gravel"]
 
-  public val GOLD_ORE: RegistryBlock = Registries.blocks["minecraft:gold_ore"]
+  public val GOLD_ORE: RegistryBlock = Registries.block["minecraft:gold_ore"]
 
-  public val DEEPSLATE_GOLD_ORE: RegistryBlock = Registries.blocks["minecraft:deepslate_gold_ore"]
+  public val DEEPSLATE_GOLD_ORE: RegistryBlock = Registries.block["minecraft:deepslate_gold_ore"]
 
-  public val IRON_ORE: RegistryBlock = Registries.blocks["minecraft:iron_ore"]
+  public val IRON_ORE: RegistryBlock = Registries.block["minecraft:iron_ore"]
 
-  public val DEEPSLATE_IRON_ORE: RegistryBlock = Registries.blocks["minecraft:deepslate_iron_ore"]
+  public val DEEPSLATE_IRON_ORE: RegistryBlock = Registries.block["minecraft:deepslate_iron_ore"]
 
-  public val COAL_ORE: RegistryBlock = Registries.blocks["minecraft:coal_ore"]
+  public val COAL_ORE: RegistryBlock = Registries.block["minecraft:coal_ore"]
 
-  public val DEEPSLATE_COAL_ORE: RegistryBlock = Registries.blocks["minecraft:deepslate_coal_ore"]
+  public val DEEPSLATE_COAL_ORE: RegistryBlock = Registries.block["minecraft:deepslate_coal_ore"]
 
-  public val NETHER_GOLD_ORE: RegistryBlock = Registries.blocks["minecraft:nether_gold_ore"]
+  public val NETHER_GOLD_ORE: RegistryBlock = Registries.block["minecraft:nether_gold_ore"]
 
-  public val OAK_LOG: RegistryBlock = Registries.blocks["minecraft:oak_log"]
+  public val OAK_LOG: RegistryBlock = Registries.block["minecraft:oak_log"]
 
-  public val SPRUCE_LOG: RegistryBlock = Registries.blocks["minecraft:spruce_log"]
+  public val SPRUCE_LOG: RegistryBlock = Registries.block["minecraft:spruce_log"]
 
-  public val BIRCH_LOG: RegistryBlock = Registries.blocks["minecraft:birch_log"]
+  public val BIRCH_LOG: RegistryBlock = Registries.block["minecraft:birch_log"]
 
-  public val JUNGLE_LOG: RegistryBlock = Registries.blocks["minecraft:jungle_log"]
+  public val JUNGLE_LOG: RegistryBlock = Registries.block["minecraft:jungle_log"]
 
-  public val ACACIA_LOG: RegistryBlock = Registries.blocks["minecraft:acacia_log"]
+  public val ACACIA_LOG: RegistryBlock = Registries.block["minecraft:acacia_log"]
 
-  public val CHERRY_LOG: RegistryBlock = Registries.blocks["minecraft:cherry_log"]
+  public val CHERRY_LOG: RegistryBlock = Registries.block["minecraft:cherry_log"]
 
-  public val DARK_OAK_LOG: RegistryBlock = Registries.blocks["minecraft:dark_oak_log"]
+  public val DARK_OAK_LOG: RegistryBlock = Registries.block["minecraft:dark_oak_log"]
 
-  public val PALE_OAK_LOG: RegistryBlock = Registries.blocks["minecraft:pale_oak_log"]
+  public val PALE_OAK_LOG: RegistryBlock = Registries.block["minecraft:pale_oak_log"]
 
-  public val MANGROVE_LOG: RegistryBlock = Registries.blocks["minecraft:mangrove_log"]
+  public val MANGROVE_LOG: RegistryBlock = Registries.block["minecraft:mangrove_log"]
 
-  public val MANGROVE_ROOTS: RegistryBlock = Registries.blocks["minecraft:mangrove_roots"]
+  public val MANGROVE_ROOTS: RegistryBlock = Registries.block["minecraft:mangrove_roots"]
 
-  public val MUDDY_MANGROVE_ROOTS: RegistryBlock = Registries.blocks["minecraft:muddy_mangrove_roots"]
+  public val MUDDY_MANGROVE_ROOTS: RegistryBlock = Registries.block["minecraft:muddy_mangrove_roots"]
 
-  public val BAMBOO_BLOCK: RegistryBlock = Registries.blocks["minecraft:bamboo_block"]
+  public val BAMBOO_BLOCK: RegistryBlock = Registries.block["minecraft:bamboo_block"]
 
-  public val STRIPPED_SPRUCE_LOG: RegistryBlock = Registries.blocks["minecraft:stripped_spruce_log"]
+  public val STRIPPED_SPRUCE_LOG: RegistryBlock = Registries.block["minecraft:stripped_spruce_log"]
 
-  public val STRIPPED_BIRCH_LOG: RegistryBlock = Registries.blocks["minecraft:stripped_birch_log"]
+  public val STRIPPED_BIRCH_LOG: RegistryBlock = Registries.block["minecraft:stripped_birch_log"]
 
-  public val STRIPPED_JUNGLE_LOG: RegistryBlock = Registries.blocks["minecraft:stripped_jungle_log"]
+  public val STRIPPED_JUNGLE_LOG: RegistryBlock = Registries.block["minecraft:stripped_jungle_log"]
 
-  public val STRIPPED_ACACIA_LOG: RegistryBlock = Registries.blocks["minecraft:stripped_acacia_log"]
+  public val STRIPPED_ACACIA_LOG: RegistryBlock = Registries.block["minecraft:stripped_acacia_log"]
 
-  public val STRIPPED_CHERRY_LOG: RegistryBlock = Registries.blocks["minecraft:stripped_cherry_log"]
+  public val STRIPPED_CHERRY_LOG: RegistryBlock = Registries.block["minecraft:stripped_cherry_log"]
 
-  public val STRIPPED_DARK_OAK_LOG: RegistryBlock = Registries.blocks["minecraft:stripped_dark_oak_log"]
+  public val STRIPPED_DARK_OAK_LOG: RegistryBlock = Registries.block["minecraft:stripped_dark_oak_log"]
 
-  public val STRIPPED_PALE_OAK_LOG: RegistryBlock = Registries.blocks["minecraft:stripped_pale_oak_log"]
+  public val STRIPPED_PALE_OAK_LOG: RegistryBlock = Registries.block["minecraft:stripped_pale_oak_log"]
 
-  public val STRIPPED_OAK_LOG: RegistryBlock = Registries.blocks["minecraft:stripped_oak_log"]
+  public val STRIPPED_OAK_LOG: RegistryBlock = Registries.block["minecraft:stripped_oak_log"]
 
-  public val STRIPPED_MANGROVE_LOG: RegistryBlock = Registries.blocks["minecraft:stripped_mangrove_log"]
+  public val STRIPPED_MANGROVE_LOG: RegistryBlock = Registries.block["minecraft:stripped_mangrove_log"]
 
-  public val STRIPPED_BAMBOO_BLOCK: RegistryBlock = Registries.blocks["minecraft:stripped_bamboo_block"]
+  public val STRIPPED_BAMBOO_BLOCK: RegistryBlock = Registries.block["minecraft:stripped_bamboo_block"]
 
-  public val OAK_WOOD: RegistryBlock = Registries.blocks["minecraft:oak_wood"]
+  public val OAK_WOOD: RegistryBlock = Registries.block["minecraft:oak_wood"]
 
-  public val SPRUCE_WOOD: RegistryBlock = Registries.blocks["minecraft:spruce_wood"]
+  public val SPRUCE_WOOD: RegistryBlock = Registries.block["minecraft:spruce_wood"]
 
-  public val BIRCH_WOOD: RegistryBlock = Registries.blocks["minecraft:birch_wood"]
+  public val BIRCH_WOOD: RegistryBlock = Registries.block["minecraft:birch_wood"]
 
-  public val JUNGLE_WOOD: RegistryBlock = Registries.blocks["minecraft:jungle_wood"]
+  public val JUNGLE_WOOD: RegistryBlock = Registries.block["minecraft:jungle_wood"]
 
-  public val ACACIA_WOOD: RegistryBlock = Registries.blocks["minecraft:acacia_wood"]
+  public val ACACIA_WOOD: RegistryBlock = Registries.block["minecraft:acacia_wood"]
 
-  public val CHERRY_WOOD: RegistryBlock = Registries.blocks["minecraft:cherry_wood"]
+  public val CHERRY_WOOD: RegistryBlock = Registries.block["minecraft:cherry_wood"]
 
-  public val DARK_OAK_WOOD: RegistryBlock = Registries.blocks["minecraft:dark_oak_wood"]
+  public val DARK_OAK_WOOD: RegistryBlock = Registries.block["minecraft:dark_oak_wood"]
 
-  public val MANGROVE_WOOD: RegistryBlock = Registries.blocks["minecraft:mangrove_wood"]
+  public val MANGROVE_WOOD: RegistryBlock = Registries.block["minecraft:mangrove_wood"]
 
-  public val STRIPPED_OAK_WOOD: RegistryBlock = Registries.blocks["minecraft:stripped_oak_wood"]
+  public val STRIPPED_OAK_WOOD: RegistryBlock = Registries.block["minecraft:stripped_oak_wood"]
 
-  public val STRIPPED_SPRUCE_WOOD: RegistryBlock = Registries.blocks["minecraft:stripped_spruce_wood"]
+  public val STRIPPED_SPRUCE_WOOD: RegistryBlock = Registries.block["minecraft:stripped_spruce_wood"]
 
-  public val STRIPPED_BIRCH_WOOD: RegistryBlock = Registries.blocks["minecraft:stripped_birch_wood"]
+  public val STRIPPED_BIRCH_WOOD: RegistryBlock = Registries.block["minecraft:stripped_birch_wood"]
 
-  public val STRIPPED_JUNGLE_WOOD: RegistryBlock = Registries.blocks["minecraft:stripped_jungle_wood"]
+  public val STRIPPED_JUNGLE_WOOD: RegistryBlock = Registries.block["minecraft:stripped_jungle_wood"]
 
-  public val STRIPPED_ACACIA_WOOD: RegistryBlock = Registries.blocks["minecraft:stripped_acacia_wood"]
+  public val STRIPPED_ACACIA_WOOD: RegistryBlock = Registries.block["minecraft:stripped_acacia_wood"]
 
-  public val STRIPPED_CHERRY_WOOD: RegistryBlock = Registries.blocks["minecraft:stripped_cherry_wood"]
+  public val STRIPPED_CHERRY_WOOD: RegistryBlock = Registries.block["minecraft:stripped_cherry_wood"]
 
   public val STRIPPED_DARK_OAK_WOOD: RegistryBlock =
-      Registries.blocks["minecraft:stripped_dark_oak_wood"]
+      Registries.block["minecraft:stripped_dark_oak_wood"]
 
   public val STRIPPED_PALE_OAK_WOOD: RegistryBlock =
-      Registries.blocks["minecraft:stripped_pale_oak_wood"]
+      Registries.block["minecraft:stripped_pale_oak_wood"]
 
   public val STRIPPED_MANGROVE_WOOD: RegistryBlock =
-      Registries.blocks["minecraft:stripped_mangrove_wood"]
+      Registries.block["minecraft:stripped_mangrove_wood"]
 
-  public val OAK_LEAVES: RegistryBlock = Registries.blocks["minecraft:oak_leaves"]
+  public val OAK_LEAVES: RegistryBlock = Registries.block["minecraft:oak_leaves"]
 
-  public val SPRUCE_LEAVES: RegistryBlock = Registries.blocks["minecraft:spruce_leaves"]
+  public val SPRUCE_LEAVES: RegistryBlock = Registries.block["minecraft:spruce_leaves"]
 
-  public val BIRCH_LEAVES: RegistryBlock = Registries.blocks["minecraft:birch_leaves"]
+  public val BIRCH_LEAVES: RegistryBlock = Registries.block["minecraft:birch_leaves"]
 
-  public val JUNGLE_LEAVES: RegistryBlock = Registries.blocks["minecraft:jungle_leaves"]
+  public val JUNGLE_LEAVES: RegistryBlock = Registries.block["minecraft:jungle_leaves"]
 
-  public val ACACIA_LEAVES: RegistryBlock = Registries.blocks["minecraft:acacia_leaves"]
+  public val ACACIA_LEAVES: RegistryBlock = Registries.block["minecraft:acacia_leaves"]
 
-  public val CHERRY_LEAVES: RegistryBlock = Registries.blocks["minecraft:cherry_leaves"]
+  public val CHERRY_LEAVES: RegistryBlock = Registries.block["minecraft:cherry_leaves"]
 
-  public val DARK_OAK_LEAVES: RegistryBlock = Registries.blocks["minecraft:dark_oak_leaves"]
+  public val DARK_OAK_LEAVES: RegistryBlock = Registries.block["minecraft:dark_oak_leaves"]
 
-  public val PALE_OAK_LEAVES: RegistryBlock = Registries.blocks["minecraft:pale_oak_leaves"]
+  public val PALE_OAK_LEAVES: RegistryBlock = Registries.block["minecraft:pale_oak_leaves"]
 
-  public val MANGROVE_LEAVES: RegistryBlock = Registries.blocks["minecraft:mangrove_leaves"]
+  public val MANGROVE_LEAVES: RegistryBlock = Registries.block["minecraft:mangrove_leaves"]
 
-  public val AZALEA_LEAVES: RegistryBlock = Registries.blocks["minecraft:azalea_leaves"]
+  public val AZALEA_LEAVES: RegistryBlock = Registries.block["minecraft:azalea_leaves"]
 
   public val FLOWERING_AZALEA_LEAVES: RegistryBlock =
-      Registries.blocks["minecraft:flowering_azalea_leaves"]
+      Registries.block["minecraft:flowering_azalea_leaves"]
 
-  public val SPONGE: RegistryBlock = Registries.blocks["minecraft:sponge"]
+  public val SPONGE: RegistryBlock = Registries.block["minecraft:sponge"]
 
-  public val WET_SPONGE: RegistryBlock = Registries.blocks["minecraft:wet_sponge"]
+  public val WET_SPONGE: RegistryBlock = Registries.block["minecraft:wet_sponge"]
 
-  public val GLASS: RegistryBlock = Registries.blocks["minecraft:glass"]
+  public val GLASS: RegistryBlock = Registries.block["minecraft:glass"]
 
-  public val LAPIS_ORE: RegistryBlock = Registries.blocks["minecraft:lapis_ore"]
+  public val LAPIS_ORE: RegistryBlock = Registries.block["minecraft:lapis_ore"]
 
-  public val DEEPSLATE_LAPIS_ORE: RegistryBlock = Registries.blocks["minecraft:deepslate_lapis_ore"]
+  public val DEEPSLATE_LAPIS_ORE: RegistryBlock = Registries.block["minecraft:deepslate_lapis_ore"]
 
-  public val LAPIS_BLOCK: RegistryBlock = Registries.blocks["minecraft:lapis_block"]
+  public val LAPIS_BLOCK: RegistryBlock = Registries.block["minecraft:lapis_block"]
 
-  public val DISPENSER: RegistryBlock = Registries.blocks["minecraft:dispenser"]
+  public val DISPENSER: RegistryBlock = Registries.block["minecraft:dispenser"]
 
-  public val SANDSTONE: RegistryBlock = Registries.blocks["minecraft:sandstone"]
+  public val SANDSTONE: RegistryBlock = Registries.block["minecraft:sandstone"]
 
-  public val CHISELED_SANDSTONE: RegistryBlock = Registries.blocks["minecraft:chiseled_sandstone"]
+  public val CHISELED_SANDSTONE: RegistryBlock = Registries.block["minecraft:chiseled_sandstone"]
 
-  public val CUT_SANDSTONE: RegistryBlock = Registries.blocks["minecraft:cut_sandstone"]
+  public val CUT_SANDSTONE: RegistryBlock = Registries.block["minecraft:cut_sandstone"]
 
-  public val NOTE_BLOCK: RegistryBlock = Registries.blocks["minecraft:note_block"]
+  public val NOTE_BLOCK: RegistryBlock = Registries.block["minecraft:note_block"]
 
-  public val WHITE_BED: RegistryBlock = Registries.blocks["minecraft:white_bed"]
+  public val WHITE_BED: RegistryBlock = Registries.block["minecraft:white_bed"]
 
-  public val ORANGE_BED: RegistryBlock = Registries.blocks["minecraft:orange_bed"]
+  public val ORANGE_BED: RegistryBlock = Registries.block["minecraft:orange_bed"]
 
-  public val MAGENTA_BED: RegistryBlock = Registries.blocks["minecraft:magenta_bed"]
+  public val MAGENTA_BED: RegistryBlock = Registries.block["minecraft:magenta_bed"]
 
-  public val LIGHT_BLUE_BED: RegistryBlock = Registries.blocks["minecraft:light_blue_bed"]
+  public val LIGHT_BLUE_BED: RegistryBlock = Registries.block["minecraft:light_blue_bed"]
 
-  public val YELLOW_BED: RegistryBlock = Registries.blocks["minecraft:yellow_bed"]
+  public val YELLOW_BED: RegistryBlock = Registries.block["minecraft:yellow_bed"]
 
-  public val LIME_BED: RegistryBlock = Registries.blocks["minecraft:lime_bed"]
+  public val LIME_BED: RegistryBlock = Registries.block["minecraft:lime_bed"]
 
-  public val PINK_BED: RegistryBlock = Registries.blocks["minecraft:pink_bed"]
+  public val PINK_BED: RegistryBlock = Registries.block["minecraft:pink_bed"]
 
-  public val GRAY_BED: RegistryBlock = Registries.blocks["minecraft:gray_bed"]
+  public val GRAY_BED: RegistryBlock = Registries.block["minecraft:gray_bed"]
 
-  public val LIGHT_GRAY_BED: RegistryBlock = Registries.blocks["minecraft:light_gray_bed"]
+  public val LIGHT_GRAY_BED: RegistryBlock = Registries.block["minecraft:light_gray_bed"]
 
-  public val CYAN_BED: RegistryBlock = Registries.blocks["minecraft:cyan_bed"]
+  public val CYAN_BED: RegistryBlock = Registries.block["minecraft:cyan_bed"]
 
-  public val PURPLE_BED: RegistryBlock = Registries.blocks["minecraft:purple_bed"]
+  public val PURPLE_BED: RegistryBlock = Registries.block["minecraft:purple_bed"]
 
-  public val BLUE_BED: RegistryBlock = Registries.blocks["minecraft:blue_bed"]
+  public val BLUE_BED: RegistryBlock = Registries.block["minecraft:blue_bed"]
 
-  public val BROWN_BED: RegistryBlock = Registries.blocks["minecraft:brown_bed"]
+  public val BROWN_BED: RegistryBlock = Registries.block["minecraft:brown_bed"]
 
-  public val GREEN_BED: RegistryBlock = Registries.blocks["minecraft:green_bed"]
+  public val GREEN_BED: RegistryBlock = Registries.block["minecraft:green_bed"]
 
-  public val RED_BED: RegistryBlock = Registries.blocks["minecraft:red_bed"]
+  public val RED_BED: RegistryBlock = Registries.block["minecraft:red_bed"]
 
-  public val BLACK_BED: RegistryBlock = Registries.blocks["minecraft:black_bed"]
+  public val BLACK_BED: RegistryBlock = Registries.block["minecraft:black_bed"]
 
-  public val POWERED_RAIL: RegistryBlock = Registries.blocks["minecraft:powered_rail"]
+  public val POWERED_RAIL: RegistryBlock = Registries.block["minecraft:powered_rail"]
 
-  public val DETECTOR_RAIL: RegistryBlock = Registries.blocks["minecraft:detector_rail"]
+  public val DETECTOR_RAIL: RegistryBlock = Registries.block["minecraft:detector_rail"]
 
-  public val STICKY_PISTON: RegistryBlock = Registries.blocks["minecraft:sticky_piston"]
+  public val STICKY_PISTON: RegistryBlock = Registries.block["minecraft:sticky_piston"]
 
-  public val COBWEB: RegistryBlock = Registries.blocks["minecraft:cobweb"]
+  public val COBWEB: RegistryBlock = Registries.block["minecraft:cobweb"]
 
-  public val SHORT_GRASS: RegistryBlock = Registries.blocks["minecraft:short_grass"]
+  public val SHORT_GRASS: RegistryBlock = Registries.block["minecraft:short_grass"]
 
-  public val FERN: RegistryBlock = Registries.blocks["minecraft:fern"]
+  public val FERN: RegistryBlock = Registries.block["minecraft:fern"]
 
-  public val DEAD_BUSH: RegistryBlock = Registries.blocks["minecraft:dead_bush"]
+  public val DEAD_BUSH: RegistryBlock = Registries.block["minecraft:dead_bush"]
 
-  public val BUSH: RegistryBlock = Registries.blocks["minecraft:bush"]
+  public val BUSH: RegistryBlock = Registries.block["minecraft:bush"]
 
-  public val SHORT_DRY_GRASS: RegistryBlock = Registries.blocks["minecraft:short_dry_grass"]
+  public val SHORT_DRY_GRASS: RegistryBlock = Registries.block["minecraft:short_dry_grass"]
 
-  public val TALL_DRY_GRASS: RegistryBlock = Registries.blocks["minecraft:tall_dry_grass"]
+  public val TALL_DRY_GRASS: RegistryBlock = Registries.block["minecraft:tall_dry_grass"]
 
-  public val SEAGRASS: RegistryBlock = Registries.blocks["minecraft:seagrass"]
+  public val SEAGRASS: RegistryBlock = Registries.block["minecraft:seagrass"]
 
-  public val TALL_SEAGRASS: RegistryBlock = Registries.blocks["minecraft:tall_seagrass"]
+  public val TALL_SEAGRASS: RegistryBlock = Registries.block["minecraft:tall_seagrass"]
 
-  public val PISTON: RegistryBlock = Registries.blocks["minecraft:piston"]
+  public val PISTON: RegistryBlock = Registries.block["minecraft:piston"]
 
-  public val PISTON_HEAD: RegistryBlock = Registries.blocks["minecraft:piston_head"]
+  public val PISTON_HEAD: RegistryBlock = Registries.block["minecraft:piston_head"]
 
-  public val WHITE_WOOL: RegistryBlock = Registries.blocks["minecraft:white_wool"]
+  public val WHITE_WOOL: RegistryBlock = Registries.block["minecraft:white_wool"]
 
-  public val ORANGE_WOOL: RegistryBlock = Registries.blocks["minecraft:orange_wool"]
+  public val ORANGE_WOOL: RegistryBlock = Registries.block["minecraft:orange_wool"]
 
-  public val MAGENTA_WOOL: RegistryBlock = Registries.blocks["minecraft:magenta_wool"]
+  public val MAGENTA_WOOL: RegistryBlock = Registries.block["minecraft:magenta_wool"]
 
-  public val LIGHT_BLUE_WOOL: RegistryBlock = Registries.blocks["minecraft:light_blue_wool"]
+  public val LIGHT_BLUE_WOOL: RegistryBlock = Registries.block["minecraft:light_blue_wool"]
 
-  public val YELLOW_WOOL: RegistryBlock = Registries.blocks["minecraft:yellow_wool"]
+  public val YELLOW_WOOL: RegistryBlock = Registries.block["minecraft:yellow_wool"]
 
-  public val LIME_WOOL: RegistryBlock = Registries.blocks["minecraft:lime_wool"]
+  public val LIME_WOOL: RegistryBlock = Registries.block["minecraft:lime_wool"]
 
-  public val PINK_WOOL: RegistryBlock = Registries.blocks["minecraft:pink_wool"]
+  public val PINK_WOOL: RegistryBlock = Registries.block["minecraft:pink_wool"]
 
-  public val GRAY_WOOL: RegistryBlock = Registries.blocks["minecraft:gray_wool"]
+  public val GRAY_WOOL: RegistryBlock = Registries.block["minecraft:gray_wool"]
 
-  public val LIGHT_GRAY_WOOL: RegistryBlock = Registries.blocks["minecraft:light_gray_wool"]
+  public val LIGHT_GRAY_WOOL: RegistryBlock = Registries.block["minecraft:light_gray_wool"]
 
-  public val CYAN_WOOL: RegistryBlock = Registries.blocks["minecraft:cyan_wool"]
+  public val CYAN_WOOL: RegistryBlock = Registries.block["minecraft:cyan_wool"]
 
-  public val PURPLE_WOOL: RegistryBlock = Registries.blocks["minecraft:purple_wool"]
+  public val PURPLE_WOOL: RegistryBlock = Registries.block["minecraft:purple_wool"]
 
-  public val BLUE_WOOL: RegistryBlock = Registries.blocks["minecraft:blue_wool"]
+  public val BLUE_WOOL: RegistryBlock = Registries.block["minecraft:blue_wool"]
 
-  public val BROWN_WOOL: RegistryBlock = Registries.blocks["minecraft:brown_wool"]
+  public val BROWN_WOOL: RegistryBlock = Registries.block["minecraft:brown_wool"]
 
-  public val GREEN_WOOL: RegistryBlock = Registries.blocks["minecraft:green_wool"]
+  public val GREEN_WOOL: RegistryBlock = Registries.block["minecraft:green_wool"]
 
-  public val RED_WOOL: RegistryBlock = Registries.blocks["minecraft:red_wool"]
+  public val RED_WOOL: RegistryBlock = Registries.block["minecraft:red_wool"]
 
-  public val BLACK_WOOL: RegistryBlock = Registries.blocks["minecraft:black_wool"]
+  public val BLACK_WOOL: RegistryBlock = Registries.block["minecraft:black_wool"]
 
-  public val MOVING_PISTON: RegistryBlock = Registries.blocks["minecraft:moving_piston"]
+  public val MOVING_PISTON: RegistryBlock = Registries.block["minecraft:moving_piston"]
 
-  public val DANDELION: RegistryBlock = Registries.blocks["minecraft:dandelion"]
+  public val DANDELION: RegistryBlock = Registries.block["minecraft:dandelion"]
 
-  public val TORCHFLOWER: RegistryBlock = Registries.blocks["minecraft:torchflower"]
+  public val TORCHFLOWER: RegistryBlock = Registries.block["minecraft:torchflower"]
 
-  public val POPPY: RegistryBlock = Registries.blocks["minecraft:poppy"]
+  public val POPPY: RegistryBlock = Registries.block["minecraft:poppy"]
 
-  public val BLUE_ORCHID: RegistryBlock = Registries.blocks["minecraft:blue_orchid"]
+  public val BLUE_ORCHID: RegistryBlock = Registries.block["minecraft:blue_orchid"]
 
-  public val ALLIUM: RegistryBlock = Registries.blocks["minecraft:allium"]
+  public val ALLIUM: RegistryBlock = Registries.block["minecraft:allium"]
 
-  public val AZURE_BLUET: RegistryBlock = Registries.blocks["minecraft:azure_bluet"]
+  public val AZURE_BLUET: RegistryBlock = Registries.block["minecraft:azure_bluet"]
 
-  public val RED_TULIP: RegistryBlock = Registries.blocks["minecraft:red_tulip"]
+  public val RED_TULIP: RegistryBlock = Registries.block["minecraft:red_tulip"]
 
-  public val ORANGE_TULIP: RegistryBlock = Registries.blocks["minecraft:orange_tulip"]
+  public val ORANGE_TULIP: RegistryBlock = Registries.block["minecraft:orange_tulip"]
 
-  public val WHITE_TULIP: RegistryBlock = Registries.blocks["minecraft:white_tulip"]
+  public val WHITE_TULIP: RegistryBlock = Registries.block["minecraft:white_tulip"]
 
-  public val PINK_TULIP: RegistryBlock = Registries.blocks["minecraft:pink_tulip"]
+  public val PINK_TULIP: RegistryBlock = Registries.block["minecraft:pink_tulip"]
 
-  public val OXEYE_DAISY: RegistryBlock = Registries.blocks["minecraft:oxeye_daisy"]
+  public val OXEYE_DAISY: RegistryBlock = Registries.block["minecraft:oxeye_daisy"]
 
-  public val CORNFLOWER: RegistryBlock = Registries.blocks["minecraft:cornflower"]
+  public val CORNFLOWER: RegistryBlock = Registries.block["minecraft:cornflower"]
 
-  public val WITHER_ROSE: RegistryBlock = Registries.blocks["minecraft:wither_rose"]
+  public val WITHER_ROSE: RegistryBlock = Registries.block["minecraft:wither_rose"]
 
-  public val LILY_OF_THE_VALLEY: RegistryBlock = Registries.blocks["minecraft:lily_of_the_valley"]
+  public val LILY_OF_THE_VALLEY: RegistryBlock = Registries.block["minecraft:lily_of_the_valley"]
 
-  public val BROWN_MUSHROOM: RegistryBlock = Registries.blocks["minecraft:brown_mushroom"]
+  public val BROWN_MUSHROOM: RegistryBlock = Registries.block["minecraft:brown_mushroom"]
 
-  public val RED_MUSHROOM: RegistryBlock = Registries.blocks["minecraft:red_mushroom"]
+  public val RED_MUSHROOM: RegistryBlock = Registries.block["minecraft:red_mushroom"]
 
-  public val GOLD_BLOCK: RegistryBlock = Registries.blocks["minecraft:gold_block"]
+  public val GOLD_BLOCK: RegistryBlock = Registries.block["minecraft:gold_block"]
 
-  public val IRON_BLOCK: RegistryBlock = Registries.blocks["minecraft:iron_block"]
+  public val IRON_BLOCK: RegistryBlock = Registries.block["minecraft:iron_block"]
 
-  public val BRICKS: RegistryBlock = Registries.blocks["minecraft:bricks"]
+  public val BRICKS: RegistryBlock = Registries.block["minecraft:bricks"]
 
-  public val TNT: RegistryBlock = Registries.blocks["minecraft:tnt"]
+  public val TNT: RegistryBlock = Registries.block["minecraft:tnt"]
 
-  public val BOOKSHELF: RegistryBlock = Registries.blocks["minecraft:bookshelf"]
+  public val BOOKSHELF: RegistryBlock = Registries.block["minecraft:bookshelf"]
 
-  public val CHISELED_BOOKSHELF: RegistryBlock = Registries.blocks["minecraft:chiseled_bookshelf"]
+  public val CHISELED_BOOKSHELF: RegistryBlock = Registries.block["minecraft:chiseled_bookshelf"]
 
-  public val ACACIA_SHELF: RegistryBlock = Registries.blocks["minecraft:acacia_shelf"]
+  public val ACACIA_SHELF: RegistryBlock = Registries.block["minecraft:acacia_shelf"]
 
-  public val BAMBOO_SHELF: RegistryBlock = Registries.blocks["minecraft:bamboo_shelf"]
+  public val BAMBOO_SHELF: RegistryBlock = Registries.block["minecraft:bamboo_shelf"]
 
-  public val BIRCH_SHELF: RegistryBlock = Registries.blocks["minecraft:birch_shelf"]
+  public val BIRCH_SHELF: RegistryBlock = Registries.block["minecraft:birch_shelf"]
 
-  public val CHERRY_SHELF: RegistryBlock = Registries.blocks["minecraft:cherry_shelf"]
+  public val CHERRY_SHELF: RegistryBlock = Registries.block["minecraft:cherry_shelf"]
 
-  public val CRIMSON_SHELF: RegistryBlock = Registries.blocks["minecraft:crimson_shelf"]
+  public val CRIMSON_SHELF: RegistryBlock = Registries.block["minecraft:crimson_shelf"]
 
-  public val DARK_OAK_SHELF: RegistryBlock = Registries.blocks["minecraft:dark_oak_shelf"]
+  public val DARK_OAK_SHELF: RegistryBlock = Registries.block["minecraft:dark_oak_shelf"]
 
-  public val JUNGLE_SHELF: RegistryBlock = Registries.blocks["minecraft:jungle_shelf"]
+  public val JUNGLE_SHELF: RegistryBlock = Registries.block["minecraft:jungle_shelf"]
 
-  public val MANGROVE_SHELF: RegistryBlock = Registries.blocks["minecraft:mangrove_shelf"]
+  public val MANGROVE_SHELF: RegistryBlock = Registries.block["minecraft:mangrove_shelf"]
 
-  public val OAK_SHELF: RegistryBlock = Registries.blocks["minecraft:oak_shelf"]
+  public val OAK_SHELF: RegistryBlock = Registries.block["minecraft:oak_shelf"]
 
-  public val PALE_OAK_SHELF: RegistryBlock = Registries.blocks["minecraft:pale_oak_shelf"]
+  public val PALE_OAK_SHELF: RegistryBlock = Registries.block["minecraft:pale_oak_shelf"]
 
-  public val SPRUCE_SHELF: RegistryBlock = Registries.blocks["minecraft:spruce_shelf"]
+  public val SPRUCE_SHELF: RegistryBlock = Registries.block["minecraft:spruce_shelf"]
 
-  public val WARPED_SHELF: RegistryBlock = Registries.blocks["minecraft:warped_shelf"]
+  public val WARPED_SHELF: RegistryBlock = Registries.block["minecraft:warped_shelf"]
 
-  public val MOSSY_COBBLESTONE: RegistryBlock = Registries.blocks["minecraft:mossy_cobblestone"]
+  public val MOSSY_COBBLESTONE: RegistryBlock = Registries.block["minecraft:mossy_cobblestone"]
 
-  public val OBSIDIAN: RegistryBlock = Registries.blocks["minecraft:obsidian"]
+  public val OBSIDIAN: RegistryBlock = Registries.block["minecraft:obsidian"]
 
-  public val TORCH: RegistryBlock = Registries.blocks["minecraft:torch"]
+  public val TORCH: RegistryBlock = Registries.block["minecraft:torch"]
 
-  public val WALL_TORCH: RegistryBlock = Registries.blocks["minecraft:wall_torch"]
+  public val WALL_TORCH: RegistryBlock = Registries.block["minecraft:wall_torch"]
 
-  public val FIRE: RegistryBlock = Registries.blocks["minecraft:fire"]
+  public val FIRE: RegistryBlock = Registries.block["minecraft:fire"]
 
-  public val SOUL_FIRE: RegistryBlock = Registries.blocks["minecraft:soul_fire"]
+  public val SOUL_FIRE: RegistryBlock = Registries.block["minecraft:soul_fire"]
 
-  public val SPAWNER: RegistryBlock = Registries.blocks["minecraft:spawner"]
+  public val SPAWNER: RegistryBlock = Registries.block["minecraft:spawner"]
 
-  public val CREAKING_HEART: RegistryBlock = Registries.blocks["minecraft:creaking_heart"]
+  public val CREAKING_HEART: RegistryBlock = Registries.block["minecraft:creaking_heart"]
 
-  public val OAK_STAIRS: RegistryBlock = Registries.blocks["minecraft:oak_stairs"]
+  public val OAK_STAIRS: RegistryBlock = Registries.block["minecraft:oak_stairs"]
 
-  public val CHEST: RegistryBlock = Registries.blocks["minecraft:chest"]
+  public val CHEST: RegistryBlock = Registries.block["minecraft:chest"]
 
-  public val REDSTONE_WIRE: RegistryBlock = Registries.blocks["minecraft:redstone_wire"]
+  public val REDSTONE_WIRE: RegistryBlock = Registries.block["minecraft:redstone_wire"]
 
-  public val DIAMOND_ORE: RegistryBlock = Registries.blocks["minecraft:diamond_ore"]
+  public val DIAMOND_ORE: RegistryBlock = Registries.block["minecraft:diamond_ore"]
 
-  public val DEEPSLATE_DIAMOND_ORE: RegistryBlock = Registries.blocks["minecraft:deepslate_diamond_ore"]
+  public val DEEPSLATE_DIAMOND_ORE: RegistryBlock = Registries.block["minecraft:deepslate_diamond_ore"]
 
-  public val DIAMOND_BLOCK: RegistryBlock = Registries.blocks["minecraft:diamond_block"]
+  public val DIAMOND_BLOCK: RegistryBlock = Registries.block["minecraft:diamond_block"]
 
-  public val CRAFTING_TABLE: RegistryBlock = Registries.blocks["minecraft:crafting_table"]
+  public val CRAFTING_TABLE: RegistryBlock = Registries.block["minecraft:crafting_table"]
 
-  public val WHEAT: RegistryBlock = Registries.blocks["minecraft:wheat"]
+  public val WHEAT: RegistryBlock = Registries.block["minecraft:wheat"]
 
-  public val FARMLAND: RegistryBlock = Registries.blocks["minecraft:farmland"]
+  public val FARMLAND: RegistryBlock = Registries.block["minecraft:farmland"]
 
-  public val FURNACE: RegistryBlock = Registries.blocks["minecraft:furnace"]
+  public val FURNACE: RegistryBlock = Registries.block["minecraft:furnace"]
 
-  public val OAK_SIGN: RegistryBlock = Registries.blocks["minecraft:oak_sign"]
+  public val OAK_SIGN: RegistryBlock = Registries.block["minecraft:oak_sign"]
 
-  public val SPRUCE_SIGN: RegistryBlock = Registries.blocks["minecraft:spruce_sign"]
+  public val SPRUCE_SIGN: RegistryBlock = Registries.block["minecraft:spruce_sign"]
 
-  public val BIRCH_SIGN: RegistryBlock = Registries.blocks["minecraft:birch_sign"]
+  public val BIRCH_SIGN: RegistryBlock = Registries.block["minecraft:birch_sign"]
 
-  public val ACACIA_SIGN: RegistryBlock = Registries.blocks["minecraft:acacia_sign"]
+  public val ACACIA_SIGN: RegistryBlock = Registries.block["minecraft:acacia_sign"]
 
-  public val CHERRY_SIGN: RegistryBlock = Registries.blocks["minecraft:cherry_sign"]
+  public val CHERRY_SIGN: RegistryBlock = Registries.block["minecraft:cherry_sign"]
 
-  public val JUNGLE_SIGN: RegistryBlock = Registries.blocks["minecraft:jungle_sign"]
+  public val JUNGLE_SIGN: RegistryBlock = Registries.block["minecraft:jungle_sign"]
 
-  public val DARK_OAK_SIGN: RegistryBlock = Registries.blocks["minecraft:dark_oak_sign"]
+  public val DARK_OAK_SIGN: RegistryBlock = Registries.block["minecraft:dark_oak_sign"]
 
-  public val PALE_OAK_SIGN: RegistryBlock = Registries.blocks["minecraft:pale_oak_sign"]
+  public val PALE_OAK_SIGN: RegistryBlock = Registries.block["minecraft:pale_oak_sign"]
 
-  public val MANGROVE_SIGN: RegistryBlock = Registries.blocks["minecraft:mangrove_sign"]
+  public val MANGROVE_SIGN: RegistryBlock = Registries.block["minecraft:mangrove_sign"]
 
-  public val BAMBOO_SIGN: RegistryBlock = Registries.blocks["minecraft:bamboo_sign"]
+  public val BAMBOO_SIGN: RegistryBlock = Registries.block["minecraft:bamboo_sign"]
 
-  public val OAK_DOOR: RegistryBlock = Registries.blocks["minecraft:oak_door"]
+  public val OAK_DOOR: RegistryBlock = Registries.block["minecraft:oak_door"]
 
-  public val LADDER: RegistryBlock = Registries.blocks["minecraft:ladder"]
+  public val LADDER: RegistryBlock = Registries.block["minecraft:ladder"]
 
-  public val RAIL: RegistryBlock = Registries.blocks["minecraft:rail"]
+  public val RAIL: RegistryBlock = Registries.block["minecraft:rail"]
 
-  public val COBBLESTONE_STAIRS: RegistryBlock = Registries.blocks["minecraft:cobblestone_stairs"]
+  public val COBBLESTONE_STAIRS: RegistryBlock = Registries.block["minecraft:cobblestone_stairs"]
 
-  public val OAK_WALL_SIGN: RegistryBlock = Registries.blocks["minecraft:oak_wall_sign"]
+  public val OAK_WALL_SIGN: RegistryBlock = Registries.block["minecraft:oak_wall_sign"]
 
-  public val SPRUCE_WALL_SIGN: RegistryBlock = Registries.blocks["minecraft:spruce_wall_sign"]
+  public val SPRUCE_WALL_SIGN: RegistryBlock = Registries.block["minecraft:spruce_wall_sign"]
 
-  public val BIRCH_WALL_SIGN: RegistryBlock = Registries.blocks["minecraft:birch_wall_sign"]
+  public val BIRCH_WALL_SIGN: RegistryBlock = Registries.block["minecraft:birch_wall_sign"]
 
-  public val ACACIA_WALL_SIGN: RegistryBlock = Registries.blocks["minecraft:acacia_wall_sign"]
+  public val ACACIA_WALL_SIGN: RegistryBlock = Registries.block["minecraft:acacia_wall_sign"]
 
-  public val CHERRY_WALL_SIGN: RegistryBlock = Registries.blocks["minecraft:cherry_wall_sign"]
+  public val CHERRY_WALL_SIGN: RegistryBlock = Registries.block["minecraft:cherry_wall_sign"]
 
-  public val JUNGLE_WALL_SIGN: RegistryBlock = Registries.blocks["minecraft:jungle_wall_sign"]
+  public val JUNGLE_WALL_SIGN: RegistryBlock = Registries.block["minecraft:jungle_wall_sign"]
 
-  public val DARK_OAK_WALL_SIGN: RegistryBlock = Registries.blocks["minecraft:dark_oak_wall_sign"]
+  public val DARK_OAK_WALL_SIGN: RegistryBlock = Registries.block["minecraft:dark_oak_wall_sign"]
 
-  public val PALE_OAK_WALL_SIGN: RegistryBlock = Registries.blocks["minecraft:pale_oak_wall_sign"]
+  public val PALE_OAK_WALL_SIGN: RegistryBlock = Registries.block["minecraft:pale_oak_wall_sign"]
 
-  public val MANGROVE_WALL_SIGN: RegistryBlock = Registries.blocks["minecraft:mangrove_wall_sign"]
+  public val MANGROVE_WALL_SIGN: RegistryBlock = Registries.block["minecraft:mangrove_wall_sign"]
 
-  public val BAMBOO_WALL_SIGN: RegistryBlock = Registries.blocks["minecraft:bamboo_wall_sign"]
+  public val BAMBOO_WALL_SIGN: RegistryBlock = Registries.block["minecraft:bamboo_wall_sign"]
 
-  public val OAK_HANGING_SIGN: RegistryBlock = Registries.blocks["minecraft:oak_hanging_sign"]
+  public val OAK_HANGING_SIGN: RegistryBlock = Registries.block["minecraft:oak_hanging_sign"]
 
-  public val SPRUCE_HANGING_SIGN: RegistryBlock = Registries.blocks["minecraft:spruce_hanging_sign"]
+  public val SPRUCE_HANGING_SIGN: RegistryBlock = Registries.block["minecraft:spruce_hanging_sign"]
 
-  public val BIRCH_HANGING_SIGN: RegistryBlock = Registries.blocks["minecraft:birch_hanging_sign"]
+  public val BIRCH_HANGING_SIGN: RegistryBlock = Registries.block["minecraft:birch_hanging_sign"]
 
-  public val ACACIA_HANGING_SIGN: RegistryBlock = Registries.blocks["minecraft:acacia_hanging_sign"]
+  public val ACACIA_HANGING_SIGN: RegistryBlock = Registries.block["minecraft:acacia_hanging_sign"]
 
-  public val CHERRY_HANGING_SIGN: RegistryBlock = Registries.blocks["minecraft:cherry_hanging_sign"]
+  public val CHERRY_HANGING_SIGN: RegistryBlock = Registries.block["minecraft:cherry_hanging_sign"]
 
-  public val JUNGLE_HANGING_SIGN: RegistryBlock = Registries.blocks["minecraft:jungle_hanging_sign"]
+  public val JUNGLE_HANGING_SIGN: RegistryBlock = Registries.block["minecraft:jungle_hanging_sign"]
 
-  public val DARK_OAK_HANGING_SIGN: RegistryBlock = Registries.blocks["minecraft:dark_oak_hanging_sign"]
+  public val DARK_OAK_HANGING_SIGN: RegistryBlock = Registries.block["minecraft:dark_oak_hanging_sign"]
 
-  public val PALE_OAK_HANGING_SIGN: RegistryBlock = Registries.blocks["minecraft:pale_oak_hanging_sign"]
+  public val PALE_OAK_HANGING_SIGN: RegistryBlock = Registries.block["minecraft:pale_oak_hanging_sign"]
 
-  public val CRIMSON_HANGING_SIGN: RegistryBlock = Registries.blocks["minecraft:crimson_hanging_sign"]
+  public val CRIMSON_HANGING_SIGN: RegistryBlock = Registries.block["minecraft:crimson_hanging_sign"]
 
-  public val WARPED_HANGING_SIGN: RegistryBlock = Registries.blocks["minecraft:warped_hanging_sign"]
+  public val WARPED_HANGING_SIGN: RegistryBlock = Registries.block["minecraft:warped_hanging_sign"]
 
-  public val MANGROVE_HANGING_SIGN: RegistryBlock = Registries.blocks["minecraft:mangrove_hanging_sign"]
+  public val MANGROVE_HANGING_SIGN: RegistryBlock = Registries.block["minecraft:mangrove_hanging_sign"]
 
-  public val BAMBOO_HANGING_SIGN: RegistryBlock = Registries.blocks["minecraft:bamboo_hanging_sign"]
+  public val BAMBOO_HANGING_SIGN: RegistryBlock = Registries.block["minecraft:bamboo_hanging_sign"]
 
-  public val OAK_WALL_HANGING_SIGN: RegistryBlock = Registries.blocks["minecraft:oak_wall_hanging_sign"]
+  public val OAK_WALL_HANGING_SIGN: RegistryBlock = Registries.block["minecraft:oak_wall_hanging_sign"]
 
   public val SPRUCE_WALL_HANGING_SIGN: RegistryBlock =
-      Registries.blocks["minecraft:spruce_wall_hanging_sign"]
+      Registries.block["minecraft:spruce_wall_hanging_sign"]
 
   public val BIRCH_WALL_HANGING_SIGN: RegistryBlock =
-      Registries.blocks["minecraft:birch_wall_hanging_sign"]
+      Registries.block["minecraft:birch_wall_hanging_sign"]
 
   public val ACACIA_WALL_HANGING_SIGN: RegistryBlock =
-      Registries.blocks["minecraft:acacia_wall_hanging_sign"]
+      Registries.block["minecraft:acacia_wall_hanging_sign"]
 
   public val CHERRY_WALL_HANGING_SIGN: RegistryBlock =
-      Registries.blocks["minecraft:cherry_wall_hanging_sign"]
+      Registries.block["minecraft:cherry_wall_hanging_sign"]
 
   public val JUNGLE_WALL_HANGING_SIGN: RegistryBlock =
-      Registries.blocks["minecraft:jungle_wall_hanging_sign"]
+      Registries.block["minecraft:jungle_wall_hanging_sign"]
 
   public val DARK_OAK_WALL_HANGING_SIGN: RegistryBlock =
-      Registries.blocks["minecraft:dark_oak_wall_hanging_sign"]
+      Registries.block["minecraft:dark_oak_wall_hanging_sign"]
 
   public val PALE_OAK_WALL_HANGING_SIGN: RegistryBlock =
-      Registries.blocks["minecraft:pale_oak_wall_hanging_sign"]
+      Registries.block["minecraft:pale_oak_wall_hanging_sign"]
 
   public val MANGROVE_WALL_HANGING_SIGN: RegistryBlock =
-      Registries.blocks["minecraft:mangrove_wall_hanging_sign"]
+      Registries.block["minecraft:mangrove_wall_hanging_sign"]
 
   public val CRIMSON_WALL_HANGING_SIGN: RegistryBlock =
-      Registries.blocks["minecraft:crimson_wall_hanging_sign"]
+      Registries.block["minecraft:crimson_wall_hanging_sign"]
 
   public val WARPED_WALL_HANGING_SIGN: RegistryBlock =
-      Registries.blocks["minecraft:warped_wall_hanging_sign"]
+      Registries.block["minecraft:warped_wall_hanging_sign"]
 
   public val BAMBOO_WALL_HANGING_SIGN: RegistryBlock =
-      Registries.blocks["minecraft:bamboo_wall_hanging_sign"]
+      Registries.block["minecraft:bamboo_wall_hanging_sign"]
 
-  public val LEVER: RegistryBlock = Registries.blocks["minecraft:lever"]
+  public val LEVER: RegistryBlock = Registries.block["minecraft:lever"]
 
-  public val STONE_PRESSURE_PLATE: RegistryBlock = Registries.blocks["minecraft:stone_pressure_plate"]
+  public val STONE_PRESSURE_PLATE: RegistryBlock = Registries.block["minecraft:stone_pressure_plate"]
 
-  public val IRON_DOOR: RegistryBlock = Registries.blocks["minecraft:iron_door"]
+  public val IRON_DOOR: RegistryBlock = Registries.block["minecraft:iron_door"]
 
-  public val OAK_PRESSURE_PLATE: RegistryBlock = Registries.blocks["minecraft:oak_pressure_plate"]
+  public val OAK_PRESSURE_PLATE: RegistryBlock = Registries.block["minecraft:oak_pressure_plate"]
 
-  public val SPRUCE_PRESSURE_PLATE: RegistryBlock = Registries.blocks["minecraft:spruce_pressure_plate"]
+  public val SPRUCE_PRESSURE_PLATE: RegistryBlock = Registries.block["minecraft:spruce_pressure_plate"]
 
-  public val BIRCH_PRESSURE_PLATE: RegistryBlock = Registries.blocks["minecraft:birch_pressure_plate"]
+  public val BIRCH_PRESSURE_PLATE: RegistryBlock = Registries.block["minecraft:birch_pressure_plate"]
 
-  public val JUNGLE_PRESSURE_PLATE: RegistryBlock = Registries.blocks["minecraft:jungle_pressure_plate"]
+  public val JUNGLE_PRESSURE_PLATE: RegistryBlock = Registries.block["minecraft:jungle_pressure_plate"]
 
-  public val ACACIA_PRESSURE_PLATE: RegistryBlock = Registries.blocks["minecraft:acacia_pressure_plate"]
+  public val ACACIA_PRESSURE_PLATE: RegistryBlock = Registries.block["minecraft:acacia_pressure_plate"]
 
-  public val CHERRY_PRESSURE_PLATE: RegistryBlock = Registries.blocks["minecraft:cherry_pressure_plate"]
+  public val CHERRY_PRESSURE_PLATE: RegistryBlock = Registries.block["minecraft:cherry_pressure_plate"]
 
   public val DARK_OAK_PRESSURE_PLATE: RegistryBlock =
-      Registries.blocks["minecraft:dark_oak_pressure_plate"]
+      Registries.block["minecraft:dark_oak_pressure_plate"]
 
   public val PALE_OAK_PRESSURE_PLATE: RegistryBlock =
-      Registries.blocks["minecraft:pale_oak_pressure_plate"]
+      Registries.block["minecraft:pale_oak_pressure_plate"]
 
   public val MANGROVE_PRESSURE_PLATE: RegistryBlock =
-      Registries.blocks["minecraft:mangrove_pressure_plate"]
+      Registries.block["minecraft:mangrove_pressure_plate"]
 
-  public val BAMBOO_PRESSURE_PLATE: RegistryBlock = Registries.blocks["minecraft:bamboo_pressure_plate"]
+  public val BAMBOO_PRESSURE_PLATE: RegistryBlock = Registries.block["minecraft:bamboo_pressure_plate"]
 
-  public val REDSTONE_ORE: RegistryBlock = Registries.blocks["minecraft:redstone_ore"]
+  public val REDSTONE_ORE: RegistryBlock = Registries.block["minecraft:redstone_ore"]
 
   public val DEEPSLATE_REDSTONE_ORE: RegistryBlock =
-      Registries.blocks["minecraft:deepslate_redstone_ore"]
+      Registries.block["minecraft:deepslate_redstone_ore"]
 
-  public val REDSTONE_TORCH: RegistryBlock = Registries.blocks["minecraft:redstone_torch"]
+  public val REDSTONE_TORCH: RegistryBlock = Registries.block["minecraft:redstone_torch"]
 
-  public val REDSTONE_WALL_TORCH: RegistryBlock = Registries.blocks["minecraft:redstone_wall_torch"]
+  public val REDSTONE_WALL_TORCH: RegistryBlock = Registries.block["minecraft:redstone_wall_torch"]
 
-  public val STONE_BUTTON: RegistryBlock = Registries.blocks["minecraft:stone_button"]
+  public val STONE_BUTTON: RegistryBlock = Registries.block["minecraft:stone_button"]
 
-  public val SNOW: RegistryBlock = Registries.blocks["minecraft:snow"]
+  public val SNOW: RegistryBlock = Registries.block["minecraft:snow"]
 
-  public val ICE: RegistryBlock = Registries.blocks["minecraft:ice"]
+  public val ICE: RegistryBlock = Registries.block["minecraft:ice"]
 
-  public val SNOW_BLOCK: RegistryBlock = Registries.blocks["minecraft:snow_block"]
+  public val SNOW_BLOCK: RegistryBlock = Registries.block["minecraft:snow_block"]
 
-  public val CACTUS: RegistryBlock = Registries.blocks["minecraft:cactus"]
+  public val CACTUS: RegistryBlock = Registries.block["minecraft:cactus"]
 
-  public val CACTUS_FLOWER: RegistryBlock = Registries.blocks["minecraft:cactus_flower"]
+  public val CACTUS_FLOWER: RegistryBlock = Registries.block["minecraft:cactus_flower"]
 
-  public val CLAY: RegistryBlock = Registries.blocks["minecraft:clay"]
+  public val CLAY: RegistryBlock = Registries.block["minecraft:clay"]
 
-  public val SUGAR_CANE: RegistryBlock = Registries.blocks["minecraft:sugar_cane"]
+  public val SUGAR_CANE: RegistryBlock = Registries.block["minecraft:sugar_cane"]
 
-  public val JUKEBOX: RegistryBlock = Registries.blocks["minecraft:jukebox"]
+  public val JUKEBOX: RegistryBlock = Registries.block["minecraft:jukebox"]
 
-  public val OAK_FENCE: RegistryBlock = Registries.blocks["minecraft:oak_fence"]
+  public val OAK_FENCE: RegistryBlock = Registries.block["minecraft:oak_fence"]
 
-  public val NETHERRACK: RegistryBlock = Registries.blocks["minecraft:netherrack"]
+  public val NETHERRACK: RegistryBlock = Registries.block["minecraft:netherrack"]
 
-  public val SOUL_SAND: RegistryBlock = Registries.blocks["minecraft:soul_sand"]
+  public val SOUL_SAND: RegistryBlock = Registries.block["minecraft:soul_sand"]
 
-  public val SOUL_SOIL: RegistryBlock = Registries.blocks["minecraft:soul_soil"]
+  public val SOUL_SOIL: RegistryBlock = Registries.block["minecraft:soul_soil"]
 
-  public val BASALT: RegistryBlock = Registries.blocks["minecraft:basalt"]
+  public val BASALT: RegistryBlock = Registries.block["minecraft:basalt"]
 
-  public val POLISHED_BASALT: RegistryBlock = Registries.blocks["minecraft:polished_basalt"]
+  public val POLISHED_BASALT: RegistryBlock = Registries.block["minecraft:polished_basalt"]
 
-  public val SOUL_TORCH: RegistryBlock = Registries.blocks["minecraft:soul_torch"]
+  public val SOUL_TORCH: RegistryBlock = Registries.block["minecraft:soul_torch"]
 
-  public val SOUL_WALL_TORCH: RegistryBlock = Registries.blocks["minecraft:soul_wall_torch"]
+  public val SOUL_WALL_TORCH: RegistryBlock = Registries.block["minecraft:soul_wall_torch"]
 
-  public val COPPER_TORCH: RegistryBlock = Registries.blocks["minecraft:copper_torch"]
+  public val COPPER_TORCH: RegistryBlock = Registries.block["minecraft:copper_torch"]
 
-  public val COPPER_WALL_TORCH: RegistryBlock = Registries.blocks["minecraft:copper_wall_torch"]
+  public val COPPER_WALL_TORCH: RegistryBlock = Registries.block["minecraft:copper_wall_torch"]
 
-  public val GLOWSTONE: RegistryBlock = Registries.blocks["minecraft:glowstone"]
+  public val GLOWSTONE: RegistryBlock = Registries.block["minecraft:glowstone"]
 
-  public val NETHER_PORTAL: RegistryBlock = Registries.blocks["minecraft:nether_portal"]
+  public val NETHER_PORTAL: RegistryBlock = Registries.block["minecraft:nether_portal"]
 
-  public val CARVED_PUMPKIN: RegistryBlock = Registries.blocks["minecraft:carved_pumpkin"]
+  public val CARVED_PUMPKIN: RegistryBlock = Registries.block["minecraft:carved_pumpkin"]
 
-  public val JACK_O_LANTERN: RegistryBlock = Registries.blocks["minecraft:jack_o_lantern"]
+  public val JACK_O_LANTERN: RegistryBlock = Registries.block["minecraft:jack_o_lantern"]
 
-  public val CAKE: RegistryBlock = Registries.blocks["minecraft:cake"]
+  public val CAKE: RegistryBlock = Registries.block["minecraft:cake"]
 
-  public val REPEATER: RegistryBlock = Registries.blocks["minecraft:repeater"]
+  public val REPEATER: RegistryBlock = Registries.block["minecraft:repeater"]
 
-  public val WHITE_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:white_stained_glass"]
+  public val WHITE_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:white_stained_glass"]
 
-  public val ORANGE_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:orange_stained_glass"]
+  public val ORANGE_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:orange_stained_glass"]
 
-  public val MAGENTA_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:magenta_stained_glass"]
+  public val MAGENTA_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:magenta_stained_glass"]
 
   public val LIGHT_BLUE_STAINED_GLASS: RegistryBlock =
-      Registries.blocks["minecraft:light_blue_stained_glass"]
+      Registries.block["minecraft:light_blue_stained_glass"]
 
-  public val YELLOW_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:yellow_stained_glass"]
+  public val YELLOW_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:yellow_stained_glass"]
 
-  public val LIME_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:lime_stained_glass"]
+  public val LIME_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:lime_stained_glass"]
 
-  public val PINK_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:pink_stained_glass"]
+  public val PINK_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:pink_stained_glass"]
 
-  public val GRAY_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:gray_stained_glass"]
+  public val GRAY_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:gray_stained_glass"]
 
   public val LIGHT_GRAY_STAINED_GLASS: RegistryBlock =
-      Registries.blocks["minecraft:light_gray_stained_glass"]
+      Registries.block["minecraft:light_gray_stained_glass"]
 
-  public val CYAN_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:cyan_stained_glass"]
+  public val CYAN_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:cyan_stained_glass"]
 
-  public val PURPLE_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:purple_stained_glass"]
+  public val PURPLE_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:purple_stained_glass"]
 
-  public val BLUE_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:blue_stained_glass"]
+  public val BLUE_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:blue_stained_glass"]
 
-  public val BROWN_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:brown_stained_glass"]
+  public val BROWN_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:brown_stained_glass"]
 
-  public val GREEN_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:green_stained_glass"]
+  public val GREEN_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:green_stained_glass"]
 
-  public val RED_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:red_stained_glass"]
+  public val RED_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:red_stained_glass"]
 
-  public val BLACK_STAINED_GLASS: RegistryBlock = Registries.blocks["minecraft:black_stained_glass"]
+  public val BLACK_STAINED_GLASS: RegistryBlock = Registries.block["minecraft:black_stained_glass"]
 
-  public val OAK_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:oak_trapdoor"]
+  public val OAK_TRAPDOOR: RegistryBlock = Registries.block["minecraft:oak_trapdoor"]
 
-  public val SPRUCE_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:spruce_trapdoor"]
+  public val SPRUCE_TRAPDOOR: RegistryBlock = Registries.block["minecraft:spruce_trapdoor"]
 
-  public val BIRCH_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:birch_trapdoor"]
+  public val BIRCH_TRAPDOOR: RegistryBlock = Registries.block["minecraft:birch_trapdoor"]
 
-  public val JUNGLE_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:jungle_trapdoor"]
+  public val JUNGLE_TRAPDOOR: RegistryBlock = Registries.block["minecraft:jungle_trapdoor"]
 
-  public val ACACIA_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:acacia_trapdoor"]
+  public val ACACIA_TRAPDOOR: RegistryBlock = Registries.block["minecraft:acacia_trapdoor"]
 
-  public val CHERRY_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:cherry_trapdoor"]
+  public val CHERRY_TRAPDOOR: RegistryBlock = Registries.block["minecraft:cherry_trapdoor"]
 
-  public val DARK_OAK_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:dark_oak_trapdoor"]
+  public val DARK_OAK_TRAPDOOR: RegistryBlock = Registries.block["minecraft:dark_oak_trapdoor"]
 
-  public val PALE_OAK_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:pale_oak_trapdoor"]
+  public val PALE_OAK_TRAPDOOR: RegistryBlock = Registries.block["minecraft:pale_oak_trapdoor"]
 
-  public val MANGROVE_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:mangrove_trapdoor"]
+  public val MANGROVE_TRAPDOOR: RegistryBlock = Registries.block["minecraft:mangrove_trapdoor"]
 
-  public val BAMBOO_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:bamboo_trapdoor"]
+  public val BAMBOO_TRAPDOOR: RegistryBlock = Registries.block["minecraft:bamboo_trapdoor"]
 
-  public val STONE_BRICKS: RegistryBlock = Registries.blocks["minecraft:stone_bricks"]
+  public val STONE_BRICKS: RegistryBlock = Registries.block["minecraft:stone_bricks"]
 
-  public val MOSSY_STONE_BRICKS: RegistryBlock = Registries.blocks["minecraft:mossy_stone_bricks"]
+  public val MOSSY_STONE_BRICKS: RegistryBlock = Registries.block["minecraft:mossy_stone_bricks"]
 
-  public val CRACKED_STONE_BRICKS: RegistryBlock = Registries.blocks["minecraft:cracked_stone_bricks"]
+  public val CRACKED_STONE_BRICKS: RegistryBlock = Registries.block["minecraft:cracked_stone_bricks"]
 
-  public val CHISELED_STONE_BRICKS: RegistryBlock = Registries.blocks["minecraft:chiseled_stone_bricks"]
+  public val CHISELED_STONE_BRICKS: RegistryBlock = Registries.block["minecraft:chiseled_stone_bricks"]
 
-  public val PACKED_MUD: RegistryBlock = Registries.blocks["minecraft:packed_mud"]
+  public val PACKED_MUD: RegistryBlock = Registries.block["minecraft:packed_mud"]
 
-  public val MUD_BRICKS: RegistryBlock = Registries.blocks["minecraft:mud_bricks"]
+  public val MUD_BRICKS: RegistryBlock = Registries.block["minecraft:mud_bricks"]
 
-  public val INFESTED_STONE: RegistryBlock = Registries.blocks["minecraft:infested_stone"]
+  public val INFESTED_STONE: RegistryBlock = Registries.block["minecraft:infested_stone"]
 
-  public val INFESTED_COBBLESTONE: RegistryBlock = Registries.blocks["minecraft:infested_cobblestone"]
+  public val INFESTED_COBBLESTONE: RegistryBlock = Registries.block["minecraft:infested_cobblestone"]
 
-  public val INFESTED_STONE_BRICKS: RegistryBlock = Registries.blocks["minecraft:infested_stone_bricks"]
+  public val INFESTED_STONE_BRICKS: RegistryBlock = Registries.block["minecraft:infested_stone_bricks"]
 
   public val INFESTED_MOSSY_STONE_BRICKS: RegistryBlock =
-      Registries.blocks["minecraft:infested_mossy_stone_bricks"]
+      Registries.block["minecraft:infested_mossy_stone_bricks"]
 
   public val INFESTED_CRACKED_STONE_BRICKS: RegistryBlock =
-      Registries.blocks["minecraft:infested_cracked_stone_bricks"]
+      Registries.block["minecraft:infested_cracked_stone_bricks"]
 
   public val INFESTED_CHISELED_STONE_BRICKS: RegistryBlock =
-      Registries.blocks["minecraft:infested_chiseled_stone_bricks"]
+      Registries.block["minecraft:infested_chiseled_stone_bricks"]
 
-  public val BROWN_MUSHROOM_BLOCK: RegistryBlock = Registries.blocks["minecraft:brown_mushroom_block"]
+  public val BROWN_MUSHROOM_BLOCK: RegistryBlock = Registries.block["minecraft:brown_mushroom_block"]
 
-  public val RED_MUSHROOM_BLOCK: RegistryBlock = Registries.blocks["minecraft:red_mushroom_block"]
+  public val RED_MUSHROOM_BLOCK: RegistryBlock = Registries.block["minecraft:red_mushroom_block"]
 
-  public val MUSHROOM_STEM: RegistryBlock = Registries.blocks["minecraft:mushroom_stem"]
+  public val MUSHROOM_STEM: RegistryBlock = Registries.block["minecraft:mushroom_stem"]
 
-  public val IRON_BARS: RegistryBlock = Registries.blocks["minecraft:iron_bars"]
+  public val IRON_BARS: RegistryBlock = Registries.block["minecraft:iron_bars"]
 
-  public val COPPER_BARS: RegistryBlock = Registries.blocks["minecraft:copper_bars"]
+  public val COPPER_BARS: RegistryBlock = Registries.block["minecraft:copper_bars"]
 
-  public val EXPOSED_COPPER_BARS: RegistryBlock = Registries.blocks["minecraft:exposed_copper_bars"]
+  public val EXPOSED_COPPER_BARS: RegistryBlock = Registries.block["minecraft:exposed_copper_bars"]
 
-  public val WEATHERED_COPPER_BARS: RegistryBlock = Registries.blocks["minecraft:weathered_copper_bars"]
+  public val WEATHERED_COPPER_BARS: RegistryBlock = Registries.block["minecraft:weathered_copper_bars"]
 
-  public val OXIDIZED_COPPER_BARS: RegistryBlock = Registries.blocks["minecraft:oxidized_copper_bars"]
+  public val OXIDIZED_COPPER_BARS: RegistryBlock = Registries.block["minecraft:oxidized_copper_bars"]
 
-  public val WAXED_COPPER_BARS: RegistryBlock = Registries.blocks["minecraft:waxed_copper_bars"]
+  public val WAXED_COPPER_BARS: RegistryBlock = Registries.block["minecraft:waxed_copper_bars"]
 
   public val WAXED_EXPOSED_COPPER_BARS: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_copper_bars"]
+      Registries.block["minecraft:waxed_exposed_copper_bars"]
 
   public val WAXED_WEATHERED_COPPER_BARS: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_copper_bars"]
+      Registries.block["minecraft:waxed_weathered_copper_bars"]
 
   public val WAXED_OXIDIZED_COPPER_BARS: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_copper_bars"]
+      Registries.block["minecraft:waxed_oxidized_copper_bars"]
 
-  public val IRON_CHAIN: RegistryBlock = Registries.blocks["minecraft:iron_chain"]
+  public val IRON_CHAIN: RegistryBlock = Registries.block["minecraft:iron_chain"]
 
-  public val COPPER_CHAIN: RegistryBlock = Registries.blocks["minecraft:copper_chain"]
+  public val COPPER_CHAIN: RegistryBlock = Registries.block["minecraft:copper_chain"]
 
-  public val EXPOSED_COPPER_CHAIN: RegistryBlock = Registries.blocks["minecraft:exposed_copper_chain"]
+  public val EXPOSED_COPPER_CHAIN: RegistryBlock = Registries.block["minecraft:exposed_copper_chain"]
 
   public val WEATHERED_COPPER_CHAIN: RegistryBlock =
-      Registries.blocks["minecraft:weathered_copper_chain"]
+      Registries.block["minecraft:weathered_copper_chain"]
 
-  public val OXIDIZED_COPPER_CHAIN: RegistryBlock = Registries.blocks["minecraft:oxidized_copper_chain"]
+  public val OXIDIZED_COPPER_CHAIN: RegistryBlock = Registries.block["minecraft:oxidized_copper_chain"]
 
-  public val WAXED_COPPER_CHAIN: RegistryBlock = Registries.blocks["minecraft:waxed_copper_chain"]
+  public val WAXED_COPPER_CHAIN: RegistryBlock = Registries.block["minecraft:waxed_copper_chain"]
 
   public val WAXED_EXPOSED_COPPER_CHAIN: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_copper_chain"]
+      Registries.block["minecraft:waxed_exposed_copper_chain"]
 
   public val WAXED_WEATHERED_COPPER_CHAIN: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_copper_chain"]
+      Registries.block["minecraft:waxed_weathered_copper_chain"]
 
   public val WAXED_OXIDIZED_COPPER_CHAIN: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_copper_chain"]
+      Registries.block["minecraft:waxed_oxidized_copper_chain"]
 
-  public val GLASS_PANE: RegistryBlock = Registries.blocks["minecraft:glass_pane"]
+  public val GLASS_PANE: RegistryBlock = Registries.block["minecraft:glass_pane"]
 
-  public val PUMPKIN: RegistryBlock = Registries.blocks["minecraft:pumpkin"]
+  public val PUMPKIN: RegistryBlock = Registries.block["minecraft:pumpkin"]
 
-  public val MELON: RegistryBlock = Registries.blocks["minecraft:melon"]
+  public val MELON: RegistryBlock = Registries.block["minecraft:melon"]
 
-  public val ATTACHED_PUMPKIN_STEM: RegistryBlock = Registries.blocks["minecraft:attached_pumpkin_stem"]
+  public val ATTACHED_PUMPKIN_STEM: RegistryBlock = Registries.block["minecraft:attached_pumpkin_stem"]
 
-  public val ATTACHED_MELON_STEM: RegistryBlock = Registries.blocks["minecraft:attached_melon_stem"]
+  public val ATTACHED_MELON_STEM: RegistryBlock = Registries.block["minecraft:attached_melon_stem"]
 
-  public val PUMPKIN_STEM: RegistryBlock = Registries.blocks["minecraft:pumpkin_stem"]
+  public val PUMPKIN_STEM: RegistryBlock = Registries.block["minecraft:pumpkin_stem"]
 
-  public val MELON_STEM: RegistryBlock = Registries.blocks["minecraft:melon_stem"]
+  public val MELON_STEM: RegistryBlock = Registries.block["minecraft:melon_stem"]
 
-  public val VINE: RegistryBlock = Registries.blocks["minecraft:vine"]
+  public val VINE: RegistryBlock = Registries.block["minecraft:vine"]
 
-  public val GLOW_LICHEN: RegistryBlock = Registries.blocks["minecraft:glow_lichen"]
+  public val GLOW_LICHEN: RegistryBlock = Registries.block["minecraft:glow_lichen"]
 
-  public val RESIN_CLUMP: RegistryBlock = Registries.blocks["minecraft:resin_clump"]
+  public val RESIN_CLUMP: RegistryBlock = Registries.block["minecraft:resin_clump"]
 
-  public val OAK_FENCE_GATE: RegistryBlock = Registries.blocks["minecraft:oak_fence_gate"]
+  public val OAK_FENCE_GATE: RegistryBlock = Registries.block["minecraft:oak_fence_gate"]
 
-  public val BRICK_STAIRS: RegistryBlock = Registries.blocks["minecraft:brick_stairs"]
+  public val BRICK_STAIRS: RegistryBlock = Registries.block["minecraft:brick_stairs"]
 
-  public val STONE_BRICK_STAIRS: RegistryBlock = Registries.blocks["minecraft:stone_brick_stairs"]
+  public val STONE_BRICK_STAIRS: RegistryBlock = Registries.block["minecraft:stone_brick_stairs"]
 
-  public val MUD_BRICK_STAIRS: RegistryBlock = Registries.blocks["minecraft:mud_brick_stairs"]
+  public val MUD_BRICK_STAIRS: RegistryBlock = Registries.block["minecraft:mud_brick_stairs"]
 
-  public val MYCELIUM: RegistryBlock = Registries.blocks["minecraft:mycelium"]
+  public val MYCELIUM: RegistryBlock = Registries.block["minecraft:mycelium"]
 
-  public val LILY_PAD: RegistryBlock = Registries.blocks["minecraft:lily_pad"]
+  public val LILY_PAD: RegistryBlock = Registries.block["minecraft:lily_pad"]
 
-  public val RESIN_BLOCK: RegistryBlock = Registries.blocks["minecraft:resin_block"]
+  public val RESIN_BLOCK: RegistryBlock = Registries.block["minecraft:resin_block"]
 
-  public val RESIN_BRICKS: RegistryBlock = Registries.blocks["minecraft:resin_bricks"]
+  public val RESIN_BRICKS: RegistryBlock = Registries.block["minecraft:resin_bricks"]
 
-  public val RESIN_BRICK_STAIRS: RegistryBlock = Registries.blocks["minecraft:resin_brick_stairs"]
+  public val RESIN_BRICK_STAIRS: RegistryBlock = Registries.block["minecraft:resin_brick_stairs"]
 
-  public val RESIN_BRICK_SLAB: RegistryBlock = Registries.blocks["minecraft:resin_brick_slab"]
+  public val RESIN_BRICK_SLAB: RegistryBlock = Registries.block["minecraft:resin_brick_slab"]
 
-  public val RESIN_BRICK_WALL: RegistryBlock = Registries.blocks["minecraft:resin_brick_wall"]
+  public val RESIN_BRICK_WALL: RegistryBlock = Registries.block["minecraft:resin_brick_wall"]
 
-  public val CHISELED_RESIN_BRICKS: RegistryBlock = Registries.blocks["minecraft:chiseled_resin_bricks"]
+  public val CHISELED_RESIN_BRICKS: RegistryBlock = Registries.block["minecraft:chiseled_resin_bricks"]
 
-  public val NETHER_BRICKS: RegistryBlock = Registries.blocks["minecraft:nether_bricks"]
+  public val NETHER_BRICKS: RegistryBlock = Registries.block["minecraft:nether_bricks"]
 
-  public val NETHER_BRICK_FENCE: RegistryBlock = Registries.blocks["minecraft:nether_brick_fence"]
+  public val NETHER_BRICK_FENCE: RegistryBlock = Registries.block["minecraft:nether_brick_fence"]
 
-  public val NETHER_BRICK_STAIRS: RegistryBlock = Registries.blocks["minecraft:nether_brick_stairs"]
+  public val NETHER_BRICK_STAIRS: RegistryBlock = Registries.block["minecraft:nether_brick_stairs"]
 
-  public val NETHER_WART: RegistryBlock = Registries.blocks["minecraft:nether_wart"]
+  public val NETHER_WART: RegistryBlock = Registries.block["minecraft:nether_wart"]
 
-  public val ENCHANTING_TABLE: RegistryBlock = Registries.blocks["minecraft:enchanting_table"]
+  public val ENCHANTING_TABLE: RegistryBlock = Registries.block["minecraft:enchanting_table"]
 
-  public val BREWING_STAND: RegistryBlock = Registries.blocks["minecraft:brewing_stand"]
+  public val BREWING_STAND: RegistryBlock = Registries.block["minecraft:brewing_stand"]
 
-  public val CAULDRON: RegistryBlock = Registries.blocks["minecraft:cauldron"]
+  public val CAULDRON: RegistryBlock = Registries.block["minecraft:cauldron"]
 
-  public val WATER_CAULDRON: RegistryBlock = Registries.blocks["minecraft:water_cauldron"]
+  public val WATER_CAULDRON: RegistryBlock = Registries.block["minecraft:water_cauldron"]
 
-  public val LAVA_CAULDRON: RegistryBlock = Registries.blocks["minecraft:lava_cauldron"]
+  public val LAVA_CAULDRON: RegistryBlock = Registries.block["minecraft:lava_cauldron"]
 
-  public val POWDER_SNOW_CAULDRON: RegistryBlock = Registries.blocks["minecraft:powder_snow_cauldron"]
+  public val POWDER_SNOW_CAULDRON: RegistryBlock = Registries.block["minecraft:powder_snow_cauldron"]
 
-  public val END_PORTAL: RegistryBlock = Registries.blocks["minecraft:end_portal"]
+  public val END_PORTAL: RegistryBlock = Registries.block["minecraft:end_portal"]
 
-  public val END_PORTAL_FRAME: RegistryBlock = Registries.blocks["minecraft:end_portal_frame"]
+  public val END_PORTAL_FRAME: RegistryBlock = Registries.block["minecraft:end_portal_frame"]
 
-  public val END_STONE: RegistryBlock = Registries.blocks["minecraft:end_stone"]
+  public val END_STONE: RegistryBlock = Registries.block["minecraft:end_stone"]
 
-  public val DRAGON_EGG: RegistryBlock = Registries.blocks["minecraft:dragon_egg"]
+  public val DRAGON_EGG: RegistryBlock = Registries.block["minecraft:dragon_egg"]
 
-  public val REDSTONE_LAMP: RegistryBlock = Registries.blocks["minecraft:redstone_lamp"]
+  public val REDSTONE_LAMP: RegistryBlock = Registries.block["minecraft:redstone_lamp"]
 
-  public val COCOA: RegistryBlock = Registries.blocks["minecraft:cocoa"]
+  public val COCOA: RegistryBlock = Registries.block["minecraft:cocoa"]
 
-  public val SANDSTONE_STAIRS: RegistryBlock = Registries.blocks["minecraft:sandstone_stairs"]
+  public val SANDSTONE_STAIRS: RegistryBlock = Registries.block["minecraft:sandstone_stairs"]
 
-  public val EMERALD_ORE: RegistryBlock = Registries.blocks["minecraft:emerald_ore"]
+  public val EMERALD_ORE: RegistryBlock = Registries.block["minecraft:emerald_ore"]
 
-  public val DEEPSLATE_EMERALD_ORE: RegistryBlock = Registries.blocks["minecraft:deepslate_emerald_ore"]
+  public val DEEPSLATE_EMERALD_ORE: RegistryBlock = Registries.block["minecraft:deepslate_emerald_ore"]
 
-  public val ENDER_CHEST: RegistryBlock = Registries.blocks["minecraft:ender_chest"]
+  public val ENDER_CHEST: RegistryBlock = Registries.block["minecraft:ender_chest"]
 
-  public val TRIPWIRE_HOOK: RegistryBlock = Registries.blocks["minecraft:tripwire_hook"]
+  public val TRIPWIRE_HOOK: RegistryBlock = Registries.block["minecraft:tripwire_hook"]
 
-  public val TRIPWIRE: RegistryBlock = Registries.blocks["minecraft:tripwire"]
+  public val TRIPWIRE: RegistryBlock = Registries.block["minecraft:tripwire"]
 
-  public val EMERALD_BLOCK: RegistryBlock = Registries.blocks["minecraft:emerald_block"]
+  public val EMERALD_BLOCK: RegistryBlock = Registries.block["minecraft:emerald_block"]
 
-  public val SPRUCE_STAIRS: RegistryBlock = Registries.blocks["minecraft:spruce_stairs"]
+  public val SPRUCE_STAIRS: RegistryBlock = Registries.block["minecraft:spruce_stairs"]
 
-  public val BIRCH_STAIRS: RegistryBlock = Registries.blocks["minecraft:birch_stairs"]
+  public val BIRCH_STAIRS: RegistryBlock = Registries.block["minecraft:birch_stairs"]
 
-  public val JUNGLE_STAIRS: RegistryBlock = Registries.blocks["minecraft:jungle_stairs"]
+  public val JUNGLE_STAIRS: RegistryBlock = Registries.block["minecraft:jungle_stairs"]
 
-  public val COMMAND_BLOCK: RegistryBlock = Registries.blocks["minecraft:command_block"]
+  public val COMMAND_BLOCK: RegistryBlock = Registries.block["minecraft:command_block"]
 
-  public val BEACON: RegistryBlock = Registries.blocks["minecraft:beacon"]
+  public val BEACON: RegistryBlock = Registries.block["minecraft:beacon"]
 
-  public val COBBLESTONE_WALL: RegistryBlock = Registries.blocks["minecraft:cobblestone_wall"]
+  public val COBBLESTONE_WALL: RegistryBlock = Registries.block["minecraft:cobblestone_wall"]
 
   public val MOSSY_COBBLESTONE_WALL: RegistryBlock =
-      Registries.blocks["minecraft:mossy_cobblestone_wall"]
+      Registries.block["minecraft:mossy_cobblestone_wall"]
 
-  public val FLOWER_POT: RegistryBlock = Registries.blocks["minecraft:flower_pot"]
+  public val FLOWER_POT: RegistryBlock = Registries.block["minecraft:flower_pot"]
 
-  public val POTTED_TORCHFLOWER: RegistryBlock = Registries.blocks["minecraft:potted_torchflower"]
+  public val POTTED_TORCHFLOWER: RegistryBlock = Registries.block["minecraft:potted_torchflower"]
 
-  public val POTTED_OAK_SAPLING: RegistryBlock = Registries.blocks["minecraft:potted_oak_sapling"]
+  public val POTTED_OAK_SAPLING: RegistryBlock = Registries.block["minecraft:potted_oak_sapling"]
 
-  public val POTTED_SPRUCE_SAPLING: RegistryBlock = Registries.blocks["minecraft:potted_spruce_sapling"]
+  public val POTTED_SPRUCE_SAPLING: RegistryBlock = Registries.block["minecraft:potted_spruce_sapling"]
 
-  public val POTTED_BIRCH_SAPLING: RegistryBlock = Registries.blocks["minecraft:potted_birch_sapling"]
+  public val POTTED_BIRCH_SAPLING: RegistryBlock = Registries.block["minecraft:potted_birch_sapling"]
 
-  public val POTTED_JUNGLE_SAPLING: RegistryBlock = Registries.blocks["minecraft:potted_jungle_sapling"]
+  public val POTTED_JUNGLE_SAPLING: RegistryBlock = Registries.block["minecraft:potted_jungle_sapling"]
 
-  public val POTTED_ACACIA_SAPLING: RegistryBlock = Registries.blocks["minecraft:potted_acacia_sapling"]
+  public val POTTED_ACACIA_SAPLING: RegistryBlock = Registries.block["minecraft:potted_acacia_sapling"]
 
-  public val POTTED_CHERRY_SAPLING: RegistryBlock = Registries.blocks["minecraft:potted_cherry_sapling"]
+  public val POTTED_CHERRY_SAPLING: RegistryBlock = Registries.block["minecraft:potted_cherry_sapling"]
 
   public val POTTED_DARK_OAK_SAPLING: RegistryBlock =
-      Registries.blocks["minecraft:potted_dark_oak_sapling"]
+      Registries.block["minecraft:potted_dark_oak_sapling"]
 
   public val POTTED_PALE_OAK_SAPLING: RegistryBlock =
-      Registries.blocks["minecraft:potted_pale_oak_sapling"]
+      Registries.block["minecraft:potted_pale_oak_sapling"]
 
   public val POTTED_MANGROVE_PROPAGULE: RegistryBlock =
-      Registries.blocks["minecraft:potted_mangrove_propagule"]
+      Registries.block["minecraft:potted_mangrove_propagule"]
 
-  public val POTTED_FERN: RegistryBlock = Registries.blocks["minecraft:potted_fern"]
+  public val POTTED_FERN: RegistryBlock = Registries.block["minecraft:potted_fern"]
 
-  public val POTTED_DANDELION: RegistryBlock = Registries.blocks["minecraft:potted_dandelion"]
+  public val POTTED_DANDELION: RegistryBlock = Registries.block["minecraft:potted_dandelion"]
 
-  public val POTTED_POPPY: RegistryBlock = Registries.blocks["minecraft:potted_poppy"]
+  public val POTTED_POPPY: RegistryBlock = Registries.block["minecraft:potted_poppy"]
 
-  public val POTTED_BLUE_ORCHID: RegistryBlock = Registries.blocks["minecraft:potted_blue_orchid"]
+  public val POTTED_BLUE_ORCHID: RegistryBlock = Registries.block["minecraft:potted_blue_orchid"]
 
-  public val POTTED_ALLIUM: RegistryBlock = Registries.blocks["minecraft:potted_allium"]
+  public val POTTED_ALLIUM: RegistryBlock = Registries.block["minecraft:potted_allium"]
 
-  public val POTTED_AZURE_BLUET: RegistryBlock = Registries.blocks["minecraft:potted_azure_bluet"]
+  public val POTTED_AZURE_BLUET: RegistryBlock = Registries.block["minecraft:potted_azure_bluet"]
 
-  public val POTTED_RED_TULIP: RegistryBlock = Registries.blocks["minecraft:potted_red_tulip"]
+  public val POTTED_RED_TULIP: RegistryBlock = Registries.block["minecraft:potted_red_tulip"]
 
-  public val POTTED_ORANGE_TULIP: RegistryBlock = Registries.blocks["minecraft:potted_orange_tulip"]
+  public val POTTED_ORANGE_TULIP: RegistryBlock = Registries.block["minecraft:potted_orange_tulip"]
 
-  public val POTTED_WHITE_TULIP: RegistryBlock = Registries.blocks["minecraft:potted_white_tulip"]
+  public val POTTED_WHITE_TULIP: RegistryBlock = Registries.block["minecraft:potted_white_tulip"]
 
-  public val POTTED_PINK_TULIP: RegistryBlock = Registries.blocks["minecraft:potted_pink_tulip"]
+  public val POTTED_PINK_TULIP: RegistryBlock = Registries.block["minecraft:potted_pink_tulip"]
 
-  public val POTTED_OXEYE_DAISY: RegistryBlock = Registries.blocks["minecraft:potted_oxeye_daisy"]
+  public val POTTED_OXEYE_DAISY: RegistryBlock = Registries.block["minecraft:potted_oxeye_daisy"]
 
-  public val POTTED_CORNFLOWER: RegistryBlock = Registries.blocks["minecraft:potted_cornflower"]
+  public val POTTED_CORNFLOWER: RegistryBlock = Registries.block["minecraft:potted_cornflower"]
 
   public val POTTED_LILY_OF_THE_VALLEY: RegistryBlock =
-      Registries.blocks["minecraft:potted_lily_of_the_valley"]
+      Registries.block["minecraft:potted_lily_of_the_valley"]
 
-  public val POTTED_WITHER_ROSE: RegistryBlock = Registries.blocks["minecraft:potted_wither_rose"]
+  public val POTTED_WITHER_ROSE: RegistryBlock = Registries.block["minecraft:potted_wither_rose"]
 
-  public val POTTED_RED_MUSHROOM: RegistryBlock = Registries.blocks["minecraft:potted_red_mushroom"]
+  public val POTTED_RED_MUSHROOM: RegistryBlock = Registries.block["minecraft:potted_red_mushroom"]
 
-  public val POTTED_BROWN_MUSHROOM: RegistryBlock = Registries.blocks["minecraft:potted_brown_mushroom"]
+  public val POTTED_BROWN_MUSHROOM: RegistryBlock = Registries.block["minecraft:potted_brown_mushroom"]
 
-  public val POTTED_DEAD_BUSH: RegistryBlock = Registries.blocks["minecraft:potted_dead_bush"]
+  public val POTTED_DEAD_BUSH: RegistryBlock = Registries.block["minecraft:potted_dead_bush"]
 
-  public val POTTED_CACTUS: RegistryBlock = Registries.blocks["minecraft:potted_cactus"]
+  public val POTTED_CACTUS: RegistryBlock = Registries.block["minecraft:potted_cactus"]
 
-  public val CARROTS: RegistryBlock = Registries.blocks["minecraft:carrots"]
+  public val CARROTS: RegistryBlock = Registries.block["minecraft:carrots"]
 
-  public val POTATOES: RegistryBlock = Registries.blocks["minecraft:potatoes"]
+  public val POTATOES: RegistryBlock = Registries.block["minecraft:potatoes"]
 
-  public val OAK_BUTTON: RegistryBlock = Registries.blocks["minecraft:oak_button"]
+  public val OAK_BUTTON: RegistryBlock = Registries.block["minecraft:oak_button"]
 
-  public val SPRUCE_BUTTON: RegistryBlock = Registries.blocks["minecraft:spruce_button"]
+  public val SPRUCE_BUTTON: RegistryBlock = Registries.block["minecraft:spruce_button"]
 
-  public val BIRCH_BUTTON: RegistryBlock = Registries.blocks["minecraft:birch_button"]
+  public val BIRCH_BUTTON: RegistryBlock = Registries.block["minecraft:birch_button"]
 
-  public val JUNGLE_BUTTON: RegistryBlock = Registries.blocks["minecraft:jungle_button"]
+  public val JUNGLE_BUTTON: RegistryBlock = Registries.block["minecraft:jungle_button"]
 
-  public val ACACIA_BUTTON: RegistryBlock = Registries.blocks["minecraft:acacia_button"]
+  public val ACACIA_BUTTON: RegistryBlock = Registries.block["minecraft:acacia_button"]
 
-  public val CHERRY_BUTTON: RegistryBlock = Registries.blocks["minecraft:cherry_button"]
+  public val CHERRY_BUTTON: RegistryBlock = Registries.block["minecraft:cherry_button"]
 
-  public val DARK_OAK_BUTTON: RegistryBlock = Registries.blocks["minecraft:dark_oak_button"]
+  public val DARK_OAK_BUTTON: RegistryBlock = Registries.block["minecraft:dark_oak_button"]
 
-  public val PALE_OAK_BUTTON: RegistryBlock = Registries.blocks["minecraft:pale_oak_button"]
+  public val PALE_OAK_BUTTON: RegistryBlock = Registries.block["minecraft:pale_oak_button"]
 
-  public val MANGROVE_BUTTON: RegistryBlock = Registries.blocks["minecraft:mangrove_button"]
+  public val MANGROVE_BUTTON: RegistryBlock = Registries.block["minecraft:mangrove_button"]
 
-  public val BAMBOO_BUTTON: RegistryBlock = Registries.blocks["minecraft:bamboo_button"]
+  public val BAMBOO_BUTTON: RegistryBlock = Registries.block["minecraft:bamboo_button"]
 
-  public val SKELETON_SKULL: RegistryBlock = Registries.blocks["minecraft:skeleton_skull"]
+  public val SKELETON_SKULL: RegistryBlock = Registries.block["minecraft:skeleton_skull"]
 
-  public val SKELETON_WALL_SKULL: RegistryBlock = Registries.blocks["minecraft:skeleton_wall_skull"]
+  public val SKELETON_WALL_SKULL: RegistryBlock = Registries.block["minecraft:skeleton_wall_skull"]
 
-  public val WITHER_SKELETON_SKULL: RegistryBlock = Registries.blocks["minecraft:wither_skeleton_skull"]
+  public val WITHER_SKELETON_SKULL: RegistryBlock = Registries.block["minecraft:wither_skeleton_skull"]
 
   public val WITHER_SKELETON_WALL_SKULL: RegistryBlock =
-      Registries.blocks["minecraft:wither_skeleton_wall_skull"]
+      Registries.block["minecraft:wither_skeleton_wall_skull"]
 
-  public val ZOMBIE_HEAD: RegistryBlock = Registries.blocks["minecraft:zombie_head"]
+  public val ZOMBIE_HEAD: RegistryBlock = Registries.block["minecraft:zombie_head"]
 
-  public val ZOMBIE_WALL_HEAD: RegistryBlock = Registries.blocks["minecraft:zombie_wall_head"]
+  public val ZOMBIE_WALL_HEAD: RegistryBlock = Registries.block["minecraft:zombie_wall_head"]
 
-  public val PLAYER_HEAD: RegistryBlock = Registries.blocks["minecraft:player_head"]
+  public val PLAYER_HEAD: RegistryBlock = Registries.block["minecraft:player_head"]
 
-  public val PLAYER_WALL_HEAD: RegistryBlock = Registries.blocks["minecraft:player_wall_head"]
+  public val PLAYER_WALL_HEAD: RegistryBlock = Registries.block["minecraft:player_wall_head"]
 
-  public val CREEPER_HEAD: RegistryBlock = Registries.blocks["minecraft:creeper_head"]
+  public val CREEPER_HEAD: RegistryBlock = Registries.block["minecraft:creeper_head"]
 
-  public val CREEPER_WALL_HEAD: RegistryBlock = Registries.blocks["minecraft:creeper_wall_head"]
+  public val CREEPER_WALL_HEAD: RegistryBlock = Registries.block["minecraft:creeper_wall_head"]
 
-  public val DRAGON_HEAD: RegistryBlock = Registries.blocks["minecraft:dragon_head"]
+  public val DRAGON_HEAD: RegistryBlock = Registries.block["minecraft:dragon_head"]
 
-  public val DRAGON_WALL_HEAD: RegistryBlock = Registries.blocks["minecraft:dragon_wall_head"]
+  public val DRAGON_WALL_HEAD: RegistryBlock = Registries.block["minecraft:dragon_wall_head"]
 
-  public val PIGLIN_HEAD: RegistryBlock = Registries.blocks["minecraft:piglin_head"]
+  public val PIGLIN_HEAD: RegistryBlock = Registries.block["minecraft:piglin_head"]
 
-  public val PIGLIN_WALL_HEAD: RegistryBlock = Registries.blocks["minecraft:piglin_wall_head"]
+  public val PIGLIN_WALL_HEAD: RegistryBlock = Registries.block["minecraft:piglin_wall_head"]
 
-  public val ANVIL: RegistryBlock = Registries.blocks["minecraft:anvil"]
+  public val ANVIL: RegistryBlock = Registries.block["minecraft:anvil"]
 
-  public val CHIPPED_ANVIL: RegistryBlock = Registries.blocks["minecraft:chipped_anvil"]
+  public val CHIPPED_ANVIL: RegistryBlock = Registries.block["minecraft:chipped_anvil"]
 
-  public val DAMAGED_ANVIL: RegistryBlock = Registries.blocks["minecraft:damaged_anvil"]
+  public val DAMAGED_ANVIL: RegistryBlock = Registries.block["minecraft:damaged_anvil"]
 
-  public val TRAPPED_CHEST: RegistryBlock = Registries.blocks["minecraft:trapped_chest"]
+  public val TRAPPED_CHEST: RegistryBlock = Registries.block["minecraft:trapped_chest"]
 
   public val LIGHT_WEIGHTED_PRESSURE_PLATE: RegistryBlock =
-      Registries.blocks["minecraft:light_weighted_pressure_plate"]
+      Registries.block["minecraft:light_weighted_pressure_plate"]
 
   public val HEAVY_WEIGHTED_PRESSURE_PLATE: RegistryBlock =
-      Registries.blocks["minecraft:heavy_weighted_pressure_plate"]
+      Registries.block["minecraft:heavy_weighted_pressure_plate"]
 
-  public val COMPARATOR: RegistryBlock = Registries.blocks["minecraft:comparator"]
+  public val COMPARATOR: RegistryBlock = Registries.block["minecraft:comparator"]
 
-  public val DAYLIGHT_DETECTOR: RegistryBlock = Registries.blocks["minecraft:daylight_detector"]
+  public val DAYLIGHT_DETECTOR: RegistryBlock = Registries.block["minecraft:daylight_detector"]
 
-  public val REDSTONE_BLOCK: RegistryBlock = Registries.blocks["minecraft:redstone_block"]
+  public val REDSTONE_BLOCK: RegistryBlock = Registries.block["minecraft:redstone_block"]
 
-  public val NETHER_QUARTZ_ORE: RegistryBlock = Registries.blocks["minecraft:nether_quartz_ore"]
+  public val NETHER_QUARTZ_ORE: RegistryBlock = Registries.block["minecraft:nether_quartz_ore"]
 
-  public val HOPPER: RegistryBlock = Registries.blocks["minecraft:hopper"]
+  public val HOPPER: RegistryBlock = Registries.block["minecraft:hopper"]
 
-  public val QUARTZ_BLOCK: RegistryBlock = Registries.blocks["minecraft:quartz_block"]
+  public val QUARTZ_BLOCK: RegistryBlock = Registries.block["minecraft:quartz_block"]
 
-  public val CHISELED_QUARTZ_BLOCK: RegistryBlock = Registries.blocks["minecraft:chiseled_quartz_block"]
+  public val CHISELED_QUARTZ_BLOCK: RegistryBlock = Registries.block["minecraft:chiseled_quartz_block"]
 
-  public val QUARTZ_PILLAR: RegistryBlock = Registries.blocks["minecraft:quartz_pillar"]
+  public val QUARTZ_PILLAR: RegistryBlock = Registries.block["minecraft:quartz_pillar"]
 
-  public val QUARTZ_STAIRS: RegistryBlock = Registries.blocks["minecraft:quartz_stairs"]
+  public val QUARTZ_STAIRS: RegistryBlock = Registries.block["minecraft:quartz_stairs"]
 
-  public val ACTIVATOR_RAIL: RegistryBlock = Registries.blocks["minecraft:activator_rail"]
+  public val ACTIVATOR_RAIL: RegistryBlock = Registries.block["minecraft:activator_rail"]
 
-  public val DROPPER: RegistryBlock = Registries.blocks["minecraft:dropper"]
+  public val DROPPER: RegistryBlock = Registries.block["minecraft:dropper"]
 
-  public val WHITE_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:white_terracotta"]
+  public val WHITE_TERRACOTTA: RegistryBlock = Registries.block["minecraft:white_terracotta"]
 
-  public val ORANGE_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:orange_terracotta"]
+  public val ORANGE_TERRACOTTA: RegistryBlock = Registries.block["minecraft:orange_terracotta"]
 
-  public val MAGENTA_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:magenta_terracotta"]
+  public val MAGENTA_TERRACOTTA: RegistryBlock = Registries.block["minecraft:magenta_terracotta"]
 
-  public val LIGHT_BLUE_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:light_blue_terracotta"]
+  public val LIGHT_BLUE_TERRACOTTA: RegistryBlock = Registries.block["minecraft:light_blue_terracotta"]
 
-  public val YELLOW_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:yellow_terracotta"]
+  public val YELLOW_TERRACOTTA: RegistryBlock = Registries.block["minecraft:yellow_terracotta"]
 
-  public val LIME_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:lime_terracotta"]
+  public val LIME_TERRACOTTA: RegistryBlock = Registries.block["minecraft:lime_terracotta"]
 
-  public val PINK_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:pink_terracotta"]
+  public val PINK_TERRACOTTA: RegistryBlock = Registries.block["minecraft:pink_terracotta"]
 
-  public val GRAY_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:gray_terracotta"]
+  public val GRAY_TERRACOTTA: RegistryBlock = Registries.block["minecraft:gray_terracotta"]
 
-  public val LIGHT_GRAY_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:light_gray_terracotta"]
+  public val LIGHT_GRAY_TERRACOTTA: RegistryBlock = Registries.block["minecraft:light_gray_terracotta"]
 
-  public val CYAN_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:cyan_terracotta"]
+  public val CYAN_TERRACOTTA: RegistryBlock = Registries.block["minecraft:cyan_terracotta"]
 
-  public val PURPLE_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:purple_terracotta"]
+  public val PURPLE_TERRACOTTA: RegistryBlock = Registries.block["minecraft:purple_terracotta"]
 
-  public val BLUE_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:blue_terracotta"]
+  public val BLUE_TERRACOTTA: RegistryBlock = Registries.block["minecraft:blue_terracotta"]
 
-  public val BROWN_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:brown_terracotta"]
+  public val BROWN_TERRACOTTA: RegistryBlock = Registries.block["minecraft:brown_terracotta"]
 
-  public val GREEN_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:green_terracotta"]
+  public val GREEN_TERRACOTTA: RegistryBlock = Registries.block["minecraft:green_terracotta"]
 
-  public val RED_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:red_terracotta"]
+  public val RED_TERRACOTTA: RegistryBlock = Registries.block["minecraft:red_terracotta"]
 
-  public val BLACK_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:black_terracotta"]
+  public val BLACK_TERRACOTTA: RegistryBlock = Registries.block["minecraft:black_terracotta"]
 
   public val WHITE_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:white_stained_glass_pane"]
+      Registries.block["minecraft:white_stained_glass_pane"]
 
   public val ORANGE_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:orange_stained_glass_pane"]
+      Registries.block["minecraft:orange_stained_glass_pane"]
 
   public val MAGENTA_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:magenta_stained_glass_pane"]
+      Registries.block["minecraft:magenta_stained_glass_pane"]
 
   public val LIGHT_BLUE_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:light_blue_stained_glass_pane"]
+      Registries.block["minecraft:light_blue_stained_glass_pane"]
 
   public val YELLOW_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:yellow_stained_glass_pane"]
+      Registries.block["minecraft:yellow_stained_glass_pane"]
 
   public val LIME_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:lime_stained_glass_pane"]
+      Registries.block["minecraft:lime_stained_glass_pane"]
 
   public val PINK_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:pink_stained_glass_pane"]
+      Registries.block["minecraft:pink_stained_glass_pane"]
 
   public val GRAY_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:gray_stained_glass_pane"]
+      Registries.block["minecraft:gray_stained_glass_pane"]
 
   public val LIGHT_GRAY_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:light_gray_stained_glass_pane"]
+      Registries.block["minecraft:light_gray_stained_glass_pane"]
 
   public val CYAN_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:cyan_stained_glass_pane"]
+      Registries.block["minecraft:cyan_stained_glass_pane"]
 
   public val PURPLE_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:purple_stained_glass_pane"]
+      Registries.block["minecraft:purple_stained_glass_pane"]
 
   public val BLUE_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:blue_stained_glass_pane"]
+      Registries.block["minecraft:blue_stained_glass_pane"]
 
   public val BROWN_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:brown_stained_glass_pane"]
+      Registries.block["minecraft:brown_stained_glass_pane"]
 
   public val GREEN_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:green_stained_glass_pane"]
+      Registries.block["minecraft:green_stained_glass_pane"]
 
   public val RED_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:red_stained_glass_pane"]
+      Registries.block["minecraft:red_stained_glass_pane"]
 
   public val BLACK_STAINED_GLASS_PANE: RegistryBlock =
-      Registries.blocks["minecraft:black_stained_glass_pane"]
+      Registries.block["minecraft:black_stained_glass_pane"]
 
-  public val ACACIA_STAIRS: RegistryBlock = Registries.blocks["minecraft:acacia_stairs"]
+  public val ACACIA_STAIRS: RegistryBlock = Registries.block["minecraft:acacia_stairs"]
 
-  public val CHERRY_STAIRS: RegistryBlock = Registries.blocks["minecraft:cherry_stairs"]
+  public val CHERRY_STAIRS: RegistryBlock = Registries.block["minecraft:cherry_stairs"]
 
-  public val DARK_OAK_STAIRS: RegistryBlock = Registries.blocks["minecraft:dark_oak_stairs"]
+  public val DARK_OAK_STAIRS: RegistryBlock = Registries.block["minecraft:dark_oak_stairs"]
 
-  public val PALE_OAK_STAIRS: RegistryBlock = Registries.blocks["minecraft:pale_oak_stairs"]
+  public val PALE_OAK_STAIRS: RegistryBlock = Registries.block["minecraft:pale_oak_stairs"]
 
-  public val MANGROVE_STAIRS: RegistryBlock = Registries.blocks["minecraft:mangrove_stairs"]
+  public val MANGROVE_STAIRS: RegistryBlock = Registries.block["minecraft:mangrove_stairs"]
 
-  public val BAMBOO_STAIRS: RegistryBlock = Registries.blocks["minecraft:bamboo_stairs"]
+  public val BAMBOO_STAIRS: RegistryBlock = Registries.block["minecraft:bamboo_stairs"]
 
-  public val BAMBOO_MOSAIC_STAIRS: RegistryBlock = Registries.blocks["minecraft:bamboo_mosaic_stairs"]
+  public val BAMBOO_MOSAIC_STAIRS: RegistryBlock = Registries.block["minecraft:bamboo_mosaic_stairs"]
 
-  public val SLIME_BLOCK: RegistryBlock = Registries.blocks["minecraft:slime_block"]
+  public val SLIME_BLOCK: RegistryBlock = Registries.block["minecraft:slime_block"]
 
-  public val BARRIER: RegistryBlock = Registries.blocks["minecraft:barrier"]
+  public val BARRIER: RegistryBlock = Registries.block["minecraft:barrier"]
 
-  public val LIGHT: RegistryBlock = Registries.blocks["minecraft:light"]
+  public val LIGHT: RegistryBlock = Registries.block["minecraft:light"]
 
-  public val IRON_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:iron_trapdoor"]
+  public val IRON_TRAPDOOR: RegistryBlock = Registries.block["minecraft:iron_trapdoor"]
 
-  public val PRISMARINE: RegistryBlock = Registries.blocks["minecraft:prismarine"]
+  public val PRISMARINE: RegistryBlock = Registries.block["minecraft:prismarine"]
 
-  public val PRISMARINE_BRICKS: RegistryBlock = Registries.blocks["minecraft:prismarine_bricks"]
+  public val PRISMARINE_BRICKS: RegistryBlock = Registries.block["minecraft:prismarine_bricks"]
 
-  public val DARK_PRISMARINE: RegistryBlock = Registries.blocks["minecraft:dark_prismarine"]
+  public val DARK_PRISMARINE: RegistryBlock = Registries.block["minecraft:dark_prismarine"]
 
-  public val PRISMARINE_STAIRS: RegistryBlock = Registries.blocks["minecraft:prismarine_stairs"]
+  public val PRISMARINE_STAIRS: RegistryBlock = Registries.block["minecraft:prismarine_stairs"]
 
   public val PRISMARINE_BRICK_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:prismarine_brick_stairs"]
+      Registries.block["minecraft:prismarine_brick_stairs"]
 
   public val DARK_PRISMARINE_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:dark_prismarine_stairs"]
+      Registries.block["minecraft:dark_prismarine_stairs"]
 
-  public val PRISMARINE_SLAB: RegistryBlock = Registries.blocks["minecraft:prismarine_slab"]
+  public val PRISMARINE_SLAB: RegistryBlock = Registries.block["minecraft:prismarine_slab"]
 
-  public val PRISMARINE_BRICK_SLAB: RegistryBlock = Registries.blocks["minecraft:prismarine_brick_slab"]
+  public val PRISMARINE_BRICK_SLAB: RegistryBlock = Registries.block["minecraft:prismarine_brick_slab"]
 
-  public val DARK_PRISMARINE_SLAB: RegistryBlock = Registries.blocks["minecraft:dark_prismarine_slab"]
+  public val DARK_PRISMARINE_SLAB: RegistryBlock = Registries.block["minecraft:dark_prismarine_slab"]
 
-  public val SEA_LANTERN: RegistryBlock = Registries.blocks["minecraft:sea_lantern"]
+  public val SEA_LANTERN: RegistryBlock = Registries.block["minecraft:sea_lantern"]
 
-  public val HAY_BLOCK: RegistryBlock = Registries.blocks["minecraft:hay_block"]
+  public val HAY_BLOCK: RegistryBlock = Registries.block["minecraft:hay_block"]
 
-  public val WHITE_CARPET: RegistryBlock = Registries.blocks["minecraft:white_carpet"]
+  public val WHITE_CARPET: RegistryBlock = Registries.block["minecraft:white_carpet"]
 
-  public val ORANGE_CARPET: RegistryBlock = Registries.blocks["minecraft:orange_carpet"]
+  public val ORANGE_CARPET: RegistryBlock = Registries.block["minecraft:orange_carpet"]
 
-  public val MAGENTA_CARPET: RegistryBlock = Registries.blocks["minecraft:magenta_carpet"]
+  public val MAGENTA_CARPET: RegistryBlock = Registries.block["minecraft:magenta_carpet"]
 
-  public val LIGHT_BLUE_CARPET: RegistryBlock = Registries.blocks["minecraft:light_blue_carpet"]
+  public val LIGHT_BLUE_CARPET: RegistryBlock = Registries.block["minecraft:light_blue_carpet"]
 
-  public val YELLOW_CARPET: RegistryBlock = Registries.blocks["minecraft:yellow_carpet"]
+  public val YELLOW_CARPET: RegistryBlock = Registries.block["minecraft:yellow_carpet"]
 
-  public val LIME_CARPET: RegistryBlock = Registries.blocks["minecraft:lime_carpet"]
+  public val LIME_CARPET: RegistryBlock = Registries.block["minecraft:lime_carpet"]
 
-  public val PINK_CARPET: RegistryBlock = Registries.blocks["minecraft:pink_carpet"]
+  public val PINK_CARPET: RegistryBlock = Registries.block["minecraft:pink_carpet"]
 
-  public val GRAY_CARPET: RegistryBlock = Registries.blocks["minecraft:gray_carpet"]
+  public val GRAY_CARPET: RegistryBlock = Registries.block["minecraft:gray_carpet"]
 
-  public val LIGHT_GRAY_CARPET: RegistryBlock = Registries.blocks["minecraft:light_gray_carpet"]
+  public val LIGHT_GRAY_CARPET: RegistryBlock = Registries.block["minecraft:light_gray_carpet"]
 
-  public val CYAN_CARPET: RegistryBlock = Registries.blocks["minecraft:cyan_carpet"]
+  public val CYAN_CARPET: RegistryBlock = Registries.block["minecraft:cyan_carpet"]
 
-  public val PURPLE_CARPET: RegistryBlock = Registries.blocks["minecraft:purple_carpet"]
+  public val PURPLE_CARPET: RegistryBlock = Registries.block["minecraft:purple_carpet"]
 
-  public val BLUE_CARPET: RegistryBlock = Registries.blocks["minecraft:blue_carpet"]
+  public val BLUE_CARPET: RegistryBlock = Registries.block["minecraft:blue_carpet"]
 
-  public val BROWN_CARPET: RegistryBlock = Registries.blocks["minecraft:brown_carpet"]
+  public val BROWN_CARPET: RegistryBlock = Registries.block["minecraft:brown_carpet"]
 
-  public val GREEN_CARPET: RegistryBlock = Registries.blocks["minecraft:green_carpet"]
+  public val GREEN_CARPET: RegistryBlock = Registries.block["minecraft:green_carpet"]
 
-  public val RED_CARPET: RegistryBlock = Registries.blocks["minecraft:red_carpet"]
+  public val RED_CARPET: RegistryBlock = Registries.block["minecraft:red_carpet"]
 
-  public val BLACK_CARPET: RegistryBlock = Registries.blocks["minecraft:black_carpet"]
+  public val BLACK_CARPET: RegistryBlock = Registries.block["minecraft:black_carpet"]
 
-  public val TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:terracotta"]
+  public val TERRACOTTA: RegistryBlock = Registries.block["minecraft:terracotta"]
 
-  public val COAL_BLOCK: RegistryBlock = Registries.blocks["minecraft:coal_block"]
+  public val COAL_BLOCK: RegistryBlock = Registries.block["minecraft:coal_block"]
 
-  public val PACKED_ICE: RegistryBlock = Registries.blocks["minecraft:packed_ice"]
+  public val PACKED_ICE: RegistryBlock = Registries.block["minecraft:packed_ice"]
 
-  public val SUNFLOWER: RegistryBlock = Registries.blocks["minecraft:sunflower"]
+  public val SUNFLOWER: RegistryBlock = Registries.block["minecraft:sunflower"]
 
-  public val LILAC: RegistryBlock = Registries.blocks["minecraft:lilac"]
+  public val LILAC: RegistryBlock = Registries.block["minecraft:lilac"]
 
-  public val ROSE_BUSH: RegistryBlock = Registries.blocks["minecraft:rose_bush"]
+  public val ROSE_BUSH: RegistryBlock = Registries.block["minecraft:rose_bush"]
 
-  public val PEONY: RegistryBlock = Registries.blocks["minecraft:peony"]
+  public val PEONY: RegistryBlock = Registries.block["minecraft:peony"]
 
-  public val TALL_GRASS: RegistryBlock = Registries.blocks["minecraft:tall_grass"]
+  public val TALL_GRASS: RegistryBlock = Registries.block["minecraft:tall_grass"]
 
-  public val LARGE_FERN: RegistryBlock = Registries.blocks["minecraft:large_fern"]
+  public val LARGE_FERN: RegistryBlock = Registries.block["minecraft:large_fern"]
 
-  public val WHITE_BANNER: RegistryBlock = Registries.blocks["minecraft:white_banner"]
+  public val WHITE_BANNER: RegistryBlock = Registries.block["minecraft:white_banner"]
 
-  public val ORANGE_BANNER: RegistryBlock = Registries.blocks["minecraft:orange_banner"]
+  public val ORANGE_BANNER: RegistryBlock = Registries.block["minecraft:orange_banner"]
 
-  public val MAGENTA_BANNER: RegistryBlock = Registries.blocks["minecraft:magenta_banner"]
+  public val MAGENTA_BANNER: RegistryBlock = Registries.block["minecraft:magenta_banner"]
 
-  public val LIGHT_BLUE_BANNER: RegistryBlock = Registries.blocks["minecraft:light_blue_banner"]
+  public val LIGHT_BLUE_BANNER: RegistryBlock = Registries.block["minecraft:light_blue_banner"]
 
-  public val YELLOW_BANNER: RegistryBlock = Registries.blocks["minecraft:yellow_banner"]
+  public val YELLOW_BANNER: RegistryBlock = Registries.block["minecraft:yellow_banner"]
 
-  public val LIME_BANNER: RegistryBlock = Registries.blocks["minecraft:lime_banner"]
+  public val LIME_BANNER: RegistryBlock = Registries.block["minecraft:lime_banner"]
 
-  public val PINK_BANNER: RegistryBlock = Registries.blocks["minecraft:pink_banner"]
+  public val PINK_BANNER: RegistryBlock = Registries.block["minecraft:pink_banner"]
 
-  public val GRAY_BANNER: RegistryBlock = Registries.blocks["minecraft:gray_banner"]
+  public val GRAY_BANNER: RegistryBlock = Registries.block["minecraft:gray_banner"]
 
-  public val LIGHT_GRAY_BANNER: RegistryBlock = Registries.blocks["minecraft:light_gray_banner"]
+  public val LIGHT_GRAY_BANNER: RegistryBlock = Registries.block["minecraft:light_gray_banner"]
 
-  public val CYAN_BANNER: RegistryBlock = Registries.blocks["minecraft:cyan_banner"]
+  public val CYAN_BANNER: RegistryBlock = Registries.block["minecraft:cyan_banner"]
 
-  public val PURPLE_BANNER: RegistryBlock = Registries.blocks["minecraft:purple_banner"]
+  public val PURPLE_BANNER: RegistryBlock = Registries.block["minecraft:purple_banner"]
 
-  public val BLUE_BANNER: RegistryBlock = Registries.blocks["minecraft:blue_banner"]
+  public val BLUE_BANNER: RegistryBlock = Registries.block["minecraft:blue_banner"]
 
-  public val BROWN_BANNER: RegistryBlock = Registries.blocks["minecraft:brown_banner"]
+  public val BROWN_BANNER: RegistryBlock = Registries.block["minecraft:brown_banner"]
 
-  public val GREEN_BANNER: RegistryBlock = Registries.blocks["minecraft:green_banner"]
+  public val GREEN_BANNER: RegistryBlock = Registries.block["minecraft:green_banner"]
 
-  public val RED_BANNER: RegistryBlock = Registries.blocks["minecraft:red_banner"]
+  public val RED_BANNER: RegistryBlock = Registries.block["minecraft:red_banner"]
 
-  public val BLACK_BANNER: RegistryBlock = Registries.blocks["minecraft:black_banner"]
+  public val BLACK_BANNER: RegistryBlock = Registries.block["minecraft:black_banner"]
 
-  public val WHITE_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:white_wall_banner"]
+  public val WHITE_WALL_BANNER: RegistryBlock = Registries.block["minecraft:white_wall_banner"]
 
-  public val ORANGE_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:orange_wall_banner"]
+  public val ORANGE_WALL_BANNER: RegistryBlock = Registries.block["minecraft:orange_wall_banner"]
 
-  public val MAGENTA_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:magenta_wall_banner"]
+  public val MAGENTA_WALL_BANNER: RegistryBlock = Registries.block["minecraft:magenta_wall_banner"]
 
   public val LIGHT_BLUE_WALL_BANNER: RegistryBlock =
-      Registries.blocks["minecraft:light_blue_wall_banner"]
+      Registries.block["minecraft:light_blue_wall_banner"]
 
-  public val YELLOW_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:yellow_wall_banner"]
+  public val YELLOW_WALL_BANNER: RegistryBlock = Registries.block["minecraft:yellow_wall_banner"]
 
-  public val LIME_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:lime_wall_banner"]
+  public val LIME_WALL_BANNER: RegistryBlock = Registries.block["minecraft:lime_wall_banner"]
 
-  public val PINK_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:pink_wall_banner"]
+  public val PINK_WALL_BANNER: RegistryBlock = Registries.block["minecraft:pink_wall_banner"]
 
-  public val GRAY_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:gray_wall_banner"]
+  public val GRAY_WALL_BANNER: RegistryBlock = Registries.block["minecraft:gray_wall_banner"]
 
   public val LIGHT_GRAY_WALL_BANNER: RegistryBlock =
-      Registries.blocks["minecraft:light_gray_wall_banner"]
+      Registries.block["minecraft:light_gray_wall_banner"]
 
-  public val CYAN_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:cyan_wall_banner"]
+  public val CYAN_WALL_BANNER: RegistryBlock = Registries.block["minecraft:cyan_wall_banner"]
 
-  public val PURPLE_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:purple_wall_banner"]
+  public val PURPLE_WALL_BANNER: RegistryBlock = Registries.block["minecraft:purple_wall_banner"]
 
-  public val BLUE_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:blue_wall_banner"]
+  public val BLUE_WALL_BANNER: RegistryBlock = Registries.block["minecraft:blue_wall_banner"]
 
-  public val BROWN_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:brown_wall_banner"]
+  public val BROWN_WALL_BANNER: RegistryBlock = Registries.block["minecraft:brown_wall_banner"]
 
-  public val GREEN_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:green_wall_banner"]
+  public val GREEN_WALL_BANNER: RegistryBlock = Registries.block["minecraft:green_wall_banner"]
 
-  public val RED_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:red_wall_banner"]
+  public val RED_WALL_BANNER: RegistryBlock = Registries.block["minecraft:red_wall_banner"]
 
-  public val BLACK_WALL_BANNER: RegistryBlock = Registries.blocks["minecraft:black_wall_banner"]
+  public val BLACK_WALL_BANNER: RegistryBlock = Registries.block["minecraft:black_wall_banner"]
 
-  public val RED_SANDSTONE: RegistryBlock = Registries.blocks["minecraft:red_sandstone"]
+  public val RED_SANDSTONE: RegistryBlock = Registries.block["minecraft:red_sandstone"]
 
   public val CHISELED_RED_SANDSTONE: RegistryBlock =
-      Registries.blocks["minecraft:chiseled_red_sandstone"]
+      Registries.block["minecraft:chiseled_red_sandstone"]
 
-  public val CUT_RED_SANDSTONE: RegistryBlock = Registries.blocks["minecraft:cut_red_sandstone"]
+  public val CUT_RED_SANDSTONE: RegistryBlock = Registries.block["minecraft:cut_red_sandstone"]
 
-  public val RED_SANDSTONE_STAIRS: RegistryBlock = Registries.blocks["minecraft:red_sandstone_stairs"]
+  public val RED_SANDSTONE_STAIRS: RegistryBlock = Registries.block["minecraft:red_sandstone_stairs"]
 
-  public val OAK_SLAB: RegistryBlock = Registries.blocks["minecraft:oak_slab"]
+  public val OAK_SLAB: RegistryBlock = Registries.block["minecraft:oak_slab"]
 
-  public val SPRUCE_SLAB: RegistryBlock = Registries.blocks["minecraft:spruce_slab"]
+  public val SPRUCE_SLAB: RegistryBlock = Registries.block["minecraft:spruce_slab"]
 
-  public val BIRCH_SLAB: RegistryBlock = Registries.blocks["minecraft:birch_slab"]
+  public val BIRCH_SLAB: RegistryBlock = Registries.block["minecraft:birch_slab"]
 
-  public val JUNGLE_SLAB: RegistryBlock = Registries.blocks["minecraft:jungle_slab"]
+  public val JUNGLE_SLAB: RegistryBlock = Registries.block["minecraft:jungle_slab"]
 
-  public val ACACIA_SLAB: RegistryBlock = Registries.blocks["minecraft:acacia_slab"]
+  public val ACACIA_SLAB: RegistryBlock = Registries.block["minecraft:acacia_slab"]
 
-  public val CHERRY_SLAB: RegistryBlock = Registries.blocks["minecraft:cherry_slab"]
+  public val CHERRY_SLAB: RegistryBlock = Registries.block["minecraft:cherry_slab"]
 
-  public val DARK_OAK_SLAB: RegistryBlock = Registries.blocks["minecraft:dark_oak_slab"]
+  public val DARK_OAK_SLAB: RegistryBlock = Registries.block["minecraft:dark_oak_slab"]
 
-  public val PALE_OAK_SLAB: RegistryBlock = Registries.blocks["minecraft:pale_oak_slab"]
+  public val PALE_OAK_SLAB: RegistryBlock = Registries.block["minecraft:pale_oak_slab"]
 
-  public val MANGROVE_SLAB: RegistryBlock = Registries.blocks["minecraft:mangrove_slab"]
+  public val MANGROVE_SLAB: RegistryBlock = Registries.block["minecraft:mangrove_slab"]
 
-  public val BAMBOO_SLAB: RegistryBlock = Registries.blocks["minecraft:bamboo_slab"]
+  public val BAMBOO_SLAB: RegistryBlock = Registries.block["minecraft:bamboo_slab"]
 
-  public val BAMBOO_MOSAIC_SLAB: RegistryBlock = Registries.blocks["minecraft:bamboo_mosaic_slab"]
+  public val BAMBOO_MOSAIC_SLAB: RegistryBlock = Registries.block["minecraft:bamboo_mosaic_slab"]
 
-  public val STONE_SLAB: RegistryBlock = Registries.blocks["minecraft:stone_slab"]
+  public val STONE_SLAB: RegistryBlock = Registries.block["minecraft:stone_slab"]
 
-  public val SMOOTH_STONE_SLAB: RegistryBlock = Registries.blocks["minecraft:smooth_stone_slab"]
+  public val SMOOTH_STONE_SLAB: RegistryBlock = Registries.block["minecraft:smooth_stone_slab"]
 
-  public val SANDSTONE_SLAB: RegistryBlock = Registries.blocks["minecraft:sandstone_slab"]
+  public val SANDSTONE_SLAB: RegistryBlock = Registries.block["minecraft:sandstone_slab"]
 
-  public val CUT_SANDSTONE_SLAB: RegistryBlock = Registries.blocks["minecraft:cut_sandstone_slab"]
+  public val CUT_SANDSTONE_SLAB: RegistryBlock = Registries.block["minecraft:cut_sandstone_slab"]
 
-  public val PETRIFIED_OAK_SLAB: RegistryBlock = Registries.blocks["minecraft:petrified_oak_slab"]
+  public val PETRIFIED_OAK_SLAB: RegistryBlock = Registries.block["minecraft:petrified_oak_slab"]
 
-  public val COBBLESTONE_SLAB: RegistryBlock = Registries.blocks["minecraft:cobblestone_slab"]
+  public val COBBLESTONE_SLAB: RegistryBlock = Registries.block["minecraft:cobblestone_slab"]
 
-  public val BRICK_SLAB: RegistryBlock = Registries.blocks["minecraft:brick_slab"]
+  public val BRICK_SLAB: RegistryBlock = Registries.block["minecraft:brick_slab"]
 
-  public val STONE_BRICK_SLAB: RegistryBlock = Registries.blocks["minecraft:stone_brick_slab"]
+  public val STONE_BRICK_SLAB: RegistryBlock = Registries.block["minecraft:stone_brick_slab"]
 
-  public val MUD_BRICK_SLAB: RegistryBlock = Registries.blocks["minecraft:mud_brick_slab"]
+  public val MUD_BRICK_SLAB: RegistryBlock = Registries.block["minecraft:mud_brick_slab"]
 
-  public val NETHER_BRICK_SLAB: RegistryBlock = Registries.blocks["minecraft:nether_brick_slab"]
+  public val NETHER_BRICK_SLAB: RegistryBlock = Registries.block["minecraft:nether_brick_slab"]
 
-  public val QUARTZ_SLAB: RegistryBlock = Registries.blocks["minecraft:quartz_slab"]
+  public val QUARTZ_SLAB: RegistryBlock = Registries.block["minecraft:quartz_slab"]
 
-  public val RED_SANDSTONE_SLAB: RegistryBlock = Registries.blocks["minecraft:red_sandstone_slab"]
+  public val RED_SANDSTONE_SLAB: RegistryBlock = Registries.block["minecraft:red_sandstone_slab"]
 
   public val CUT_RED_SANDSTONE_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:cut_red_sandstone_slab"]
+      Registries.block["minecraft:cut_red_sandstone_slab"]
 
-  public val PURPUR_SLAB: RegistryBlock = Registries.blocks["minecraft:purpur_slab"]
+  public val PURPUR_SLAB: RegistryBlock = Registries.block["minecraft:purpur_slab"]
 
-  public val SMOOTH_STONE: RegistryBlock = Registries.blocks["minecraft:smooth_stone"]
+  public val SMOOTH_STONE: RegistryBlock = Registries.block["minecraft:smooth_stone"]
 
-  public val SMOOTH_SANDSTONE: RegistryBlock = Registries.blocks["minecraft:smooth_sandstone"]
+  public val SMOOTH_SANDSTONE: RegistryBlock = Registries.block["minecraft:smooth_sandstone"]
 
-  public val SMOOTH_QUARTZ: RegistryBlock = Registries.blocks["minecraft:smooth_quartz"]
+  public val SMOOTH_QUARTZ: RegistryBlock = Registries.block["minecraft:smooth_quartz"]
 
-  public val SMOOTH_RED_SANDSTONE: RegistryBlock = Registries.blocks["minecraft:smooth_red_sandstone"]
+  public val SMOOTH_RED_SANDSTONE: RegistryBlock = Registries.block["minecraft:smooth_red_sandstone"]
 
-  public val SPRUCE_FENCE_GATE: RegistryBlock = Registries.blocks["minecraft:spruce_fence_gate"]
+  public val SPRUCE_FENCE_GATE: RegistryBlock = Registries.block["minecraft:spruce_fence_gate"]
 
-  public val BIRCH_FENCE_GATE: RegistryBlock = Registries.blocks["minecraft:birch_fence_gate"]
+  public val BIRCH_FENCE_GATE: RegistryBlock = Registries.block["minecraft:birch_fence_gate"]
 
-  public val JUNGLE_FENCE_GATE: RegistryBlock = Registries.blocks["minecraft:jungle_fence_gate"]
+  public val JUNGLE_FENCE_GATE: RegistryBlock = Registries.block["minecraft:jungle_fence_gate"]
 
-  public val ACACIA_FENCE_GATE: RegistryBlock = Registries.blocks["minecraft:acacia_fence_gate"]
+  public val ACACIA_FENCE_GATE: RegistryBlock = Registries.block["minecraft:acacia_fence_gate"]
 
-  public val CHERRY_FENCE_GATE: RegistryBlock = Registries.blocks["minecraft:cherry_fence_gate"]
+  public val CHERRY_FENCE_GATE: RegistryBlock = Registries.block["minecraft:cherry_fence_gate"]
 
-  public val DARK_OAK_FENCE_GATE: RegistryBlock = Registries.blocks["minecraft:dark_oak_fence_gate"]
+  public val DARK_OAK_FENCE_GATE: RegistryBlock = Registries.block["minecraft:dark_oak_fence_gate"]
 
-  public val PALE_OAK_FENCE_GATE: RegistryBlock = Registries.blocks["minecraft:pale_oak_fence_gate"]
+  public val PALE_OAK_FENCE_GATE: RegistryBlock = Registries.block["minecraft:pale_oak_fence_gate"]
 
-  public val MANGROVE_FENCE_GATE: RegistryBlock = Registries.blocks["minecraft:mangrove_fence_gate"]
+  public val MANGROVE_FENCE_GATE: RegistryBlock = Registries.block["minecraft:mangrove_fence_gate"]
 
-  public val BAMBOO_FENCE_GATE: RegistryBlock = Registries.blocks["minecraft:bamboo_fence_gate"]
+  public val BAMBOO_FENCE_GATE: RegistryBlock = Registries.block["minecraft:bamboo_fence_gate"]
 
-  public val SPRUCE_FENCE: RegistryBlock = Registries.blocks["minecraft:spruce_fence"]
+  public val SPRUCE_FENCE: RegistryBlock = Registries.block["minecraft:spruce_fence"]
 
-  public val BIRCH_FENCE: RegistryBlock = Registries.blocks["minecraft:birch_fence"]
+  public val BIRCH_FENCE: RegistryBlock = Registries.block["minecraft:birch_fence"]
 
-  public val JUNGLE_FENCE: RegistryBlock = Registries.blocks["minecraft:jungle_fence"]
+  public val JUNGLE_FENCE: RegistryBlock = Registries.block["minecraft:jungle_fence"]
 
-  public val ACACIA_FENCE: RegistryBlock = Registries.blocks["minecraft:acacia_fence"]
+  public val ACACIA_FENCE: RegistryBlock = Registries.block["minecraft:acacia_fence"]
 
-  public val CHERRY_FENCE: RegistryBlock = Registries.blocks["minecraft:cherry_fence"]
+  public val CHERRY_FENCE: RegistryBlock = Registries.block["minecraft:cherry_fence"]
 
-  public val DARK_OAK_FENCE: RegistryBlock = Registries.blocks["minecraft:dark_oak_fence"]
+  public val DARK_OAK_FENCE: RegistryBlock = Registries.block["minecraft:dark_oak_fence"]
 
-  public val PALE_OAK_FENCE: RegistryBlock = Registries.blocks["minecraft:pale_oak_fence"]
+  public val PALE_OAK_FENCE: RegistryBlock = Registries.block["minecraft:pale_oak_fence"]
 
-  public val MANGROVE_FENCE: RegistryBlock = Registries.blocks["minecraft:mangrove_fence"]
+  public val MANGROVE_FENCE: RegistryBlock = Registries.block["minecraft:mangrove_fence"]
 
-  public val BAMBOO_FENCE: RegistryBlock = Registries.blocks["minecraft:bamboo_fence"]
+  public val BAMBOO_FENCE: RegistryBlock = Registries.block["minecraft:bamboo_fence"]
 
-  public val SPRUCE_DOOR: RegistryBlock = Registries.blocks["minecraft:spruce_door"]
+  public val SPRUCE_DOOR: RegistryBlock = Registries.block["minecraft:spruce_door"]
 
-  public val BIRCH_DOOR: RegistryBlock = Registries.blocks["minecraft:birch_door"]
+  public val BIRCH_DOOR: RegistryBlock = Registries.block["minecraft:birch_door"]
 
-  public val JUNGLE_DOOR: RegistryBlock = Registries.blocks["minecraft:jungle_door"]
+  public val JUNGLE_DOOR: RegistryBlock = Registries.block["minecraft:jungle_door"]
 
-  public val ACACIA_DOOR: RegistryBlock = Registries.blocks["minecraft:acacia_door"]
+  public val ACACIA_DOOR: RegistryBlock = Registries.block["minecraft:acacia_door"]
 
-  public val CHERRY_DOOR: RegistryBlock = Registries.blocks["minecraft:cherry_door"]
+  public val CHERRY_DOOR: RegistryBlock = Registries.block["minecraft:cherry_door"]
 
-  public val DARK_OAK_DOOR: RegistryBlock = Registries.blocks["minecraft:dark_oak_door"]
+  public val DARK_OAK_DOOR: RegistryBlock = Registries.block["minecraft:dark_oak_door"]
 
-  public val PALE_OAK_DOOR: RegistryBlock = Registries.blocks["minecraft:pale_oak_door"]
+  public val PALE_OAK_DOOR: RegistryBlock = Registries.block["minecraft:pale_oak_door"]
 
-  public val MANGROVE_DOOR: RegistryBlock = Registries.blocks["minecraft:mangrove_door"]
+  public val MANGROVE_DOOR: RegistryBlock = Registries.block["minecraft:mangrove_door"]
 
-  public val BAMBOO_DOOR: RegistryBlock = Registries.blocks["minecraft:bamboo_door"]
+  public val BAMBOO_DOOR: RegistryBlock = Registries.block["minecraft:bamboo_door"]
 
-  public val END_ROD: RegistryBlock = Registries.blocks["minecraft:end_rod"]
+  public val END_ROD: RegistryBlock = Registries.block["minecraft:end_rod"]
 
-  public val CHORUS_PLANT: RegistryBlock = Registries.blocks["minecraft:chorus_plant"]
+  public val CHORUS_PLANT: RegistryBlock = Registries.block["minecraft:chorus_plant"]
 
-  public val CHORUS_FLOWER: RegistryBlock = Registries.blocks["minecraft:chorus_flower"]
+  public val CHORUS_FLOWER: RegistryBlock = Registries.block["minecraft:chorus_flower"]
 
-  public val PURPUR_BLOCK: RegistryBlock = Registries.blocks["minecraft:purpur_block"]
+  public val PURPUR_BLOCK: RegistryBlock = Registries.block["minecraft:purpur_block"]
 
-  public val PURPUR_PILLAR: RegistryBlock = Registries.blocks["minecraft:purpur_pillar"]
+  public val PURPUR_PILLAR: RegistryBlock = Registries.block["minecraft:purpur_pillar"]
 
-  public val PURPUR_STAIRS: RegistryBlock = Registries.blocks["minecraft:purpur_stairs"]
+  public val PURPUR_STAIRS: RegistryBlock = Registries.block["minecraft:purpur_stairs"]
 
-  public val END_STONE_BRICKS: RegistryBlock = Registries.blocks["minecraft:end_stone_bricks"]
+  public val END_STONE_BRICKS: RegistryBlock = Registries.block["minecraft:end_stone_bricks"]
 
-  public val TORCHFLOWER_CROP: RegistryBlock = Registries.blocks["minecraft:torchflower_crop"]
+  public val TORCHFLOWER_CROP: RegistryBlock = Registries.block["minecraft:torchflower_crop"]
 
-  public val PITCHER_CROP: RegistryBlock = Registries.blocks["minecraft:pitcher_crop"]
+  public val PITCHER_CROP: RegistryBlock = Registries.block["minecraft:pitcher_crop"]
 
-  public val PITCHER_PLANT: RegistryBlock = Registries.blocks["minecraft:pitcher_plant"]
+  public val PITCHER_PLANT: RegistryBlock = Registries.block["minecraft:pitcher_plant"]
 
-  public val BEETROOTS: RegistryBlock = Registries.blocks["minecraft:beetroots"]
+  public val BEETROOTS: RegistryBlock = Registries.block["minecraft:beetroots"]
 
-  public val DIRT_PATH: RegistryBlock = Registries.blocks["minecraft:dirt_path"]
+  public val DIRT_PATH: RegistryBlock = Registries.block["minecraft:dirt_path"]
 
-  public val END_GATEWAY: RegistryBlock = Registries.blocks["minecraft:end_gateway"]
+  public val END_GATEWAY: RegistryBlock = Registries.block["minecraft:end_gateway"]
 
   public val REPEATING_COMMAND_BLOCK: RegistryBlock =
-      Registries.blocks["minecraft:repeating_command_block"]
+      Registries.block["minecraft:repeating_command_block"]
 
-  public val CHAIN_COMMAND_BLOCK: RegistryBlock = Registries.blocks["minecraft:chain_command_block"]
+  public val CHAIN_COMMAND_BLOCK: RegistryBlock = Registries.block["minecraft:chain_command_block"]
 
-  public val FROSTED_ICE: RegistryBlock = Registries.blocks["minecraft:frosted_ice"]
+  public val FROSTED_ICE: RegistryBlock = Registries.block["minecraft:frosted_ice"]
 
-  public val MAGMA_BLOCK: RegistryBlock = Registries.blocks["minecraft:magma_block"]
+  public val MAGMA_BLOCK: RegistryBlock = Registries.block["minecraft:magma_block"]
 
-  public val NETHER_WART_BLOCK: RegistryBlock = Registries.blocks["minecraft:nether_wart_block"]
+  public val NETHER_WART_BLOCK: RegistryBlock = Registries.block["minecraft:nether_wart_block"]
 
-  public val RED_NETHER_BRICKS: RegistryBlock = Registries.blocks["minecraft:red_nether_bricks"]
+  public val RED_NETHER_BRICKS: RegistryBlock = Registries.block["minecraft:red_nether_bricks"]
 
-  public val BONE_BLOCK: RegistryBlock = Registries.blocks["minecraft:bone_block"]
+  public val BONE_BLOCK: RegistryBlock = Registries.block["minecraft:bone_block"]
 
-  public val STRUCTURE_VOID: RegistryBlock = Registries.blocks["minecraft:structure_void"]
+  public val STRUCTURE_VOID: RegistryBlock = Registries.block["minecraft:structure_void"]
 
-  public val OBSERVER: RegistryBlock = Registries.blocks["minecraft:observer"]
+  public val OBSERVER: RegistryBlock = Registries.block["minecraft:observer"]
 
-  public val SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:shulker_box"]
+  public val SHULKER_BOX: RegistryBlock = Registries.block["minecraft:shulker_box"]
 
-  public val WHITE_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:white_shulker_box"]
+  public val WHITE_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:white_shulker_box"]
 
-  public val ORANGE_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:orange_shulker_box"]
+  public val ORANGE_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:orange_shulker_box"]
 
-  public val MAGENTA_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:magenta_shulker_box"]
+  public val MAGENTA_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:magenta_shulker_box"]
 
   public val LIGHT_BLUE_SHULKER_BOX: RegistryBlock =
-      Registries.blocks["minecraft:light_blue_shulker_box"]
+      Registries.block["minecraft:light_blue_shulker_box"]
 
-  public val YELLOW_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:yellow_shulker_box"]
+  public val YELLOW_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:yellow_shulker_box"]
 
-  public val LIME_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:lime_shulker_box"]
+  public val LIME_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:lime_shulker_box"]
 
-  public val PINK_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:pink_shulker_box"]
+  public val PINK_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:pink_shulker_box"]
 
-  public val GRAY_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:gray_shulker_box"]
+  public val GRAY_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:gray_shulker_box"]
 
   public val LIGHT_GRAY_SHULKER_BOX: RegistryBlock =
-      Registries.blocks["minecraft:light_gray_shulker_box"]
+      Registries.block["minecraft:light_gray_shulker_box"]
 
-  public val CYAN_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:cyan_shulker_box"]
+  public val CYAN_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:cyan_shulker_box"]
 
-  public val PURPLE_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:purple_shulker_box"]
+  public val PURPLE_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:purple_shulker_box"]
 
-  public val BLUE_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:blue_shulker_box"]
+  public val BLUE_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:blue_shulker_box"]
 
-  public val BROWN_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:brown_shulker_box"]
+  public val BROWN_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:brown_shulker_box"]
 
-  public val GREEN_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:green_shulker_box"]
+  public val GREEN_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:green_shulker_box"]
 
-  public val RED_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:red_shulker_box"]
+  public val RED_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:red_shulker_box"]
 
-  public val BLACK_SHULKER_BOX: RegistryBlock = Registries.blocks["minecraft:black_shulker_box"]
+  public val BLACK_SHULKER_BOX: RegistryBlock = Registries.block["minecraft:black_shulker_box"]
 
   public val WHITE_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:white_glazed_terracotta"]
+      Registries.block["minecraft:white_glazed_terracotta"]
 
   public val ORANGE_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:orange_glazed_terracotta"]
+      Registries.block["minecraft:orange_glazed_terracotta"]
 
   public val MAGENTA_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:magenta_glazed_terracotta"]
+      Registries.block["minecraft:magenta_glazed_terracotta"]
 
   public val LIGHT_BLUE_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:light_blue_glazed_terracotta"]
+      Registries.block["minecraft:light_blue_glazed_terracotta"]
 
   public val YELLOW_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:yellow_glazed_terracotta"]
+      Registries.block["minecraft:yellow_glazed_terracotta"]
 
   public val LIME_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:lime_glazed_terracotta"]
+      Registries.block["minecraft:lime_glazed_terracotta"]
 
   public val PINK_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:pink_glazed_terracotta"]
+      Registries.block["minecraft:pink_glazed_terracotta"]
 
   public val GRAY_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:gray_glazed_terracotta"]
+      Registries.block["minecraft:gray_glazed_terracotta"]
 
   public val LIGHT_GRAY_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:light_gray_glazed_terracotta"]
+      Registries.block["minecraft:light_gray_glazed_terracotta"]
 
   public val CYAN_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:cyan_glazed_terracotta"]
+      Registries.block["minecraft:cyan_glazed_terracotta"]
 
   public val PURPLE_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:purple_glazed_terracotta"]
+      Registries.block["minecraft:purple_glazed_terracotta"]
 
   public val BLUE_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:blue_glazed_terracotta"]
+      Registries.block["minecraft:blue_glazed_terracotta"]
 
   public val BROWN_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:brown_glazed_terracotta"]
+      Registries.block["minecraft:brown_glazed_terracotta"]
 
   public val GREEN_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:green_glazed_terracotta"]
+      Registries.block["minecraft:green_glazed_terracotta"]
 
-  public val RED_GLAZED_TERRACOTTA: RegistryBlock = Registries.blocks["minecraft:red_glazed_terracotta"]
+  public val RED_GLAZED_TERRACOTTA: RegistryBlock = Registries.block["minecraft:red_glazed_terracotta"]
 
   public val BLACK_GLAZED_TERRACOTTA: RegistryBlock =
-      Registries.blocks["minecraft:black_glazed_terracotta"]
+      Registries.block["minecraft:black_glazed_terracotta"]
 
-  public val WHITE_CONCRETE: RegistryBlock = Registries.blocks["minecraft:white_concrete"]
+  public val WHITE_CONCRETE: RegistryBlock = Registries.block["minecraft:white_concrete"]
 
-  public val ORANGE_CONCRETE: RegistryBlock = Registries.blocks["minecraft:orange_concrete"]
+  public val ORANGE_CONCRETE: RegistryBlock = Registries.block["minecraft:orange_concrete"]
 
-  public val MAGENTA_CONCRETE: RegistryBlock = Registries.blocks["minecraft:magenta_concrete"]
+  public val MAGENTA_CONCRETE: RegistryBlock = Registries.block["minecraft:magenta_concrete"]
 
-  public val LIGHT_BLUE_CONCRETE: RegistryBlock = Registries.blocks["minecraft:light_blue_concrete"]
+  public val LIGHT_BLUE_CONCRETE: RegistryBlock = Registries.block["minecraft:light_blue_concrete"]
 
-  public val YELLOW_CONCRETE: RegistryBlock = Registries.blocks["minecraft:yellow_concrete"]
+  public val YELLOW_CONCRETE: RegistryBlock = Registries.block["minecraft:yellow_concrete"]
 
-  public val LIME_CONCRETE: RegistryBlock = Registries.blocks["minecraft:lime_concrete"]
+  public val LIME_CONCRETE: RegistryBlock = Registries.block["minecraft:lime_concrete"]
 
-  public val PINK_CONCRETE: RegistryBlock = Registries.blocks["minecraft:pink_concrete"]
+  public val PINK_CONCRETE: RegistryBlock = Registries.block["minecraft:pink_concrete"]
 
-  public val GRAY_CONCRETE: RegistryBlock = Registries.blocks["minecraft:gray_concrete"]
+  public val GRAY_CONCRETE: RegistryBlock = Registries.block["minecraft:gray_concrete"]
 
-  public val LIGHT_GRAY_CONCRETE: RegistryBlock = Registries.blocks["minecraft:light_gray_concrete"]
+  public val LIGHT_GRAY_CONCRETE: RegistryBlock = Registries.block["minecraft:light_gray_concrete"]
 
-  public val CYAN_CONCRETE: RegistryBlock = Registries.blocks["minecraft:cyan_concrete"]
+  public val CYAN_CONCRETE: RegistryBlock = Registries.block["minecraft:cyan_concrete"]
 
-  public val PURPLE_CONCRETE: RegistryBlock = Registries.blocks["minecraft:purple_concrete"]
+  public val PURPLE_CONCRETE: RegistryBlock = Registries.block["minecraft:purple_concrete"]
 
-  public val BLUE_CONCRETE: RegistryBlock = Registries.blocks["minecraft:blue_concrete"]
+  public val BLUE_CONCRETE: RegistryBlock = Registries.block["minecraft:blue_concrete"]
 
-  public val BROWN_CONCRETE: RegistryBlock = Registries.blocks["minecraft:brown_concrete"]
+  public val BROWN_CONCRETE: RegistryBlock = Registries.block["minecraft:brown_concrete"]
 
-  public val GREEN_CONCRETE: RegistryBlock = Registries.blocks["minecraft:green_concrete"]
+  public val GREEN_CONCRETE: RegistryBlock = Registries.block["minecraft:green_concrete"]
 
-  public val RED_CONCRETE: RegistryBlock = Registries.blocks["minecraft:red_concrete"]
+  public val RED_CONCRETE: RegistryBlock = Registries.block["minecraft:red_concrete"]
 
-  public val BLACK_CONCRETE: RegistryBlock = Registries.blocks["minecraft:black_concrete"]
+  public val BLACK_CONCRETE: RegistryBlock = Registries.block["minecraft:black_concrete"]
 
-  public val WHITE_CONCRETE_POWDER: RegistryBlock = Registries.blocks["minecraft:white_concrete_powder"]
+  public val WHITE_CONCRETE_POWDER: RegistryBlock = Registries.block["minecraft:white_concrete_powder"]
 
   public val ORANGE_CONCRETE_POWDER: RegistryBlock =
-      Registries.blocks["minecraft:orange_concrete_powder"]
+      Registries.block["minecraft:orange_concrete_powder"]
 
   public val MAGENTA_CONCRETE_POWDER: RegistryBlock =
-      Registries.blocks["minecraft:magenta_concrete_powder"]
+      Registries.block["minecraft:magenta_concrete_powder"]
 
   public val LIGHT_BLUE_CONCRETE_POWDER: RegistryBlock =
-      Registries.blocks["minecraft:light_blue_concrete_powder"]
+      Registries.block["minecraft:light_blue_concrete_powder"]
 
   public val YELLOW_CONCRETE_POWDER: RegistryBlock =
-      Registries.blocks["minecraft:yellow_concrete_powder"]
+      Registries.block["minecraft:yellow_concrete_powder"]
 
-  public val LIME_CONCRETE_POWDER: RegistryBlock = Registries.blocks["minecraft:lime_concrete_powder"]
+  public val LIME_CONCRETE_POWDER: RegistryBlock = Registries.block["minecraft:lime_concrete_powder"]
 
-  public val PINK_CONCRETE_POWDER: RegistryBlock = Registries.blocks["minecraft:pink_concrete_powder"]
+  public val PINK_CONCRETE_POWDER: RegistryBlock = Registries.block["minecraft:pink_concrete_powder"]
 
-  public val GRAY_CONCRETE_POWDER: RegistryBlock = Registries.blocks["minecraft:gray_concrete_powder"]
+  public val GRAY_CONCRETE_POWDER: RegistryBlock = Registries.block["minecraft:gray_concrete_powder"]
 
   public val LIGHT_GRAY_CONCRETE_POWDER: RegistryBlock =
-      Registries.blocks["minecraft:light_gray_concrete_powder"]
+      Registries.block["minecraft:light_gray_concrete_powder"]
 
-  public val CYAN_CONCRETE_POWDER: RegistryBlock = Registries.blocks["minecraft:cyan_concrete_powder"]
+  public val CYAN_CONCRETE_POWDER: RegistryBlock = Registries.block["minecraft:cyan_concrete_powder"]
 
   public val PURPLE_CONCRETE_POWDER: RegistryBlock =
-      Registries.blocks["minecraft:purple_concrete_powder"]
+      Registries.block["minecraft:purple_concrete_powder"]
 
-  public val BLUE_CONCRETE_POWDER: RegistryBlock = Registries.blocks["minecraft:blue_concrete_powder"]
+  public val BLUE_CONCRETE_POWDER: RegistryBlock = Registries.block["minecraft:blue_concrete_powder"]
 
-  public val BROWN_CONCRETE_POWDER: RegistryBlock = Registries.blocks["minecraft:brown_concrete_powder"]
+  public val BROWN_CONCRETE_POWDER: RegistryBlock = Registries.block["minecraft:brown_concrete_powder"]
 
-  public val GREEN_CONCRETE_POWDER: RegistryBlock = Registries.blocks["minecraft:green_concrete_powder"]
+  public val GREEN_CONCRETE_POWDER: RegistryBlock = Registries.block["minecraft:green_concrete_powder"]
 
-  public val RED_CONCRETE_POWDER: RegistryBlock = Registries.blocks["minecraft:red_concrete_powder"]
+  public val RED_CONCRETE_POWDER: RegistryBlock = Registries.block["minecraft:red_concrete_powder"]
 
-  public val BLACK_CONCRETE_POWDER: RegistryBlock = Registries.blocks["minecraft:black_concrete_powder"]
+  public val BLACK_CONCRETE_POWDER: RegistryBlock = Registries.block["minecraft:black_concrete_powder"]
 
-  public val KELP: RegistryBlock = Registries.blocks["minecraft:kelp"]
+  public val KELP: RegistryBlock = Registries.block["minecraft:kelp"]
 
-  public val KELP_PLANT: RegistryBlock = Registries.blocks["minecraft:kelp_plant"]
+  public val KELP_PLANT: RegistryBlock = Registries.block["minecraft:kelp_plant"]
 
-  public val DRIED_KELP_BLOCK: RegistryBlock = Registries.blocks["minecraft:dried_kelp_block"]
+  public val DRIED_KELP_BLOCK: RegistryBlock = Registries.block["minecraft:dried_kelp_block"]
 
-  public val TURTLE_EGG: RegistryBlock = Registries.blocks["minecraft:turtle_egg"]
+  public val TURTLE_EGG: RegistryBlock = Registries.block["minecraft:turtle_egg"]
 
-  public val SNIFFER_EGG: RegistryBlock = Registries.blocks["minecraft:sniffer_egg"]
+  public val SNIFFER_EGG: RegistryBlock = Registries.block["minecraft:sniffer_egg"]
 
-  public val DRIED_GHAST: RegistryBlock = Registries.blocks["minecraft:dried_ghast"]
+  public val DRIED_GHAST: RegistryBlock = Registries.block["minecraft:dried_ghast"]
 
-  public val DEAD_TUBE_CORAL_BLOCK: RegistryBlock = Registries.blocks["minecraft:dead_tube_coral_block"]
+  public val DEAD_TUBE_CORAL_BLOCK: RegistryBlock = Registries.block["minecraft:dead_tube_coral_block"]
 
   public val DEAD_BRAIN_CORAL_BLOCK: RegistryBlock =
-      Registries.blocks["minecraft:dead_brain_coral_block"]
+      Registries.block["minecraft:dead_brain_coral_block"]
 
   public val DEAD_BUBBLE_CORAL_BLOCK: RegistryBlock =
-      Registries.blocks["minecraft:dead_bubble_coral_block"]
+      Registries.block["minecraft:dead_bubble_coral_block"]
 
-  public val DEAD_FIRE_CORAL_BLOCK: RegistryBlock = Registries.blocks["minecraft:dead_fire_coral_block"]
+  public val DEAD_FIRE_CORAL_BLOCK: RegistryBlock = Registries.block["minecraft:dead_fire_coral_block"]
 
-  public val DEAD_HORN_CORAL_BLOCK: RegistryBlock = Registries.blocks["minecraft:dead_horn_coral_block"]
+  public val DEAD_HORN_CORAL_BLOCK: RegistryBlock = Registries.block["minecraft:dead_horn_coral_block"]
 
-  public val TUBE_CORAL_BLOCK: RegistryBlock = Registries.blocks["minecraft:tube_coral_block"]
+  public val TUBE_CORAL_BLOCK: RegistryBlock = Registries.block["minecraft:tube_coral_block"]
 
-  public val BRAIN_CORAL_BLOCK: RegistryBlock = Registries.blocks["minecraft:brain_coral_block"]
+  public val BRAIN_CORAL_BLOCK: RegistryBlock = Registries.block["minecraft:brain_coral_block"]
 
-  public val BUBBLE_CORAL_BLOCK: RegistryBlock = Registries.blocks["minecraft:bubble_coral_block"]
+  public val BUBBLE_CORAL_BLOCK: RegistryBlock = Registries.block["minecraft:bubble_coral_block"]
 
-  public val FIRE_CORAL_BLOCK: RegistryBlock = Registries.blocks["minecraft:fire_coral_block"]
+  public val FIRE_CORAL_BLOCK: RegistryBlock = Registries.block["minecraft:fire_coral_block"]
 
-  public val HORN_CORAL_BLOCK: RegistryBlock = Registries.blocks["minecraft:horn_coral_block"]
+  public val HORN_CORAL_BLOCK: RegistryBlock = Registries.block["minecraft:horn_coral_block"]
 
-  public val DEAD_TUBE_CORAL: RegistryBlock = Registries.blocks["minecraft:dead_tube_coral"]
+  public val DEAD_TUBE_CORAL: RegistryBlock = Registries.block["minecraft:dead_tube_coral"]
 
-  public val DEAD_BRAIN_CORAL: RegistryBlock = Registries.blocks["minecraft:dead_brain_coral"]
+  public val DEAD_BRAIN_CORAL: RegistryBlock = Registries.block["minecraft:dead_brain_coral"]
 
-  public val DEAD_BUBBLE_CORAL: RegistryBlock = Registries.blocks["minecraft:dead_bubble_coral"]
+  public val DEAD_BUBBLE_CORAL: RegistryBlock = Registries.block["minecraft:dead_bubble_coral"]
 
-  public val DEAD_FIRE_CORAL: RegistryBlock = Registries.blocks["minecraft:dead_fire_coral"]
+  public val DEAD_FIRE_CORAL: RegistryBlock = Registries.block["minecraft:dead_fire_coral"]
 
-  public val DEAD_HORN_CORAL: RegistryBlock = Registries.blocks["minecraft:dead_horn_coral"]
+  public val DEAD_HORN_CORAL: RegistryBlock = Registries.block["minecraft:dead_horn_coral"]
 
-  public val TUBE_CORAL: RegistryBlock = Registries.blocks["minecraft:tube_coral"]
+  public val TUBE_CORAL: RegistryBlock = Registries.block["minecraft:tube_coral"]
 
-  public val BRAIN_CORAL: RegistryBlock = Registries.blocks["minecraft:brain_coral"]
+  public val BRAIN_CORAL: RegistryBlock = Registries.block["minecraft:brain_coral"]
 
-  public val BUBBLE_CORAL: RegistryBlock = Registries.blocks["minecraft:bubble_coral"]
+  public val BUBBLE_CORAL: RegistryBlock = Registries.block["minecraft:bubble_coral"]
 
-  public val FIRE_CORAL: RegistryBlock = Registries.blocks["minecraft:fire_coral"]
+  public val FIRE_CORAL: RegistryBlock = Registries.block["minecraft:fire_coral"]
 
-  public val HORN_CORAL: RegistryBlock = Registries.blocks["minecraft:horn_coral"]
+  public val HORN_CORAL: RegistryBlock = Registries.block["minecraft:horn_coral"]
 
-  public val DEAD_TUBE_CORAL_FAN: RegistryBlock = Registries.blocks["minecraft:dead_tube_coral_fan"]
+  public val DEAD_TUBE_CORAL_FAN: RegistryBlock = Registries.block["minecraft:dead_tube_coral_fan"]
 
-  public val DEAD_BRAIN_CORAL_FAN: RegistryBlock = Registries.blocks["minecraft:dead_brain_coral_fan"]
+  public val DEAD_BRAIN_CORAL_FAN: RegistryBlock = Registries.block["minecraft:dead_brain_coral_fan"]
 
-  public val DEAD_BUBBLE_CORAL_FAN: RegistryBlock = Registries.blocks["minecraft:dead_bubble_coral_fan"]
+  public val DEAD_BUBBLE_CORAL_FAN: RegistryBlock = Registries.block["minecraft:dead_bubble_coral_fan"]
 
-  public val DEAD_FIRE_CORAL_FAN: RegistryBlock = Registries.blocks["minecraft:dead_fire_coral_fan"]
+  public val DEAD_FIRE_CORAL_FAN: RegistryBlock = Registries.block["minecraft:dead_fire_coral_fan"]
 
-  public val DEAD_HORN_CORAL_FAN: RegistryBlock = Registries.blocks["minecraft:dead_horn_coral_fan"]
+  public val DEAD_HORN_CORAL_FAN: RegistryBlock = Registries.block["minecraft:dead_horn_coral_fan"]
 
-  public val TUBE_CORAL_FAN: RegistryBlock = Registries.blocks["minecraft:tube_coral_fan"]
+  public val TUBE_CORAL_FAN: RegistryBlock = Registries.block["minecraft:tube_coral_fan"]
 
-  public val BRAIN_CORAL_FAN: RegistryBlock = Registries.blocks["minecraft:brain_coral_fan"]
+  public val BRAIN_CORAL_FAN: RegistryBlock = Registries.block["minecraft:brain_coral_fan"]
 
-  public val BUBBLE_CORAL_FAN: RegistryBlock = Registries.blocks["minecraft:bubble_coral_fan"]
+  public val BUBBLE_CORAL_FAN: RegistryBlock = Registries.block["minecraft:bubble_coral_fan"]
 
-  public val FIRE_CORAL_FAN: RegistryBlock = Registries.blocks["minecraft:fire_coral_fan"]
+  public val FIRE_CORAL_FAN: RegistryBlock = Registries.block["minecraft:fire_coral_fan"]
 
-  public val HORN_CORAL_FAN: RegistryBlock = Registries.blocks["minecraft:horn_coral_fan"]
+  public val HORN_CORAL_FAN: RegistryBlock = Registries.block["minecraft:horn_coral_fan"]
 
   public val DEAD_TUBE_CORAL_WALL_FAN: RegistryBlock =
-      Registries.blocks["minecraft:dead_tube_coral_wall_fan"]
+      Registries.block["minecraft:dead_tube_coral_wall_fan"]
 
   public val DEAD_BRAIN_CORAL_WALL_FAN: RegistryBlock =
-      Registries.blocks["minecraft:dead_brain_coral_wall_fan"]
+      Registries.block["minecraft:dead_brain_coral_wall_fan"]
 
   public val DEAD_BUBBLE_CORAL_WALL_FAN: RegistryBlock =
-      Registries.blocks["minecraft:dead_bubble_coral_wall_fan"]
+      Registries.block["minecraft:dead_bubble_coral_wall_fan"]
 
   public val DEAD_FIRE_CORAL_WALL_FAN: RegistryBlock =
-      Registries.blocks["minecraft:dead_fire_coral_wall_fan"]
+      Registries.block["minecraft:dead_fire_coral_wall_fan"]
 
   public val DEAD_HORN_CORAL_WALL_FAN: RegistryBlock =
-      Registries.blocks["minecraft:dead_horn_coral_wall_fan"]
+      Registries.block["minecraft:dead_horn_coral_wall_fan"]
 
-  public val TUBE_CORAL_WALL_FAN: RegistryBlock = Registries.blocks["minecraft:tube_coral_wall_fan"]
+  public val TUBE_CORAL_WALL_FAN: RegistryBlock = Registries.block["minecraft:tube_coral_wall_fan"]
 
-  public val BRAIN_CORAL_WALL_FAN: RegistryBlock = Registries.blocks["minecraft:brain_coral_wall_fan"]
+  public val BRAIN_CORAL_WALL_FAN: RegistryBlock = Registries.block["minecraft:brain_coral_wall_fan"]
 
-  public val BUBBLE_CORAL_WALL_FAN: RegistryBlock = Registries.blocks["minecraft:bubble_coral_wall_fan"]
+  public val BUBBLE_CORAL_WALL_FAN: RegistryBlock = Registries.block["minecraft:bubble_coral_wall_fan"]
 
-  public val FIRE_CORAL_WALL_FAN: RegistryBlock = Registries.blocks["minecraft:fire_coral_wall_fan"]
+  public val FIRE_CORAL_WALL_FAN: RegistryBlock = Registries.block["minecraft:fire_coral_wall_fan"]
 
-  public val HORN_CORAL_WALL_FAN: RegistryBlock = Registries.blocks["minecraft:horn_coral_wall_fan"]
+  public val HORN_CORAL_WALL_FAN: RegistryBlock = Registries.block["minecraft:horn_coral_wall_fan"]
 
-  public val SEA_PICKLE: RegistryBlock = Registries.blocks["minecraft:sea_pickle"]
+  public val SEA_PICKLE: RegistryBlock = Registries.block["minecraft:sea_pickle"]
 
-  public val BLUE_ICE: RegistryBlock = Registries.blocks["minecraft:blue_ice"]
+  public val BLUE_ICE: RegistryBlock = Registries.block["minecraft:blue_ice"]
 
-  public val CONDUIT: RegistryBlock = Registries.blocks["minecraft:conduit"]
+  public val CONDUIT: RegistryBlock = Registries.block["minecraft:conduit"]
 
-  public val BAMBOO_SAPLING: RegistryBlock = Registries.blocks["minecraft:bamboo_sapling"]
+  public val BAMBOO_SAPLING: RegistryBlock = Registries.block["minecraft:bamboo_sapling"]
 
-  public val BAMBOO: RegistryBlock = Registries.blocks["minecraft:bamboo"]
+  public val BAMBOO: RegistryBlock = Registries.block["minecraft:bamboo"]
 
-  public val POTTED_BAMBOO: RegistryBlock = Registries.blocks["minecraft:potted_bamboo"]
+  public val POTTED_BAMBOO: RegistryBlock = Registries.block["minecraft:potted_bamboo"]
 
-  public val VOID_AIR: RegistryBlock = Registries.blocks["minecraft:void_air"]
+  public val VOID_AIR: RegistryBlock = Registries.block["minecraft:void_air"]
 
-  public val CAVE_AIR: RegistryBlock = Registries.blocks["minecraft:cave_air"]
+  public val CAVE_AIR: RegistryBlock = Registries.block["minecraft:cave_air"]
 
-  public val BUBBLE_COLUMN: RegistryBlock = Registries.blocks["minecraft:bubble_column"]
+  public val BUBBLE_COLUMN: RegistryBlock = Registries.block["minecraft:bubble_column"]
 
   public val POLISHED_GRANITE_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:polished_granite_stairs"]
+      Registries.block["minecraft:polished_granite_stairs"]
 
   public val SMOOTH_RED_SANDSTONE_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:smooth_red_sandstone_stairs"]
+      Registries.block["minecraft:smooth_red_sandstone_stairs"]
 
   public val MOSSY_STONE_BRICK_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:mossy_stone_brick_stairs"]
+      Registries.block["minecraft:mossy_stone_brick_stairs"]
 
   public val POLISHED_DIORITE_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:polished_diorite_stairs"]
+      Registries.block["minecraft:polished_diorite_stairs"]
 
   public val MOSSY_COBBLESTONE_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:mossy_cobblestone_stairs"]
+      Registries.block["minecraft:mossy_cobblestone_stairs"]
 
   public val END_STONE_BRICK_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:end_stone_brick_stairs"]
+      Registries.block["minecraft:end_stone_brick_stairs"]
 
-  public val STONE_STAIRS: RegistryBlock = Registries.blocks["minecraft:stone_stairs"]
+  public val STONE_STAIRS: RegistryBlock = Registries.block["minecraft:stone_stairs"]
 
   public val SMOOTH_SANDSTONE_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:smooth_sandstone_stairs"]
+      Registries.block["minecraft:smooth_sandstone_stairs"]
 
-  public val SMOOTH_QUARTZ_STAIRS: RegistryBlock = Registries.blocks["minecraft:smooth_quartz_stairs"]
+  public val SMOOTH_QUARTZ_STAIRS: RegistryBlock = Registries.block["minecraft:smooth_quartz_stairs"]
 
-  public val GRANITE_STAIRS: RegistryBlock = Registries.blocks["minecraft:granite_stairs"]
+  public val GRANITE_STAIRS: RegistryBlock = Registries.block["minecraft:granite_stairs"]
 
-  public val ANDESITE_STAIRS: RegistryBlock = Registries.blocks["minecraft:andesite_stairs"]
+  public val ANDESITE_STAIRS: RegistryBlock = Registries.block["minecraft:andesite_stairs"]
 
   public val RED_NETHER_BRICK_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:red_nether_brick_stairs"]
+      Registries.block["minecraft:red_nether_brick_stairs"]
 
   public val POLISHED_ANDESITE_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:polished_andesite_stairs"]
+      Registries.block["minecraft:polished_andesite_stairs"]
 
-  public val DIORITE_STAIRS: RegistryBlock = Registries.blocks["minecraft:diorite_stairs"]
+  public val DIORITE_STAIRS: RegistryBlock = Registries.block["minecraft:diorite_stairs"]
 
-  public val POLISHED_GRANITE_SLAB: RegistryBlock = Registries.blocks["minecraft:polished_granite_slab"]
+  public val POLISHED_GRANITE_SLAB: RegistryBlock = Registries.block["minecraft:polished_granite_slab"]
 
   public val SMOOTH_RED_SANDSTONE_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:smooth_red_sandstone_slab"]
+      Registries.block["minecraft:smooth_red_sandstone_slab"]
 
   public val MOSSY_STONE_BRICK_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:mossy_stone_brick_slab"]
+      Registries.block["minecraft:mossy_stone_brick_slab"]
 
-  public val POLISHED_DIORITE_SLAB: RegistryBlock = Registries.blocks["minecraft:polished_diorite_slab"]
+  public val POLISHED_DIORITE_SLAB: RegistryBlock = Registries.block["minecraft:polished_diorite_slab"]
 
   public val MOSSY_COBBLESTONE_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:mossy_cobblestone_slab"]
+      Registries.block["minecraft:mossy_cobblestone_slab"]
 
-  public val END_STONE_BRICK_SLAB: RegistryBlock = Registries.blocks["minecraft:end_stone_brick_slab"]
+  public val END_STONE_BRICK_SLAB: RegistryBlock = Registries.block["minecraft:end_stone_brick_slab"]
 
-  public val SMOOTH_SANDSTONE_SLAB: RegistryBlock = Registries.blocks["minecraft:smooth_sandstone_slab"]
+  public val SMOOTH_SANDSTONE_SLAB: RegistryBlock = Registries.block["minecraft:smooth_sandstone_slab"]
 
-  public val SMOOTH_QUARTZ_SLAB: RegistryBlock = Registries.blocks["minecraft:smooth_quartz_slab"]
+  public val SMOOTH_QUARTZ_SLAB: RegistryBlock = Registries.block["minecraft:smooth_quartz_slab"]
 
-  public val GRANITE_SLAB: RegistryBlock = Registries.blocks["minecraft:granite_slab"]
+  public val GRANITE_SLAB: RegistryBlock = Registries.block["minecraft:granite_slab"]
 
-  public val ANDESITE_SLAB: RegistryBlock = Registries.blocks["minecraft:andesite_slab"]
+  public val ANDESITE_SLAB: RegistryBlock = Registries.block["minecraft:andesite_slab"]
 
-  public val RED_NETHER_BRICK_SLAB: RegistryBlock = Registries.blocks["minecraft:red_nether_brick_slab"]
+  public val RED_NETHER_BRICK_SLAB: RegistryBlock = Registries.block["minecraft:red_nether_brick_slab"]
 
   public val POLISHED_ANDESITE_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:polished_andesite_slab"]
+      Registries.block["minecraft:polished_andesite_slab"]
 
-  public val DIORITE_SLAB: RegistryBlock = Registries.blocks["minecraft:diorite_slab"]
+  public val DIORITE_SLAB: RegistryBlock = Registries.block["minecraft:diorite_slab"]
 
-  public val BRICK_WALL: RegistryBlock = Registries.blocks["minecraft:brick_wall"]
+  public val BRICK_WALL: RegistryBlock = Registries.block["minecraft:brick_wall"]
 
-  public val PRISMARINE_WALL: RegistryBlock = Registries.blocks["minecraft:prismarine_wall"]
+  public val PRISMARINE_WALL: RegistryBlock = Registries.block["minecraft:prismarine_wall"]
 
-  public val RED_SANDSTONE_WALL: RegistryBlock = Registries.blocks["minecraft:red_sandstone_wall"]
+  public val RED_SANDSTONE_WALL: RegistryBlock = Registries.block["minecraft:red_sandstone_wall"]
 
   public val MOSSY_STONE_BRICK_WALL: RegistryBlock =
-      Registries.blocks["minecraft:mossy_stone_brick_wall"]
+      Registries.block["minecraft:mossy_stone_brick_wall"]
 
-  public val GRANITE_WALL: RegistryBlock = Registries.blocks["minecraft:granite_wall"]
+  public val GRANITE_WALL: RegistryBlock = Registries.block["minecraft:granite_wall"]
 
-  public val STONE_BRICK_WALL: RegistryBlock = Registries.blocks["minecraft:stone_brick_wall"]
+  public val STONE_BRICK_WALL: RegistryBlock = Registries.block["minecraft:stone_brick_wall"]
 
-  public val MUD_BRICK_WALL: RegistryBlock = Registries.blocks["minecraft:mud_brick_wall"]
+  public val MUD_BRICK_WALL: RegistryBlock = Registries.block["minecraft:mud_brick_wall"]
 
-  public val NETHER_BRICK_WALL: RegistryBlock = Registries.blocks["minecraft:nether_brick_wall"]
+  public val NETHER_BRICK_WALL: RegistryBlock = Registries.block["minecraft:nether_brick_wall"]
 
-  public val ANDESITE_WALL: RegistryBlock = Registries.blocks["minecraft:andesite_wall"]
+  public val ANDESITE_WALL: RegistryBlock = Registries.block["minecraft:andesite_wall"]
 
-  public val RED_NETHER_BRICK_WALL: RegistryBlock = Registries.blocks["minecraft:red_nether_brick_wall"]
+  public val RED_NETHER_BRICK_WALL: RegistryBlock = Registries.block["minecraft:red_nether_brick_wall"]
 
-  public val SANDSTONE_WALL: RegistryBlock = Registries.blocks["minecraft:sandstone_wall"]
+  public val SANDSTONE_WALL: RegistryBlock = Registries.block["minecraft:sandstone_wall"]
 
-  public val END_STONE_BRICK_WALL: RegistryBlock = Registries.blocks["minecraft:end_stone_brick_wall"]
+  public val END_STONE_BRICK_WALL: RegistryBlock = Registries.block["minecraft:end_stone_brick_wall"]
 
-  public val DIORITE_WALL: RegistryBlock = Registries.blocks["minecraft:diorite_wall"]
+  public val DIORITE_WALL: RegistryBlock = Registries.block["minecraft:diorite_wall"]
 
-  public val SCAFFOLDING: RegistryBlock = Registries.blocks["minecraft:scaffolding"]
+  public val SCAFFOLDING: RegistryBlock = Registries.block["minecraft:scaffolding"]
 
-  public val LOOM: RegistryBlock = Registries.blocks["minecraft:loom"]
+  public val LOOM: RegistryBlock = Registries.block["minecraft:loom"]
 
-  public val BARREL: RegistryBlock = Registries.blocks["minecraft:barrel"]
+  public val BARREL: RegistryBlock = Registries.block["minecraft:barrel"]
 
-  public val SMOKER: RegistryBlock = Registries.blocks["minecraft:smoker"]
+  public val SMOKER: RegistryBlock = Registries.block["minecraft:smoker"]
 
-  public val BLAST_FURNACE: RegistryBlock = Registries.blocks["minecraft:blast_furnace"]
+  public val BLAST_FURNACE: RegistryBlock = Registries.block["minecraft:blast_furnace"]
 
-  public val CARTOGRAPHY_TABLE: RegistryBlock = Registries.blocks["minecraft:cartography_table"]
+  public val CARTOGRAPHY_TABLE: RegistryBlock = Registries.block["minecraft:cartography_table"]
 
-  public val FLETCHING_TABLE: RegistryBlock = Registries.blocks["minecraft:fletching_table"]
+  public val FLETCHING_TABLE: RegistryBlock = Registries.block["minecraft:fletching_table"]
 
-  public val GRINDSTONE: RegistryBlock = Registries.blocks["minecraft:grindstone"]
+  public val GRINDSTONE: RegistryBlock = Registries.block["minecraft:grindstone"]
 
-  public val LECTERN: RegistryBlock = Registries.blocks["minecraft:lectern"]
+  public val LECTERN: RegistryBlock = Registries.block["minecraft:lectern"]
 
-  public val SMITHING_TABLE: RegistryBlock = Registries.blocks["minecraft:smithing_table"]
+  public val SMITHING_TABLE: RegistryBlock = Registries.block["minecraft:smithing_table"]
 
-  public val STONECUTTER: RegistryBlock = Registries.blocks["minecraft:stonecutter"]
+  public val STONECUTTER: RegistryBlock = Registries.block["minecraft:stonecutter"]
 
-  public val BELL: RegistryBlock = Registries.blocks["minecraft:bell"]
+  public val BELL: RegistryBlock = Registries.block["minecraft:bell"]
 
-  public val LANTERN: RegistryBlock = Registries.blocks["minecraft:lantern"]
+  public val LANTERN: RegistryBlock = Registries.block["minecraft:lantern"]
 
-  public val SOUL_LANTERN: RegistryBlock = Registries.blocks["minecraft:soul_lantern"]
+  public val SOUL_LANTERN: RegistryBlock = Registries.block["minecraft:soul_lantern"]
 
-  public val COPPER_LANTERN: RegistryBlock = Registries.blocks["minecraft:copper_lantern"]
+  public val COPPER_LANTERN: RegistryBlock = Registries.block["minecraft:copper_lantern"]
 
   public val EXPOSED_COPPER_LANTERN: RegistryBlock =
-      Registries.blocks["minecraft:exposed_copper_lantern"]
+      Registries.block["minecraft:exposed_copper_lantern"]
 
   public val WEATHERED_COPPER_LANTERN: RegistryBlock =
-      Registries.blocks["minecraft:weathered_copper_lantern"]
+      Registries.block["minecraft:weathered_copper_lantern"]
 
   public val OXIDIZED_COPPER_LANTERN: RegistryBlock =
-      Registries.blocks["minecraft:oxidized_copper_lantern"]
+      Registries.block["minecraft:oxidized_copper_lantern"]
 
-  public val WAXED_COPPER_LANTERN: RegistryBlock = Registries.blocks["minecraft:waxed_copper_lantern"]
+  public val WAXED_COPPER_LANTERN: RegistryBlock = Registries.block["minecraft:waxed_copper_lantern"]
 
   public val WAXED_EXPOSED_COPPER_LANTERN: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_copper_lantern"]
+      Registries.block["minecraft:waxed_exposed_copper_lantern"]
 
   public val WAXED_WEATHERED_COPPER_LANTERN: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_copper_lantern"]
+      Registries.block["minecraft:waxed_weathered_copper_lantern"]
 
   public val WAXED_OXIDIZED_COPPER_LANTERN: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_copper_lantern"]
+      Registries.block["minecraft:waxed_oxidized_copper_lantern"]
 
-  public val CAMPFIRE: RegistryBlock = Registries.blocks["minecraft:campfire"]
+  public val CAMPFIRE: RegistryBlock = Registries.block["minecraft:campfire"]
 
-  public val SOUL_CAMPFIRE: RegistryBlock = Registries.blocks["minecraft:soul_campfire"]
+  public val SOUL_CAMPFIRE: RegistryBlock = Registries.block["minecraft:soul_campfire"]
 
-  public val SWEET_BERRY_BUSH: RegistryBlock = Registries.blocks["minecraft:sweet_berry_bush"]
+  public val SWEET_BERRY_BUSH: RegistryBlock = Registries.block["minecraft:sweet_berry_bush"]
 
-  public val WARPED_STEM: RegistryBlock = Registries.blocks["minecraft:warped_stem"]
+  public val WARPED_STEM: RegistryBlock = Registries.block["minecraft:warped_stem"]
 
-  public val STRIPPED_WARPED_STEM: RegistryBlock = Registries.blocks["minecraft:stripped_warped_stem"]
+  public val STRIPPED_WARPED_STEM: RegistryBlock = Registries.block["minecraft:stripped_warped_stem"]
 
-  public val WARPED_HYPHAE: RegistryBlock = Registries.blocks["minecraft:warped_hyphae"]
+  public val WARPED_HYPHAE: RegistryBlock = Registries.block["minecraft:warped_hyphae"]
 
   public val STRIPPED_WARPED_HYPHAE: RegistryBlock =
-      Registries.blocks["minecraft:stripped_warped_hyphae"]
+      Registries.block["minecraft:stripped_warped_hyphae"]
 
-  public val WARPED_NYLIUM: RegistryBlock = Registries.blocks["minecraft:warped_nylium"]
+  public val WARPED_NYLIUM: RegistryBlock = Registries.block["minecraft:warped_nylium"]
 
-  public val WARPED_FUNGUS: RegistryBlock = Registries.blocks["minecraft:warped_fungus"]
+  public val WARPED_FUNGUS: RegistryBlock = Registries.block["minecraft:warped_fungus"]
 
-  public val WARPED_WART_BLOCK: RegistryBlock = Registries.blocks["minecraft:warped_wart_block"]
+  public val WARPED_WART_BLOCK: RegistryBlock = Registries.block["minecraft:warped_wart_block"]
 
-  public val WARPED_ROOTS: RegistryBlock = Registries.blocks["minecraft:warped_roots"]
+  public val WARPED_ROOTS: RegistryBlock = Registries.block["minecraft:warped_roots"]
 
-  public val NETHER_SPROUTS: RegistryBlock = Registries.blocks["minecraft:nether_sprouts"]
+  public val NETHER_SPROUTS: RegistryBlock = Registries.block["minecraft:nether_sprouts"]
 
-  public val CRIMSON_STEM: RegistryBlock = Registries.blocks["minecraft:crimson_stem"]
+  public val CRIMSON_STEM: RegistryBlock = Registries.block["minecraft:crimson_stem"]
 
-  public val STRIPPED_CRIMSON_STEM: RegistryBlock = Registries.blocks["minecraft:stripped_crimson_stem"]
+  public val STRIPPED_CRIMSON_STEM: RegistryBlock = Registries.block["minecraft:stripped_crimson_stem"]
 
-  public val CRIMSON_HYPHAE: RegistryBlock = Registries.blocks["minecraft:crimson_hyphae"]
+  public val CRIMSON_HYPHAE: RegistryBlock = Registries.block["minecraft:crimson_hyphae"]
 
   public val STRIPPED_CRIMSON_HYPHAE: RegistryBlock =
-      Registries.blocks["minecraft:stripped_crimson_hyphae"]
+      Registries.block["minecraft:stripped_crimson_hyphae"]
 
-  public val CRIMSON_NYLIUM: RegistryBlock = Registries.blocks["minecraft:crimson_nylium"]
+  public val CRIMSON_NYLIUM: RegistryBlock = Registries.block["minecraft:crimson_nylium"]
 
-  public val CRIMSON_FUNGUS: RegistryBlock = Registries.blocks["minecraft:crimson_fungus"]
+  public val CRIMSON_FUNGUS: RegistryBlock = Registries.block["minecraft:crimson_fungus"]
 
-  public val SHROOMLIGHT: RegistryBlock = Registries.blocks["minecraft:shroomlight"]
+  public val SHROOMLIGHT: RegistryBlock = Registries.block["minecraft:shroomlight"]
 
-  public val WEEPING_VINES: RegistryBlock = Registries.blocks["minecraft:weeping_vines"]
+  public val WEEPING_VINES: RegistryBlock = Registries.block["minecraft:weeping_vines"]
 
-  public val WEEPING_VINES_PLANT: RegistryBlock = Registries.blocks["minecraft:weeping_vines_plant"]
+  public val WEEPING_VINES_PLANT: RegistryBlock = Registries.block["minecraft:weeping_vines_plant"]
 
-  public val TWISTING_VINES: RegistryBlock = Registries.blocks["minecraft:twisting_vines"]
+  public val TWISTING_VINES: RegistryBlock = Registries.block["minecraft:twisting_vines"]
 
-  public val TWISTING_VINES_PLANT: RegistryBlock = Registries.blocks["minecraft:twisting_vines_plant"]
+  public val TWISTING_VINES_PLANT: RegistryBlock = Registries.block["minecraft:twisting_vines_plant"]
 
-  public val CRIMSON_ROOTS: RegistryBlock = Registries.blocks["minecraft:crimson_roots"]
+  public val CRIMSON_ROOTS: RegistryBlock = Registries.block["minecraft:crimson_roots"]
 
-  public val CRIMSON_PLANKS: RegistryBlock = Registries.blocks["minecraft:crimson_planks"]
+  public val CRIMSON_PLANKS: RegistryBlock = Registries.block["minecraft:crimson_planks"]
 
-  public val WARPED_PLANKS: RegistryBlock = Registries.blocks["minecraft:warped_planks"]
+  public val WARPED_PLANKS: RegistryBlock = Registries.block["minecraft:warped_planks"]
 
-  public val CRIMSON_SLAB: RegistryBlock = Registries.blocks["minecraft:crimson_slab"]
+  public val CRIMSON_SLAB: RegistryBlock = Registries.block["minecraft:crimson_slab"]
 
-  public val WARPED_SLAB: RegistryBlock = Registries.blocks["minecraft:warped_slab"]
+  public val WARPED_SLAB: RegistryBlock = Registries.block["minecraft:warped_slab"]
 
   public val CRIMSON_PRESSURE_PLATE: RegistryBlock =
-      Registries.blocks["minecraft:crimson_pressure_plate"]
+      Registries.block["minecraft:crimson_pressure_plate"]
 
-  public val WARPED_PRESSURE_PLATE: RegistryBlock = Registries.blocks["minecraft:warped_pressure_plate"]
+  public val WARPED_PRESSURE_PLATE: RegistryBlock = Registries.block["minecraft:warped_pressure_plate"]
 
-  public val CRIMSON_FENCE: RegistryBlock = Registries.blocks["minecraft:crimson_fence"]
+  public val CRIMSON_FENCE: RegistryBlock = Registries.block["minecraft:crimson_fence"]
 
-  public val WARPED_FENCE: RegistryBlock = Registries.blocks["minecraft:warped_fence"]
+  public val WARPED_FENCE: RegistryBlock = Registries.block["minecraft:warped_fence"]
 
-  public val CRIMSON_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:crimson_trapdoor"]
+  public val CRIMSON_TRAPDOOR: RegistryBlock = Registries.block["minecraft:crimson_trapdoor"]
 
-  public val WARPED_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:warped_trapdoor"]
+  public val WARPED_TRAPDOOR: RegistryBlock = Registries.block["minecraft:warped_trapdoor"]
 
-  public val CRIMSON_FENCE_GATE: RegistryBlock = Registries.blocks["minecraft:crimson_fence_gate"]
+  public val CRIMSON_FENCE_GATE: RegistryBlock = Registries.block["minecraft:crimson_fence_gate"]
 
-  public val WARPED_FENCE_GATE: RegistryBlock = Registries.blocks["minecraft:warped_fence_gate"]
+  public val WARPED_FENCE_GATE: RegistryBlock = Registries.block["minecraft:warped_fence_gate"]
 
-  public val CRIMSON_STAIRS: RegistryBlock = Registries.blocks["minecraft:crimson_stairs"]
+  public val CRIMSON_STAIRS: RegistryBlock = Registries.block["minecraft:crimson_stairs"]
 
-  public val WARPED_STAIRS: RegistryBlock = Registries.blocks["minecraft:warped_stairs"]
+  public val WARPED_STAIRS: RegistryBlock = Registries.block["minecraft:warped_stairs"]
 
-  public val CRIMSON_BUTTON: RegistryBlock = Registries.blocks["minecraft:crimson_button"]
+  public val CRIMSON_BUTTON: RegistryBlock = Registries.block["minecraft:crimson_button"]
 
-  public val WARPED_BUTTON: RegistryBlock = Registries.blocks["minecraft:warped_button"]
+  public val WARPED_BUTTON: RegistryBlock = Registries.block["minecraft:warped_button"]
 
-  public val CRIMSON_DOOR: RegistryBlock = Registries.blocks["minecraft:crimson_door"]
+  public val CRIMSON_DOOR: RegistryBlock = Registries.block["minecraft:crimson_door"]
 
-  public val WARPED_DOOR: RegistryBlock = Registries.blocks["minecraft:warped_door"]
+  public val WARPED_DOOR: RegistryBlock = Registries.block["minecraft:warped_door"]
 
-  public val CRIMSON_SIGN: RegistryBlock = Registries.blocks["minecraft:crimson_sign"]
+  public val CRIMSON_SIGN: RegistryBlock = Registries.block["minecraft:crimson_sign"]
 
-  public val WARPED_SIGN: RegistryBlock = Registries.blocks["minecraft:warped_sign"]
+  public val WARPED_SIGN: RegistryBlock = Registries.block["minecraft:warped_sign"]
 
-  public val CRIMSON_WALL_SIGN: RegistryBlock = Registries.blocks["minecraft:crimson_wall_sign"]
+  public val CRIMSON_WALL_SIGN: RegistryBlock = Registries.block["minecraft:crimson_wall_sign"]
 
-  public val WARPED_WALL_SIGN: RegistryBlock = Registries.blocks["minecraft:warped_wall_sign"]
+  public val WARPED_WALL_SIGN: RegistryBlock = Registries.block["minecraft:warped_wall_sign"]
 
-  public val STRUCTURE_BLOCK: RegistryBlock = Registries.blocks["minecraft:structure_block"]
+  public val STRUCTURE_BLOCK: RegistryBlock = Registries.block["minecraft:structure_block"]
 
-  public val JIGSAW: RegistryBlock = Registries.blocks["minecraft:jigsaw"]
+  public val JIGSAW: RegistryBlock = Registries.block["minecraft:jigsaw"]
 
-  public val TEST_BLOCK: RegistryBlock = Registries.blocks["minecraft:test_block"]
+  public val TEST_BLOCK: RegistryBlock = Registries.block["minecraft:test_block"]
 
-  public val TEST_INSTANCE_BLOCK: RegistryBlock = Registries.blocks["minecraft:test_instance_block"]
+  public val TEST_INSTANCE_BLOCK: RegistryBlock = Registries.block["minecraft:test_instance_block"]
 
-  public val COMPOSTER: RegistryBlock = Registries.blocks["minecraft:composter"]
+  public val COMPOSTER: RegistryBlock = Registries.block["minecraft:composter"]
 
-  public val TARGET: RegistryBlock = Registries.blocks["minecraft:target"]
+  public val TARGET: RegistryBlock = Registries.block["minecraft:target"]
 
-  public val BEE_NEST: RegistryBlock = Registries.blocks["minecraft:bee_nest"]
+  public val BEE_NEST: RegistryBlock = Registries.block["minecraft:bee_nest"]
 
-  public val BEEHIVE: RegistryBlock = Registries.blocks["minecraft:beehive"]
+  public val BEEHIVE: RegistryBlock = Registries.block["minecraft:beehive"]
 
-  public val HONEY_BLOCK: RegistryBlock = Registries.blocks["minecraft:honey_block"]
+  public val HONEY_BLOCK: RegistryBlock = Registries.block["minecraft:honey_block"]
 
-  public val HONEYCOMB_BLOCK: RegistryBlock = Registries.blocks["minecraft:honeycomb_block"]
+  public val HONEYCOMB_BLOCK: RegistryBlock = Registries.block["minecraft:honeycomb_block"]
 
-  public val NETHERITE_BLOCK: RegistryBlock = Registries.blocks["minecraft:netherite_block"]
+  public val NETHERITE_BLOCK: RegistryBlock = Registries.block["minecraft:netherite_block"]
 
-  public val ANCIENT_DEBRIS: RegistryBlock = Registries.blocks["minecraft:ancient_debris"]
+  public val ANCIENT_DEBRIS: RegistryBlock = Registries.block["minecraft:ancient_debris"]
 
-  public val CRYING_OBSIDIAN: RegistryBlock = Registries.blocks["minecraft:crying_obsidian"]
+  public val CRYING_OBSIDIAN: RegistryBlock = Registries.block["minecraft:crying_obsidian"]
 
-  public val RESPAWN_ANCHOR: RegistryBlock = Registries.blocks["minecraft:respawn_anchor"]
+  public val RESPAWN_ANCHOR: RegistryBlock = Registries.block["minecraft:respawn_anchor"]
 
-  public val POTTED_CRIMSON_FUNGUS: RegistryBlock = Registries.blocks["minecraft:potted_crimson_fungus"]
+  public val POTTED_CRIMSON_FUNGUS: RegistryBlock = Registries.block["minecraft:potted_crimson_fungus"]
 
-  public val POTTED_WARPED_FUNGUS: RegistryBlock = Registries.blocks["minecraft:potted_warped_fungus"]
+  public val POTTED_WARPED_FUNGUS: RegistryBlock = Registries.block["minecraft:potted_warped_fungus"]
 
-  public val POTTED_CRIMSON_ROOTS: RegistryBlock = Registries.blocks["minecraft:potted_crimson_roots"]
+  public val POTTED_CRIMSON_ROOTS: RegistryBlock = Registries.block["minecraft:potted_crimson_roots"]
 
-  public val POTTED_WARPED_ROOTS: RegistryBlock = Registries.blocks["minecraft:potted_warped_roots"]
+  public val POTTED_WARPED_ROOTS: RegistryBlock = Registries.block["minecraft:potted_warped_roots"]
 
-  public val LODESTONE: RegistryBlock = Registries.blocks["minecraft:lodestone"]
+  public val LODESTONE: RegistryBlock = Registries.block["minecraft:lodestone"]
 
-  public val BLACKSTONE: RegistryBlock = Registries.blocks["minecraft:blackstone"]
+  public val BLACKSTONE: RegistryBlock = Registries.block["minecraft:blackstone"]
 
-  public val BLACKSTONE_STAIRS: RegistryBlock = Registries.blocks["minecraft:blackstone_stairs"]
+  public val BLACKSTONE_STAIRS: RegistryBlock = Registries.block["minecraft:blackstone_stairs"]
 
-  public val BLACKSTONE_WALL: RegistryBlock = Registries.blocks["minecraft:blackstone_wall"]
+  public val BLACKSTONE_WALL: RegistryBlock = Registries.block["minecraft:blackstone_wall"]
 
-  public val BLACKSTONE_SLAB: RegistryBlock = Registries.blocks["minecraft:blackstone_slab"]
+  public val BLACKSTONE_SLAB: RegistryBlock = Registries.block["minecraft:blackstone_slab"]
 
-  public val POLISHED_BLACKSTONE: RegistryBlock = Registries.blocks["minecraft:polished_blackstone"]
+  public val POLISHED_BLACKSTONE: RegistryBlock = Registries.block["minecraft:polished_blackstone"]
 
   public val POLISHED_BLACKSTONE_BRICKS: RegistryBlock =
-      Registries.blocks["minecraft:polished_blackstone_bricks"]
+      Registries.block["minecraft:polished_blackstone_bricks"]
 
   public val CRACKED_POLISHED_BLACKSTONE_BRICKS: RegistryBlock =
-      Registries.blocks["minecraft:cracked_polished_blackstone_bricks"]
+      Registries.block["minecraft:cracked_polished_blackstone_bricks"]
 
   public val CHISELED_POLISHED_BLACKSTONE: RegistryBlock =
-      Registries.blocks["minecraft:chiseled_polished_blackstone"]
+      Registries.block["minecraft:chiseled_polished_blackstone"]
 
   public val POLISHED_BLACKSTONE_BRICK_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:polished_blackstone_brick_slab"]
+      Registries.block["minecraft:polished_blackstone_brick_slab"]
 
   public val POLISHED_BLACKSTONE_BRICK_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:polished_blackstone_brick_stairs"]
+      Registries.block["minecraft:polished_blackstone_brick_stairs"]
 
   public val POLISHED_BLACKSTONE_BRICK_WALL: RegistryBlock =
-      Registries.blocks["minecraft:polished_blackstone_brick_wall"]
+      Registries.block["minecraft:polished_blackstone_brick_wall"]
 
-  public val GILDED_BLACKSTONE: RegistryBlock = Registries.blocks["minecraft:gilded_blackstone"]
+  public val GILDED_BLACKSTONE: RegistryBlock = Registries.block["minecraft:gilded_blackstone"]
 
   public val POLISHED_BLACKSTONE_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:polished_blackstone_stairs"]
+      Registries.block["minecraft:polished_blackstone_stairs"]
 
   public val POLISHED_BLACKSTONE_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:polished_blackstone_slab"]
+      Registries.block["minecraft:polished_blackstone_slab"]
 
   public val POLISHED_BLACKSTONE_PRESSURE_PLATE: RegistryBlock =
-      Registries.blocks["minecraft:polished_blackstone_pressure_plate"]
+      Registries.block["minecraft:polished_blackstone_pressure_plate"]
 
   public val POLISHED_BLACKSTONE_BUTTON: RegistryBlock =
-      Registries.blocks["minecraft:polished_blackstone_button"]
+      Registries.block["minecraft:polished_blackstone_button"]
 
   public val POLISHED_BLACKSTONE_WALL: RegistryBlock =
-      Registries.blocks["minecraft:polished_blackstone_wall"]
+      Registries.block["minecraft:polished_blackstone_wall"]
 
   public val CHISELED_NETHER_BRICKS: RegistryBlock =
-      Registries.blocks["minecraft:chiseled_nether_bricks"]
+      Registries.block["minecraft:chiseled_nether_bricks"]
 
-  public val CRACKED_NETHER_BRICKS: RegistryBlock = Registries.blocks["minecraft:cracked_nether_bricks"]
+  public val CRACKED_NETHER_BRICKS: RegistryBlock = Registries.block["minecraft:cracked_nether_bricks"]
 
-  public val QUARTZ_BRICKS: RegistryBlock = Registries.blocks["minecraft:quartz_bricks"]
+  public val QUARTZ_BRICKS: RegistryBlock = Registries.block["minecraft:quartz_bricks"]
 
-  public val CANDLE: RegistryBlock = Registries.blocks["minecraft:candle"]
+  public val CANDLE: RegistryBlock = Registries.block["minecraft:candle"]
 
-  public val WHITE_CANDLE: RegistryBlock = Registries.blocks["minecraft:white_candle"]
+  public val WHITE_CANDLE: RegistryBlock = Registries.block["minecraft:white_candle"]
 
-  public val ORANGE_CANDLE: RegistryBlock = Registries.blocks["minecraft:orange_candle"]
+  public val ORANGE_CANDLE: RegistryBlock = Registries.block["minecraft:orange_candle"]
 
-  public val MAGENTA_CANDLE: RegistryBlock = Registries.blocks["minecraft:magenta_candle"]
+  public val MAGENTA_CANDLE: RegistryBlock = Registries.block["minecraft:magenta_candle"]
 
-  public val LIGHT_BLUE_CANDLE: RegistryBlock = Registries.blocks["minecraft:light_blue_candle"]
+  public val LIGHT_BLUE_CANDLE: RegistryBlock = Registries.block["minecraft:light_blue_candle"]
 
-  public val YELLOW_CANDLE: RegistryBlock = Registries.blocks["minecraft:yellow_candle"]
+  public val YELLOW_CANDLE: RegistryBlock = Registries.block["minecraft:yellow_candle"]
 
-  public val LIME_CANDLE: RegistryBlock = Registries.blocks["minecraft:lime_candle"]
+  public val LIME_CANDLE: RegistryBlock = Registries.block["minecraft:lime_candle"]
 
-  public val PINK_CANDLE: RegistryBlock = Registries.blocks["minecraft:pink_candle"]
+  public val PINK_CANDLE: RegistryBlock = Registries.block["minecraft:pink_candle"]
 
-  public val GRAY_CANDLE: RegistryBlock = Registries.blocks["minecraft:gray_candle"]
+  public val GRAY_CANDLE: RegistryBlock = Registries.block["minecraft:gray_candle"]
 
-  public val LIGHT_GRAY_CANDLE: RegistryBlock = Registries.blocks["minecraft:light_gray_candle"]
+  public val LIGHT_GRAY_CANDLE: RegistryBlock = Registries.block["minecraft:light_gray_candle"]
 
-  public val CYAN_CANDLE: RegistryBlock = Registries.blocks["minecraft:cyan_candle"]
+  public val CYAN_CANDLE: RegistryBlock = Registries.block["minecraft:cyan_candle"]
 
-  public val PURPLE_CANDLE: RegistryBlock = Registries.blocks["minecraft:purple_candle"]
+  public val PURPLE_CANDLE: RegistryBlock = Registries.block["minecraft:purple_candle"]
 
-  public val BLUE_CANDLE: RegistryBlock = Registries.blocks["minecraft:blue_candle"]
+  public val BLUE_CANDLE: RegistryBlock = Registries.block["minecraft:blue_candle"]
 
-  public val BROWN_CANDLE: RegistryBlock = Registries.blocks["minecraft:brown_candle"]
+  public val BROWN_CANDLE: RegistryBlock = Registries.block["minecraft:brown_candle"]
 
-  public val GREEN_CANDLE: RegistryBlock = Registries.blocks["minecraft:green_candle"]
+  public val GREEN_CANDLE: RegistryBlock = Registries.block["minecraft:green_candle"]
 
-  public val RED_CANDLE: RegistryBlock = Registries.blocks["minecraft:red_candle"]
+  public val RED_CANDLE: RegistryBlock = Registries.block["minecraft:red_candle"]
 
-  public val BLACK_CANDLE: RegistryBlock = Registries.blocks["minecraft:black_candle"]
+  public val BLACK_CANDLE: RegistryBlock = Registries.block["minecraft:black_candle"]
 
-  public val CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:candle_cake"]
+  public val CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:candle_cake"]
 
-  public val WHITE_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:white_candle_cake"]
+  public val WHITE_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:white_candle_cake"]
 
-  public val ORANGE_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:orange_candle_cake"]
+  public val ORANGE_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:orange_candle_cake"]
 
-  public val MAGENTA_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:magenta_candle_cake"]
+  public val MAGENTA_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:magenta_candle_cake"]
 
   public val LIGHT_BLUE_CANDLE_CAKE: RegistryBlock =
-      Registries.blocks["minecraft:light_blue_candle_cake"]
+      Registries.block["minecraft:light_blue_candle_cake"]
 
-  public val YELLOW_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:yellow_candle_cake"]
+  public val YELLOW_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:yellow_candle_cake"]
 
-  public val LIME_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:lime_candle_cake"]
+  public val LIME_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:lime_candle_cake"]
 
-  public val PINK_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:pink_candle_cake"]
+  public val PINK_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:pink_candle_cake"]
 
-  public val GRAY_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:gray_candle_cake"]
+  public val GRAY_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:gray_candle_cake"]
 
   public val LIGHT_GRAY_CANDLE_CAKE: RegistryBlock =
-      Registries.blocks["minecraft:light_gray_candle_cake"]
+      Registries.block["minecraft:light_gray_candle_cake"]
 
-  public val CYAN_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:cyan_candle_cake"]
+  public val CYAN_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:cyan_candle_cake"]
 
-  public val PURPLE_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:purple_candle_cake"]
+  public val PURPLE_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:purple_candle_cake"]
 
-  public val BLUE_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:blue_candle_cake"]
+  public val BLUE_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:blue_candle_cake"]
 
-  public val BROWN_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:brown_candle_cake"]
+  public val BROWN_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:brown_candle_cake"]
 
-  public val GREEN_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:green_candle_cake"]
+  public val GREEN_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:green_candle_cake"]
 
-  public val RED_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:red_candle_cake"]
+  public val RED_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:red_candle_cake"]
 
-  public val BLACK_CANDLE_CAKE: RegistryBlock = Registries.blocks["minecraft:black_candle_cake"]
+  public val BLACK_CANDLE_CAKE: RegistryBlock = Registries.block["minecraft:black_candle_cake"]
 
-  public val AMETHYST_BLOCK: RegistryBlock = Registries.blocks["minecraft:amethyst_block"]
+  public val AMETHYST_BLOCK: RegistryBlock = Registries.block["minecraft:amethyst_block"]
 
-  public val BUDDING_AMETHYST: RegistryBlock = Registries.blocks["minecraft:budding_amethyst"]
+  public val BUDDING_AMETHYST: RegistryBlock = Registries.block["minecraft:budding_amethyst"]
 
-  public val AMETHYST_CLUSTER: RegistryBlock = Registries.blocks["minecraft:amethyst_cluster"]
+  public val AMETHYST_CLUSTER: RegistryBlock = Registries.block["minecraft:amethyst_cluster"]
 
-  public val LARGE_AMETHYST_BUD: RegistryBlock = Registries.blocks["minecraft:large_amethyst_bud"]
+  public val LARGE_AMETHYST_BUD: RegistryBlock = Registries.block["minecraft:large_amethyst_bud"]
 
-  public val MEDIUM_AMETHYST_BUD: RegistryBlock = Registries.blocks["minecraft:medium_amethyst_bud"]
+  public val MEDIUM_AMETHYST_BUD: RegistryBlock = Registries.block["minecraft:medium_amethyst_bud"]
 
-  public val SMALL_AMETHYST_BUD: RegistryBlock = Registries.blocks["minecraft:small_amethyst_bud"]
+  public val SMALL_AMETHYST_BUD: RegistryBlock = Registries.block["minecraft:small_amethyst_bud"]
 
-  public val TUFF: RegistryBlock = Registries.blocks["minecraft:tuff"]
+  public val TUFF: RegistryBlock = Registries.block["minecraft:tuff"]
 
-  public val TUFF_SLAB: RegistryBlock = Registries.blocks["minecraft:tuff_slab"]
+  public val TUFF_SLAB: RegistryBlock = Registries.block["minecraft:tuff_slab"]
 
-  public val TUFF_STAIRS: RegistryBlock = Registries.blocks["minecraft:tuff_stairs"]
+  public val TUFF_STAIRS: RegistryBlock = Registries.block["minecraft:tuff_stairs"]
 
-  public val TUFF_WALL: RegistryBlock = Registries.blocks["minecraft:tuff_wall"]
+  public val TUFF_WALL: RegistryBlock = Registries.block["minecraft:tuff_wall"]
 
-  public val POLISHED_TUFF: RegistryBlock = Registries.blocks["minecraft:polished_tuff"]
+  public val POLISHED_TUFF: RegistryBlock = Registries.block["minecraft:polished_tuff"]
 
-  public val POLISHED_TUFF_SLAB: RegistryBlock = Registries.blocks["minecraft:polished_tuff_slab"]
+  public val POLISHED_TUFF_SLAB: RegistryBlock = Registries.block["minecraft:polished_tuff_slab"]
 
-  public val POLISHED_TUFF_STAIRS: RegistryBlock = Registries.blocks["minecraft:polished_tuff_stairs"]
+  public val POLISHED_TUFF_STAIRS: RegistryBlock = Registries.block["minecraft:polished_tuff_stairs"]
 
-  public val POLISHED_TUFF_WALL: RegistryBlock = Registries.blocks["minecraft:polished_tuff_wall"]
+  public val POLISHED_TUFF_WALL: RegistryBlock = Registries.block["minecraft:polished_tuff_wall"]
 
-  public val CHISELED_TUFF: RegistryBlock = Registries.blocks["minecraft:chiseled_tuff"]
+  public val CHISELED_TUFF: RegistryBlock = Registries.block["minecraft:chiseled_tuff"]
 
-  public val TUFF_BRICKS: RegistryBlock = Registries.blocks["minecraft:tuff_bricks"]
+  public val TUFF_BRICKS: RegistryBlock = Registries.block["minecraft:tuff_bricks"]
 
-  public val TUFF_BRICK_SLAB: RegistryBlock = Registries.blocks["minecraft:tuff_brick_slab"]
+  public val TUFF_BRICK_SLAB: RegistryBlock = Registries.block["minecraft:tuff_brick_slab"]
 
-  public val TUFF_BRICK_STAIRS: RegistryBlock = Registries.blocks["minecraft:tuff_brick_stairs"]
+  public val TUFF_BRICK_STAIRS: RegistryBlock = Registries.block["minecraft:tuff_brick_stairs"]
 
-  public val TUFF_BRICK_WALL: RegistryBlock = Registries.blocks["minecraft:tuff_brick_wall"]
+  public val TUFF_BRICK_WALL: RegistryBlock = Registries.block["minecraft:tuff_brick_wall"]
 
-  public val CHISELED_TUFF_BRICKS: RegistryBlock = Registries.blocks["minecraft:chiseled_tuff_bricks"]
+  public val CHISELED_TUFF_BRICKS: RegistryBlock = Registries.block["minecraft:chiseled_tuff_bricks"]
 
-  public val CALCITE: RegistryBlock = Registries.blocks["minecraft:calcite"]
+  public val CALCITE: RegistryBlock = Registries.block["minecraft:calcite"]
 
-  public val TINTED_GLASS: RegistryBlock = Registries.blocks["minecraft:tinted_glass"]
+  public val TINTED_GLASS: RegistryBlock = Registries.block["minecraft:tinted_glass"]
 
-  public val POWDER_SNOW: RegistryBlock = Registries.blocks["minecraft:powder_snow"]
+  public val POWDER_SNOW: RegistryBlock = Registries.block["minecraft:powder_snow"]
 
-  public val SCULK_SENSOR: RegistryBlock = Registries.blocks["minecraft:sculk_sensor"]
+  public val SCULK_SENSOR: RegistryBlock = Registries.block["minecraft:sculk_sensor"]
 
   public val CALIBRATED_SCULK_SENSOR: RegistryBlock =
-      Registries.blocks["minecraft:calibrated_sculk_sensor"]
+      Registries.block["minecraft:calibrated_sculk_sensor"]
 
-  public val SCULK: RegistryBlock = Registries.blocks["minecraft:sculk"]
+  public val SCULK: RegistryBlock = Registries.block["minecraft:sculk"]
 
-  public val SCULK_VEIN: RegistryBlock = Registries.blocks["minecraft:sculk_vein"]
+  public val SCULK_VEIN: RegistryBlock = Registries.block["minecraft:sculk_vein"]
 
-  public val SCULK_CATALYST: RegistryBlock = Registries.blocks["minecraft:sculk_catalyst"]
+  public val SCULK_CATALYST: RegistryBlock = Registries.block["minecraft:sculk_catalyst"]
 
-  public val SCULK_SHRIEKER: RegistryBlock = Registries.blocks["minecraft:sculk_shrieker"]
+  public val SCULK_SHRIEKER: RegistryBlock = Registries.block["minecraft:sculk_shrieker"]
 
-  public val COPPER_BLOCK: RegistryBlock = Registries.blocks["minecraft:copper_block"]
+  public val COPPER_BLOCK: RegistryBlock = Registries.block["minecraft:copper_block"]
 
-  public val EXPOSED_COPPER: RegistryBlock = Registries.blocks["minecraft:exposed_copper"]
+  public val EXPOSED_COPPER: RegistryBlock = Registries.block["minecraft:exposed_copper"]
 
-  public val WEATHERED_COPPER: RegistryBlock = Registries.blocks["minecraft:weathered_copper"]
+  public val WEATHERED_COPPER: RegistryBlock = Registries.block["minecraft:weathered_copper"]
 
-  public val OXIDIZED_COPPER: RegistryBlock = Registries.blocks["minecraft:oxidized_copper"]
+  public val OXIDIZED_COPPER: RegistryBlock = Registries.block["minecraft:oxidized_copper"]
 
-  public val COPPER_ORE: RegistryBlock = Registries.blocks["minecraft:copper_ore"]
+  public val COPPER_ORE: RegistryBlock = Registries.block["minecraft:copper_ore"]
 
-  public val DEEPSLATE_COPPER_ORE: RegistryBlock = Registries.blocks["minecraft:deepslate_copper_ore"]
+  public val DEEPSLATE_COPPER_ORE: RegistryBlock = Registries.block["minecraft:deepslate_copper_ore"]
 
-  public val OXIDIZED_CUT_COPPER: RegistryBlock = Registries.blocks["minecraft:oxidized_cut_copper"]
+  public val OXIDIZED_CUT_COPPER: RegistryBlock = Registries.block["minecraft:oxidized_cut_copper"]
 
-  public val WEATHERED_CUT_COPPER: RegistryBlock = Registries.blocks["minecraft:weathered_cut_copper"]
+  public val WEATHERED_CUT_COPPER: RegistryBlock = Registries.block["minecraft:weathered_cut_copper"]
 
-  public val EXPOSED_CUT_COPPER: RegistryBlock = Registries.blocks["minecraft:exposed_cut_copper"]
+  public val EXPOSED_CUT_COPPER: RegistryBlock = Registries.block["minecraft:exposed_cut_copper"]
 
-  public val CUT_COPPER: RegistryBlock = Registries.blocks["minecraft:cut_copper"]
+  public val CUT_COPPER: RegistryBlock = Registries.block["minecraft:cut_copper"]
 
   public val OXIDIZED_CHISELED_COPPER: RegistryBlock =
-      Registries.blocks["minecraft:oxidized_chiseled_copper"]
+      Registries.block["minecraft:oxidized_chiseled_copper"]
 
   public val WEATHERED_CHISELED_COPPER: RegistryBlock =
-      Registries.blocks["minecraft:weathered_chiseled_copper"]
+      Registries.block["minecraft:weathered_chiseled_copper"]
 
   public val EXPOSED_CHISELED_COPPER: RegistryBlock =
-      Registries.blocks["minecraft:exposed_chiseled_copper"]
+      Registries.block["minecraft:exposed_chiseled_copper"]
 
-  public val CHISELED_COPPER: RegistryBlock = Registries.blocks["minecraft:chiseled_copper"]
+  public val CHISELED_COPPER: RegistryBlock = Registries.block["minecraft:chiseled_copper"]
 
   public val WAXED_OXIDIZED_CHISELED_COPPER: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_chiseled_copper"]
+      Registries.block["minecraft:waxed_oxidized_chiseled_copper"]
 
   public val WAXED_WEATHERED_CHISELED_COPPER: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_chiseled_copper"]
+      Registries.block["minecraft:waxed_weathered_chiseled_copper"]
 
   public val WAXED_EXPOSED_CHISELED_COPPER: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_chiseled_copper"]
+      Registries.block["minecraft:waxed_exposed_chiseled_copper"]
 
-  public val WAXED_CHISELED_COPPER: RegistryBlock = Registries.blocks["minecraft:waxed_chiseled_copper"]
+  public val WAXED_CHISELED_COPPER: RegistryBlock = Registries.block["minecraft:waxed_chiseled_copper"]
 
   public val OXIDIZED_CUT_COPPER_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:oxidized_cut_copper_stairs"]
+      Registries.block["minecraft:oxidized_cut_copper_stairs"]
 
   public val WEATHERED_CUT_COPPER_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:weathered_cut_copper_stairs"]
+      Registries.block["minecraft:weathered_cut_copper_stairs"]
 
   public val EXPOSED_CUT_COPPER_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:exposed_cut_copper_stairs"]
+      Registries.block["minecraft:exposed_cut_copper_stairs"]
 
-  public val CUT_COPPER_STAIRS: RegistryBlock = Registries.blocks["minecraft:cut_copper_stairs"]
+  public val CUT_COPPER_STAIRS: RegistryBlock = Registries.block["minecraft:cut_copper_stairs"]
 
   public val OXIDIZED_CUT_COPPER_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:oxidized_cut_copper_slab"]
+      Registries.block["minecraft:oxidized_cut_copper_slab"]
 
   public val WEATHERED_CUT_COPPER_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:weathered_cut_copper_slab"]
+      Registries.block["minecraft:weathered_cut_copper_slab"]
 
   public val EXPOSED_CUT_COPPER_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:exposed_cut_copper_slab"]
+      Registries.block["minecraft:exposed_cut_copper_slab"]
 
-  public val CUT_COPPER_SLAB: RegistryBlock = Registries.blocks["minecraft:cut_copper_slab"]
+  public val CUT_COPPER_SLAB: RegistryBlock = Registries.block["minecraft:cut_copper_slab"]
 
-  public val WAXED_COPPER_BLOCK: RegistryBlock = Registries.blocks["minecraft:waxed_copper_block"]
+  public val WAXED_COPPER_BLOCK: RegistryBlock = Registries.block["minecraft:waxed_copper_block"]
 
   public val WAXED_WEATHERED_COPPER: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_copper"]
+      Registries.block["minecraft:waxed_weathered_copper"]
 
-  public val WAXED_EXPOSED_COPPER: RegistryBlock = Registries.blocks["minecraft:waxed_exposed_copper"]
+  public val WAXED_EXPOSED_COPPER: RegistryBlock = Registries.block["minecraft:waxed_exposed_copper"]
 
-  public val WAXED_OXIDIZED_COPPER: RegistryBlock = Registries.blocks["minecraft:waxed_oxidized_copper"]
+  public val WAXED_OXIDIZED_COPPER: RegistryBlock = Registries.block["minecraft:waxed_oxidized_copper"]
 
   public val WAXED_OXIDIZED_CUT_COPPER: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_cut_copper"]
+      Registries.block["minecraft:waxed_oxidized_cut_copper"]
 
   public val WAXED_WEATHERED_CUT_COPPER: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_cut_copper"]
+      Registries.block["minecraft:waxed_weathered_cut_copper"]
 
   public val WAXED_EXPOSED_CUT_COPPER: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_cut_copper"]
+      Registries.block["minecraft:waxed_exposed_cut_copper"]
 
-  public val WAXED_CUT_COPPER: RegistryBlock = Registries.blocks["minecraft:waxed_cut_copper"]
+  public val WAXED_CUT_COPPER: RegistryBlock = Registries.block["minecraft:waxed_cut_copper"]
 
   public val WAXED_OXIDIZED_CUT_COPPER_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_cut_copper_stairs"]
+      Registries.block["minecraft:waxed_oxidized_cut_copper_stairs"]
 
   public val WAXED_WEATHERED_CUT_COPPER_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_cut_copper_stairs"]
+      Registries.block["minecraft:waxed_weathered_cut_copper_stairs"]
 
   public val WAXED_EXPOSED_CUT_COPPER_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_cut_copper_stairs"]
+      Registries.block["minecraft:waxed_exposed_cut_copper_stairs"]
 
   public val WAXED_CUT_COPPER_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:waxed_cut_copper_stairs"]
+      Registries.block["minecraft:waxed_cut_copper_stairs"]
 
   public val WAXED_OXIDIZED_CUT_COPPER_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_cut_copper_slab"]
+      Registries.block["minecraft:waxed_oxidized_cut_copper_slab"]
 
   public val WAXED_WEATHERED_CUT_COPPER_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_cut_copper_slab"]
+      Registries.block["minecraft:waxed_weathered_cut_copper_slab"]
 
   public val WAXED_EXPOSED_CUT_COPPER_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_cut_copper_slab"]
+      Registries.block["minecraft:waxed_exposed_cut_copper_slab"]
 
-  public val WAXED_CUT_COPPER_SLAB: RegistryBlock = Registries.blocks["minecraft:waxed_cut_copper_slab"]
+  public val WAXED_CUT_COPPER_SLAB: RegistryBlock = Registries.block["minecraft:waxed_cut_copper_slab"]
 
-  public val COPPER_DOOR: RegistryBlock = Registries.blocks["minecraft:copper_door"]
+  public val COPPER_DOOR: RegistryBlock = Registries.block["minecraft:copper_door"]
 
-  public val EXPOSED_COPPER_DOOR: RegistryBlock = Registries.blocks["minecraft:exposed_copper_door"]
+  public val EXPOSED_COPPER_DOOR: RegistryBlock = Registries.block["minecraft:exposed_copper_door"]
 
-  public val OXIDIZED_COPPER_DOOR: RegistryBlock = Registries.blocks["minecraft:oxidized_copper_door"]
+  public val OXIDIZED_COPPER_DOOR: RegistryBlock = Registries.block["minecraft:oxidized_copper_door"]
 
-  public val WEATHERED_COPPER_DOOR: RegistryBlock = Registries.blocks["minecraft:weathered_copper_door"]
+  public val WEATHERED_COPPER_DOOR: RegistryBlock = Registries.block["minecraft:weathered_copper_door"]
 
-  public val WAXED_COPPER_DOOR: RegistryBlock = Registries.blocks["minecraft:waxed_copper_door"]
+  public val WAXED_COPPER_DOOR: RegistryBlock = Registries.block["minecraft:waxed_copper_door"]
 
   public val WAXED_EXPOSED_COPPER_DOOR: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_copper_door"]
+      Registries.block["minecraft:waxed_exposed_copper_door"]
 
   public val WAXED_OXIDIZED_COPPER_DOOR: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_copper_door"]
+      Registries.block["minecraft:waxed_oxidized_copper_door"]
 
   public val WAXED_WEATHERED_COPPER_DOOR: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_copper_door"]
+      Registries.block["minecraft:waxed_weathered_copper_door"]
 
-  public val COPPER_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:copper_trapdoor"]
+  public val COPPER_TRAPDOOR: RegistryBlock = Registries.block["minecraft:copper_trapdoor"]
 
   public val EXPOSED_COPPER_TRAPDOOR: RegistryBlock =
-      Registries.blocks["minecraft:exposed_copper_trapdoor"]
+      Registries.block["minecraft:exposed_copper_trapdoor"]
 
   public val OXIDIZED_COPPER_TRAPDOOR: RegistryBlock =
-      Registries.blocks["minecraft:oxidized_copper_trapdoor"]
+      Registries.block["minecraft:oxidized_copper_trapdoor"]
 
   public val WEATHERED_COPPER_TRAPDOOR: RegistryBlock =
-      Registries.blocks["minecraft:weathered_copper_trapdoor"]
+      Registries.block["minecraft:weathered_copper_trapdoor"]
 
-  public val WAXED_COPPER_TRAPDOOR: RegistryBlock = Registries.blocks["minecraft:waxed_copper_trapdoor"]
+  public val WAXED_COPPER_TRAPDOOR: RegistryBlock = Registries.block["minecraft:waxed_copper_trapdoor"]
 
   public val WAXED_EXPOSED_COPPER_TRAPDOOR: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_copper_trapdoor"]
+      Registries.block["minecraft:waxed_exposed_copper_trapdoor"]
 
   public val WAXED_OXIDIZED_COPPER_TRAPDOOR: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_copper_trapdoor"]
+      Registries.block["minecraft:waxed_oxidized_copper_trapdoor"]
 
   public val WAXED_WEATHERED_COPPER_TRAPDOOR: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_copper_trapdoor"]
+      Registries.block["minecraft:waxed_weathered_copper_trapdoor"]
 
-  public val COPPER_GRATE: RegistryBlock = Registries.blocks["minecraft:copper_grate"]
+  public val COPPER_GRATE: RegistryBlock = Registries.block["minecraft:copper_grate"]
 
-  public val EXPOSED_COPPER_GRATE: RegistryBlock = Registries.blocks["minecraft:exposed_copper_grate"]
+  public val EXPOSED_COPPER_GRATE: RegistryBlock = Registries.block["minecraft:exposed_copper_grate"]
 
   public val WEATHERED_COPPER_GRATE: RegistryBlock =
-      Registries.blocks["minecraft:weathered_copper_grate"]
+      Registries.block["minecraft:weathered_copper_grate"]
 
-  public val OXIDIZED_COPPER_GRATE: RegistryBlock = Registries.blocks["minecraft:oxidized_copper_grate"]
+  public val OXIDIZED_COPPER_GRATE: RegistryBlock = Registries.block["minecraft:oxidized_copper_grate"]
 
-  public val WAXED_COPPER_GRATE: RegistryBlock = Registries.blocks["minecraft:waxed_copper_grate"]
+  public val WAXED_COPPER_GRATE: RegistryBlock = Registries.block["minecraft:waxed_copper_grate"]
 
   public val WAXED_EXPOSED_COPPER_GRATE: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_copper_grate"]
+      Registries.block["minecraft:waxed_exposed_copper_grate"]
 
   public val WAXED_WEATHERED_COPPER_GRATE: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_copper_grate"]
+      Registries.block["minecraft:waxed_weathered_copper_grate"]
 
   public val WAXED_OXIDIZED_COPPER_GRATE: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_copper_grate"]
+      Registries.block["minecraft:waxed_oxidized_copper_grate"]
 
-  public val COPPER_BULB: RegistryBlock = Registries.blocks["minecraft:copper_bulb"]
+  public val COPPER_BULB: RegistryBlock = Registries.block["minecraft:copper_bulb"]
 
-  public val EXPOSED_COPPER_BULB: RegistryBlock = Registries.blocks["minecraft:exposed_copper_bulb"]
+  public val EXPOSED_COPPER_BULB: RegistryBlock = Registries.block["minecraft:exposed_copper_bulb"]
 
-  public val WEATHERED_COPPER_BULB: RegistryBlock = Registries.blocks["minecraft:weathered_copper_bulb"]
+  public val WEATHERED_COPPER_BULB: RegistryBlock = Registries.block["minecraft:weathered_copper_bulb"]
 
-  public val OXIDIZED_COPPER_BULB: RegistryBlock = Registries.blocks["minecraft:oxidized_copper_bulb"]
+  public val OXIDIZED_COPPER_BULB: RegistryBlock = Registries.block["minecraft:oxidized_copper_bulb"]
 
-  public val WAXED_COPPER_BULB: RegistryBlock = Registries.blocks["minecraft:waxed_copper_bulb"]
+  public val WAXED_COPPER_BULB: RegistryBlock = Registries.block["minecraft:waxed_copper_bulb"]
 
   public val WAXED_EXPOSED_COPPER_BULB: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_copper_bulb"]
+      Registries.block["minecraft:waxed_exposed_copper_bulb"]
 
   public val WAXED_WEATHERED_COPPER_BULB: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_copper_bulb"]
+      Registries.block["minecraft:waxed_weathered_copper_bulb"]
 
   public val WAXED_OXIDIZED_COPPER_BULB: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_copper_bulb"]
+      Registries.block["minecraft:waxed_oxidized_copper_bulb"]
 
-  public val COPPER_CHEST: RegistryBlock = Registries.blocks["minecraft:copper_chest"]
+  public val COPPER_CHEST: RegistryBlock = Registries.block["minecraft:copper_chest"]
 
-  public val EXPOSED_COPPER_CHEST: RegistryBlock = Registries.blocks["minecraft:exposed_copper_chest"]
+  public val EXPOSED_COPPER_CHEST: RegistryBlock = Registries.block["minecraft:exposed_copper_chest"]
 
   public val WEATHERED_COPPER_CHEST: RegistryBlock =
-      Registries.blocks["minecraft:weathered_copper_chest"]
+      Registries.block["minecraft:weathered_copper_chest"]
 
-  public val OXIDIZED_COPPER_CHEST: RegistryBlock = Registries.blocks["minecraft:oxidized_copper_chest"]
+  public val OXIDIZED_COPPER_CHEST: RegistryBlock = Registries.block["minecraft:oxidized_copper_chest"]
 
-  public val WAXED_COPPER_CHEST: RegistryBlock = Registries.blocks["minecraft:waxed_copper_chest"]
+  public val WAXED_COPPER_CHEST: RegistryBlock = Registries.block["minecraft:waxed_copper_chest"]
 
   public val WAXED_EXPOSED_COPPER_CHEST: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_copper_chest"]
+      Registries.block["minecraft:waxed_exposed_copper_chest"]
 
   public val WAXED_WEATHERED_COPPER_CHEST: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_copper_chest"]
+      Registries.block["minecraft:waxed_weathered_copper_chest"]
 
   public val WAXED_OXIDIZED_COPPER_CHEST: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_copper_chest"]
+      Registries.block["minecraft:waxed_oxidized_copper_chest"]
 
-  public val COPPER_GOLEM_STATUE: RegistryBlock = Registries.blocks["minecraft:copper_golem_statue"]
+  public val COPPER_GOLEM_STATUE: RegistryBlock = Registries.block["minecraft:copper_golem_statue"]
 
   public val EXPOSED_COPPER_GOLEM_STATUE: RegistryBlock =
-      Registries.blocks["minecraft:exposed_copper_golem_statue"]
+      Registries.block["minecraft:exposed_copper_golem_statue"]
 
   public val WEATHERED_COPPER_GOLEM_STATUE: RegistryBlock =
-      Registries.blocks["minecraft:weathered_copper_golem_statue"]
+      Registries.block["minecraft:weathered_copper_golem_statue"]
 
   public val OXIDIZED_COPPER_GOLEM_STATUE: RegistryBlock =
-      Registries.blocks["minecraft:oxidized_copper_golem_statue"]
+      Registries.block["minecraft:oxidized_copper_golem_statue"]
 
   public val WAXED_COPPER_GOLEM_STATUE: RegistryBlock =
-      Registries.blocks["minecraft:waxed_copper_golem_statue"]
+      Registries.block["minecraft:waxed_copper_golem_statue"]
 
   public val WAXED_EXPOSED_COPPER_GOLEM_STATUE: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_copper_golem_statue"]
+      Registries.block["minecraft:waxed_exposed_copper_golem_statue"]
 
   public val WAXED_WEATHERED_COPPER_GOLEM_STATUE: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_copper_golem_statue"]
+      Registries.block["minecraft:waxed_weathered_copper_golem_statue"]
 
   public val WAXED_OXIDIZED_COPPER_GOLEM_STATUE: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_copper_golem_statue"]
+      Registries.block["minecraft:waxed_oxidized_copper_golem_statue"]
 
-  public val LIGHTNING_ROD: RegistryBlock = Registries.blocks["minecraft:lightning_rod"]
+  public val LIGHTNING_ROD: RegistryBlock = Registries.block["minecraft:lightning_rod"]
 
-  public val EXPOSED_LIGHTNING_ROD: RegistryBlock = Registries.blocks["minecraft:exposed_lightning_rod"]
+  public val EXPOSED_LIGHTNING_ROD: RegistryBlock = Registries.block["minecraft:exposed_lightning_rod"]
 
   public val WEATHERED_LIGHTNING_ROD: RegistryBlock =
-      Registries.blocks["minecraft:weathered_lightning_rod"]
+      Registries.block["minecraft:weathered_lightning_rod"]
 
   public val OXIDIZED_LIGHTNING_ROD: RegistryBlock =
-      Registries.blocks["minecraft:oxidized_lightning_rod"]
+      Registries.block["minecraft:oxidized_lightning_rod"]
 
-  public val WAXED_LIGHTNING_ROD: RegistryBlock = Registries.blocks["minecraft:waxed_lightning_rod"]
+  public val WAXED_LIGHTNING_ROD: RegistryBlock = Registries.block["minecraft:waxed_lightning_rod"]
 
   public val WAXED_EXPOSED_LIGHTNING_ROD: RegistryBlock =
-      Registries.blocks["minecraft:waxed_exposed_lightning_rod"]
+      Registries.block["minecraft:waxed_exposed_lightning_rod"]
 
   public val WAXED_WEATHERED_LIGHTNING_ROD: RegistryBlock =
-      Registries.blocks["minecraft:waxed_weathered_lightning_rod"]
+      Registries.block["minecraft:waxed_weathered_lightning_rod"]
 
   public val WAXED_OXIDIZED_LIGHTNING_ROD: RegistryBlock =
-      Registries.blocks["minecraft:waxed_oxidized_lightning_rod"]
+      Registries.block["minecraft:waxed_oxidized_lightning_rod"]
 
-  public val POINTED_DRIPSTONE: RegistryBlock = Registries.blocks["minecraft:pointed_dripstone"]
+  public val POINTED_DRIPSTONE: RegistryBlock = Registries.block["minecraft:pointed_dripstone"]
 
-  public val DRIPSTONE_BLOCK: RegistryBlock = Registries.blocks["minecraft:dripstone_block"]
+  public val DRIPSTONE_BLOCK: RegistryBlock = Registries.block["minecraft:dripstone_block"]
 
-  public val CAVE_VINES: RegistryBlock = Registries.blocks["minecraft:cave_vines"]
+  public val CAVE_VINES: RegistryBlock = Registries.block["minecraft:cave_vines"]
 
-  public val CAVE_VINES_PLANT: RegistryBlock = Registries.blocks["minecraft:cave_vines_plant"]
+  public val CAVE_VINES_PLANT: RegistryBlock = Registries.block["minecraft:cave_vines_plant"]
 
-  public val SPORE_BLOSSOM: RegistryBlock = Registries.blocks["minecraft:spore_blossom"]
+  public val SPORE_BLOSSOM: RegistryBlock = Registries.block["minecraft:spore_blossom"]
 
-  public val AZALEA: RegistryBlock = Registries.blocks["minecraft:azalea"]
+  public val AZALEA: RegistryBlock = Registries.block["minecraft:azalea"]
 
-  public val FLOWERING_AZALEA: RegistryBlock = Registries.blocks["minecraft:flowering_azalea"]
+  public val FLOWERING_AZALEA: RegistryBlock = Registries.block["minecraft:flowering_azalea"]
 
-  public val MOSS_CARPET: RegistryBlock = Registries.blocks["minecraft:moss_carpet"]
+  public val MOSS_CARPET: RegistryBlock = Registries.block["minecraft:moss_carpet"]
 
-  public val PINK_PETALS: RegistryBlock = Registries.blocks["minecraft:pink_petals"]
+  public val PINK_PETALS: RegistryBlock = Registries.block["minecraft:pink_petals"]
 
-  public val WILDFLOWERS: RegistryBlock = Registries.blocks["minecraft:wildflowers"]
+  public val WILDFLOWERS: RegistryBlock = Registries.block["minecraft:wildflowers"]
 
-  public val LEAF_LITTER: RegistryBlock = Registries.blocks["minecraft:leaf_litter"]
+  public val LEAF_LITTER: RegistryBlock = Registries.block["minecraft:leaf_litter"]
 
-  public val MOSS_BLOCK: RegistryBlock = Registries.blocks["minecraft:moss_block"]
+  public val MOSS_BLOCK: RegistryBlock = Registries.block["minecraft:moss_block"]
 
-  public val BIG_DRIPLEAF: RegistryBlock = Registries.blocks["minecraft:big_dripleaf"]
+  public val BIG_DRIPLEAF: RegistryBlock = Registries.block["minecraft:big_dripleaf"]
 
-  public val BIG_DRIPLEAF_STEM: RegistryBlock = Registries.blocks["minecraft:big_dripleaf_stem"]
+  public val BIG_DRIPLEAF_STEM: RegistryBlock = Registries.block["minecraft:big_dripleaf_stem"]
 
-  public val SMALL_DRIPLEAF: RegistryBlock = Registries.blocks["minecraft:small_dripleaf"]
+  public val SMALL_DRIPLEAF: RegistryBlock = Registries.block["minecraft:small_dripleaf"]
 
-  public val HANGING_ROOTS: RegistryBlock = Registries.blocks["minecraft:hanging_roots"]
+  public val HANGING_ROOTS: RegistryBlock = Registries.block["minecraft:hanging_roots"]
 
-  public val ROOTED_DIRT: RegistryBlock = Registries.blocks["minecraft:rooted_dirt"]
+  public val ROOTED_DIRT: RegistryBlock = Registries.block["minecraft:rooted_dirt"]
 
-  public val MUD: RegistryBlock = Registries.blocks["minecraft:mud"]
+  public val MUD: RegistryBlock = Registries.block["minecraft:mud"]
 
-  public val DEEPSLATE: RegistryBlock = Registries.blocks["minecraft:deepslate"]
+  public val DEEPSLATE: RegistryBlock = Registries.block["minecraft:deepslate"]
 
-  public val COBBLED_DEEPSLATE: RegistryBlock = Registries.blocks["minecraft:cobbled_deepslate"]
+  public val COBBLED_DEEPSLATE: RegistryBlock = Registries.block["minecraft:cobbled_deepslate"]
 
   public val COBBLED_DEEPSLATE_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:cobbled_deepslate_stairs"]
+      Registries.block["minecraft:cobbled_deepslate_stairs"]
 
   public val COBBLED_DEEPSLATE_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:cobbled_deepslate_slab"]
+      Registries.block["minecraft:cobbled_deepslate_slab"]
 
   public val COBBLED_DEEPSLATE_WALL: RegistryBlock =
-      Registries.blocks["minecraft:cobbled_deepslate_wall"]
+      Registries.block["minecraft:cobbled_deepslate_wall"]
 
-  public val POLISHED_DEEPSLATE: RegistryBlock = Registries.blocks["minecraft:polished_deepslate"]
+  public val POLISHED_DEEPSLATE: RegistryBlock = Registries.block["minecraft:polished_deepslate"]
 
   public val POLISHED_DEEPSLATE_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:polished_deepslate_stairs"]
+      Registries.block["minecraft:polished_deepslate_stairs"]
 
   public val POLISHED_DEEPSLATE_SLAB: RegistryBlock =
-      Registries.blocks["minecraft:polished_deepslate_slab"]
+      Registries.block["minecraft:polished_deepslate_slab"]
 
   public val POLISHED_DEEPSLATE_WALL: RegistryBlock =
-      Registries.blocks["minecraft:polished_deepslate_wall"]
+      Registries.block["minecraft:polished_deepslate_wall"]
 
-  public val DEEPSLATE_TILES: RegistryBlock = Registries.blocks["minecraft:deepslate_tiles"]
+  public val DEEPSLATE_TILES: RegistryBlock = Registries.block["minecraft:deepslate_tiles"]
 
-  public val DEEPSLATE_TILE_STAIRS: RegistryBlock = Registries.blocks["minecraft:deepslate_tile_stairs"]
+  public val DEEPSLATE_TILE_STAIRS: RegistryBlock = Registries.block["minecraft:deepslate_tile_stairs"]
 
-  public val DEEPSLATE_TILE_SLAB: RegistryBlock = Registries.blocks["minecraft:deepslate_tile_slab"]
+  public val DEEPSLATE_TILE_SLAB: RegistryBlock = Registries.block["minecraft:deepslate_tile_slab"]
 
-  public val DEEPSLATE_TILE_WALL: RegistryBlock = Registries.blocks["minecraft:deepslate_tile_wall"]
+  public val DEEPSLATE_TILE_WALL: RegistryBlock = Registries.block["minecraft:deepslate_tile_wall"]
 
-  public val DEEPSLATE_BRICKS: RegistryBlock = Registries.blocks["minecraft:deepslate_bricks"]
+  public val DEEPSLATE_BRICKS: RegistryBlock = Registries.block["minecraft:deepslate_bricks"]
 
   public val DEEPSLATE_BRICK_STAIRS: RegistryBlock =
-      Registries.blocks["minecraft:deepslate_brick_stairs"]
+      Registries.block["minecraft:deepslate_brick_stairs"]
 
-  public val DEEPSLATE_BRICK_SLAB: RegistryBlock = Registries.blocks["minecraft:deepslate_brick_slab"]
+  public val DEEPSLATE_BRICK_SLAB: RegistryBlock = Registries.block["minecraft:deepslate_brick_slab"]
 
-  public val DEEPSLATE_BRICK_WALL: RegistryBlock = Registries.blocks["minecraft:deepslate_brick_wall"]
+  public val DEEPSLATE_BRICK_WALL: RegistryBlock = Registries.block["minecraft:deepslate_brick_wall"]
 
-  public val CHISELED_DEEPSLATE: RegistryBlock = Registries.blocks["minecraft:chiseled_deepslate"]
+  public val CHISELED_DEEPSLATE: RegistryBlock = Registries.block["minecraft:chiseled_deepslate"]
 
   public val CRACKED_DEEPSLATE_BRICKS: RegistryBlock =
-      Registries.blocks["minecraft:cracked_deepslate_bricks"]
+      Registries.block["minecraft:cracked_deepslate_bricks"]
 
   public val CRACKED_DEEPSLATE_TILES: RegistryBlock =
-      Registries.blocks["minecraft:cracked_deepslate_tiles"]
+      Registries.block["minecraft:cracked_deepslate_tiles"]
 
-  public val INFESTED_DEEPSLATE: RegistryBlock = Registries.blocks["minecraft:infested_deepslate"]
+  public val INFESTED_DEEPSLATE: RegistryBlock = Registries.block["minecraft:infested_deepslate"]
 
-  public val SMOOTH_BASALT: RegistryBlock = Registries.blocks["minecraft:smooth_basalt"]
+  public val SMOOTH_BASALT: RegistryBlock = Registries.block["minecraft:smooth_basalt"]
 
-  public val RAW_IRON_BLOCK: RegistryBlock = Registries.blocks["minecraft:raw_iron_block"]
+  public val RAW_IRON_BLOCK: RegistryBlock = Registries.block["minecraft:raw_iron_block"]
 
-  public val RAW_COPPER_BLOCK: RegistryBlock = Registries.blocks["minecraft:raw_copper_block"]
+  public val RAW_COPPER_BLOCK: RegistryBlock = Registries.block["minecraft:raw_copper_block"]
 
-  public val RAW_GOLD_BLOCK: RegistryBlock = Registries.blocks["minecraft:raw_gold_block"]
+  public val RAW_GOLD_BLOCK: RegistryBlock = Registries.block["minecraft:raw_gold_block"]
 
-  public val POTTED_AZALEA_BUSH: RegistryBlock = Registries.blocks["minecraft:potted_azalea_bush"]
+  public val POTTED_AZALEA_BUSH: RegistryBlock = Registries.block["minecraft:potted_azalea_bush"]
 
   public val POTTED_FLOWERING_AZALEA_BUSH: RegistryBlock =
-      Registries.blocks["minecraft:potted_flowering_azalea_bush"]
+      Registries.block["minecraft:potted_flowering_azalea_bush"]
 
-  public val OCHRE_FROGLIGHT: RegistryBlock = Registries.blocks["minecraft:ochre_froglight"]
+  public val OCHRE_FROGLIGHT: RegistryBlock = Registries.block["minecraft:ochre_froglight"]
 
-  public val VERDANT_FROGLIGHT: RegistryBlock = Registries.blocks["minecraft:verdant_froglight"]
+  public val VERDANT_FROGLIGHT: RegistryBlock = Registries.block["minecraft:verdant_froglight"]
 
-  public val PEARLESCENT_FROGLIGHT: RegistryBlock = Registries.blocks["minecraft:pearlescent_froglight"]
+  public val PEARLESCENT_FROGLIGHT: RegistryBlock = Registries.block["minecraft:pearlescent_froglight"]
 
-  public val FROGSPAWN: RegistryBlock = Registries.blocks["minecraft:frogspawn"]
+  public val FROGSPAWN: RegistryBlock = Registries.block["minecraft:frogspawn"]
 
-  public val REINFORCED_DEEPSLATE: RegistryBlock = Registries.blocks["minecraft:reinforced_deepslate"]
+  public val REINFORCED_DEEPSLATE: RegistryBlock = Registries.block["minecraft:reinforced_deepslate"]
 
-  public val DECORATED_POT: RegistryBlock = Registries.blocks["minecraft:decorated_pot"]
+  public val DECORATED_POT: RegistryBlock = Registries.block["minecraft:decorated_pot"]
 
-  public val CRAFTER: RegistryBlock = Registries.blocks["minecraft:crafter"]
+  public val CRAFTER: RegistryBlock = Registries.block["minecraft:crafter"]
 
-  public val TRIAL_SPAWNER: RegistryBlock = Registries.blocks["minecraft:trial_spawner"]
+  public val TRIAL_SPAWNER: RegistryBlock = Registries.block["minecraft:trial_spawner"]
 
-  public val VAULT: RegistryBlock = Registries.blocks["minecraft:vault"]
+  public val VAULT: RegistryBlock = Registries.block["minecraft:vault"]
 
-  public val HEAVY_CORE: RegistryBlock = Registries.blocks["minecraft:heavy_core"]
+  public val HEAVY_CORE: RegistryBlock = Registries.block["minecraft:heavy_core"]
 
-  public val PALE_MOSS_BLOCK: RegistryBlock = Registries.blocks["minecraft:pale_moss_block"]
+  public val PALE_MOSS_BLOCK: RegistryBlock = Registries.block["minecraft:pale_moss_block"]
 
-  public val PALE_MOSS_CARPET: RegistryBlock = Registries.blocks["minecraft:pale_moss_carpet"]
+  public val PALE_MOSS_CARPET: RegistryBlock = Registries.block["minecraft:pale_moss_carpet"]
 
-  public val PALE_HANGING_MOSS: RegistryBlock = Registries.blocks["minecraft:pale_hanging_moss"]
+  public val PALE_HANGING_MOSS: RegistryBlock = Registries.block["minecraft:pale_hanging_moss"]
 
-  public val OPEN_EYEBLOSSOM: RegistryBlock = Registries.blocks["minecraft:open_eyeblossom"]
+  public val OPEN_EYEBLOSSOM: RegistryBlock = Registries.block["minecraft:open_eyeblossom"]
 
-  public val CLOSED_EYEBLOSSOM: RegistryBlock = Registries.blocks["minecraft:closed_eyeblossom"]
+  public val CLOSED_EYEBLOSSOM: RegistryBlock = Registries.block["minecraft:closed_eyeblossom"]
 
   public val POTTED_OPEN_EYEBLOSSOM: RegistryBlock =
-      Registries.blocks["minecraft:potted_open_eyeblossom"]
+      Registries.block["minecraft:potted_open_eyeblossom"]
 
   public val POTTED_CLOSED_EYEBLOSSOM: RegistryBlock =
-      Registries.blocks["minecraft:potted_closed_eyeblossom"]
+      Registries.block["minecraft:potted_closed_eyeblossom"]
 
-  public val FIREFLY_BUSH: RegistryBlock = Registries.blocks["minecraft:firefly_bush"]
+  public val FIREFLY_BUSH: RegistryBlock = Registries.block["minecraft:firefly_bush"]
 }

@@ -9,8 +9,6 @@ import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.r2.Biome
 import ru.cherryngine.lib.minecraft.r2.Registries
-import ru.cherryngine.lib.minecraft.registry.keys.Biomes
-import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
@@ -109,7 +107,7 @@ object PolarWorldGenerator {
 
     private fun getBiome(polarSection: PolarSection, x: Int, y: Int, z: Int): Biome {
         val biomeId = getId(polarSection.biomePalette(), polarSection.biomeData(), x, y, z)
-            ?: return Biomes.PLAINS
+            ?: return Registries.biome["plains"]
         return Registries.biome[biomeId]
     }
 
@@ -133,7 +131,7 @@ object PolarWorldGenerator {
 
             if (blockId == "minecraft:chain") blockId = "minecraft:iron_chain"
 
-            val registryBlock = BlockRegistry[blockId]
+            val registryBlock = Registries.block[blockId]
 
             // Парсим свойства
             if (propertiesStr.isNotEmpty()) {

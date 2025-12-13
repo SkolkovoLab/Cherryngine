@@ -1,8 +1,8 @@
 package ru.cherryngine.lib.minecraft.registry.registries.envattr
 
 import net.kyori.adventure.util.TriState
+import ru.cherryngine.lib.minecraft.r2.Registries
 import ru.cherryngine.lib.minecraft.registry.DynamicRegistry
-import ru.cherryngine.lib.minecraft.registry.keys.Particles
 import ru.cherryngine.lib.minecraft.utils.color.ARGBLikeImpl
 import ru.cherryngine.lib.minecraft.utils.color.RGBLikeImpl
 import ru.cherryngine.lib.minecraft.utils.color.rgbLikeOf
@@ -28,7 +28,7 @@ object EnvironmentAttributeRegistry : DynamicRegistry<EnvironmentAttribute<*>>("
         register("visual/star_brightness", EnvironmentAttributeType.FLOAT, 0f)
         register("visual/sky_light_color", EnvironmentAttributeType.RGB_COLOR, RGBLikeImpl.WHITE)
         register("visual/sky_light_factor", EnvironmentAttributeType.FLOAT, 1f)
-        register("visual/default_dripstone_particle", EnvironmentAttributeType.PARTICLE, Particles.DRIPPING_DRIPSTONE_WATER)
+        register("visual/default_dripstone_particle", EnvironmentAttributeType.PARTICLE, Registries.particle["dripping_dripstone_water"])
         register("visual/ambient_particles", EnvironmentAttributeType.AMBIENT_PARTICLES, emptyList())
         register("audio/background_music", EnvironmentAttributeType.BACKGROUND_MUSIC, BackgroundMusic.EMPTY)
         register("audio/music_volume", EnvironmentAttributeType.FLOAT, 1f)

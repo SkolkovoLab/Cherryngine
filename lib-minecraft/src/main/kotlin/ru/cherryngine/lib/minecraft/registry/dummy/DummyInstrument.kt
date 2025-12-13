@@ -1,9 +1,9 @@
 package ru.cherryngine.lib.minecraft.registry.dummy
 
 import net.kyori.adventure.text.Component
-import ru.cherryngine.lib.minecraft.network.protocol.types.SoundEvent
 import ru.cherryngine.lib.minecraft.network.stream_codec.ComponentStreamCodecs
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
+import ru.cherryngine.lib.minecraft.r2.SoundEvent
 
 data class DummyInstrument(
     val soundEvent: SoundEvent,

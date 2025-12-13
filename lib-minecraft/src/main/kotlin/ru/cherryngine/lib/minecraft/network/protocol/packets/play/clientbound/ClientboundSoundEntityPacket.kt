@@ -2,9 +2,9 @@ package ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound
 
 import net.kyori.adventure.sound.Sound
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
-import ru.cherryngine.lib.minecraft.network.protocol.types.SoundEvent
 import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
+import ru.cherryngine.lib.minecraft.r2.SoundEvent
 
 data class ClientboundSoundEntityPacket(
     val soundEvent: SoundEvent,

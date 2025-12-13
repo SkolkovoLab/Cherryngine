@@ -5,8 +5,8 @@ import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
+import ru.cherryngine.lib.minecraft.r2.Registries
 import ru.cherryngine.lib.minecraft.registry.entries.Item
-import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
 
 class RepairableComponent(
     val materials: List<Item>
@@ -17,7 +17,7 @@ class RepairableComponent(
 
     companion object {
         val STREAM_CODEC = StreamCodec.of(
-            ItemRegistry.STREAM_CODEC.list(), RepairableComponent::materials,
+            Registries.item.streamCodec.list(), RepairableComponent::materials,
             ::RepairableComponent
         )
     }

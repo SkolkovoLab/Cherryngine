@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import ru.cherryngine.lib.minecraft.registry.keys.Particles
+import ru.cherryngine.lib.minecraft.r2.Registries
 
 @Suppress("PropertyName")
 sealed class AreaEffectCloudMeta : EntityMeta() {
@@ -9,5 +9,5 @@ sealed class AreaEffectCloudMeta : EntityMeta() {
     val RADIUS = index(MetadataEntry.Type.FLOAT, 0.5f)
     val COLOR = index(MetadataEntry.Type.VAR_INT, 0)
     val IGNORE_RADIUS_AND_SINGLE_POINT = index(MetadataEntry.Type.BOOLEAN, false)
-    val PARTICLE = index(MetadataEntry.Type.PARTICLE, Particles.EFFECT)
+    val PARTICLE = index(MetadataEntry.Type.PARTICLE, Registries.particle["effect"])
 }

@@ -1,7 +1,6 @@
 package ru.cherryngine.lib.minecraft.data.components
 
 import ru.cherryngine.lib.minecraft.codec.Codec
-import ru.cherryngine.lib.minecraft.codec.RegistryCodec
 import ru.cherryngine.lib.minecraft.codec.StructCodec
 import ru.cherryngine.lib.minecraft.codec.transcoder.CRC32CTranscoder
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher
@@ -9,12 +8,11 @@ import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
-import ru.cherryngine.lib.minecraft.network.protocol.types.SoundEvent
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.entries.DamageType
+import ru.cherryngine.lib.minecraft.r2.DamageType
+import ru.cherryngine.lib.minecraft.r2.Registries
+import ru.cherryngine.lib.minecraft.r2.SoundEvent
 import ru.cherryngine.lib.minecraft.registry.entries.EntityType
-import ru.cherryngine.lib.minecraft.registry.registries.DamageTypeRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.EntityTypeRegistry
 
 data class BlocksAttacksComponent(
     val blocksDelaySeconds: Float,
@@ -35,7 +33,7 @@ data class BlocksAttacksComponent(
             "disable_cooldown_scale", Codec.FLOAT.default(1f), BlocksAttacksComponent::disableCooldownScale,
             "damage_reductions", DamageReduction.CODEC.list().default(listOf(DamageReduction.DEFAULT)), BlocksAttacksComponent::damageReductions,
             "item_damage", ItemDamageFunction.CODEC.default(ItemDamageFunction.DEFAULT), BlocksAttacksComponent::itemDamageFunction,
-            "bypassed_by", RegistryCodec.codec(DamageTypeRegistry).optional(), BlocksAttacksComponent::bypassedBy,
+            "bypassed_by", Registries.damageType.codec.optional(), BlocksAttacksComponent::bypassedBy,
             "block_sound", SoundEvent.CODEC.optional(), BlocksAttacksComponent::blockSound,
             "disabled_sound", SoundEvent.CODEC.optional(), BlocksAttacksComponent::disableSound,
             ::BlocksAttacksComponent
@@ -46,7 +44,7 @@ data class BlocksAttacksComponent(
             StreamCodec.FLOAT, BlocksAttacksComponent::disableCooldownScale,
             DamageReduction.STREAM_CODEC.list(), BlocksAttacksComponent::damageReductions,
             ItemDamageFunction.STREAM_CODEC, BlocksAttacksComponent::itemDamageFunction,
-            DamageTypeRegistry.STREAM_CODEC.optional(), BlocksAttacksComponent::bypassedBy,
+            Registries.damageType.streamCodec.optional(), BlocksAttacksComponent::bypassedBy,
             SoundEvent.STREAM_CODEC.optional(), BlocksAttacksComponent::blockSound,
             SoundEvent.STREAM_CODEC.optional(), BlocksAttacksComponent::disableSound,
             ::BlocksAttacksComponent
@@ -94,7 +92,7 @@ data class BlocksAttacksComponent(
         override fun hashStruct(): HashHolder {
             return CRC32CHasher.of {
                 default("horizontal_blocking_angle", DEFAULT.horizontalBlockingAngle, horizontalBlockingAngle, CRC32CHasher::ofFloat)
-                optional("type", type?.identifier, CRC32CHasher::ofString)
+                optional("type", type?.key?.toString(), CRC32CHasher::ofString)
                 static("base", CRC32CHasher.ofFloat(base))
                 static("factor", CRC32CHasher.ofFloat(factor))
             }
@@ -105,7 +103,7 @@ data class BlocksAttacksComponent(
 
             val CODEC = StructCodec.of(
                 "horizontal_blocking_angle", Codec.FLOAT.default(DEFAULT.horizontalBlockingAngle), DamageReduction::horizontalBlockingAngle,
-                "type", RegistryCodec.codec(EntityTypeRegistry).optional(), DamageReduction::type,
+                "type", Registries.entityType.keyCodec.optional(), DamageReduction::type,
                 "base", Codec.FLOAT, DamageReduction::base,
                 "factor", Codec.FLOAT, DamageReduction::factor,
                 ::DamageReduction
@@ -113,7 +111,7 @@ data class BlocksAttacksComponent(
 
             val STREAM_CODEC = StreamCodec.of(
                 StreamCodec.FLOAT, DamageReduction::horizontalBlockingAngle,
-                EntityTypeRegistry.STREAM_CODEC.optional(), DamageReduction::type,
+                Registries.entityType.streamCodec.optional(), DamageReduction::type,
                 StreamCodec.FLOAT, DamageReduction::base,
                 StreamCodec.FLOAT, DamageReduction::factor,
                 ::DamageReduction
