@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.world
 
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.r2.DimensionType
+import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity

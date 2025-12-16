@@ -7,8 +7,8 @@ import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.network.protocol.types.BlockEntityType
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.Biome
-import ru.cherryngine.lib.minecraft.r2.Registries
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.Biome
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection

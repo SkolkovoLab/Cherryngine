@@ -2,13 +2,15 @@ package ru.cherryngine.lib.minecraft.item
 
 import io.netty.buffer.ByteBuf
 import net.kyori.adventure.nbt.CompoundBinaryTag
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.transcoder.Transcoder
 import ru.cherryngine.lib.minecraft.data.DataComponentPatch
 import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.network.protocol.NbtWritable
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.Registries
-import ru.cherryngine.lib.minecraft.registry.entries.Item
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.Item
 
 data class ItemStack(
     var material: Item,
@@ -24,6 +26,16 @@ data class ItemStack(
         val AIR = ItemStack(AIR_ITEM, 1, DataComponentPatch.EMPTY)
 
         val STREAM_CODEC: StreamCodec<ItemStack> = streamCodec(true, true)
+
+        val CODEC = object : Codec<ItemStack> {
+            override fun <D> encode(transcoder: Transcoder<D>, value: ItemStack): D {
+                TODO("Not yet implemented")
+            }
+
+            override fun <D> decode(transcoder: Transcoder<D>, value: D): ItemStack {
+                TODO("Not yet implemented")
+            }
+        }
 
         fun streamCodec(isPatch: Boolean = true, isTrusted: Boolean = true) = object : StreamCodec<ItemStack> {
             override fun write(buffer: ByteBuf, value: ItemStack) {

@@ -6,9 +6,9 @@ import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.network.protocol.types.EquipmentSlot
 import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.Registries
-import ru.cherryngine.lib.minecraft.r2.SoundEvent
-import ru.cherryngine.lib.minecraft.registry.entries.EntityType
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.EntityType
+import ru.cherryngine.lib.minecraft.registry.types.SoundEvent
 
 class EquippableComponent(
     val equipmentSlot: EquipmentSlot,
@@ -29,7 +29,7 @@ class EquippableComponent(
             defaultStruct("equip_sound", DEFAULT_EQUIP_SOUND, equipSound, SoundEvent::hashStruct)
             optional("asset_id", assetId, CRC32CHasher::ofString)
             optional("camera_overlay", cameraOverlay, CRC32CHasher::ofString)
-            optionalList("allowed_entities", allowedEntities, CRC32CHasher::ofRegistryEntry)
+            optionalList("allowed_entities", allowedEntities) { CRC32CHasher.ofRegistryEntry(Registries.entityType, it) }
             default("dispensable", true, dispensable, CRC32CHasher::ofBoolean)
             default("swappable", true, swappable, CRC32CHasher::ofBoolean)
             default("damage_on_hurt", true, damageOnHurt, CRC32CHasher::ofBoolean)

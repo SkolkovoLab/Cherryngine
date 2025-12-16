@@ -4,8 +4,8 @@ import net.kyori.adventure.key.Key
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.ByteEnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.Attribute
-import ru.cherryngine.lib.minecraft.r2.Registries
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.Attribute
 
 data class ClientboundUpdateAttributesPacket(
     val entityId: Int,

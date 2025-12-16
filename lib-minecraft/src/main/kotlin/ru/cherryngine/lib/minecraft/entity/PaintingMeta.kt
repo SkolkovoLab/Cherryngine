@@ -1,6 +1,6 @@
 package ru.cherryngine.lib.minecraft.entity
 
-import ru.cherryngine.lib.minecraft.r2.Registries
+import ru.cherryngine.lib.minecraft.registry.Registries
 
 sealed class PaintingMeta : HangingMeta() {
     companion object : PaintingMeta()

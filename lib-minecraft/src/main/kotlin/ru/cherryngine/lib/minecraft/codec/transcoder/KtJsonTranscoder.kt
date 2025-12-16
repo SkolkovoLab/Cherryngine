@@ -85,7 +85,7 @@ object KtJsonTranscoder : Transcoder<JsonElement> {
             }
 
             override fun getValue(key: String): JsonElement {
-                return value[key]!!
+                return value[key] ?: throw NoSuchElementException("key: $key")
             }
         }
     }

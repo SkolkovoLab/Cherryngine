@@ -9,10 +9,10 @@ import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.DamageType
-import ru.cherryngine.lib.minecraft.r2.Registries
-import ru.cherryngine.lib.minecraft.r2.SoundEvent
-import ru.cherryngine.lib.minecraft.registry.entries.EntityType
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.DamageType
+import ru.cherryngine.lib.minecraft.registry.types.EntityType
+import ru.cherryngine.lib.minecraft.registry.types.SoundEvent
 
 data class BlocksAttacksComponent(
     val blocksDelaySeconds: Float,

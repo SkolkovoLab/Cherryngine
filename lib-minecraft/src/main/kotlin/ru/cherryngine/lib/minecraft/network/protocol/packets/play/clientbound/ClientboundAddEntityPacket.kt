@@ -5,8 +5,8 @@ import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.LocationStreamCodecs
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.Registries
-import ru.cherryngine.lib.minecraft.registry.entries.EntityType
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.EntityType
 import java.util.*
 
 data class ClientboundAddEntityPacket(

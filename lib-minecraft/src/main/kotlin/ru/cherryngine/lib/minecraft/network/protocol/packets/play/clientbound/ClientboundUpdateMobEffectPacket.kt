@@ -2,8 +2,8 @@ package ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound
 
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.PotionEffect
-import ru.cherryngine.lib.minecraft.r2.Registries
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.PotionEffect
 
 data class ClientboundUpdateMobEffectPacket(
     val entityId: Int,

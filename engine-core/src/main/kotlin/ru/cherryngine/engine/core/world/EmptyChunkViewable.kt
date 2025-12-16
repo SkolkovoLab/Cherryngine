@@ -6,7 +6,7 @@ import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundForgetLevelChunkPacket
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.r2.DimensionType
+import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.minecraft.world.light.LightData

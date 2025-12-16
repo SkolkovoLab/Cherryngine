@@ -6,8 +6,8 @@ import ru.cherryngine.lib.minecraft.network.protocol.types.GameMode
 import ru.cherryngine.lib.minecraft.network.protocol.types.WorldPosition
 import ru.cherryngine.lib.minecraft.network.stream_codec.ByteEnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.DimensionType
-import ru.cherryngine.lib.minecraft.r2.Registries
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 
 data class ClientboundLoginPacket(
     val entityId: Int,

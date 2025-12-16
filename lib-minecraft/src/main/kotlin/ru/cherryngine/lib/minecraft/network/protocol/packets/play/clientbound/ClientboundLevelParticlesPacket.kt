@@ -4,8 +4,8 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.LocationStreamCodecs
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.Particle
-import ru.cherryngine.lib.minecraft.r2.Registries
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.Particle
 
 data class ClientboundLevelParticlesPacket(
     val longDistance: Boolean, // If true, particle distance increases from 256 to 65536.

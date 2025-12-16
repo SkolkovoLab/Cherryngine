@@ -2,11 +2,10 @@ package ru.cherryngine.lib.minecraft.world.block
 
 import io.netty.buffer.ByteBuf
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.Registries
-import ru.cherryngine.lib.minecraft.registry.entries.Item
-import ru.cherryngine.lib.minecraft.registry.entries.RegistryBlock
+import ru.cherryngine.lib.minecraft.registry.Registries
 import ru.cherryngine.lib.minecraft.registry.keys.Blocks
-import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
+import ru.cherryngine.lib.minecraft.registry.types.Item
+import ru.cherryngine.lib.minecraft.registry.types.RegistryBlock
 
 data class Block(
     val registryBlock: RegistryBlock,
@@ -62,11 +61,11 @@ data class Block(
     }
 
     fun isAir(): Boolean {
-        return this.registryBlock == Blocks.AIR
+        return this.registryBlock.air
     }
 
     companion object {
-        val AIR by lazy { Block(BlockRegistry.AIR) }
+        val AIR by lazy { Block(Registries.block[Blocks.AIR]) }
 
         val STREAM_CODEC = object : StreamCodec<Block> {
             override fun write(buffer: ByteBuf, value: Block) {
@@ -96,12 +95,12 @@ data class Block(
         fun getBlockByStateId(stateId: Int): Block {
             if (stateId == 0) return AIR
 
-            val blockState = BlockRegistry.blockStates.get(stateId)
+            val blockState = BlockStates.blockStates.get(stateId)
             if (blockState != null) {
                 return blockState
             }
 
-            val registryBlock = BlockRegistry.getByStateIdOrNull(stateId)
+            val registryBlock = BlockStates.getByStateIdOrNull(stateId)
             if (registryBlock != null) {
                 val states = registryBlock.possibleStatesReversed[registryBlock.defaultStateId]!!
                 val parsed = parseBlockStateString(states).second.toMutableMap()

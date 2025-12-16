@@ -6,9 +6,9 @@ import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.Registries
-import ru.cherryngine.lib.minecraft.r2.TrimMaterial
-import ru.cherryngine.lib.minecraft.r2.TrimPattern
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.TrimMaterial
+import ru.cherryngine.lib.minecraft.registry.types.TrimPattern
 
 data class ArmorTrimComponent(
     val material: TrimMaterial,

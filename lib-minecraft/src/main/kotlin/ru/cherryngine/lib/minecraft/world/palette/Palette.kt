@@ -3,9 +3,9 @@ package ru.cherryngine.lib.minecraft.world.palette
 import io.netty.buffer.ByteBuf
 import org.jetbrains.annotations.ApiStatus
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.Registries
-import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
+import ru.cherryngine.lib.minecraft.registry.Registries
 import ru.cherryngine.lib.minecraft.utils.bitsToRepresent
+import ru.cherryngine.lib.minecraft.world.block.BlockStates
 import java.util.function.IntUnaryOperator
 
 /**
@@ -18,7 +18,7 @@ sealed interface Palette {
         const val BLOCK_DIMENSION = 16
         const val BLOCK_PALETTE_MIN_BITS = 4
         const val BLOCK_PALETTE_MAX_BITS = 8
-        val BLOCK_PALETTE_DIRECT_BITS = bitsToRepresent(BlockRegistry.blockStates.size)
+        val BLOCK_PALETTE_DIRECT_BITS = bitsToRepresent(BlockStates.blockStates.size)
 
         const val BIOME_DIMENSION = 4
         const val BIOME_PALETTE_MIN_BITS = 1

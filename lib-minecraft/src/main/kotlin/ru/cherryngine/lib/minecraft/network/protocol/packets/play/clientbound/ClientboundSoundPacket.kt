@@ -6,7 +6,7 @@ import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.LocationStreamCodecs
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.SoundEvent
+import ru.cherryngine.lib.minecraft.registry.types.SoundEvent
 
 data class ClientboundSoundPacket(
     val soundEvent: SoundEvent,

@@ -10,7 +10,7 @@ import ru.cherryngine.lib.minecraft.network.stream_codec.ComponentStreamCodecs
 import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.LocationStreamCodecs
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.Registries
+import ru.cherryngine.lib.minecraft.registry.Registries
 import ru.cherryngine.lib.minecraft.world.block.Block
 
 @Suppress("UNCHECKED_CAST")

@@ -4,8 +4,8 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.LocationStreamCodecs
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.DamageType
-import ru.cherryngine.lib.minecraft.r2.Registries
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.DamageType
 
 data class ClientboundDamageEventPacket(
     val entityId: Int,

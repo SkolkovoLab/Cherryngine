@@ -1,9 +1,7 @@
 package ru.cherryngine.lib.minecraft.generator
 
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -13,142 +11,150 @@ import kotlin.io.path.Path
 object Main {
     @JvmStatic
     fun main(args: Array<String>) {
-        generateDataDrivenRegistry(
-            "Attributes",
-            "AttributeRegistry",
-            "Attribute",
+        val keysPackage = "ru.cherryngine.lib.minecraft.registry.keys"
+        val typesPackage = "ru.cherryngine.lib.minecraft.registry.types"
+        generateKeys(
+            "$keysPackage.Attributes",
+            "$typesPackage.Attribute",
             "attribute.json"
         )
-        generateDataDrivenRegistry(
-            "BannerPatterns",
-            "BannerPatternRegistry",
-            "BannerPattern",
-            "banner_pattern.json"
-        )
-        generateDataDrivenRegistry(
-            "Biomes",
-            "BiomeRegistry",
-            "Biome",
-            "worldgen/biome.json"
-        )
-        generateDataDrivenRegistry(
-            "Blocks",
-            "BlockRegistry",
-            "RegistryBlock",
+        generateKeys(
+            "$keysPackage.Blocks",
+            "$typesPackage.RegistryBlock",
             "block.json"
         )
-        generateDataDrivenRegistry(
-            "CatVariants",
-            "CatVariantRegistry",
-            "CatVariant",
-            "cat_variant.json"
+        generateKeys(
+            "$keysPackage.SoundEvents",
+            "$typesPackage.SoundEvent.Builtin",
+            "sound_event.json"
         )
-        generateDataDrivenRegistry(
-            "ChickenVariants",
-            "ChickenVariantRegistry",
-            "ChickenVariant",
-            "chicken_variant.json"
-        )
-        generateDataDrivenRegistry(
-            "CowVariants",
-            "CowVariantRegistry",
-            "CowVariant",
-            "cow_variant.json"
-        )
-        generateDataDrivenRegistry(
-            "DamageTypes",
-            "DamageTypeRegistry",
-            "DamageType",
-            "damage_type.json"
-        )
-        generateDataDrivenRegistry(
-            "EntityTypes",
-            "EntityTypeRegistry",
-            "EntityType",
-            "entity_type.json"
-        )
-        generateDataDrivenRegistry(
-            "FrogVariants",
-            "FrogVariantRegistry",
-            "FrogVariant",
-            "frog_variant.json"
-        )
-        generateDataDrivenRegistry(
-            "Items",
-            "ItemRegistry",
-            "Item",
-            "item.json"
-        )
-        generateDataDrivenRegistry(
-            "JukeboxSongs",
-            "JukeboxSongRegistry",
-            "JukeboxSong",
-            "jukebox_song.json"
-        )
-        generateDataDrivenRegistry(
-            "PaintingVariants",
-            "PaintingVariantRegistry",
-            "PaintingVariant",
-            "painting_variant.json"
-        )
-        generateDataDrivenRegistry(
-            "Particles",
-            "ParticleRegistry",
-            "Particle",
-            "particle.json"
-        )
-        generateDataDrivenRegistry(
-            "PigVariants",
-            "PigVariantRegistry",
-            "PigVariant",
-            "pig_variant.json"
-        )
-        generateDataDrivenRegistry(
-            "PotionEffects",
-            "PotionEffectRegistry",
-            "PotionEffect",
+        generateKeys(
+            "$keysPackage.PotionEffects",
+            "$typesPackage.PotionEffect",
             "potion_effect.json"
         )
-        generateDataDrivenRegistry(
-            "TrimMaterials",
-            "TrimMaterialRegistry",
-            "TrimMaterial",
+        generateKeys(
+            "$keysPackage.PotionTypes",
+            "$typesPackage.PotionType",
+            "potion_type.json"
+        )
+        generateKeys(
+            "$keysPackage.Particles",
+            "$typesPackage.Particle",
+            "particle.json"
+        )
+        generateKeys(
+            "$keysPackage.Fluids",
+            "$typesPackage.Fluid",
+            "fluid.json"
+        )
+        generateKeys(
+            "$keysPackage.EntityTypes",
+            "$typesPackage.EntityType",
+            "entity_type.json"
+        )
+        generateKeys(
+            "$keysPackage.Items",
+            "$typesPackage.Item",
+            "item.json"
+        )
+        generateKeys(
+            "$keysPackage.BannerPatterns",
+            "$typesPackage.BannerPattern",
+            "banner_pattern.json"
+        )
+        generateKeys(
+            "$keysPackage.Biomes",
+            "$typesPackage.Biome",
+            "worldgen/biome.json"
+        )
+        generateKeys(
+            "$keysPackage.CatVariants",
+            "$typesPackage.CatVariant",
+            "cat_variant.json"
+        )
+        generateKeys(
+            "$keysPackage.ChatTypes",
+            "$typesPackage.ChatType",
+            "chat_type.json"
+        )
+        generateKeys(
+            "$keysPackage.ChickenVariants",
+            "$typesPackage.ChickenVariant",
+            "chicken_variant.json"
+        )
+        generateKeys(
+            "$keysPackage.CowVariants",
+            "$typesPackage.CowVariant",
+            "cow_variant.json"
+        )
+        generateKeys(
+            "$keysPackage.DamageTypes",
+            "$typesPackage.DamageType",
+            "damage_type.json"
+        )
+        generateKeys(
+            "$keysPackage.Dialogs",
+            "ru.cherryngine.lib.minecraft.dialog.Dialog",
+            "dialog.json"
+        )
+        generateKeys(
+            "$keysPackage.DimensionTypes",
+            "$typesPackage.DimensionType",
+            "dimension_type.json"
+        )
+        generateKeys(
+            "$keysPackage.FrogVariants",
+            "$typesPackage.FrogVariant",
+            "frog_variant.json"
+        )
+        generateKeys(
+            "$keysPackage.JukeboxSongs",
+            "$typesPackage.JukeboxSong",
+            "jukebox_song.json"
+        )
+        generateKeys(
+            "$keysPackage.PaintingVariants",
+            "$typesPackage.PaintingVariant",
+            "painting_variant.json"
+        )
+        generateKeys(
+            "$keysPackage.PigVariants",
+            "$typesPackage.PigVariant",
+            "pig_variant.json"
+        )
+        generateKeys(
+            "$keysPackage.TrimMaterials",
+            "$typesPackage.TrimMaterial",
             "trim_material.json"
         )
-        generateDataDrivenRegistry(
-            "TrimPatterns",
-            "TrimPatternRegistry",
-            "TrimPattern",
+        generateKeys(
+            "$keysPackage.TrimPatterns",
+            "$typesPackage.TrimPattern",
             "trim_pattern.json"
         )
-        generateDataDrivenRegistry(
-            "WolfSoundVariants",
-            "WolfSoundVariantRegistry",
-            "WolfSoundVariant",
+        generateKeys(
+            "$keysPackage.WolfSoundVariants",
+            "$typesPackage.WolfSoundVariant",
             "wolf_sound_variant.json"
         )
-        generateDataDrivenRegistry(
-            "WolfVariants",
-            "WolfVariantRegistry",
-            "WolfVariant",
+        generateKeys(
+            "$keysPackage.WolfVariants",
+            "$typesPackage.WolfVariant",
             "wolf_variant.json"
         )
-        generateDataDrivenRegistry(
-            "ZombieNautilusVariants",
-            "ZombieNautilusVariantRegistry",
-            "ZombieNautilusVariant",
+        generateKeys(
+            "$keysPackage.ZombieNautilusVariants",
+            "$typesPackage.ZombieNautilusVariant",
             "zombie_nautilus_variant.json"
         )
-
-        generateSounds()
-        generateTags()
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    fun getKeys(resource: String): Set<String> {
+    fun readKeys(resource: String): Set<String> {
         val resource = ClassLoader.getSystemResource(resource)!!
         val stream = resource.openStream()
-        val parsed = Json.decodeFromStream<Map<String, JsonObject>>(stream)
+        val parsed = stream.use { Json.decodeFromStream<Map<String, JsonObject>>(it) }
         return parsed.keys
     }
 
@@ -161,42 +167,36 @@ object Main {
         fileSpec.writeTo(Path("../../src/main/kotlin"))
     }
 
-    fun generateDataDrivenRegistry(
+    val REGISTRY_KEY_CLASS = ClassName(
+        "ru.cherryngine.lib.minecraft.utils.registry",
+        "RegistryKey"
+    )
+    val CREATE_KEY_FUNCTION = MemberName(
+        "ru.cherryngine.lib.minecraft.registry",
+        "createKey"
+    )
+
+    fun generateKeys(
         keyClassName: String,
-        registryClassName: String,
         entryClassName: String,
         resource: String,
     ) {
-        val keyClass = ClassName("ru.cherryngine.lib.minecraft.registry.keys", keyClassName)
-        val registryClass = ClassName("ru.cherryngine.lib.minecraft.registry.registries", registryClassName)
-        val entryClass = ClassName("ru.cherryngine.lib.minecraft.registry.entries", entryClassName)
+        val keyClass = ClassName.bestGuess(keyClassName)
+        val entryClass = ClassName.bestGuess(entryClassName)
+        val registryKeyType = REGISTRY_KEY_CLASS.parameterizedBy(entryClass)
+
+        val suppressRedundantVisibility = AnnotationSpec.builder(Suppress::class)
+            .addMember("%S", "RedundantVisibilityModifier")
+            .build()
 
         val objectBuilder = TypeSpec.objectBuilder(keyClass.simpleName)
+            .addAnnotation(suppressRedundantVisibility)
 
-        getKeys(resource).forEach { key ->
-            val constName = key.substringAfter(":").uppercase()
-
-            val property = PropertySpec.builder(constName, entryClass)
-                .initializer("%T[%S]", registryClass, key)
-                .build()
-
-            objectBuilder.addProperty(property)
-        }
-
-        writeFile(keyClass, objectBuilder.build())
-    }
-
-    fun generateSounds() {
-        val keyClass = ClassName("ru.cherryngine.lib.minecraft.registry.keys", "Sounds")
-        val entryClass = ClassName("net.kyori.adventure.key", "Key")
-
-        val objectBuilder = TypeSpec.objectBuilder(keyClass.simpleName)
-
-        getKeys("sound_event.json").forEach { key ->
+        readKeys(resource).forEach { key ->
             val constName = key.substringAfter(":").uppercase().replace(".", "_")
 
-            val property = PropertySpec.builder(constName, entryClass)
-                .initializer("%T.key(%S)", entryClass, key)
+            val property = PropertySpec.builder(constName, registryKeyType)
+                .initializer("%M(%S)", CREATE_KEY_FUNCTION, key)
                 .build()
 
             objectBuilder.addProperty(property)
@@ -204,63 +204,4 @@ object Main {
 
         writeFile(keyClass, objectBuilder.build())
     }
-
-    fun generateTags() {
-        val keyClass = ClassName("ru.cherryngine.lib.minecraft.registry.keys", "Tags")
-        val entryClass = ClassName("ru.cherryngine.lib.minecraft.registry", "Tag")
-
-        val objectBuilder = TypeSpec.objectBuilder(keyClass.simpleName)
-
-        listOf(
-            TagType(
-                "biome",
-                "BiomeTagRegistry",
-                "tags/biome.json"
-            ),
-            TagType(
-                "block",
-                "BlockTagRegistry",
-                "tags/block.json"
-            ),
-            TagType(
-                "entity_type",
-                "EntityTypeTagRegistry",
-                "tags/entity_type.json"
-            ),
-            TagType(
-                "fluid",
-                "FluidTagRegistry",
-                "tags/fluid.json"
-            ),
-            TagType(
-                "item",
-                "ItemTagRegistry",
-                "tags/item.json"
-            ),
-        ).forEach { tagType ->
-            val registryClass =
-                ClassName("ru.cherryngine.lib.minecraft.registry.registries.tags", tagType.registryClassName)
-            getKeys(tagType.resource).forEach { key ->
-
-                val constName = key.substringAfter(":")
-                    .let { "${tagType.prefix}_$it" }
-                    .replace(".", "_")
-                    .replace("/", "_")
-                    .uppercase()
-                val property = PropertySpec.builder(constName, entryClass)
-                    .initializer("%T[%S]", registryClass, key)
-                    .build()
-
-                objectBuilder.addProperty(property)
-            }
-        }
-
-        writeFile(keyClass, objectBuilder.build())
-    }
-
-    data class TagType(
-        val prefix: String,
-        val registryClassName: String,
-        val resource: String,
-    )
 }

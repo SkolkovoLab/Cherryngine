@@ -5,8 +5,8 @@ import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.r2.Registries
-import ru.cherryngine.lib.minecraft.registry.entries.Item
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.Item
 
 data class PotDecorationsComponent(
     val back: Item,
@@ -18,7 +18,7 @@ data class PotDecorationsComponent(
         return StaticHash(
             CRC32CHasher.ofList(
                 listOf(back, left, right, front)
-                    .map { face -> CRC32CHasher.ofRegistryEntry(face) })
+                    .map { face -> CRC32CHasher.ofRegistryEntry(Registries.item, face) })
         )
     }
 
