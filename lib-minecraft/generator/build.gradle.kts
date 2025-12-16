@@ -16,7 +16,7 @@ dependencies {
 
     api("com.squareup:kotlinpoet:2.2.0")
 
-    implementation("net.minestom:data:1.21.11-rv1")
+    implementation(libs.minestom.data)
 }
 
 tasks {
