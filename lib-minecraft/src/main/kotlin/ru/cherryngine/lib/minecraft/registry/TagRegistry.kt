@@ -1,32 +1,30 @@
 package ru.cherryngine.lib.minecraft.registry
 
-import io.netty.buffer.ByteBuf
+import net.kyori.adventure.key.Key
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
-abstract class TagRegistry(
-    identifier: String,
-    resource: String,
-    val parentRegistry: Registry<*>,
-) : KtJsonDataDrivenRegistry<Tag>(identifier, resource, Tag.serializer()) {
-    val reversed by lazy {
-        entries.keyToValue().values
-            .flatMap { value -> value.values.map { it to value.identifier } }
-            .groupBy({ it.first }, { it.second })
-            .mapValues { it.value.toSet() }
+data class TagRegistry(
+    val key: Key,
+    val tags: List<Tag>,
+) {
+    companion object {
+        val STREAM_CODEC = StreamCodec.of(
+            StreamCodec.KEY, TagRegistry::key,
+            Tag.STREAM_CODEC.list(), TagRegistry::tags,
+            ::TagRegistry
+        )
     }
 
-    companion object {
-        val STREAM_CODEC = object : StreamCodec<TagRegistry> {
-            override fun write(buffer: ByteBuf, value: TagRegistry) {
-                StreamCodec.STRING.write(buffer, value.identifier)
-                val list = value.getEntries().keyToValue().values.toList()
-                Tag.TagStreamCodec(value).list().write(buffer, list)
-            }
-
-            override fun read(buffer: ByteBuf): TagRegistry {
-                TODO("Not yet implemented")
-            }
+    data class Tag(
+        val key: Key,
+        val entries: List<Int>,
+    ) {
+        companion object {
+            val STREAM_CODEC = StreamCodec.of(
+                StreamCodec.KEY, Tag::key,
+                StreamCodec.VAR_INT.list(), Tag::entries,
+                ::Tag
+            )
         }
     }
 }
-

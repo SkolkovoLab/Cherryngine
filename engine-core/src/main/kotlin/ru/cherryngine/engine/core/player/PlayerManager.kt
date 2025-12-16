@@ -23,8 +23,7 @@ import ru.cherryngine.lib.minecraft.network.protocol.packets.status.ClientboundS
 import ru.cherryngine.lib.minecraft.network.protocol.packets.status.ServerboundStatusRequestPacket
 import ru.cherryngine.lib.minecraft.network.protocol.types.MovePlayerFlags
 import ru.cherryngine.lib.minecraft.network.protocol.types.ServerStatus
-import ru.cherryngine.lib.minecraft.registry.RegistryManager
-import ru.cherryngine.lib.minecraft.registry.registries.tags.*
+import ru.cherryngine.lib.minecraft.registry.Registries
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -84,16 +83,16 @@ class PlayerManager(
             is ServerboundLoginAcknowledgedPacket -> {
                 val cachedTagPacket = ClientboundUpdateTagsPacket(
                     listOf(
-                        BiomeTagRegistry,
-                        ItemTagRegistry,
-                        BlockTagRegistry,
-                        FluidTagRegistry,
-                        EntityTypeTagRegistry
+                        Registries.biome.getTagRegistry(),
+                        Registries.item.getTagRegistry(),
+                        Registries.block.getTagRegistry(),
+                        Registries.fluid.getTagRegistry(),
+                        Registries.entityType.getTagRegistry()
                     )
                 )
                 connection.sendPacket(cachedTagPacket)
 
-                RegistryManager.dynamicRegistries.values.forEach { registry ->
+                Registries.dynamicRegistries.forEach { registry ->
                     connection.sendPacket(ClientboundRegistryDataPacket(registry))
                 }
 

@@ -2,8 +2,8 @@ package ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound
 
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.entries.PotionEffect
-import ru.cherryngine.lib.minecraft.registry.registries.PotionEffectRegistry
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.PotionEffect
 
 data class ClientboundUpdateMobEffectPacket(
     val entityId: Int,
@@ -15,7 +15,7 @@ data class ClientboundUpdateMobEffectPacket(
     companion object {
         val STREAM_CODEC = StreamCodec.of(
             StreamCodec.VAR_INT, ClientboundUpdateMobEffectPacket::entityId,
-            PotionEffectRegistry.STREAM_CODEC, ClientboundUpdateMobEffectPacket::effect,
+            Registries.potionEffect.streamCodec, ClientboundUpdateMobEffectPacket::effect,
             StreamCodec.VAR_INT, ClientboundUpdateMobEffectPacket::amplifier,
             StreamCodec.VAR_INT, ClientboundUpdateMobEffectPacket::duration,
             Flags.STREAM_CODEC, ClientboundUpdateMobEffectPacket::flags,

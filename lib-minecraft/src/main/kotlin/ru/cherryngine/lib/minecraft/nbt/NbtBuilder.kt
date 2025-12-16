@@ -1,5 +1,6 @@
 package ru.cherryngine.lib.minecraft.nbt
 
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.nbt.BinaryTag
 import net.kyori.adventure.nbt.BinaryTagType
 import net.kyori.adventure.nbt.CompoundBinaryTag
@@ -15,6 +16,11 @@ class NbtBuilder {
 
     fun withString(name: String, value: String): NbtBuilder {
         compound.putString(name, value)
+        return this
+    }
+
+    fun withKey(name: String, value: Key): NbtBuilder {
+        compound.putString(name, value.toString())
         return this
     }
 

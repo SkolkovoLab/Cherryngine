@@ -3,10 +3,9 @@ package ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.LocationStreamCodecs
-import ru.cherryngine.lib.minecraft.network.stream_codec.RegistryStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.entries.Particle
-import ru.cherryngine.lib.minecraft.registry.registries.ParticleRegistry
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.Particle
 
 data class ClientboundLevelParticlesPacket(
     val longDistance: Boolean, // If true, particle distance increases from 256 to 65536.
@@ -25,7 +24,7 @@ data class ClientboundLevelParticlesPacket(
             LocationStreamCodecs.VEC_3D_FLOAT, ClientboundLevelParticlesPacket::offset,
             StreamCodec.FLOAT, ClientboundLevelParticlesPacket::maxSpeed,
             StreamCodec.INT, ClientboundLevelParticlesPacket::count,
-            RegistryStreamCodec(ParticleRegistry), ClientboundLevelParticlesPacket::particle,
+            Registries.particle.streamCodec, ClientboundLevelParticlesPacket::particle,
             ::ClientboundLevelParticlesPacket
         )
     }

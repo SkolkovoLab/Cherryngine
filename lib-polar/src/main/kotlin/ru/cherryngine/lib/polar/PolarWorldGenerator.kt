@@ -7,10 +7,8 @@ import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.network.protocol.types.BlockEntityType
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.entries.Biome
-import ru.cherryngine.lib.minecraft.registry.keys.Biomes
-import ru.cherryngine.lib.minecraft.registry.registries.BiomeRegistry
-import ru.cherryngine.lib.minecraft.registry.registries.BlockRegistry
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.Biome
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
@@ -34,7 +32,7 @@ object PolarWorldGenerator {
                 }
                 val biomePalette = Palette.biomes()
                 biomePalette.setAll { x, y, z ->
-                    BiomeRegistry.getProtocolIdByEntry(getBiome(polarSection, x, y, z))
+                    Registries.biome.getId(getBiome(polarSection, x, y, z))
                 }
                 ChunkSection(blockPalette, biomePalette)
             }
@@ -109,8 +107,8 @@ object PolarWorldGenerator {
 
     private fun getBiome(polarSection: PolarSection, x: Int, y: Int, z: Int): Biome {
         val biomeId = getId(polarSection.biomePalette(), polarSection.biomeData(), x, y, z)
-            ?: return Biomes.PLAINS
-        return BiomeRegistry[biomeId]
+            ?: return Registries.biome["plains"]
+        return Registries.biome[biomeId]
     }
 
     private fun getBlock(polarSection: PolarSection, x: Int, y: Int, z: Int): Block {
@@ -133,7 +131,7 @@ object PolarWorldGenerator {
 
             if (blockId == "minecraft:chain") blockId = "minecraft:iron_chain"
 
-            val registryBlock = BlockRegistry[blockId]
+            val registryBlock = Registries.block[blockId]
 
             // Парсим свойства
             if (propertiesStr.isNotEmpty()) {

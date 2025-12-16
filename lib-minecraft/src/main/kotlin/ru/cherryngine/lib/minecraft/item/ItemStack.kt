@@ -2,14 +2,15 @@ package ru.cherryngine.lib.minecraft.item
 
 import io.netty.buffer.ByteBuf
 import net.kyori.adventure.nbt.CompoundBinaryTag
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.transcoder.Transcoder
 import ru.cherryngine.lib.minecraft.data.DataComponentPatch
 import ru.cherryngine.lib.minecraft.nbt.nbt
 import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.network.protocol.NbtWritable
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.entries.Item
-import ru.cherryngine.lib.minecraft.registry.keys.Items
-import ru.cherryngine.lib.minecraft.registry.registries.ItemRegistry
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.Item
 
 data class ItemStack(
     var material: Item,
@@ -21,19 +22,30 @@ data class ItemStack(
     }
 
     companion object {
-        val AIR = ItemStack(Items.AIR, 1, DataComponentPatch.EMPTY)
+        val AIR_ITEM = Registries.item["air"]
+        val AIR = ItemStack(AIR_ITEM, 1, DataComponentPatch.EMPTY)
 
         val STREAM_CODEC: StreamCodec<ItemStack> = streamCodec(true, true)
 
+        val CODEC = object : Codec<ItemStack> {
+            override fun <D> encode(transcoder: Transcoder<D>, value: ItemStack): D {
+                TODO("Not yet implemented")
+            }
+
+            override fun <D> decode(transcoder: Transcoder<D>, value: D): ItemStack {
+                TODO("Not yet implemented")
+            }
+        }
+
         fun streamCodec(isPatch: Boolean = true, isTrusted: Boolean = true) = object : StreamCodec<ItemStack> {
             override fun write(buffer: ByteBuf, value: ItemStack) {
-                if (value.material == Items.AIR) {
+                if (value.material == AIR_ITEM) {
                     StreamCodec.VAR_INT.write(buffer, 0)
                     return
                 }
 
                 StreamCodec.VAR_INT.write(buffer, value.amount)
-                ItemRegistry.STREAM_CODEC.write(buffer, value.material)
+                Registries.item.streamCodec.write(buffer, value.material)
                 DataComponentPatch.patchNetworkType(value.components.components).write(buffer)
             }
 
@@ -44,34 +56,34 @@ data class ItemStack(
                 val itemId = StreamCodec.VAR_INT.read(buffer)
 
                 val componentsPatch = DataComponentPatch.read(buffer, isPatch, isTrusted)
-                return ItemStack(ItemRegistry.getByProtocolId(itemId), count, componentsPatch)
+                return ItemStack(Registries.item[itemId], count, componentsPatch)
             }
         }
     }
 
     override fun getNbt(): CompoundBinaryTag {
         return nbt {
-            withString("id", material.getEntryIdentifier())
+            withString("id", material.key.toString())
             withInt("count", amount)
             withCompound("components", CompoundBinaryTag.empty())
         }
     }
 
-    fun isEmpty(): Boolean = this.material == Items.AIR
+    fun isEmpty(): Boolean = this.material == AIR_ITEM
 
-    override fun toString(): String = "ItemStack(${material.identifier}, ${components}, $amount)"
+    override fun toString(): String = "ItemStack(${material.key}, ${components}, $amount)"
 
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is ItemStack) return false
 
-        return ItemRegistry.getProtocolIdByEntry(material) == ItemRegistry.getProtocolIdByEntry(other.material)
+        return Registries.item.getId(material) == Registries.item.getId(other.material)
 //                && attributes == other.attributes //TODO why no same??
                 && this.components.getComparisonHash() == other.components.getComparisonHash()
 
     }
 
     override fun hashCode(): Int {
-        var result = ItemRegistry.getProtocolIdByEntry(material).hashCode()
+        var result = Registries.item.getId(material).hashCode()
         result = 31 * result + this.components.getComparisonHash().hashCode()
 //        result = 31 * result + attributes.hashCode() //TODO why no same??
         return result

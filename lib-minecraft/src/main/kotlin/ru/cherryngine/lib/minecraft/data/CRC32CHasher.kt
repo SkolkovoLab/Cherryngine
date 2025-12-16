@@ -6,16 +6,18 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.nbt.NBTComponentSerializer
 import net.kyori.adventure.util.RGBLike
 import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
-import ru.cherryngine.lib.minecraft.registry.RegistryEntry
 import ru.cherryngine.lib.minecraft.utils.color.asRGB
+import ru.cherryngine.lib.minecraft.utils.registry.Registry
 
 object CRC32CHasher {
 
     // should have 0 probability to appear as CRC32C hash due to odd parity, we can use it as marker for inline values in maps
     const val INLINE: Int = 0x00000001
 
-    val KEY_COMPARATOR: Comparator<Map.Entry<Int, Int>> = java.util.Map.Entry.comparingByKey(Comparator.comparingLong { x: Int -> Integer.toUnsignedLong(x) })
-    val VALUE_COMPARATOR: Comparator<Map.Entry<Int, Int>> = java.util.Map.Entry.comparingByValue(Comparator.comparingLong { x: Int -> Integer.toUnsignedLong(x) })
+    val KEY_COMPARATOR: Comparator<Map.Entry<Int, Int>> =
+        java.util.Map.Entry.comparingByKey(Comparator.comparingLong { x: Int -> Integer.toUnsignedLong(x) })
+    val VALUE_COMPARATOR: Comparator<Map.Entry<Int, Int>> =
+        java.util.Map.Entry.comparingByValue(Comparator.comparingLong { x: Int -> Integer.toUnsignedLong(x) })
     val MAP_COMPARATOR: Comparator<Map.Entry<Int, Int>> = KEY_COMPARATOR.thenComparing(VALUE_COMPARATOR)
 
     const val TAG_EMPTY: Byte = 1
@@ -94,10 +96,6 @@ object CRC32CHasher {
         return hashed
     }
 
-    fun ofRegistryEntry(entry: RegistryEntry): Int {
-        return ofString(entry.getEntryIdentifier())
-    }
-
     inline fun <reified T : Enum<T>> ofEnum(enum: T): Int {
         if (enum is DataComponentHashable) return enum.hashStruct().getHashed()
         val hashed = ofString(enum.name.lowercase())
@@ -160,7 +158,8 @@ object CRC32CHasher {
 
     @JvmName("ofMapNoInline")
     fun ofMap(vararg pairs: Pair<String, Int>): Int {
-        val newMap: Map<Int, Int> = pairs.toMap().mapKeys { key -> if (key.key.isEmpty()) INLINE else ofString(key.key) }
+        val newMap: Map<Int, Int> =
+            pairs.toMap().mapKeys { key -> if (key.key.isEmpty()) INLINE else ofString(key.key) }
         return ofMap(newMap)
     }
 
@@ -194,6 +193,10 @@ object CRC32CHasher {
             hasher.putLong(long)
         }
         return hasher.putByte(TAG_LONG_ARRAY_END).hash()
+    }
+
+    fun <T : Any> ofRegistryEntry(registry: Registry<T>, value: T): Int {
+        return ofString(registry.getKey(value).key().asString())
     }
 }
 

@@ -5,19 +5,19 @@ import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.entries.CatVariant
-import ru.cherryngine.lib.minecraft.registry.registries.CatVariantRegistry
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.types.CatVariant
 
 data class CatVariantComponent(
     val variant: CatVariant,
 ) : DataComponent() {
     override fun hashStruct(): HashHolder {
-        return StaticHash(CRC32CHasher.ofRegistryEntry(variant))
+        return StaticHash(CRC32CHasher.ofRegistryEntry(Registries.catVariant, variant))
     }
 
     companion object {
         val STREAM_CODEC = StreamCodec.of(
-            CatVariantRegistry.STREAM_CODEC, CatVariantComponent::variant,
+            Registries.catVariant.streamCodec, CatVariantComponent::variant,
             ::CatVariantComponent
         )
     }

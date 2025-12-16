@@ -8,8 +8,8 @@ import ru.cherryngine.lib.minecraft.entity.MetadataContainer
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.*
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.network.protocol.types.TeleportFlags
-import ru.cherryngine.lib.minecraft.registry.entries.Attribute
-import ru.cherryngine.lib.minecraft.registry.entries.EntityType
+import ru.cherryngine.lib.minecraft.registry.types.Attribute
+import ru.cherryngine.lib.minecraft.registry.types.EntityType
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import java.util.*
 

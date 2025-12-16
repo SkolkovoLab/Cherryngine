@@ -6,8 +6,8 @@ import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundBlockUpdatePacket
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSectionBlocksUpdatePacket
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.registry.Registries
 import ru.cherryngine.lib.minecraft.registry.keys.Blocks
-import ru.cherryngine.lib.minecraft.registry.keys.DimensionTypes
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils.sectionIndexFromSectionPos
 import ru.cherryngine.lib.minecraft.world.block.Block
@@ -34,9 +34,9 @@ class LayerChunkViewable(
     }
 
     override fun show(player: Player) {
-        val dimensionType = DimensionTypes.OVERWORLD // TODO оно должно браться откуда-нибудь
+        val dimensionType = Registries.dimensionType["overworld"] // TODO оно должно браться откуда-нибудь
         val minSection = dimensionType.minY / 16
-        val sVoidBlockId = Blocks.STRUCTURE_VOID.defaultStateId
+        val sVoidBlockId = Registries.block["structure_void"].defaultStateId
         chunk.sections.forEachIndexed { sectionIndex, section ->
             val blocks = mutableListOf<Long>()
             for (x in 0..<16) for (y in 0..<16) for (z in 0..<16) {
@@ -61,7 +61,7 @@ class LayerChunkViewable(
     override fun getBlockId(pos: Vec3I): Int? {
         val block = chunk.getBlockId(pos)
         if (block == 0) return null
-        if (block == Blocks.STRUCTURE_VOID.defaultStateId) return 0
+        if (block == Registries.block[Blocks.STRUCTURE_VOID].defaultStateId) return 0
         return block
     }
 
