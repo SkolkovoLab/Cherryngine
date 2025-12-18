@@ -114,10 +114,8 @@ interface Codec<T> {
             { transcoder, value -> transcoder.decodeLongArray(value) }
         )
 
-        @Suppress("RemoveRedundantQualifierName")
         val UUID: Codec<java.util.UUID> = INT_ARRAY.transform(CodecUtils::intArrayToUuid, CodecUtils::uuidToIntArray)
 
-        @Suppress("RemoveRedundantQualifierName")
         val UUID_STRING: Codec<java.util.UUID> = STRING.transform(java.util.UUID::fromString, java.util.UUID::toString)
 
         inline fun <reified E : Enum<E>> enum(): Codec<E> {

@@ -1,6 +1,8 @@
 package ru.cherryngine.lib.minecraft.network.protocol.types.predicate
 
 import io.netty.buffer.ByteBuf
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.transcoder.Transcoder
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
@@ -30,6 +32,16 @@ interface BlockTypeFilter : Predicate<Block>, DataComponentHashable {
     }
 
     companion object {
+        val CODEC = object : Codec<BlockTypeFilter> {
+            override fun <D> encode(transcoder: Transcoder<D>, value: BlockTypeFilter): D {
+                TODO("Not yet implemented")
+            }
+
+            override fun <D> decode(transcoder: Transcoder<D>, value: D): BlockTypeFilter {
+                TODO("Not yet implemented")
+            }
+
+        }
         val STREAM_CODEC = object : StreamCodec<BlockTypeFilter> {
             override fun write(buffer: ByteBuf, value: BlockTypeFilter) {
                 when (value) {
@@ -62,7 +74,7 @@ interface BlockTypeFilter : Predicate<Block>, DataComponentHashable {
     }
 
     data class Blocks(
-        val blocks: List<Block>
+        val blocks: List<Block>,
     ) : BlockTypeFilter {
         override fun test(block: Block): Boolean {
             val blockId = block.getStateId()

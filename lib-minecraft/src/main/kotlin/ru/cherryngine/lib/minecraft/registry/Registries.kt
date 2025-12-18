@@ -6,7 +6,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.decodeFromJsonElement
 import ru.cherryngine.lib.minecraft.dialog.Dialog
 import ru.cherryngine.lib.minecraft.registry.types.*
-import ru.cherryngine.lib.minecraft.utils.registry.DynamicRegistry
+import ru.cherryngine.lib.minecraft.utils.registry.DataDrivenRegistry
 import ru.cherryngine.lib.minecraft.utils.registry.StaticRegistry
 import ru.cherryngine.lib.minecraft.utils.toKey
 
@@ -58,61 +58,61 @@ object Registries {
     }, "item.json")
 
 
-    val bannerPattern = DynamicRegistry.create(
+    val bannerPattern = DataDrivenRegistry.create(
         "banner_pattern".toKey(), BannerPattern.CODEC, "banner_pattern.json",
     )
-    val biome = DynamicRegistry.create(
+    val biome = DataDrivenRegistry.create(
         "worldgen/biome".toKey(), Biome.CODEC, "worldgen/biome.json",
         // We force plains to be first because it allows convenient palette initialization.
         // Maybe worth switching to fetching plains in the palette in the future to avoid this.
         Comparator.comparingInt { if (it == "minecraft:plains") 0 else 1 },
     )
-    val catVariant = DynamicRegistry.create(
+    val catVariant = DataDrivenRegistry.create(
         "cat_variant".toKey(), CatVariant.CODEC, "cat_variant.json",
     )
-    val chatType = DynamicRegistry.create(
+    val chatType = DataDrivenRegistry.create(
         "chat_type".toKey(), ChatType.CODEC, "chat_type.json",
     )
-    val chickenVariant = DynamicRegistry.create(
+    val chickenVariant = DataDrivenRegistry.create(
         "chicken_variant".toKey(), ChickenVariant.CODEC, "chicken_variant.json",
     )
-    val cowVariant = DynamicRegistry.create(
+    val cowVariant = DataDrivenRegistry.create(
         "cow_variant".toKey(), CowVariant.CODEC, "cow_variant.json",
     )
-    val damageType = DynamicRegistry.create(
+    val damageType = DataDrivenRegistry.create(
         "damage_type".toKey(), DamageType.CODEC, "damage_type.json",
     )
-    val dialog = DynamicRegistry.create(
+    val dialog = DataDrivenRegistry.create(
         "dialog".toKey(), Dialog.CODEC, "dialog.json",
     )
-    val dimensionType = DynamicRegistry.create(
+    val dimensionType = DataDrivenRegistry.create(
         "dimension_type".toKey(), DimensionType.CODEC, "dimension_type.json",
     )
-    val frogVariant = DynamicRegistry.create(
+    val frogVariant = DataDrivenRegistry.create(
         "frog_variant".toKey(), FrogVariant.CODEC, "frog_variant.json",
     )
-    val jukeboxSong = DynamicRegistry.create(
+    val jukeboxSong = DataDrivenRegistry.create(
         "jukebox_song".toKey(), JukeboxSong.CODEC, "jukebox_song.json",
     )
-    val paintingVariant = DynamicRegistry.create(
+    val paintingVariant = DataDrivenRegistry.create(
         "painting_variant".toKey(), PaintingVariant.CODEC, "painting_variant.json",
     )
-    val pigVariant = DynamicRegistry.create(
+    val pigVariant = DataDrivenRegistry.create(
         "pig_variant".toKey(), PigVariant.CODEC, "pig_variant.json",
     )
-    val trimMaterial = DynamicRegistry.create(
+    val trimMaterial = DataDrivenRegistry.create(
         "trim_material".toKey(), TrimMaterial.CODEC, "trim_material.json",
     )
-    val trimPattern = DynamicRegistry.create(
+    val trimPattern = DataDrivenRegistry.create(
         "trim_pattern".toKey(), TrimPattern.CODEC, "trim_pattern.json",
     )
-    val wolfSoundVariant = DynamicRegistry.create(
+    val wolfSoundVariant = DataDrivenRegistry.create(
         "wolf_sound_variant".toKey(), WolfSoundVariant.CODEC, "wolf_sound_variant.json",
     )
-    val wolfVariant = DynamicRegistry.create(
+    val wolfVariant = DataDrivenRegistry.create(
         "wolf_variant".toKey(), WolfVariant.CODEC, "wolf_variant.json",
     )
-    val zombieNautilusVariant = DynamicRegistry.create(
+    val zombieNautilusVariant = DataDrivenRegistry.create(
         "zombie_nautilus_variant".toKey(), ZombieNautilusVariant.CODEC, "zombie_nautilus_variant.json",
     )
 

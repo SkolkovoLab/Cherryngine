@@ -2,7 +2,6 @@ package ru.cherryngine.lib.minecraft.codec.transcoder
 
 import kotlinx.serialization.json.*
 
-
 object KtJsonTranscoder : Transcoder<JsonElement> {
     override fun encodeNull(): JsonElement {
         return JsonNull

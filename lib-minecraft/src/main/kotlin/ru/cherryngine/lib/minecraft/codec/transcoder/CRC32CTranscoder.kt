@@ -1,7 +1,6 @@
 package ru.cherryngine.lib.minecraft.codec.transcoder
 
 import ru.cherryngine.lib.minecraft.data.CRC32CHasher
-import ru.cherryngine.lib.minecraft.data.CRC32CHasher.EMPTY
 import ru.cherryngine.lib.minecraft.data.Hasher
 
 object CRC32CTranscoder : Transcoder<Int> {
@@ -51,7 +50,7 @@ object CRC32CTranscoder : Transcoder<Int> {
         return object : Transcoder.VirtualMapBuilder<Int> {
 
             override fun put(key: Int, value: Int): Transcoder.VirtualMapBuilder<Int> {
-                if (value != EMPTY) {
+                if (value != CRC32CHasher.EMPTY) {
                     map[key] = value
                 }
                 return this
@@ -78,7 +77,7 @@ object CRC32CTranscoder : Transcoder<Int> {
     }
 
     override fun encodeNull(): Int {
-        return EMPTY
+        return CRC32CHasher.EMPTY
     }
 
     override fun encodeShort(value: Short): Int {
