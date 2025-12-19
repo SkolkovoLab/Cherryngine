@@ -9,5 +9,5 @@ sealed class AreaEffectCloudMeta : EntityMeta() {
     val RADIUS = index(MetadataEntry.Type.FLOAT, 0.5f)
     val COLOR = index(MetadataEntry.Type.VAR_INT, 0)
     val IGNORE_RADIUS_AND_SINGLE_POINT = index(MetadataEntry.Type.BOOLEAN, false)
-    val PARTICLE = index(MetadataEntry.Type.PARTICLE, Registries.particle["effect"])
+    val PARTICLE = index(MetadataEntry.Type.PARTICLE, Registries.particle.getValue("effect"))
 }

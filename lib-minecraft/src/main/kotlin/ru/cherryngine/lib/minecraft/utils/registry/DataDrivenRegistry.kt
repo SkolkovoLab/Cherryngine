@@ -17,8 +17,8 @@ class DataDrivenRegistry<T : Any>(
     val registry: DynamicRegistry<T>,
     val codec: Codec<T>,
 ) : Registry<T> by registry {
-    fun register(key: Key, value: T): RegistryKey<T> {
-        return registry.register(key, value)
+    fun register(key: Key, value: T) {
+        registry.register(key, value)
     }
 
     companion object {
@@ -56,9 +56,9 @@ class DataDrivenRegistry<T : Any>(
                 StreamCodec.VAR_INT.write(buffer, value.size)
 
                 for (id in 0 until value.size) {
-                    StreamCodec.KEY.write(buffer, value.getKey(id).key())
+                    StreamCodec.KEY.write(buffer, value.getKey(id))
                     @Suppress("UNCHECKED_CAST")
-                    val binaryTag = (value.codec as Codec<Any>).encode(BinaryTagTranscoder, value[id])
+                    val binaryTag = (value.codec as Codec<Any>).encode(BinaryTagTranscoder, value.getValue(id))
                     BinaryTagStreamCodecs.STREAM.optional().write(buffer, binaryTag)
                 }
             }

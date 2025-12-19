@@ -8,10 +8,10 @@ import ru.cherryngine.lib.minecraft.network.stream_codec.RegistryOrXStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.Registries
 import ru.cherryngine.lib.minecraft.utils.Either
-import ru.cherryngine.lib.minecraft.utils.registry.RegistryKey
+import ru.cherryngine.lib.minecraft.utils.registry.RegistryEntryHolder
 
 data class ClientboundShowDialogPacket(
-    val dialog: Either<RegistryKey<Dialog>, Dialog>,
+    val dialog: Either<RegistryEntryHolder.Key<Dialog>, Dialog>,
 ) : ClientboundPacket {
     companion object {
         private val dialogCodec: StreamCodec<Dialog> = BinaryTagStreamCodecs.STREAM.transform<Dialog>(

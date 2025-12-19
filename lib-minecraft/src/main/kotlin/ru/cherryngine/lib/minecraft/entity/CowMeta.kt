@@ -6,5 +6,5 @@ import ru.cherryngine.lib.minecraft.registry.Registries
 sealed class CowMeta : AgeableMobMeta() {
     companion object : CowMeta()
 
-    val VARIANT = index(MetadataEntry.Type.COW_VARIANT, Registries.cowVariant["temperate"])
+    val VARIANT = index(MetadataEntry.Type.COW_VARIANT, Registries.cowVariant.getValue("temperate"))
 }

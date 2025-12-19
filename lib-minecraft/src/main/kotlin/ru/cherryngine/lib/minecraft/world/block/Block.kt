@@ -15,11 +15,15 @@ data class Block(
 
     override fun equals(other: Any?): Boolean {
         if (other !is Block) return false
-        return other.toString() == this.toString()
+        return other.asString() == this.asString()
+    }
+
+    override fun hashCode(): Int {
+        return asString().hashCode()
     }
 
     fun toItem(): Item {
-        return Registries.item[identifier]
+        return Registries.item.getValue(identifier)
     }
 
     fun getStateId(): Int {
@@ -65,7 +69,7 @@ data class Block(
     }
 
     companion object {
-        val AIR by lazy { Block(Registries.block[Blocks.AIR]) }
+        val AIR by lazy { Block(Registries.block[Blocks.AIR].value) }
 
         val STREAM_CODEC = object : StreamCodec<Block> {
             override fun write(buffer: ByteBuf, value: Block) {
@@ -120,7 +124,7 @@ data class Block(
 
         fun getBlockFromStateString(identifier: String): Block {
             val blockIdentifier = identifier.split("[")[0]
-            val registryBlock = Registries.block[blockIdentifier]
+            val registryBlock = Registries.block.getValue(blockIdentifier)
 
             //if no block state ids, no need to look up the block state ids map
             if (registryBlock.states.isEmpty()) {

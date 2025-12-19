@@ -40,8 +40,8 @@ class EquippableComponent(
     }
 
     companion object {
-        val DEFAULT_EQUIP_SOUND get() = Registries.soundEvent["item_armor_equip_generic"]
-        val DEFAULT_SHEARING_SOUND get() = Registries.soundEvent["item_shears_snip"]
+        val DEFAULT_EQUIP_SOUND get() = Registries.soundEvent.getValue("item_armor_equip_generic")
+        val DEFAULT_SHEARING_SOUND get() = Registries.soundEvent.getValue("item_shears_snip")
 
         val STREAM_CODEC = StreamCodec.of(
             EnumStreamCodec<EquipmentSlot>(), EquippableComponent::equipmentSlot,

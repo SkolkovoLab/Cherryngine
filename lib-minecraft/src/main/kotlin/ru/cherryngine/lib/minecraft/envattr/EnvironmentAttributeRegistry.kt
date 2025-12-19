@@ -35,7 +35,9 @@ object EnvironmentAttributeRegistry {
         register("visual/star_brightness", EnvironmentAttributeType.FLOAT, 0f)
         register("visual/sky_light_color", EnvironmentAttributeType.RGB_COLOR, RGBLikeImpl.WHITE)
         register("visual/sky_light_factor", EnvironmentAttributeType.FLOAT, 1f)
-        register("visual/default_dripstone_particle", EnvironmentAttributeType.PARTICLE, Registries.particle["dripping_dripstone_water"])
+        register("visual/default_dripstone_particle", EnvironmentAttributeType.PARTICLE,
+            Registries.particle.getValue("dripping_dripstone_water")
+        )
         register("visual/ambient_particles", EnvironmentAttributeType.AMBIENT_PARTICLES, emptyList())
         register("audio/background_music", EnvironmentAttributeType.BACKGROUND_MUSIC, BackgroundMusic.EMPTY)
         register("audio/music_volume", EnvironmentAttributeType.FLOAT, 1f)

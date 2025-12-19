@@ -7,69 +7,51 @@ import ru.cherryngine.lib.minecraft.network.stream_codec.RegistryStreamCodec
 class DynamicRegistry<T : Any>(
     override val key: Key,
 ) : Registry<T> {
-    private val idToValue: MutableList<T> = arrayListOf()
-    private val idToKey: MutableList<RegistryKey<T>> = arrayListOf()
-    private val keyToId: MutableMap<Key, Int> = hashMapOf()
-    private val keyToValue: MutableMap<Key, T> = hashMapOf()
-    private val valueToKey: MutableMap<T, RegistryKey<T>> = hashMapOf()
+    private val entries: MutableList<RegistryEntry<T>> = arrayListOf()
+    private val entriesByKey: MutableMap<Key, RegistryEntry<T>> = hashMapOf()
+    private val entriesByValue: MutableMap<T, RegistryEntry<T>> = hashMapOf()
 
     override val tags: MutableMap<Key, MutableList<Key>> = hashMapOf()
 
-    override fun getOrNull(id: Int): T? {
-        return idToValue.getOrNull(id)
+    override fun getOrNull(value: T): RegistryEntry<T>? {
+        return entriesByValue[value]
     }
 
-    override fun getOrNull(key: Key): T? {
-        return keyToValue[key]
+    override fun getOrNull(id: Int): RegistryEntry<T>? {
+        return entries.getOrNull(id)
     }
 
-    override fun getKeyOrNull(id: Int): RegistryKey<T>? {
-        return idToKey.getOrNull(id)
-    }
-
-    override fun getKeyOrNull(value: T): RegistryKey<T>? {
-        return valueToKey[value]
-    }
-
-    override fun getKeyOrNull(key: Key): RegistryKey<T>? {
-        if (key !in keyToValue) return null
-        return RegistryKey(key)
-    }
-
-    override fun getIdOrNull(key: Key): Int? {
-        return keyToId[key]
+    override fun getOrNull(key: Key): RegistryEntry<T>? {
+        return entriesByKey[key]
     }
 
     override val size: Int
-        get() = idToValue.size
-    override val keys: Collection<RegistryKey<T>>
-        get() = idToKey
+        get() = entries.size
+    override val keys: Collection<Key>
+        get() = entriesByKey.keys
     override val values: Collection<T>
-        get() = idToValue
+        get() = entriesByValue.keys
 
-    fun register(key: Key, value: T): RegistryKey<T> {
-        val registryKey: RegistryKey<T> = RegistryKey(key)
+    fun register(key: Key, value: T) {
         synchronized(REGISTRY_LOCK) {
-            val id = keyToId[key] // Array set at home
-            keyToValue[key] = value
-            valueToKey[value] = registryKey
-            if (id == null) {
-                idToValue.add(value)
-                idToKey.add(registryKey)
-                keyToId[key] = idToValue.lastIndex
-            } else {
-                idToValue[id] = value
-                idToKey[id] = registryKey
-                keyToId[key] = id
-            }
+            val current = entriesByKey[key]
+            val id = current?.id ?: entries.size
+            val entry = RegistryEntry(value, key, id)
 
-            return registryKey
+            if (current != null) {
+                entries[current.id] = (entry)
+                entriesByValue.remove(current.value)
+            } else {
+                entries.add(entry)
+            }
+            entriesByKey[key] = entry
+            entriesByValue[value] = entry
         }
     }
 
     override val keyCodec: Codec<T> = Codec.KEY.transform(
-        { get(it) },
-        { getKey(it).key() }
+        { getValue(it) },
+        { getKey(it) }
     )
     override val streamCodec = RegistryStreamCodec(this)
 

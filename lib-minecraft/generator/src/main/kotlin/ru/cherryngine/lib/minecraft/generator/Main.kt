@@ -168,12 +168,12 @@ object Main {
     }
 
     val REGISTRY_KEY_CLASS = ClassName(
-        "ru.cherryngine.lib.minecraft.utils.registry",
-        "RegistryKey"
+        "ru.cherryngine.lib.minecraft.utils.registry.RegistryEntryHolder",
+        "Key"
     )
     val CREATE_KEY_FUNCTION = MemberName(
-        "ru.cherryngine.lib.minecraft.registry",
-        "createKey"
+        "ru.cherryngine.lib.minecraft.utils.registry.RegistryEntryHolder.Companion",
+        "fromKey"
     )
 
     fun generateKeys(

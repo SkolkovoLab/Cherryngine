@@ -13,6 +13,6 @@ class RegistryStreamCodec<T : Any>(
 
     override fun read(buffer: ByteBuf): T {
         val id = StreamCodec.VAR_INT.read(buffer)
-        return registry[id]
+        return registry.getValue(id)
     }
 }

@@ -107,8 +107,8 @@ object PolarWorldGenerator {
 
     private fun getBiome(polarSection: PolarSection, x: Int, y: Int, z: Int): Biome {
         val biomeId = getId(polarSection.biomePalette(), polarSection.biomeData(), x, y, z)
-            ?: return Registries.biome["plains"]
-        return Registries.biome[biomeId]
+            ?: return Registries.biome.getValue("plains")
+        return Registries.biome.getValue(biomeId)
     }
 
     private fun getBlock(polarSection: PolarSection, x: Int, y: Int, z: Int): Block {
@@ -131,7 +131,7 @@ object PolarWorldGenerator {
 
             if (blockId == "minecraft:chain") blockId = "minecraft:iron_chain"
 
-            val registryBlock = Registries.block[blockId]
+            val registryBlock = Registries.block.getValue(blockId)
 
             // Парсим свойства
             if (propertiesStr.isNotEmpty()) {

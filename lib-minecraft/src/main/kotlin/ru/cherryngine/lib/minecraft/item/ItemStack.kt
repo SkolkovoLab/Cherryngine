@@ -22,7 +22,7 @@ data class ItemStack(
     }
 
     companion object {
-        val AIR_ITEM = Registries.item["air"]
+        val AIR_ITEM = Registries.item.getValue("air")
         val AIR = ItemStack(AIR_ITEM, 1, DataComponentPatch.EMPTY)
 
         val STREAM_CODEC: StreamCodec<ItemStack> = streamCodec(true, true)
@@ -56,7 +56,7 @@ data class ItemStack(
                 val itemId = StreamCodec.VAR_INT.read(buffer)
 
                 val componentsPatch = DataComponentPatch.read(buffer, isPatch, isTrusted)
-                return ItemStack(Registries.item[itemId], count, componentsPatch)
+                return ItemStack(Registries.item.getValue(itemId), count, componentsPatch)
             }
         }
     }

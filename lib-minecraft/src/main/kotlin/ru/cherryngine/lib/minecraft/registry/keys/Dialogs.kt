@@ -2,14 +2,14 @@
 package ru.cherryngine.lib.minecraft.registry.keys
 
 import ru.cherryngine.lib.minecraft.dialog.Dialog
-import ru.cherryngine.lib.minecraft.registry.createKey
-import ru.cherryngine.lib.minecraft.utils.registry.RegistryKey
+import ru.cherryngine.lib.minecraft.utils.registry.RegistryEntryHolder.Companion.fromKey
+import ru.cherryngine.lib.minecraft.utils.registry.RegistryEntryHolder.Key
 
 @Suppress("RedundantVisibilityModifier")
 public object Dialogs {
-  public val QUICK_ACTIONS: RegistryKey<Dialog> = createKey("minecraft:quick_actions")
+  public val QUICK_ACTIONS: Key<Dialog> = fromKey("minecraft:quick_actions")
 
-  public val CUSTOM_OPTIONS: RegistryKey<Dialog> = createKey("minecraft:custom_options")
+  public val CUSTOM_OPTIONS: Key<Dialog> = fromKey("minecraft:custom_options")
 
-  public val SERVER_LINKS: RegistryKey<Dialog> = createKey("minecraft:server_links")
+  public val SERVER_LINKS: Key<Dialog> = fromKey("minecraft:server_links")
 }

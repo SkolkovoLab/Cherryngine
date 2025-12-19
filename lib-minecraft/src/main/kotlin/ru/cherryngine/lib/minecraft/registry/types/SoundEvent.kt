@@ -33,7 +33,7 @@ sealed interface SoundEvent : KeyedKt, Sound.Type, DataComponentHashable {
 
             override fun <D> decode(transcoder: Transcoder<D>, value: D): SoundEvent {
                 val result = runCatching { Codec.KEY.decode(transcoder, value) }
-                if (result.isSuccess) return Registries.soundEvent[result.getOrThrow()]
+                if (result.isSuccess) return Registries.soundEvent.getValue(result.getOrThrow())
                 return Custom.CODEC.decode(transcoder, value)
             }
         }
@@ -42,7 +42,7 @@ sealed interface SoundEvent : KeyedKt, Sound.Type, DataComponentHashable {
             Custom.STREAM_CODEC
         ).transform<SoundEvent>({
             when (it) {
-                is Either.Left -> Registries.soundEvent[it.value]
+                is Either.Left -> Registries.soundEvent.getValue(it.value)
                 is Either.Right -> it.value
             }
         }, {

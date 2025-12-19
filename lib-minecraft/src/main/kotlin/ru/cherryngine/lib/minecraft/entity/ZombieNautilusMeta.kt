@@ -6,5 +6,7 @@ import ru.cherryngine.lib.minecraft.registry.Registries
 sealed class ZombieNautilusMeta : AbstractNautilusMeta() {
     companion object : ZombieNautilusMeta()
 
-    val VARIANT = index(MetadataEntry.Type.ZOMBIE_NAUTILUS_VARIANT, Registries.zombieNautilusVariant["temperate"])
+    val VARIANT = index(MetadataEntry.Type.ZOMBIE_NAUTILUS_VARIANT,
+        Registries.zombieNautilusVariant.getValue("temperate")
+    )
 }

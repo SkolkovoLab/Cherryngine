@@ -15,6 +15,6 @@ sealed class WolfMeta : TameableAnimalMeta() {
         ::intIndex
     )
     val ANGER_TIME = index(MetadataEntry.Type.VAR_LONG, -1)
-    val VARIANT = index(MetadataEntry.Type.WOLF_VARIANT, Registries.wolfVariant["pale"])
-    val SOUND_VARIANT = index(MetadataEntry.Type.WOLF_SOUND_VARIANT, Registries.wolfSoundVariant["classic"])
+    val VARIANT = index(MetadataEntry.Type.WOLF_VARIANT, Registries.wolfVariant.getValue("pale"))
+    val SOUND_VARIANT = index(MetadataEntry.Type.WOLF_SOUND_VARIANT, Registries.wolfSoundVariant.getValue("classic"))
 }

@@ -23,7 +23,7 @@ data class PotDecorationsComponent(
     }
 
     companion object {
-        val DEFAULT_ITEM = Registries.item["brick"]
+        val DEFAULT_ITEM = Registries.item.getValue("brick")
         val EMPTY = PotDecorationsComponent(DEFAULT_ITEM, DEFAULT_ITEM, DEFAULT_ITEM, DEFAULT_ITEM)
 
         val STREAM_CODEC = StreamCodec.of(

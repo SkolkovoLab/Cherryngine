@@ -7,7 +7,7 @@ import ru.cherryngine.lib.minecraft.registry.Registries
 sealed class CatMeta : TameableAnimalMeta() {
     companion object : CatMeta()
 
-    val VARIANT = index(MetadataEntry.Type.CAT_VARIANT, Registries.catVariant["black"])
+    val VARIANT = index(MetadataEntry.Type.CAT_VARIANT, Registries.catVariant.getValue("black"))
     val IS_LYING = index(MetadataEntry.Type.BOOLEAN, false)
     val IS_RELAXED = index(MetadataEntry.Type.BOOLEAN, false)
     val COLLAR_COLOR = index<Int, DyeColor>(

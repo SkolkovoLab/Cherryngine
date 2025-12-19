@@ -8,56 +8,59 @@ import ru.cherryngine.lib.minecraft.utils.KeyedKt
 import ru.cherryngine.lib.minecraft.utils.toKey
 
 interface Registry<T : Any> : KeyedKt {
+    fun getOrNull(value: T): RegistryEntry<T>?
+    fun getOrNull(id: Int): RegistryEntry<T>?
+    fun getOrNull(key: Key): RegistryEntry<T>?
+    fun getOrNull(key: String): RegistryEntry<T>? = getOrNull(key.toKey())
 
-    fun getOrNull(id: Int): T?
-    fun getOrNull(key: Key): T?
-    fun getOrNull(key: RegistryKey<T>): T? = getOrNull(key.key())
-    fun getOrNull(key: String): T? = getOrNull(key.toKey())
+    operator fun get(value: T): RegistryEntry<T> = getOrNull(value)
+        ?: throw NoSuchElementException("No entry found in registry '${key()}' for value=$value")
 
-    operator fun get(id: Int): T = getOrNull(id)
-        ?: throw NoSuchElementException("No value found in registry '${key()}' for id=$id")
+    operator fun get(id: Int): RegistryEntry<T> = getOrNull(id)
+        ?: throw NoSuchElementException("No entry found in registry '${key()}' for id=$id")
 
-    operator fun get(key: Key): T = getOrNull(key)
-        ?: throw NoSuchElementException("No value found in registry '${key()}' for key=$key")
+    operator fun get(key: Key): RegistryEntry<T> = getOrNull(key)
+        ?: throw NoSuchElementException("No entry found in registry '${key()}' for key=$key")
 
-    operator fun get(key: RegistryKey<T>): T = getOrNull(key)
-        ?: throw NoSuchElementException("No value found in registry '${key()}' for key=$key")
+    operator fun get(key: String): RegistryEntry<T> = getOrNull(key)
+        ?: throw NoSuchElementException("No entry found in registry '${key()}' for key=$key")
 
-    operator fun get(key: String): T = getOrNull(key)
-        ?: throw NoSuchElementException("No value found in registry '${key()}' for key='$key'")
+    fun getOrNull(holder: RegistryEntryHolder<T>): RegistryEntry<T>? = when (holder) {
+        is RegistryEntryHolder.Id -> getOrNull(holder.id)
+        is RegistryEntryHolder.Key -> getOrNull(holder.key)
+        is RegistryEntryHolder.Value -> getOrNull(holder.value)
+    }
 
-    fun getKeyOrNull(id: Int): RegistryKey<T>?
-    fun getKeyOrNull(value: T): RegistryKey<T>?
-    fun getKeyOrNull(key: Key): RegistryKey<T>?
+    operator fun get(holder: RegistryEntryHolder<T>): RegistryEntry<T> = when (holder) {
+        is RegistryEntryHolder.Id -> get(holder.id)
+        is RegistryEntryHolder.Key -> get(holder.key)
+        is RegistryEntryHolder.Value -> get(holder.value)
+    }
 
-    fun getKey(id: Int): RegistryKey<T> = getKeyOrNull(id)
-        ?: throw NoSuchElementException("No registry key found in registry '${key()}' for id=$id")
+    fun getValueOrNull(id: Int): T? = getOrNull(id)?.value
+    fun getValueOrNull(key: Key): T? = getOrNull(key)?.value
+    fun getValueOrNull(key: String): T? = getOrNull(key)?.value
 
-    fun getKey(value: T): RegistryKey<T> = getKeyOrNull(value)
-        ?: throw NoSuchElementException("No registry key found in registry '${key()}' for value=$value")
+    fun getValue(id: Int): T = get(id).value
+    fun getValue(key: Key): T = get(key).value
+    fun getValue(key: String): T = get(key).value
 
-    fun getKey(key: Key): RegistryKey<T> = getKeyOrNull(key)
-        ?: throw NoSuchElementException("No registry key found in registry '${key()}' for key=$key")
+    fun getKeyOrNull(id: Int): Key? = getOrNull(id)?.key
+    fun getKeyOrNull(value: T): Key? = getOrNull(value)?.key
 
-    fun getIdOrNull(key: Key): Int?
-    fun getIdOrNull(key: RegistryKey<T>): Int? = getIdOrNull(key.key())
-    fun getIdOrNull(key: String): Int? = getIdOrNull(key.toKey())
-    fun getIdOrNull(value: T): Int? = getKeyOrNull(value)?.let { getIdOrNull(it) }
+    fun getKey(id: Int): Key = get(id).key
+    fun getKey(value: T): Key = get(value).key
 
-    fun getId(key: Key): Int = getIdOrNull(key)
-        ?: throw NoSuchElementException("No id found in registry '${key()}' for key=$key")
+    fun getIdOrNull(key: Key): Int? = getOrNull(key)?.id
+    fun getIdOrNull(key: String): Int? = getOrNull(key)?.id
+    fun getIdOrNull(value: T): Int? = getOrNull(value)?.id
 
-    fun getId(key: RegistryKey<T>): Int = getIdOrNull(key)
-        ?: throw NoSuchElementException("No id found in registry '${key()}' for key=$key")
-
-    fun getId(key: String): Int = getIdOrNull(key)
-        ?: throw NoSuchElementException("No id found in registry '${key()}' for key=$key")
-
-    fun getId(value: T): Int = getIdOrNull(value)
-        ?: throw NoSuchElementException("No id found in registry '${key()}' for value=$value")
+    fun getId(key: Key): Int = get(key).id
+    fun getId(key: String): Int = get(key).id
+    fun getId(value: T): Int = get(value).id
 
     val size: Int
-    val keys: Collection<RegistryKey<T>>
+    val keys: Collection<Key>
     val values: Collection<T>
 
     val keyCodec: Codec<T>

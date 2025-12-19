@@ -34,9 +34,9 @@ class LayerChunkViewable(
     }
 
     override fun show(player: Player) {
-        val dimensionType = Registries.dimensionType["overworld"] // TODO оно должно браться откуда-нибудь
+        val dimensionType = Registries.dimensionType.getValue("overworld") // TODO оно должно браться откуда-нибудь
         val minSection = dimensionType.minY / 16
-        val sVoidBlockId = Registries.block["structure_void"].defaultStateId
+        val sVoidBlockId = Registries.block.getValue("structure_void").defaultStateId
         chunk.sections.forEachIndexed { sectionIndex, section ->
             val blocks = mutableListOf<Long>()
             for (x in 0..<16) for (y in 0..<16) for (z in 0..<16) {
@@ -61,7 +61,7 @@ class LayerChunkViewable(
     override fun getBlockId(pos: Vec3I): Int? {
         val block = chunk.getBlockId(pos)
         if (block == 0) return null
-        if (block == Registries.block[Blocks.STRUCTURE_VOID].defaultStateId) return 0
+        if (block == Registries.block[Blocks.STRUCTURE_VOID].value.defaultStateId) return 0
         return block
     }
 

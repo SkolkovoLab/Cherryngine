@@ -6,5 +6,5 @@ import ru.cherryngine.lib.minecraft.registry.Registries
 sealed class ChickenMeta : AgeableMobMeta() {
     companion object : ChickenMeta()
 
-    val VARIANT = index(MetadataEntry.Type.CHICKEN_VARIANT, Registries.chickenVariant["temperate"])
+    val VARIANT = index(MetadataEntry.Type.CHICKEN_VARIANT, Registries.chickenVariant.getValue("temperate"))
 }

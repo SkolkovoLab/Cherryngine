@@ -9,56 +9,39 @@ import ru.cherryngine.lib.minecraft.utils.toKey
 
 class StaticRegistry<T : StaticProtocolObject>(
     override val key: Key,
-    entries: List<T>,
+    values: List<T>,
     override val tags: Map<Key, List<Key>>,
 ) : Registry<T> {
-    private val keyToValue = entries.associateBy { it.key() }
-    private val valueToKey = entries.associateWith { RegistryKey<T>(it.key()) }
-    private val idToValue = entries.toList()
-
     init {
-        idToValue.forEachIndexed { index, value ->
-            check(index == value.id)
-        }
+        values.forEachIndexed { index, value -> check(index == value.id) }
     }
 
-    override fun getOrNull(id: Int): T? {
-        return idToValue.getOrNull(id)
+    private val entries: List<RegistryEntry<T>> = values.map { RegistryEntry(it, it.key, it.id) }
+    private val entriesByKey: Map<Key, RegistryEntry<T>> = entries.associateBy { it.key }
+    private val entriesByValue: Map<T, RegistryEntry<T>> = entries.associateBy { it.value }
+
+    override fun getOrNull(value: T): RegistryEntry<T>? {
+        return entriesByValue[value]
     }
 
-    override fun getOrNull(key: Key): T? {
-        return keyToValue[key]
+    override fun getOrNull(id: Int): RegistryEntry<T>? {
+        return entries.getOrNull(id)
     }
 
-    override fun getKeyOrNull(id: Int): RegistryKey<T>? {
-        val value = idToValue.getOrNull(id) ?: return null
-        return RegistryKey(value.key())
-    }
-
-    override fun getKeyOrNull(value: T): RegistryKey<T>? {
-        return valueToKey[value]
-    }
-
-    override fun getKeyOrNull(key: Key): RegistryKey<T>? {
-        if (key !in keyToValue) return null
-        return RegistryKey(key)
-    }
-
-    override fun getIdOrNull(key: Key): Int? {
-        val value = keyToValue[key] ?: return null
-        return value.id
+    override fun getOrNull(key: Key): RegistryEntry<T>? {
+        return entriesByKey[key]
     }
 
     override val size: Int
-        get() = keyToValue.size
-    override val keys: Collection<RegistryKey<T>>
-        get() = valueToKey.values
+        get() = entries.size
+    override val keys: Collection<Key>
+        get() = entriesByKey.keys
     override val values: Collection<T>
-        get() = valueToKey.keys
+        get() = entriesByValue.keys
 
     override val keyCodec: Codec<T> = Codec.KEY.transform(
-        { get(it) },
-        { getKey(it).key() }
+        { getValue(it) },
+        { getKey(it) }
     )
     override val streamCodec = RegistryStreamCodec(this)
 

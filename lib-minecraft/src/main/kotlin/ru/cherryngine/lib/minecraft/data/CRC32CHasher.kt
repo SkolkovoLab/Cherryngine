@@ -196,7 +196,7 @@ object CRC32CHasher {
     }
 
     fun <T : Any> ofRegistryEntry(registry: Registry<T>, value: T): Int {
-        return ofString(registry.getKey(value).key().asString())
+        return ofString(registry.getKey(value).asString())
     }
 }
 
