@@ -7,6 +7,7 @@ import ru.cherryngine.lib.minecraft.network.protocol.types.EquipmentSlot
 import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.keys.SoundEvents
 import ru.cherryngine.lib.minecraft.registry.types.EntityType
 import ru.cherryngine.lib.minecraft.registry.types.SoundEvent
 
@@ -40,8 +41,8 @@ class EquippableComponent(
     }
 
     companion object {
-        val DEFAULT_EQUIP_SOUND get() = Registries.soundEvent.getValue("item_armor_equip_generic")
-        val DEFAULT_SHEARING_SOUND get() = Registries.soundEvent.getValue("item_shears_snip")
+        val DEFAULT_EQUIP_SOUND get() = Registries.soundEvent[SoundEvents.ITEM_ARMOR_EQUIP_GENERIC].value
+        val DEFAULT_SHEARING_SOUND get() = Registries.soundEvent[SoundEvents.ITEM_SHEARS_SNIP].value
 
         val STREAM_CODEC = StreamCodec.of(
             EnumStreamCodec<EquipmentSlot>(), EquippableComponent::equipmentSlot,

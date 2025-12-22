@@ -8,7 +8,7 @@ import ru.cherryngine.lib.minecraft.registry.Registries
 
 val TMP_PARTICLE_CODEC = StructCodec.of(
     "type", Codec.KEY, { it.key },
-    { Registries.particle.getValue(it) }
+    { Registries.particle[it].value }
 )
 
 val TRI_STATE_CODEC = object : Codec<TriState> {

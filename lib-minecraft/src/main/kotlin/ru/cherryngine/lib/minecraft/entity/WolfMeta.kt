@@ -2,6 +2,8 @@ package ru.cherryngine.lib.minecraft.entity
 
 import ru.cherryngine.lib.minecraft.network.protocol.types.DyeColor
 import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.keys.WolfSoundVariants
+import ru.cherryngine.lib.minecraft.registry.keys.WolfVariants
 
 @Suppress("PropertyName")
 sealed class WolfMeta : TameableAnimalMeta() {
@@ -15,6 +17,6 @@ sealed class WolfMeta : TameableAnimalMeta() {
         ::intIndex
     )
     val ANGER_TIME = index(MetadataEntry.Type.VAR_LONG, -1)
-    val VARIANT = index(MetadataEntry.Type.WOLF_VARIANT, Registries.wolfVariant.getValue("pale"))
-    val SOUND_VARIANT = index(MetadataEntry.Type.WOLF_SOUND_VARIANT, Registries.wolfSoundVariant.getValue("classic"))
+    val VARIANT = index(MetadataEntry.Type.WOLF_VARIANT, Registries.wolfVariant[WolfVariants.PALE].value)
+    val SOUND_VARIANT = index(MetadataEntry.Type.WOLF_SOUND_VARIANT, Registries.wolfSoundVariant[WolfSoundVariants.CLASSIC].value)
 }

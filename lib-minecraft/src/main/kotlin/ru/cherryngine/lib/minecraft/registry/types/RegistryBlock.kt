@@ -74,7 +74,7 @@ data class RegistryBlock(
     val possibleStatesReversed = Int2ObjectOpenHashMap(possibleStates.reversed())
 
     fun toItem(): Item {
-        return Registries.item.getValue(key)
+        return Registries.item[key].value
     }
 
     fun toBlock(): Block {

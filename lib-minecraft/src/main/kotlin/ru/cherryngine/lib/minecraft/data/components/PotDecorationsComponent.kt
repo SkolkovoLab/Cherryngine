@@ -6,6 +6,7 @@ import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.keys.Items
 import ru.cherryngine.lib.minecraft.registry.types.Item
 
 data class PotDecorationsComponent(
@@ -23,7 +24,7 @@ data class PotDecorationsComponent(
     }
 
     companion object {
-        val DEFAULT_ITEM = Registries.item.getValue("brick")
+        val DEFAULT_ITEM = Registries.item[Items.BRICK].value
         val EMPTY = PotDecorationsComponent(DEFAULT_ITEM, DEFAULT_ITEM, DEFAULT_ITEM, DEFAULT_ITEM)
 
         val STREAM_CODEC = StreamCodec.of(

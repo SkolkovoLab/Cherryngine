@@ -23,7 +23,7 @@ data class Block(
     }
 
     fun toItem(): Item {
-        return Registries.item.getValue(identifier)
+        return Registries.item[registryBlock.key].value
     }
 
     fun getStateId(): Int {
@@ -124,7 +124,7 @@ data class Block(
 
         fun getBlockFromStateString(identifier: String): Block {
             val blockIdentifier = identifier.split("[")[0]
-            val registryBlock = Registries.block.getValue(blockIdentifier)
+            val registryBlock = Registries.block[blockIdentifier].value
 
             //if no block state ids, no need to look up the block state ids map
             if (registryBlock.states.isEmpty()) {

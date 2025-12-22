@@ -56,9 +56,9 @@ class DataDrivenRegistry<T : Any>(
                 StreamCodec.VAR_INT.write(buffer, value.size)
 
                 for (id in 0 until value.size) {
-                    StreamCodec.KEY.write(buffer, value.getKey(id))
+                    StreamCodec.KEY.write(buffer, value[id].key)
                     @Suppress("UNCHECKED_CAST")
-                    val binaryTag = (value.codec as Codec<Any>).encode(BinaryTagTranscoder, value.getValue(id))
+                    val binaryTag = (value.codec as Codec<Any>).encode(BinaryTagTranscoder, value[id].value)
                     BinaryTagStreamCodecs.STREAM.optional().write(buffer, binaryTag)
                 }
             }

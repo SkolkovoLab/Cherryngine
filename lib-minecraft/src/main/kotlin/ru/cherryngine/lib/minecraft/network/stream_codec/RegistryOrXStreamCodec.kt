@@ -26,7 +26,7 @@ class RegistryOrXStreamCodec<R : Any>(
     override fun read(buffer: ByteBuf): Either<RegistryEntryHolder.Key<R>, R> {
         val id = StreamCodec.VAR_INT.read(buffer) - 1
         return if (id >= 0) {
-            Either.Left(RegistryEntryHolder.Key(registry.getKey(id)))
+            Either.Left(RegistryEntryHolder.Key(registry[id].key))
         } else {
             Either.Right(rightCodec.read(buffer))
         }

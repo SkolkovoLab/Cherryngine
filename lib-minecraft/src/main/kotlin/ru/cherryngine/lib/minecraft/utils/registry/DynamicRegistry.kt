@@ -7,7 +7,7 @@ import ru.cherryngine.lib.minecraft.network.stream_codec.RegistryStreamCodec
 class DynamicRegistry<T : Any>(
     override val key: Key,
 ) : Registry<T> {
-    private val entries: MutableList<RegistryEntry<T>> = arrayListOf()
+    private val entriesById: MutableList<RegistryEntry<T>> = arrayListOf()
     private val entriesByKey: MutableMap<Key, RegistryEntry<T>> = hashMapOf()
     private val entriesByValue: MutableMap<T, RegistryEntry<T>> = hashMapOf()
 
@@ -25,24 +25,24 @@ class DynamicRegistry<T : Any>(
         return entriesByKey[key]
     }
 
-    override val size: Int
-        get() = entries.size
-    override val keys: Collection<Key>
+    override val entries: List<RegistryEntry<T>>
+        get() = entriesById
+    override val keys: Set<Key>
         get() = entriesByKey.keys
-    override val values: Collection<T>
+    override val values: Set<T>
         get() = entriesByValue.keys
 
     fun register(key: Key, value: T) {
         synchronized(REGISTRY_LOCK) {
             val current = entriesByKey[key]
-            val id = current?.id ?: entries.size
+            val id = current?.id ?: entriesById.size
             val entry = RegistryEntry(value, key, id)
 
             if (current != null) {
-                entries[current.id] = (entry)
+                entriesById[current.id] = (entry)
                 entriesByValue.remove(current.value)
             } else {
-                entries.add(entry)
+                entriesById.add(entry)
             }
             entriesByKey[key] = entry
             entriesByValue[value] = entry
@@ -50,8 +50,8 @@ class DynamicRegistry<T : Any>(
     }
 
     override val keyCodec: Codec<T> = Codec.KEY.transform(
-        { getValue(it) },
-        { getKey(it) }
+        { get(it).value },
+        { get(it).key }
     )
     override val streamCodec = RegistryStreamCodec(this)
 

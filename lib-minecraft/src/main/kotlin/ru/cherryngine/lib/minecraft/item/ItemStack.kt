@@ -10,6 +10,7 @@ import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.network.protocol.NbtWritable
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.keys.Items
 import ru.cherryngine.lib.minecraft.registry.types.Item
 
 data class ItemStack(
@@ -22,7 +23,7 @@ data class ItemStack(
     }
 
     companion object {
-        val AIR_ITEM = Registries.item.getValue("air")
+        val AIR_ITEM = Registries.item[Items.AIR].value
         val AIR = ItemStack(AIR_ITEM, 1, DataComponentPatch.EMPTY)
 
         val STREAM_CODEC: StreamCodec<ItemStack> = streamCodec(true, true)
@@ -56,7 +57,7 @@ data class ItemStack(
                 val itemId = StreamCodec.VAR_INT.read(buffer)
 
                 val componentsPatch = DataComponentPatch.read(buffer, isPatch, isTrusted)
-                return ItemStack(Registries.item.getValue(itemId), count, componentsPatch)
+                return ItemStack(Registries.item[itemId].value, count, componentsPatch)
             }
         }
     }
@@ -76,14 +77,14 @@ data class ItemStack(
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is ItemStack) return false
 
-        return Registries.item.getId(material) == Registries.item.getId(other.material)
+        return Registries.item[material].id == Registries.item[other.material].id
 //                && attributes == other.attributes //TODO why no same??
                 && this.components.getComparisonHash() == other.components.getComparisonHash()
 
     }
 
     override fun hashCode(): Int {
-        var result = Registries.item.getId(material).hashCode()
+        var result = Registries.item[material].id.hashCode()
         result = 31 * result + this.components.getComparisonHash().hashCode()
 //        result = 31 * result + attributes.hashCode() //TODO why no same??
         return result

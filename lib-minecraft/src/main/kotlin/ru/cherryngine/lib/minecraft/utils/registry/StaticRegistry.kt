@@ -16,32 +16,32 @@ class StaticRegistry<T : StaticProtocolObject>(
         values.forEachIndexed { index, value -> check(index == value.id) }
     }
 
-    private val entries: List<RegistryEntry<T>> = values.map { RegistryEntry(it, it.key, it.id) }
-    private val entriesByKey: Map<Key, RegistryEntry<T>> = entries.associateBy { it.key }
-    private val entriesByValue: Map<T, RegistryEntry<T>> = entries.associateBy { it.value }
+    private val entriesById: List<RegistryEntry<T>> = values.map { RegistryEntry(it, it.key, it.id) }
+    private val entriesByKey: Map<Key, RegistryEntry<T>> = entriesById.associateBy { it.key }
+    private val entriesByValue: Map<T, RegistryEntry<T>> = entriesById.associateBy { it.value }
 
     override fun getOrNull(value: T): RegistryEntry<T>? {
         return entriesByValue[value]
     }
 
     override fun getOrNull(id: Int): RegistryEntry<T>? {
-        return entries.getOrNull(id)
+        return entriesById.getOrNull(id)
     }
 
     override fun getOrNull(key: Key): RegistryEntry<T>? {
         return entriesByKey[key]
     }
 
-    override val size: Int
-        get() = entries.size
-    override val keys: Collection<Key>
+    override val entries: List<RegistryEntry<T>>
+        get() = entriesById
+    override val keys: Set<Key>
         get() = entriesByKey.keys
-    override val values: Collection<T>
+    override val values: Set<T>
         get() = entriesByValue.keys
 
     override val keyCodec: Codec<T> = Codec.KEY.transform(
-        { getValue(it) },
-        { getKey(it) }
+        { get(it).value },
+        { get(it).key }
     )
     override val streamCodec = RegistryStreamCodec(this)
 

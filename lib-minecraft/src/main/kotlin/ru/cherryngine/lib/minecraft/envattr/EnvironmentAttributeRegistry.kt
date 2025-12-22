@@ -3,6 +3,7 @@ package ru.cherryngine.lib.minecraft.envattr
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.util.TriState
 import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.registry.keys.Particles
 import ru.cherryngine.lib.minecraft.utils.color.ARGBLikeImpl
 import ru.cherryngine.lib.minecraft.utils.color.RGBLikeImpl
 import ru.cherryngine.lib.minecraft.utils.color.rgbLikeOf
@@ -36,7 +37,7 @@ object EnvironmentAttributeRegistry {
         register("visual/sky_light_color", EnvironmentAttributeType.RGB_COLOR, RGBLikeImpl.WHITE)
         register("visual/sky_light_factor", EnvironmentAttributeType.FLOAT, 1f)
         register("visual/default_dripstone_particle", EnvironmentAttributeType.PARTICLE,
-            Registries.particle.getValue("dripping_dripstone_water")
+            Registries.particle[Particles.DRIPPING_DRIPSTONE_WATER].value
         )
         register("visual/ambient_particles", EnvironmentAttributeType.AMBIENT_PARTICLES, emptyList())
         register("audio/background_music", EnvironmentAttributeType.BACKGROUND_MUSIC, BackgroundMusic.EMPTY)
