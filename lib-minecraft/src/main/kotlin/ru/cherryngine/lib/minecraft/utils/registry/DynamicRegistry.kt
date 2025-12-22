@@ -11,8 +11,6 @@ class DynamicRegistry<T : Any>(
     private val entriesByKey: MutableMap<Key, RegistryEntry<T>> = hashMapOf()
     private val entriesByValue: MutableMap<T, RegistryEntry<T>> = hashMapOf()
 
-    override val tags: MutableMap<Key, MutableList<Key>> = hashMapOf()
-
     override fun getOrNull(value: T): RegistryEntry<T>? {
         return entriesByValue[value]
     }

@@ -81,18 +81,10 @@ class PlayerManager(
             }
 
             is ServerboundLoginAcknowledgedPacket -> {
-                val cachedTagPacket = ClientboundUpdateTagsPacket(
-                    listOf(
-                        Registries.biome.getTagRegistry(),
-                        Registries.item.getTagRegistry(),
-                        Registries.block.getTagRegistry(),
-                        Registries.fluid.getTagRegistry(),
-                        Registries.entityType.getTagRegistry()
-                    )
-                )
+                val cachedTagPacket = ClientboundUpdateTagsPacket(Registries.tagRegistries)
                 connection.sendPacket(cachedTagPacket)
 
-                Registries.dynamicRegistries.forEach { registry ->
+                Registries.dataDrivenRegistries.forEach { registry ->
                     connection.sendPacket(ClientboundRegistryDataPacket(registry))
                 }
 

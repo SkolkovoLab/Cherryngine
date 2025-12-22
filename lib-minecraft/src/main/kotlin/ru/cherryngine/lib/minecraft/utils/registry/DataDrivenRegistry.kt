@@ -43,10 +43,6 @@ class DataDrivenRegistry<T : Any>(
                 registry.register(key.toKey(), entry)
             }
 
-            StaticRegistry.createTags("tags/$resourceName").forEach { (key, value) ->
-                registry.tags.computeIfAbsent(key) { arrayListOf() }.addAll(value)
-            }
-
             return DataDrivenRegistry(registry, codec)
         }
 

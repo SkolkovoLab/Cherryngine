@@ -3,7 +3,6 @@ package ru.cherryngine.lib.minecraft.utils.registry
 import net.kyori.adventure.key.Key
 import ru.cherryngine.lib.minecraft.codec.Codec
 import ru.cherryngine.lib.minecraft.network.stream_codec.RegistryStreamCodec
-import ru.cherryngine.lib.minecraft.registry.TagRegistry
 import ru.cherryngine.lib.minecraft.utils.KeyedKt
 import ru.cherryngine.lib.minecraft.utils.toKey
 
@@ -43,13 +42,4 @@ interface Registry<T : Any> : KeyedKt {
 
     val keyCodec: Codec<T>
     val streamCodec: RegistryStreamCodec<T>
-
-    val tags: Map<Key, List<Key>>
-
-    fun getTagRegistry(): TagRegistry {
-        val tags = tags.entries.map { (key, value) ->
-            TagRegistry.Tag(key, value.map { get(it).id })
-        }
-        return TagRegistry(key, tags)
-    }
 }

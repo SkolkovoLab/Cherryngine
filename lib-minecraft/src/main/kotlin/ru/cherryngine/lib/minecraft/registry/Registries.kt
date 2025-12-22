@@ -116,7 +116,13 @@ object Registries {
         "zombie_nautilus_variant".toKey(), ZombieNautilusVariant.CODEC, "zombie_nautilus_variant.json",
     )
 
-    val dynamicRegistries = listOf(
+    val biomeTags = TagRegistry.create("tags/biome.json", biome)
+    val itemTags = TagRegistry.create("tags/item.json", item)
+    val blockTags = TagRegistry.create("tags/block.json", block)
+    val fluidTags = TagRegistry.create("tags/fluid.json", fluid)
+    val entityTypeTags = TagRegistry.create("tags/entity_type.json", entityType)
+
+    val dataDrivenRegistries = listOf(
         bannerPattern,
         biome,
         catVariant,
@@ -135,4 +141,6 @@ object Registries {
         wolfVariant,
         zombieNautilusVariant
     )
+
+    val tagRegistries = listOf(biomeTags, itemTags, blockTags, fluidTags, entityTypeTags)
 }
