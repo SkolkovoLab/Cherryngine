@@ -6,7 +6,6 @@ import ru.cherryngine.lib.minecraft.codec.Codec
 import ru.cherryngine.lib.minecraft.codec.transcoder.Transcoder
 import ru.cherryngine.lib.minecraft.data.DataComponentPatch
 import ru.cherryngine.lib.minecraft.nbt.nbt
-import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.network.protocol.NbtWritable
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.Registries
@@ -17,7 +16,7 @@ data class ItemStack(
     var material: Item,
     var amount: Int = 1,
     val components: DataComponentPatch = DataComponentPatch.EMPTY,
-) : DataComponentHashable, NbtWritable {
+) : NbtWritable {
     init {
         require(amount >= 1) { "ItemStack amount cannot be less than 1" }
     }

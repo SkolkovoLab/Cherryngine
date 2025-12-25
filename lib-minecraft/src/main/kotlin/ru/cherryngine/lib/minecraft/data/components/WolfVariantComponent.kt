@@ -8,6 +8,10 @@ class WolfVariantComponent(
     val variant: WolfVariant,
 ) : DynamicVariantComponent<WolfVariant>(variant, Registries.wolfVariant) {
     companion object {
+        val CODEC = Registries.wolfVariant.keyCodec.transform(
+            ::WolfVariantComponent,
+            WolfVariantComponent::variant
+        )
         val STREAM_CODEC = StreamCodec.of(
             Registries.wolfVariant.streamCodec, WolfVariantComponent::variant,
             ::WolfVariantComponent

@@ -2,46 +2,46 @@ package ru.cherryngine.lib.minecraft.network.protocol.types.predicate
 
 import io.netty.buffer.ByteBuf
 import ru.cherryngine.lib.minecraft.codec.Codec
-import ru.cherryngine.lib.minecraft.codec.transcoder.Transcoder
-import ru.cherryngine.lib.minecraft.data.CRC32CHasher
-import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.data.StaticHash
-import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
+import ru.cherryngine.lib.minecraft.registry.Registries
+import ru.cherryngine.lib.minecraft.utils.Either
 import ru.cherryngine.lib.minecraft.world.block.Block
 import java.util.function.Predicate
 
-interface BlockTypeFilter : Predicate<Block>, DataComponentHashable {
-    override fun hashStruct(): HashHolder {
-        val hash: Int = when (this) {
-            is Blocks -> {
-                if (blocks.size == 1) {
-                    CRC32CHasher.ofString(blocks.first().identifier)
-                } else {
-                    CRC32CHasher.ofList(blocks.map { block -> CRC32CHasher.ofString(block.identifier) })
-                }
-            }
-
-            is Tag -> {
-                CRC32CHasher.ofString("#$tag")
-            }
-
-            else -> throw IllegalArgumentException("what. there is only 2 options")
-        }
-        return StaticHash(hash)
-    }
-
+sealed interface BlockTypeFilter : Predicate<Block> {
     companion object {
-        val CODEC = object : Codec<BlockTypeFilter> {
-            override fun <D> encode(transcoder: Transcoder<D>, value: BlockTypeFilter): D {
-                TODO("Not yet implemented")
-            }
+            val CODEC: Codec<BlockTypeFilter> =
+                Codec.either(Codec.STRING, Codec.STRING.list()).transform(
+                    { either ->
+                        when (either) {
+                            is Either.Left -> {
+                                val s = either.value
+                                if (s.startsWith("#")) {
+                                    Tag(s.removePrefix("#"))
+                                } else {
+                                    Blocks(listOf(Registries.block[s].value.toBlock()))
+                                }
+                            }
+                            is Either.Right -> {
+                                val ids = either.value
+                                Blocks(ids.map { id -> Registries.block[id].value.toBlock() })
+                            }
+                        }
+                    },
+                    { filter ->
+                        when (filter) {
+                            is Blocks -> {
+                                val ids = filter.blocks.map { it.identifier }
+                                if (ids.size == 1) Either.Left(ids.first()) else Either.Right(ids)
+                            }
+                            is Tag -> {
+                                Either.Left("#${filter.tag}")
+                            }
+                        }
+                    }
+                )
 
-            override fun <D> decode(transcoder: Transcoder<D>, value: D): BlockTypeFilter {
-                TODO("Not yet implemented")
-            }
 
-        }
         val STREAM_CODEC = object : StreamCodec<BlockTypeFilter> {
             override fun write(buffer: ByteBuf, value: BlockTypeFilter) {
                 when (value) {

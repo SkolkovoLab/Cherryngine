@@ -1,5 +1,6 @@
 package ru.cherryngine.lib.minecraft.data.components
 
+import ru.cherryngine.lib.minecraft.codec.Codec
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.entity.ParrotMeta
 import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
@@ -9,6 +10,10 @@ data class ParrotVariantComponent(
     val parrotColor: ParrotMeta.Variant,
 ) : DataComponent() {
     companion object {
+        val CODEC = Codec.enum<ParrotMeta.Variant>().transform(
+            ::ParrotVariantComponent,
+            ParrotVariantComponent::parrotColor
+        )
         val STREAM_CODEC = StreamCodec.of(
             EnumStreamCodec<ParrotMeta.Variant>(), ParrotVariantComponent::parrotColor,
             ::ParrotVariantComponent

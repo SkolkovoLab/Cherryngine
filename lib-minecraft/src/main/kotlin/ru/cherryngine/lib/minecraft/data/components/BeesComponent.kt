@@ -1,20 +1,22 @@
 package ru.cherryngine.lib.minecraft.data.components
 
 import net.kyori.adventure.nbt.CompoundBinaryTag
-import ru.cherryngine.lib.minecraft.data.CRC32CHasher
+import ru.cherryngine.lib.minecraft.codec.BinaryTagCodec
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.StructCodec
 import ru.cherryngine.lib.minecraft.data.DataComponent
-import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.data.HashList
-import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.network.stream_codec.BinaryTagStreamCodecs
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
-class BeesComponent(val bees: List<Bee>) : DataComponent() {
-    override fun hashStruct(): HashHolder {
-        return HashList(bees.map { bee -> bee.hashStruct() })
-    }
+class BeesComponent(
+    val bees: List<Bee>
+) : DataComponent() {
 
     companion object {
+        val CODEC = Bee.CODEC.list().transform(
+            ::BeesComponent,
+            BeesComponent::bees
+        )
         val STREAM_CODEC = StreamCodec.of(
             Bee.STREAM_CODEC.list(), BeesComponent::bees,
             ::BeesComponent
@@ -25,16 +27,14 @@ class BeesComponent(val bees: List<Bee>) : DataComponent() {
         val entityData: CompoundBinaryTag,
         val ticksInHive: Int,
         val minTicksInHive: Int
-    ) : DataComponentHashable {
-        override fun hashStruct(): HashHolder {
-            return CRC32CHasher.of {
-                static("entity_data", CRC32CHasher.ofNbt(entityData))
-                static("ticks_in_hive", CRC32CHasher.ofInt(ticksInHive))
-                static("min_ticks_in_hive", CRC32CHasher.ofInt(minTicksInHive))
-            }
-        }
-
+    ) {
         companion object {
+            val CODEC = StructCodec.of(
+                "entity_data", BinaryTagCodec.COMPOUND_CODEC, Bee::entityData,
+                "ticks_in_hive", Codec.INT, Bee::ticksInHive,
+                "min_ticks_in_hive", Codec.INT, Bee::minTicksInHive,
+                ::Bee
+            )
             val STREAM_CODEC = StreamCodec.of(
                 BinaryTagStreamCodecs.COMPOUND_STREAM, Bee::entityData,
                 StreamCodec.VAR_INT, Bee::ticksInHive,

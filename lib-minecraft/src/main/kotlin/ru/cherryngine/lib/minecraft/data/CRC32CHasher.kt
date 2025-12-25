@@ -5,7 +5,6 @@ import net.kyori.adventure.nbt.CompoundBinaryTag
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.nbt.NBTComponentSerializer
 import net.kyori.adventure.util.RGBLike
-import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.utils.color.asRGB
 import ru.cherryngine.lib.minecraft.utils.registry.Registry
 
@@ -97,7 +96,6 @@ object CRC32CHasher {
     }
 
     inline fun <reified T : Enum<T>> ofEnum(enum: T): Int {
-        if (enum is DataComponentHashable) return enum.hashStruct().getHashed()
         val hashed = ofString(enum.name.lowercase())
         return hashed
     }
@@ -118,19 +116,8 @@ object CRC32CHasher {
         return hasher.putByte(TAG_LIST_END).hash()
     }
 
-    @JvmName("ofListHashable")
-    fun ofList(hashables: List<DataComponentHashable>): Int {
-        return ofList(hashables.map { item -> item.hashStruct().getHashed() })
-    }
-
     fun onEmptyMap(): Int {
         return EMPTY_MAP
-    }
-
-    inline fun of(unit: HashStruct.Builder.() -> Unit): HashStruct {
-        val builder = HashStruct.Builder()
-        unit.invoke(builder)
-        return HashStruct(builder.fields)
     }
 
     fun ofMap(map: Map<Int, Int>, customHasher: Hasher? = null): Int {

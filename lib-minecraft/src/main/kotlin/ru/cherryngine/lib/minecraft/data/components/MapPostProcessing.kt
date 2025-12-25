@@ -1,20 +1,19 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.data.CRC32CHasher
+import ru.cherryngine.lib.minecraft.codec.Codec
 import ru.cherryngine.lib.minecraft.data.DataComponent
-import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 class MapPostProcessing(
     val type: Type
 ) : DataComponent() {
-    override fun hashStruct(): HashHolder {
-        return StaticHash(CRC32CHasher.ofEnum(type))
-    }
 
     companion object {
+        val CODEC = Codec.enum<Type>().transform(
+            ::MapPostProcessing,
+            MapPostProcessing::type
+        )
         val STREAM_CODEC = StreamCodec.of(
             EnumStreamCodec<Type>(), MapPostProcessing::type,
             ::MapPostProcessing

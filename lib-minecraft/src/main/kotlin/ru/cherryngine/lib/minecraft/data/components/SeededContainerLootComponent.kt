@@ -1,22 +1,21 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.data.CRC32CHasher
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.StructCodec
 import ru.cherryngine.lib.minecraft.data.DataComponent
-import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 data class SeededContainerLootComponent(
     val lootTable: String,
     val seed: Long
 ) : DataComponent() {
-    override fun hashStruct(): HashHolder {
-        return CRC32CHasher.of {
-            static("loot_table", CRC32CHasher.ofString(lootTable))
-            static("seed", CRC32CHasher.ofLong(seed))
-        }
-    }
 
     companion object {
+        val CODEC = StructCodec.of(
+            "loot_table", Codec.STRING, SeededContainerLootComponent::lootTable,
+            "seed", Codec.LONG, SeededContainerLootComponent::seed,
+            ::SeededContainerLootComponent
+        )
         val STREAM_CODEC = StreamCodec.of(
             StreamCodec.STRING, SeededContainerLootComponent::lootTable,
             StreamCodec.LONG, SeededContainerLootComponent::seed,

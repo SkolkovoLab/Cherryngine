@@ -9,6 +9,10 @@ data class PaintingVariantComponent(
     val variant: PaintingVariant,
 ) : DataComponent() {
     companion object {
+        val CODEC = Registries.paintingVariant.keyCodec.transform(
+            ::PaintingVariantComponent,
+            PaintingVariantComponent::variant
+        )
         val STREAM_CODEC = StreamCodec.of(
             Registries.paintingVariant.streamCodec, PaintingVariantComponent::variant,
             ::PaintingVariantComponent

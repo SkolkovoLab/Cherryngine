@@ -1,19 +1,15 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.data.CRC32CHasher
+import ru.cherryngine.lib.minecraft.codec.Codec
 import ru.cherryngine.lib.minecraft.data.DataComponent
-import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 data class MaxStackSizeComponent(
-    val size: Int
+    val size: Int,
 ) : DataComponent(true) {
-    override fun hashStruct(): HashHolder {
-        return StaticHash(CRC32CHasher.ofInt(size))
-    }
 
     companion object {
+        val CODEC = Codec.INT.transform(::MaxStackSizeComponent, MaxStackSizeComponent::size)
         val STREAM_CODEC = StreamCodec.of(
             StreamCodec.VAR_INT, MaxStackSizeComponent::size,
             ::MaxStackSizeComponent

@@ -1,21 +1,20 @@
 package ru.cherryngine.lib.minecraft.data.components
 
 import net.kyori.adventure.nbt.CompoundBinaryTag
-import ru.cherryngine.lib.minecraft.data.CRC32CHasher
+import ru.cherryngine.lib.minecraft.codec.BinaryTagCodec
 import ru.cherryngine.lib.minecraft.data.DataComponent
-import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.network.stream_codec.BinaryTagStreamCodecs
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 class EntityDataComponent(
     val nbt: CompoundBinaryTag
 ) : DataComponent() {
-    override fun hashStruct(): HashHolder {
-        return StaticHash(CRC32CHasher.ofNbt(nbt))
-    }
 
     companion object {
+        val CODEC = BinaryTagCodec.COMPOUND_CODEC.transform(
+            ::EntityDataComponent,
+            EntityDataComponent::nbt
+        )
         val STREAM_CODEC = StreamCodec.of(
             BinaryTagStreamCodecs.COMPOUND_STREAM, EntityDataComponent::nbt,
             ::EntityDataComponent

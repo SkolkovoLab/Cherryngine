@@ -1,8 +1,8 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.data.CRC32CHasher
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.StructCodec
 import ru.cherryngine.lib.minecraft.data.DataComponent
-import ru.cherryngine.lib.minecraft.data.HashHolder
 import ru.cherryngine.lib.minecraft.network.protocol.types.EquipmentSlot
 import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
@@ -24,25 +24,25 @@ class EquippableComponent(
     val canBeSheared: Boolean,
     val shearingSound: SoundEvent,
 ) : DataComponent() {
-    override fun hashStruct(): HashHolder {
-        return CRC32CHasher.of {
-            static("slot", CRC32CHasher.ofEnum(equipmentSlot))
-            defaultStruct("equip_sound", DEFAULT_EQUIP_SOUND, equipSound, SoundEvent::hashStruct)
-            optional("asset_id", assetId, CRC32CHasher::ofString)
-            optional("camera_overlay", cameraOverlay, CRC32CHasher::ofString)
-            optionalList("allowed_entities", allowedEntities) { CRC32CHasher.ofRegistryEntry(Registries.entityType, it) }
-            default("dispensable", true, dispensable, CRC32CHasher::ofBoolean)
-            default("swappable", true, swappable, CRC32CHasher::ofBoolean)
-            default("damage_on_hurt", true, damageOnHurt, CRC32CHasher::ofBoolean)
-            default("equip_on_interact", false, equipOnInteract, CRC32CHasher::ofBoolean)
-            default("can_be_sheared", false, canBeSheared, CRC32CHasher::ofBoolean)
-            defaultStruct("shearing_sound", DEFAULT_SHEARING_SOUND, shearingSound, SoundEvent::hashStruct)
-        }
-    }
 
     companion object {
         val DEFAULT_EQUIP_SOUND get() = Registries.soundEvent[SoundEvents.ITEM_ARMOR_EQUIP_GENERIC].value
         val DEFAULT_SHEARING_SOUND get() = Registries.soundEvent[SoundEvents.ITEM_SHEARS_SNIP].value
+
+        val CODEC = StructCodec.of(
+            "slot", Codec.enum<EquipmentSlot>(), EquippableComponent::equipmentSlot,
+            "equip_sound", SoundEvent.CODEC.default(DEFAULT_EQUIP_SOUND), EquippableComponent::equipSound,
+            "asset_id", Codec.STRING.optional(), EquippableComponent::assetId,
+            "camera_overlay", Codec.STRING.optional(), EquippableComponent::cameraOverlay,
+            "allowed_entities", Registries.entityType.keyCodec.list().optional(), EquippableComponent::allowedEntities,
+            "dispensable", Codec.BOOLEAN.default(true), EquippableComponent::dispensable,
+            "swappable", Codec.BOOLEAN.default(true), EquippableComponent::swappable,
+            "damage_on_hurt", Codec.BOOLEAN.default(true), EquippableComponent::damageOnHurt,
+            "equip_on_interact", Codec.BOOLEAN.default(false), EquippableComponent::equipOnInteract,
+            "can_be_sheared", Codec.BOOLEAN.default(false), EquippableComponent::canBeSheared,
+            "shearing_sound", SoundEvent.CODEC.default(DEFAULT_SHEARING_SOUND), EquippableComponent::shearingSound,
+            ::EquippableComponent
+        )
 
         val STREAM_CODEC = StreamCodec.of(
             EnumStreamCodec<EquipmentSlot>(), EquippableComponent::equipmentSlot,

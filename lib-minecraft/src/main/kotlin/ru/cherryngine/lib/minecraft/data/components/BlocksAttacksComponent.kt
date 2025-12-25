@@ -2,12 +2,7 @@ package ru.cherryngine.lib.minecraft.data.components
 
 import ru.cherryngine.lib.minecraft.codec.Codec
 import ru.cherryngine.lib.minecraft.codec.StructCodec
-import ru.cherryngine.lib.minecraft.codec.transcoder.CRC32CTranscoder
-import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
-import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.data.StaticHash
-import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.Registries
 import ru.cherryngine.lib.minecraft.registry.types.DamageType
@@ -23,9 +18,6 @@ data class BlocksAttacksComponent(
     val blockSound: SoundEvent?,
     val disableSound: SoundEvent?
 ) : DataComponent() {
-    override fun hashStruct(): HashHolder {
-        return StaticHash(CODEC.encode(CRC32CTranscoder, this))
-    }
 
     companion object {
         val CODEC = StructCodec.of(
@@ -55,15 +47,7 @@ data class BlocksAttacksComponent(
         val threshold: Float,
         val base: Float,
         val factor: Float
-    ) : DataComponentHashable {
-        override fun hashStruct(): HashHolder {
-            return CRC32CHasher.of {
-                static("threshold", CRC32CHasher.ofFloat(threshold))
-                static("base", CRC32CHasher.ofFloat(base))
-                static("factor", CRC32CHasher.ofFloat(factor))
-            }
-        }
-
+    ) {
         companion object {
             val DEFAULT = ItemDamageFunction(1f, 0f, 1f)
 
@@ -88,16 +72,7 @@ data class BlocksAttacksComponent(
         val type: EntityType?,
         val base: Float,
         val factor: Float
-    ) : DataComponentHashable {
-        override fun hashStruct(): HashHolder {
-            return CRC32CHasher.of {
-                default("horizontal_blocking_angle", DEFAULT.horizontalBlockingAngle, horizontalBlockingAngle, CRC32CHasher::ofFloat)
-                optional("type", type?.key?.toString(), CRC32CHasher::ofString)
-                static("base", CRC32CHasher.ofFloat(base))
-                static("factor", CRC32CHasher.ofFloat(factor))
-            }
-        }
-
+    ) {
         companion object {
             val DEFAULT = DamageReduction(90.0f, null, 0.0f, 1.0f)
 

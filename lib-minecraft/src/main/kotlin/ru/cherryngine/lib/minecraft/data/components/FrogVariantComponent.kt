@@ -8,6 +8,10 @@ class FrogVariantComponent(
     val variant: FrogVariant,
 ) : DynamicVariantComponent<FrogVariant>(variant, Registries.frogVariant) {
     companion object {
+        val CODEC = Registries.frogVariant.keyCodec.transform(
+            ::FrogVariantComponent,
+            FrogVariantComponent::variant
+        )
         val STREAM_CODEC = StreamCodec.of(
             Registries.frogVariant.streamCodec, FrogVariantComponent::variant,
             ::FrogVariantComponent

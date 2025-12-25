@@ -5,8 +5,8 @@ import io.netty.buffer.Unpooled
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap
 import ru.cherryngine.lib.minecraft.codec.CodecUtils.byteBufBytes
+import ru.cherryngine.lib.minecraft.codec.transcoder.CRC32CTranscoder
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.utils.extentions.getOrThrow
 import kotlin.reflect.KClass
 
 // Component list stored as a patch of added and removed components (even if none are removed)
@@ -40,16 +40,16 @@ class DataComponentPatch(
         }
 
         fun read(buffer: ByteBuf, isPatch: Boolean, isTrusted: Boolean): DataComponentPatch {
-            val added = _root_ide_package_.ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec.VAR_INT.read(buffer)
-            val removed = if (isPatch) _root_ide_package_.ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec.VAR_INT.read(buffer) else 0
+            val added = StreamCodec.VAR_INT.read(buffer)
+            val removed = if (isPatch) StreamCodec.VAR_INT.read(buffer) else 0
 
             if (added + removed > 256) throw IllegalStateException("Data component map too large: ${added + removed} > 256")
             val patch: Int2ObjectMap<DataComponent?> = Int2ObjectArrayMap(added + removed)
 
             for (i in 0 until added) {
                 val id = StreamCodec.VAR_INT.read(buffer)
-                val componentClass = DataComponentRegistry.dataComponentsById[id] ?: throw IllegalStateException("Unknown component with id $id")
-                val streamCodec = DataComponentRegistry.getStreamCodec(componentClass)!!
+                val entry = DataComponentRegistry.registry[id]
+                val streamCodec = entry.value.streamCodec
                 if (isTrusted) {
                     val component = streamCodec.read(buffer)
                     patch.put(id, component)
@@ -96,26 +96,20 @@ class DataComponentPatch(
     fun isEmpty(): Boolean = components.isEmpty()
 
     fun has(component: DataComponent): Boolean {
-        val componentId = component.getId()
-        return components.containsKey(componentId) && components.get(componentId) != null
+        return has(component::class)
     }
 
     fun has(kclass: KClass<out DataComponent>): Boolean {
-        val id = DataComponentRegistry.dataComponentsByIdReversed.getOrThrow(kclass)
+        val id = DataComponentRegistry.get(kclass).id
         return components.containsKey(id) && components.get(id) != null
     }
 
     fun has(prototype: DataComponentPatch, component: DataComponent): Boolean {
-        val id = component.getId()
-        return if (components.containsKey(id)) {
-            components.get(id) != null
-        } else {
-            prototype.has(component)
-        }
+        return has(prototype, component::class)
     }
 
     fun has(prototype: DataComponentPatch, component: KClass<out DataComponent>): Boolean {
-        val id = DataComponentRegistry.dataComponentsByIdReversed.getOrThrow(component)
+        val id = DataComponentRegistry.get(component).id
         return if (components.containsKey(id)) {
             components.get(id) != null
         } else {
@@ -125,7 +119,7 @@ class DataComponentPatch(
 
     @Suppress("UNCHECKED_CAST")
     operator fun <T> get(prototype: DataComponentPatch, component: KClass<out DataComponent>): T? {
-        val key = DataComponentRegistry.dataComponentsByIdReversed.getValue(component)
+        val key = DataComponentRegistry.get(component).id
         return if (components.containsKey(key)) {
             components.get(key) as T?
         } else {
@@ -135,7 +129,7 @@ class DataComponentPatch(
 
 
     operator fun get(component: KClass<out DataComponent>): DataComponent? {
-        val key = DataComponentRegistry.dataComponentsByIdReversed.getValue(component)
+        val key = DataComponentRegistry.get(component).id
         if (!components.containsKey(key)) return null
         return components.getValue(key)
     }
@@ -150,7 +144,7 @@ class DataComponentPatch(
     }
 
     fun getOfPrototype(prototype: DataComponentPatch, component: DataComponent): DataComponent? {
-        val id = component.getId()
+        val id = DataComponentRegistry.get(component::class).id
         return if (components.containsKey(id)) {
             components.getValue(id)
         } else {
@@ -159,24 +153,24 @@ class DataComponentPatch(
     }
 
     fun set(component: DataComponent): DataComponentPatch {
-        components.put(component.getId(), component)
+        val id = DataComponentRegistry.get(component::class).id
+        components.put(id, component)
         return this
     }
 
     fun remove(component: DataComponent): DataComponentPatch {
-        components.put(component.getId(), null)
-        return this
+        return remove(component::class)
     }
 
     fun remove(componentClass: KClass<out DataComponent>): DataComponentPatch {
-        val id = DataComponentRegistry.dataComponentsByIdReversed.getOrThrow(componentClass)
+        val id = DataComponentRegistry.get(componentClass).id
         components.put(id, null)
         return this
     }
 
 
     fun getComparisonHash(): Int {
-        val addedComponents = mutableMapOf<Int, DataComponent?>()
+        val addedComponents = mutableMapOf<Int, DataComponent>()
         val removedComponents = mutableListOf<Int>()
 
         components.forEach { (key, value) ->
@@ -187,29 +181,12 @@ class DataComponentPatch(
             }
         }
 
-        return CRC32CHasher.of {
-            static("added", CRC32CHasher.ofMap(addedComponents.mapValues { map -> map.value!!.hashStruct().getHashed() }))
-            static("removed", CRC32CHasher.ofList(removedComponents))
-        }.getHashed()
-    }
-
-    fun writeNoxesiumType(buffer: ByteBuf) {
-        val components = this.components.filter { it.value != null }
-        val emptyComponents = this.components.filter { it.value == null }
-
-        StreamCodec.VAR_INT.write(buffer, components.size)
-        StreamCodec.VAR_INT.write(buffer, emptyComponents.size)
-
-        components.forEach { (key, value) ->
-            value!!
-            StreamCodec.STRING.write(buffer, DataComponentRegistry.getIdentifierById(key))
-            @Suppress("UNCHECKED_CAST")
-            val streamCodec = DataComponentRegistry.getStreamCodec(value::class)!! as StreamCodec<DataComponent>
-            streamCodec.write(buffer, value)
-        }
-        emptyComponents.forEach { (key, _) ->
-            StreamCodec.STRING.write(buffer, DataComponentRegistry.getIdentifierById(key))
-        }
+        return CRC32CHasher.ofMap(
+            "added" to CRC32CHasher.ofMap(addedComponents.mapValues { (id, component) ->
+                DataComponentRegistry.registry[id].value.codec.encode(CRC32CTranscoder, component)
+            }),
+            "removed" to CRC32CHasher.ofList(removedComponents)
+        )
     }
 
     fun write(buffer: ByteBuf) {
@@ -230,8 +207,7 @@ class DataComponentPatch(
             val value = entry.value ?: return@forEach
 
             StreamCodec.VAR_INT.write(buffer, entry.intKey)
-            @Suppress("UNCHECKED_CAST")
-            val streamCodec = DataComponentRegistry.getStreamCodec(value::class)!! as StreamCodec<DataComponent>
+            val streamCodec = DataComponentRegistry.registry[entry.intKey].value.streamCodec
 
             if (isTrusted) {
                 streamCodec.write(buffer, value)

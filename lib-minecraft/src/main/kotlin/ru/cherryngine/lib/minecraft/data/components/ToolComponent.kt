@@ -1,9 +1,8 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.data.CRC32CHasher
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.StructCodec
 import ru.cherryngine.lib.minecraft.data.DataComponent
-import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.network.protocol.types.predicate.BlockTypeFilter
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
@@ -13,19 +12,18 @@ class ToolComponent(
     val damagePerBlock: Int,
     val canDestroyBlocksInCreative: Boolean
 ) : DataComponent() {
-    override fun hashStruct(): HashHolder {
-        return CRC32CHasher.of {
-            structList("rules", rules, Rule::hashStruct)
-            default("default_mining_speed", DEFAULT_MINING_SPEED, defaultMiningSpeed, CRC32CHasher::ofFloat)
-            default("damage_per_block", DEFAULT_DAMAGE_PER_BLOCK, damagePerBlock, CRC32CHasher::ofInt)
-            default("can_destroy_blocks_in_creative", DEFAULT_CAN_DESTROY_BLOCKS_IN_CREATIVE, canDestroyBlocksInCreative, CRC32CHasher::ofBoolean)
-        }
-    }
-
     companion object {
         const val DEFAULT_MINING_SPEED = 1f
         const val DEFAULT_DAMAGE_PER_BLOCK = 1
         const val DEFAULT_CAN_DESTROY_BLOCKS_IN_CREATIVE = true
+
+        val CODEC = StructCodec.of(
+            "rules", Rule.CODEC.list(), ToolComponent::rules,
+            "default_mining_speed", Codec.FLOAT.default(DEFAULT_MINING_SPEED), ToolComponent::defaultMiningSpeed,
+            "damage_per_block", Codec.INT.default(DEFAULT_DAMAGE_PER_BLOCK), ToolComponent::damagePerBlock,
+            "can_destroy_blocks_in_creative", Codec.BOOLEAN.default(DEFAULT_CAN_DESTROY_BLOCKS_IN_CREATIVE), ToolComponent::canDestroyBlocksInCreative,
+            ::ToolComponent
+        )
 
         val STREAM_CODEC = StreamCodec.of(
             Rule.STREAM_CODEC.list(), ToolComponent::rules,
@@ -40,16 +38,14 @@ class ToolComponent(
         val blocks: BlockTypeFilter,
         val speed: Float? = null,
         val correctForDrops: Boolean? = null
-    ) : DataComponentHashable {
-        override fun hashStruct(): HashHolder {
-            return CRC32CHasher.of {
-                static("blocks", blocks.hashStruct().getHashed())
-                optional("speed", speed, CRC32CHasher::ofFloat)
-                optional("correct_for_drops", correctForDrops, CRC32CHasher::ofBoolean)
-            }
-        }
-
+    ) {
         companion object {
+            val CODEC = StructCodec.of(
+                "blocks", BlockTypeFilter.CODEC, Rule::blocks,
+                "speed", Codec.FLOAT.optional(), Rule::speed,
+                "correct_for_drops", Codec.BOOLEAN.optional(), Rule::correctForDrops,
+                ::Rule
+            )
             val STREAM_CODEC = StreamCodec.of(
                 BlockTypeFilter.STREAM_CODEC, Rule::blocks,
                 StreamCodec.FLOAT.optional(), Rule::speed,

@@ -1,24 +1,18 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.data.CRC32CHasher
 import ru.cherryngine.lib.minecraft.data.DataComponent
-import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.data.StaticHash
 import ru.cherryngine.lib.minecraft.item.ItemStack
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 class ChargedProjectilesComponent(
     val projectiles: List<ItemStack>
 ) : DataComponent() {
-    override fun hashStruct(): HashHolder {
-        val finalHash = mutableListOf<Int>()
-        projectiles.forEach { item ->
-            finalHash.add(item.hashStruct().getHashed())
-        }
-        return StaticHash(CRC32CHasher.ofList(finalHash))
-    }
 
     companion object {
+        val CODEC = ItemStack.CODEC.list().transform(
+            ::ChargedProjectilesComponent,
+            ChargedProjectilesComponent::projectiles
+        )
         val STREAM_CODEC = StreamCodec.of(
             ItemStack.STREAM_CODEC.list(), ChargedProjectilesComponent::projectiles,
             ::ChargedProjectilesComponent

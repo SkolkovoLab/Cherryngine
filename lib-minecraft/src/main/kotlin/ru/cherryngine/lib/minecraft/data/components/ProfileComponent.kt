@@ -1,11 +1,9 @@
 package ru.cherryngine.lib.minecraft.data.components
 
-import ru.cherryngine.lib.minecraft.data.CRC32CHasher
+import ru.cherryngine.lib.minecraft.codec.Codec
+import ru.cherryngine.lib.minecraft.codec.StructCodec
 import ru.cherryngine.lib.minecraft.data.DataComponent
-import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.utils.toIntArray
 import java.util.*
 
 data class ProfileComponent(
@@ -13,15 +11,14 @@ data class ProfileComponent(
     val uuid: UUID?,
     val properties: List<Property>
 ) : DataComponent() {
-    override fun hashStruct(): HashHolder {
-        return CRC32CHasher.of {
-            optional("name", name, CRC32CHasher::ofString)
-            optional("uuid", uuid?.toIntArray(), CRC32CHasher::ofIntArray)
-            defaultStructList("properties", properties, listOf(), Property::hashStruct)
-        }
-    }
 
     companion object {
+        val CODEC = StructCodec.of(
+            "name", Codec.STRING.optional(), ProfileComponent::name,
+            "uuid", Codec.UUID.optional(), ProfileComponent::uuid,
+            "properties", Property.CODEC.list().default(emptyList()), ProfileComponent::properties,
+            ::ProfileComponent
+        )
         val STREAM_CODEC = StreamCodec.of(
             StreamCodec.STRING.optional(), ProfileComponent::name,
             StreamCodec.UUID.optional(), ProfileComponent::uuid,
@@ -34,16 +31,14 @@ data class ProfileComponent(
         val name: String,
         val value: String,
         val signature: String?
-    ) : DataComponentHashable {
-        override fun hashStruct(): HashHolder {
-            return CRC32CHasher.of {
-                static("name", CRC32CHasher.ofString(name))
-                static("value", CRC32CHasher.ofString(value))
-                optional("signature", signature, CRC32CHasher::ofString)
-            }
-        }
-
+    ) {
         companion object {
+            val CODEC = StructCodec.of(
+                "name", Codec.STRING, Property::name,
+                "value", Codec.STRING, Property::value,
+                "signature", Codec.STRING.optional(), Property::signature,
+                ::Property
+            )
             val STREAM_CODEC = StreamCodec.of(
                 StreamCodec.STRING, Property::name,
                 StreamCodec.STRING, Property::value,

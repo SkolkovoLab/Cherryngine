@@ -1,5 +1,6 @@
 package ru.cherryngine.lib.minecraft.data.components
 
+import ru.cherryngine.lib.minecraft.codec.Codec
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.network.protocol.types.VillagerData
 import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
@@ -9,6 +10,10 @@ data class VillagerVariantComponent(
     val type: VillagerData.Type
 ) : DataComponent() {
     companion object {
+        val CODEC = Codec.enum<VillagerData.Type>().transform(
+            ::VillagerVariantComponent,
+            VillagerVariantComponent::type
+        )
         val STREAM_CODEC = StreamCodec.of(
             EnumStreamCodec<VillagerData.Type>(), VillagerVariantComponent::type,
             ::VillagerVariantComponent

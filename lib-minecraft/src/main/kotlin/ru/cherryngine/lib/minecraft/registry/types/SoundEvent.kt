@@ -6,11 +6,7 @@ import net.kyori.adventure.key.Keyed
 import net.kyori.adventure.sound.Sound
 import ru.cherryngine.lib.minecraft.codec.Codec
 import ru.cherryngine.lib.minecraft.codec.StructCodec
-import ru.cherryngine.lib.minecraft.codec.transcoder.CRC32CTranscoder
 import ru.cherryngine.lib.minecraft.codec.transcoder.Transcoder
-import ru.cherryngine.lib.minecraft.data.HashHolder
-import ru.cherryngine.lib.minecraft.data.StaticHash
-import ru.cherryngine.lib.minecraft.network.protocol.DataComponentHashable
 import ru.cherryngine.lib.minecraft.network.stream_codec.IdOrXStreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.Registries
@@ -19,7 +15,7 @@ import ru.cherryngine.lib.minecraft.utils.KeyedKt
 import ru.cherryngine.lib.minecraft.utils.kotlinx.KeySerializer
 import ru.cherryngine.lib.minecraft.utils.registry.StaticProtocolObject
 
-sealed interface SoundEvent : KeyedKt, Sound.Type, DataComponentHashable {
+sealed interface SoundEvent : KeyedKt, Sound.Type {
     override fun key() = key
 
     companion object {
@@ -51,10 +47,6 @@ sealed interface SoundEvent : KeyedKt, Sound.Type, DataComponentHashable {
                 is Custom -> Either.Right(it)
             }
         })
-    }
-
-    override fun hashStruct(): HashHolder {
-        return StaticHash(CODEC.encode(CRC32CTranscoder, this))
     }
 
     @Serializable

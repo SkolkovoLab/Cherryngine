@@ -8,6 +8,10 @@ class PigVariantComponent(
     val variant: PigVariant,
 ) : DynamicVariantComponent<PigVariant>(variant, Registries.pigVariant) {
     companion object {
+        val CODEC = Registries.pigVariant.keyCodec.transform(
+            ::PigVariantComponent,
+            PigVariantComponent::variant
+        )
         val STREAM_CODEC = StreamCodec.of(
             Registries.pigVariant.streamCodec, PigVariantComponent::variant,
             ::PigVariantComponent

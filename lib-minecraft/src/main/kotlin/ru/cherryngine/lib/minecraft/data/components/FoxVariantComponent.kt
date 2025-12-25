@@ -1,5 +1,6 @@
 package ru.cherryngine.lib.minecraft.data.components
 
+import ru.cherryngine.lib.minecraft.codec.Codec
 import ru.cherryngine.lib.minecraft.data.DataComponent
 import ru.cherryngine.lib.minecraft.entity.FoxMeta
 import ru.cherryngine.lib.minecraft.network.stream_codec.EnumStreamCodec
@@ -9,6 +10,10 @@ class FoxVariantComponent(
     val variant: FoxMeta.Variant,
 ) : DataComponent() {
     companion object {
+        val CODEC = Codec.enum<FoxMeta.Variant>().transform(
+            ::FoxVariantComponent,
+            FoxVariantComponent::variant
+        )
         val STREAM_CODEC = StreamCodec.of(
             EnumStreamCodec<FoxMeta.Variant>(), FoxVariantComponent::variant,
             ::FoxVariantComponent
