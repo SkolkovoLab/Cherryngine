@@ -3,6 +3,7 @@ package ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.LocationStreamCodecs
+import ru.cherryngine.lib.minecraft.network.stream_codec.LpVec3StreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 data class ClientboundSetEntityMotionPacket(
@@ -12,7 +13,7 @@ data class ClientboundSetEntityMotionPacket(
     companion object {
         val STREAM_CODEC = StreamCodec.of(
             StreamCodec.VAR_INT, ClientboundSetEntityMotionPacket::entityId,
-            LocationStreamCodecs.VELOCITY, ClientboundSetEntityMotionPacket::velocity,
+            LpVec3StreamCodec, ClientboundSetEntityMotionPacket::velocity,
             ::ClientboundSetEntityMotionPacket
         )
     }

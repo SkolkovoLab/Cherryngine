@@ -4,6 +4,7 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
 import ru.cherryngine.lib.minecraft.network.stream_codec.LocationStreamCodecs
+import ru.cherryngine.lib.minecraft.network.stream_codec.LpVec3StreamCodec
 import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 import ru.cherryngine.lib.minecraft.registry.Registries
 import ru.cherryngine.lib.minecraft.registry.types.EntityType
@@ -28,7 +29,7 @@ data class ClientboundAddEntityPacket(
             LocationStreamCodecs.ANGLE_PITCH_YAW, ClientboundAddEntityPacket::yawPitch,
             LocationStreamCodecs.ANGLE, ClientboundAddEntityPacket::headYaw,
             StreamCodec.VAR_INT, ClientboundAddEntityPacket::entityData,
-            LocationStreamCodecs.VELOCITY, ClientboundAddEntityPacket::velocity,
+            LpVec3StreamCodec, ClientboundAddEntityPacket::velocity,
             ::ClientboundAddEntityPacket
         )
     }

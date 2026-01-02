@@ -5,7 +5,6 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.math.rotation.QRot
-import ru.cherryngine.lib.minecraft.utils.clamp
 import kotlin.math.roundToInt
 
 object LocationStreamCodecs {
@@ -69,21 +68,6 @@ object LocationStreamCodecs {
             val x = buffer.readShort().toInt() / 4096.0
             val y = buffer.readShort().toInt() / 4096.0
             val z = buffer.readShort().toInt() / 4096.0
-            return Vec3D(x, y, z)
-        }
-    }
-
-    val VELOCITY = object : StreamCodec<Vec3D> {
-        override fun write(buffer: ByteBuf, value: Vec3D) {
-            buffer.writeShort(clamp(value.x, Short.MIN_VALUE, Short.MAX_VALUE))
-            buffer.writeShort(clamp(value.y, Short.MIN_VALUE, Short.MAX_VALUE))
-            buffer.writeShort(clamp(value.z, Short.MIN_VALUE, Short.MAX_VALUE))
-        }
-
-        override fun read(buffer: ByteBuf): Vec3D {
-            val x = buffer.readShort().toDouble()
-            val y = buffer.readShort().toDouble()
-            val z = buffer.readShort().toDouble()
             return Vec3D(x, y, z)
         }
     }
