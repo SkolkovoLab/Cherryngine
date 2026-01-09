@@ -49,6 +49,8 @@ class ChunkSection(
     }
 
     companion object {
+        val EMPTY = empty() // FIXME оно мутабельное, а не должно быть
+
         fun empty(): ChunkSection {
             val defaultBlocks = Palette.blocks()
             val defaultBiomes = Palette.biomes()

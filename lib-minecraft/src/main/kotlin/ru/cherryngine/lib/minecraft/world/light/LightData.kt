@@ -12,7 +12,7 @@ class LightData(
     val blockLight: List<ByteArray> = emptyList()
 ) {
     companion object {
-        val EMPTY = LightData()
+        val EMPTY = LightData() // FIXME оно должно быть иммутабельным
 
         val STREAM_CODEC = StreamCodec.of(
             StreamCodec.BIT_SET, LightData::skyMask,

@@ -70,6 +70,7 @@ data class Block(
 
     companion object {
         val AIR by lazy { Block(Registries.block[Blocks.AIR].value) }
+        val STRUCTURE_VOID by lazy { Block(Registries.block[Blocks.STRUCTURE_VOID].value) }
 
         val STREAM_CODEC = object : StreamCodec<Block> {
             override fun write(buffer: ByteBuf, value: Block) {

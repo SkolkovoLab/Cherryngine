@@ -9,25 +9,21 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.network.protocol.types.Direction
+import ru.cherryngine.lib.minecraft.network.protocol.types.SectionPos
 import ru.cherryngine.lib.minecraft.world.block.Block
-import ru.cherryngine.lib.world.Chunk
+import ru.cherryngine.lib.world.World
 
 class ChunkMesher {
     companion object {
-        fun createChunk(chunk: Chunk, chunkPos: ChunkPos): BodyCreationSettings? {
-            val dim = chunk.dimensionType
-            val minY = dim.minY
-            val maxY = dim.minY + dim.height
-            return generateChunkCollisionObject(chunk, chunkPos, minY, maxY)
+        fun createChunk(world: World, chunkPos: ChunkPos): BodyCreationSettings? {
+            return generateChunkCollisionObject(world, chunkPos)
         }
 
         private fun generateChunkCollisionObject(
-            chunk: Chunk,
+            world: World,
             chunkPos: ChunkPos,
-            minY: Int,
-            maxY: Int,
         ): BodyCreationSettings? {
-            val faces = getChunkFaces(chunk, chunkPos, minY, maxY)
+            val faces = getChunkFaces(world, chunkPos)
             if (faces.isEmpty()) return null
 
             val triangles = ArrayList<Triangle>()
@@ -41,17 +37,19 @@ class ChunkMesher {
                 .setShape(shapeSettings.create().get())
         }
 
-        private fun getChunkFaces(chunk: Chunk, chunkPos: ChunkPos, minY: Int, maxY: Int): List<Face> {
-            var bottomY = maxY
-            var topY = minY
+        private fun getChunkFaces(world: World, chunkPos: ChunkPos): List<Face> {
+            var bottomY = world.dimensionType.minY + world.dimensionType.height
+            var topY = world.dimensionType.minY
 
             // Determine real filled vertical range
-            val sections = chunk.sections
-            for (i in sections.indices) {
-                val section = sections[i]
+            val minSection = world.dimensionType.minY / 16
+            val maxSection = world.dimensionType.height / 16 + minSection
+            for (sectionY in minSection until maxSection) {
+                val sectionPos = SectionPos(chunkPos.x, sectionY, chunkPos.z)
+                val section = world.getSectionOrNull(sectionPos) ?: continue
                 if (section.hasOnlyAir()) continue
 
-                val chunkBottom = minY + i * 16
+                val chunkBottom = sectionY * 16
                 val chunkTop = chunkBottom + 16
 
                 if (bottomY > chunkBottom) bottomY = chunkBottom
@@ -61,15 +59,20 @@ class ChunkMesher {
             val finalFaces = ArrayList<Face>()
 
             for (y in bottomY until topY) for (x in 0 until 16) for (z in 0 until 16) {
-                val faces = getFaces(chunk, chunkPos, Vec3I(x, y, z)) ?: continue
+                val faces = getFaces(world, chunkPos, Vec3I(x, y, z)) ?: continue
                 finalFaces += faces
             }
 
             return finalFaces
         }
 
-        private fun getFaces(chunk: Chunk, chunkPos: ChunkPos, relBlockPos: Vec3I): List<Face>? {
-            val block = chunk.getBlock(relBlockPos)
+        private fun getFaces(world: World, chunkPos: ChunkPos, relBlockPos: Vec3I): List<Face>? {
+            val blockPos = Vec3I(
+                relBlockPos.x + chunkPos.x * 16,
+                relBlockPos.y,
+                relBlockPos.z + chunkPos.z * 16
+            )
+            val block = world.getBlock(blockPos) ?: return null
             if (block.isAir() || block.registryBlock.liquid) return null
 
             val faces = ArrayList<Face>()
@@ -101,9 +104,9 @@ class ChunkMesher {
                     continue
                 }
 
-                val neighbour = chunk.getBlock(relBlockPos + blockFace.vec)
+                val neighbour = world.getBlock(blockPos + blockFace.vec)
 
-                if (!isFull(neighbour)) {
+                if (neighbour == null || !isFull(neighbour)) {
                     faces += face
                 }
             }

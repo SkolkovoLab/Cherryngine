@@ -14,8 +14,12 @@ import ru.cherryngine.engine.ecs.components.PositionComponent
 import ru.cherryngine.engine.ecs.components.ViewableComponent
 import ru.cherryngine.engine.ecs.events.ViewableProvidersEvent
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ProtocolState
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
+import ru.cherryngine.lib.minecraft.world.light.LightData
+import ru.cherryngine.lib.world.MixWorld
+import ru.cherryngine.lib.world.World
 
 class ViewSystem(
     val playerManager: PlayerManager,
@@ -31,6 +35,7 @@ class ViewSystem(
         val player = playerManager.getPlayerNullable(playerComponent.uuid) ?: return
         val viewableProviders: MutableSet<ViewableProvider> = mutableSetOf()
         val staticViewableProviders: MutableSet<StaticViewableProvider> = mutableSetOf()
+        val worlds: MutableSet<World> = mutableSetOf()
 
         world.family { all(ViewableComponent, ViewableProvidersEvent) }.forEach { viewableEntity ->
             val viewableComponent = viewableEntity[ViewableComponent]
@@ -39,10 +44,11 @@ class ViewSystem(
             if (playerComponent.viewContextIDs.any { it in viewableComponent.viewContextIDs }) {
                 viewableProviders.addAll(viewableProvidersEvent.viewableProviders)
                 staticViewableProviders.addAll(viewableProvidersEvent.staticViewableProviders)
+                worlds.addAll(viewableProvidersEvent.worlds)
             }
         }
 
-        update(entity, player, viewableProviders, staticViewableProviders)
+        update(entity, player, viewableProviders, staticViewableProviders, worlds)
     }
 
     fun getStaticViewables(
@@ -61,6 +67,7 @@ class ViewSystem(
         player: Player,
         viewableProviders: Set<ViewableProvider>,
         staticViewableProviders: Set<StaticViewableProvider>,
+        worlds: MutableSet<World>,
     ) {
         val connection = player.connection
         if (connection.state != ProtocolState.PLAY) return
@@ -91,6 +98,23 @@ class ViewSystem(
                 viewable !in viewables || viewable.chunkPos !in chunks || !viewable.viewerPredicate(player)
             if (shouldHide) viewable.hide(player)
             shouldHide
+        }
+
+        if (worlds.isNotEmpty()) {
+            val world: World = if (worlds.size == 1) {
+                worlds.first()
+            } else {
+                val dimensionType = worlds.first().dimensionType
+                MixWorld(dimensionType).apply {
+                    layers += worlds
+                }
+            }
+
+            chunks.forEach { chunkPos ->
+                val chunkData = world.getChunkData(chunkPos)
+                val lightData = world.getLightData(chunkPos) ?: LightData.EMPTY
+                player.connection.sendPacket(ClientboundLevelChunkWithLightPacket(chunkPos, chunkData, lightData))
+            }
         }
 
         chunks.forEach { chunkPos ->
