@@ -7,7 +7,9 @@ import ru.cherryngine.lib.minecraft.registry.Registries
 import ru.cherryngine.lib.minecraft.registry.keys.Blocks
 import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 import ru.cherryngine.lib.minecraft.world.block.Block
+import ru.cherryngine.lib.minecraft.world.block.BlockEntity
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
+import ru.cherryngine.lib.minecraft.world.chunk.ChunkHeightmapType
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 import ru.cherryngine.lib.minecraft.world.light.LightData
 
@@ -27,27 +29,25 @@ class MixWorld(
     }
 
     override fun getSectionOrNull(position: SectionPos): ChunkSection? {
-        // TODO заменить каст на разворачивание слоёного мира
-        val chunkSections = layers.mapNotNull { (it as BaseWorld).getSectionOrNull(position) }
+        val chunkSections = layers.mapNotNull { it.getSectionOrNull(position) }
         if (chunkSections.isEmpty()) return null
         if (chunkSections.size == 1) return chunkSections[0]
         return MixTools.mixSection(chunkSections)
     }
 
-    val minSection = dimensionType.minY / 16
-
-    override fun getChunkData(pos: ChunkPos): ChunkData {
-        val sections = List(dimensionType.height / 16) {
-            val sectionPos = SectionPos(pos.x, it + minSection, pos.z)
-            getSectionOrNull(sectionPos) ?: ChunkSection.EMPTY
-        }
-
-        return ChunkData(
-            mapOf(), // TODO
-            sections,
-            mapOf() // TODO
-        )
+    override fun getHeightMaps(pos: ChunkPos): Map<ChunkHeightmapType, LongArray> {
+        return layers.firstOrNull()?.getHeightMaps(pos) ?: emptyMap()
     }
+
+    override fun getBlockEntities(pos: ChunkPos): Map<Vec3I, BlockEntity> {
+        val blockEntities = mutableMapOf<Vec3I, BlockEntity>()
+        layers.forEach {
+            blockEntities.putAll(it.getBlockEntities(pos))
+        }
+        return blockEntities
+    }
+
+    val minSection = dimensionType.minY / 16
 
     override fun getLightData(pos: ChunkPos): LightData? {
         return layers.firstOrNull()?.getLightData(pos)

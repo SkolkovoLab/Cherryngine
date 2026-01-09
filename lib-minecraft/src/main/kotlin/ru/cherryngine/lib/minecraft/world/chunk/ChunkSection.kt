@@ -11,8 +11,8 @@ import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.palette.Palette
 
 class ChunkSection(
-    private var blockPalette: Palette,
-    private var biomePalette: Palette,
+    val blockPalette: Palette,
+    val biomePalette: Palette,
 ) {
     fun fillBiome(biome: Int) {
         biomePalette.fill(biome)
@@ -46,6 +46,10 @@ class ChunkSection(
         val id = blockPalette[x, y, z]
         blockPalette[x, y, z] = block
         return id
+    }
+
+    fun clone(): ChunkSection {
+        return ChunkSection(blockPalette.clone(), biomePalette.clone())
     }
 
     companion object {

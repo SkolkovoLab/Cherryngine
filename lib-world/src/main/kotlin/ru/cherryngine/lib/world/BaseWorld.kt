@@ -7,7 +7,9 @@ import ru.cherryngine.lib.minecraft.network.protocol.types.SectionPos
 import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.world.block.Block
+import ru.cherryngine.lib.minecraft.world.block.BlockEntity
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
+import ru.cherryngine.lib.minecraft.world.chunk.ChunkHeightmapType
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 import ru.cherryngine.lib.minecraft.world.light.LightData
 
@@ -23,6 +25,14 @@ class BaseWorld(
 
     override fun getSectionOrNull(position: SectionPos): ChunkSection? {
         return sectionsMap[position.pack()]
+    }
+
+    override fun getHeightMaps(pos: ChunkPos): Map<ChunkHeightmapType, LongArray> {
+        return chunkHeightmapsMap[pos.pack()]?.rawDataMap ?: mapOf()
+    }
+
+    override fun getBlockEntities(pos: ChunkPos): Map<Vec3I, BlockEntity> {
+        return mapOf() // TODO
     }
 
     fun getSectionOrCreate(position: SectionPos): ChunkSection {
@@ -51,21 +61,6 @@ class BaseWorld(
             ChunkUtils.globalToSectionRelative(position.y),
             ChunkUtils.globalToSectionRelative(position.z),
             block.getStateId()
-        )
-    }
-
-    val minSection = dimensionType.minY / 16
-
-    override fun getChunkData(pos: ChunkPos): ChunkData {
-        val sections = List(dimensionType.height / 16) {
-            val sectionPos = SectionPos(pos.x, it + minSection, pos.z)
-            getSectionOrNull(sectionPos) ?: ChunkSection.EMPTY
-        }
-
-        return ChunkData(
-            chunkHeightmapsMap[pos.pack()]?.rawDataMap ?: mapOf(),
-            sections,
-            mapOf() // TODO
         )
     }
 
