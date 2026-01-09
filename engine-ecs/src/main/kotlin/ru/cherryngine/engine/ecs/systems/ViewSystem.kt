@@ -37,14 +37,16 @@ class ViewSystem(
         val staticViewableProviders: MutableSet<StaticViewableProvider> = mutableSetOf()
         val worlds: MutableSet<World> = mutableSetOf()
 
-        world.family { all(ViewableComponent, ViewableProvidersEvent) }.forEach { viewableEntity ->
-            val viewableComponent = viewableEntity[ViewableComponent]
-            val viewableProvidersEvent = viewableEntity[ViewableProvidersEvent]
+        playerComponent.viewContextIDs.forEach { viewContextID ->
+            world.family { all(ViewableComponent, ViewableProvidersEvent) }.forEach { viewableEntity ->
+                val viewableComponent = viewableEntity[ViewableComponent]
+                val viewableProvidersEvent = viewableEntity[ViewableProvidersEvent]
 
-            if (playerComponent.viewContextIDs.any { it in viewableComponent.viewContextIDs }) {
-                viewableProviders.addAll(viewableProvidersEvent.viewableProviders)
-                staticViewableProviders.addAll(viewableProvidersEvent.staticViewableProviders)
-                worlds.addAll(viewableProvidersEvent.worlds)
+                if (viewContextID in viewableComponent.viewContextIDs) {
+                    viewableProviders.addAll(viewableProvidersEvent.viewableProviders)
+                    staticViewableProviders.addAll(viewableProvidersEvent.staticViewableProviders)
+                    worlds.addAll(viewableProvidersEvent.worlds)
+                }
             }
         }
 
