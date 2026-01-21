@@ -125,6 +125,10 @@ class MicronautViaVersionConfig(
         return false
     }
 
+    override fun logEntityDataErrors(): Boolean {
+        return resolverWrapper.section("logging").getBoolean("log-entity-data-errors", true)
+    }
+
     override fun isSuppressMetadataErrors(): Boolean {
         return resolverWrapper.getBoolean("suppress-metadata-errors", false)
     }
@@ -251,6 +255,14 @@ class MicronautViaVersionConfig(
 
     override fun getReloadDisconnectMsg(): String {
         return resolverWrapper.getString("reload-disconnect-msg", "Server reload, please rejoin!")
+    }
+
+    override fun logOtherConversionWarnings(): Boolean {
+        return resolverWrapper.section("logging").getBoolean("log-other-conversion-warnings", false)
+    }
+
+    override fun logTextComponentConversionErrors(): Boolean {
+        return resolverWrapper.section("logging").getBoolean("log-text-component-conversion-errors", false)
     }
 
     override fun isSuppressConversionWarnings(): Boolean {
@@ -381,6 +393,22 @@ class MicronautViaVersionConfig(
 
     override fun cancelSwingInInventory(): Boolean {
         return resolverWrapper.getBoolean("cancel-swing-in-inventory", true)
+    }
+
+    override fun maxErrorLength(): Int {
+        return resolverWrapper.section("logging").getInt("max-error-length", 1500)
+    }
+
+    override fun use1_8HitboxMargin(): Boolean {
+        return resolverWrapper.getBoolean("use-1_8-hitbox-margin", true)
+    }
+
+    override fun sendPlayerDetails(): Boolean {
+        return resolverWrapper.getBoolean("send-player-details", true)
+    }
+
+    override fun sendServerDetails(): Boolean {
+        return resolverWrapper.getBoolean("send-server-details", true)
     }
 
     // --- Управление ---

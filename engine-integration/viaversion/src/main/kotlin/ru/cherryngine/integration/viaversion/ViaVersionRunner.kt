@@ -19,7 +19,7 @@ class ViaVersionRunner(
         val platform = ViaPlatformImpl(viaVersionConfig, api)
         val injector = ViaInjectorImpl(nettyServer)
         val loader = ViaLoaderImpl()
-        val backwardsPlatform = ViaBackwardsPlatformImpl(viaBackwardsConfig)
+        val backwardsPlatform = ViaBackwardsPlatformImpl()
 
         val viaManager = ViaManagerImpl.builder()
             .platform(platform)
@@ -28,7 +28,7 @@ class ViaVersionRunner(
             .build()
         Via.init(viaManager)
         viaManager.init()
-        backwardsPlatform.init(null)
+        backwardsPlatform.init(viaBackwardsConfig)
         viaManager.onServerLoaded()
         backwardsPlatform.enable()
     }
