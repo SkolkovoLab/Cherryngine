@@ -1,26 +1,14 @@
-package ru.cherryngine.lib.world
+package ru.cherryngine.engine.core
 
+import jakarta.inject.Singleton
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.minecraft.world.light.LightData
+import ru.cherryngine.lib.world.ImmutableLayerKey
+import ru.cherryngine.lib.world.LayerEntry
+import ru.cherryngine.lib.world.LayeredWorld
 import java.util.concurrent.ConcurrentHashMap
-
-/**
- * Ключ, идентифицирующий набор immutable слоёв.
- * Sorted list of (layerId, priority) для корректного equals/hashCode.
- */
-data class ImmutableLayerKey(
-    val entries: List<Pair<String, Int>>,
-) {
-    companion object {
-        fun from(layers: List<LayerEntry>): ImmutableLayerKey {
-            val sorted = layers.map { it.layer.id to it.priority }
-                .sortedWith(compareByDescending<Pair<String, Int>> { it.second }.thenBy { it.first })
-            return ImmutableLayerKey(sorted)
-        }
-    }
-}
 
 private data class ChunkPoolKey(
     val layerKey: ImmutableLayerKey,
@@ -31,6 +19,7 @@ private data class ChunkPoolKey(
  * Кэш скомпонованных ChunkData для наборов immutable слоёв.
  * Immutable слои не меняются, поэтому кэш не инвалидируется (кроме bake).
  */
+@Singleton
 class ChunkPool {
     private val cache = ConcurrentHashMap<ChunkPoolKey, ChunkData>()
 

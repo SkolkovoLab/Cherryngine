@@ -20,17 +20,17 @@ import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.world.light.LightData
-import ru.cherryngine.lib.world.ChunkPool
-import ru.cherryngine.lib.world.LayerClassification
+import ru.cherryngine.engine.core.ChunkPool
+import ru.cherryngine.engine.core.world.LayerClassification
 import ru.cherryngine.lib.world.LayerEntry
 import ru.cherryngine.lib.world.MutableLayerChangeTracker
-import ru.cherryngine.lib.world.MutableOverlay
+import ru.cherryngine.engine.core.world.MutableOverlay
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSectionBlocksUpdatePacket
 import java.util.UUID
 
 class ViewSystem(
     val playerManager: PlayerManager,
-    val chunkPool: ChunkPool = ChunkPool(),
+    val chunkPool: ChunkPool,
     val changeTracker: MutableLayerChangeTracker? = null,
 ) : IteratingSystem(
     family { all(PlayerComponent) }

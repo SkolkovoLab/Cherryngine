@@ -1,4 +1,9 @@
-package ru.cherryngine.lib.world
+package ru.cherryngine.engine.core.world
+
+import ru.cherryngine.lib.world.ImmutableLayer
+import ru.cherryngine.lib.world.ImmutableLayerKey
+import ru.cherryngine.lib.world.LayerEntry
+import ru.cherryngine.lib.world.MutableLayer
 
 /**
  * Разделение слоёв на immutable и mutable с предвычисленным ключом для ChunkPool.

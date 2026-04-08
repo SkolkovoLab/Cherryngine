@@ -1,9 +1,10 @@
-package ru.cherryngine.lib.world
+package ru.cherryngine.engine.core.world
 
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.network.protocol.types.SectionPos
 import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
+import ru.cherryngine.lib.world.LayeredWorld
 
 /**
  * Вычисляет diff между полной композицией (immutable + mutable) и immutable base.
