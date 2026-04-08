@@ -35,6 +35,7 @@ class ImmutableLayer(
             ChunkUtils.globalToSectionRelative(pos.y),
             ChunkUtils.globalToSectionRelative(pos.z),
         )
+        if (stateId == 0) return null // air = transparent, inherit from lower layer
         return Block.getBlockByStateId(stateId)
     }
 

@@ -21,6 +21,7 @@ import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.world.light.LightData
 import ru.cherryngine.lib.world.LayerEntry
 import ru.cherryngine.lib.world.LayeredWorld
+import java.util.UUID
 
 class ViewSystem(
     val playerManager: PlayerManager,
@@ -30,6 +31,10 @@ class ViewSystem(
     companion object {
         const val DEFAULT_RENDER_DISTANCE = 2
     }
+
+    // Отслеживаем уже отправленные чанки и последние viewContextIDs per player
+    private val sentChunks: MutableMap<UUID, MutableSet<ChunkPos>> = mutableMapOf()
+    private val lastViewContextIDs: MutableMap<UUID, Set<String>> = mutableMapOf()
 
     override fun onTickEntity(entity: EcsEntity) {
         val playerComponent = entity[PlayerComponent]
@@ -79,6 +84,9 @@ class ViewSystem(
         if (connection.state != ProtocolState.PLAY) return
         val distance = DEFAULT_RENDER_DISTANCE
 
+        val playerComponent = entity[PlayerComponent]
+        val uuid = playerComponent.uuid
+
         val clientChunkPos = entity.getOrNull(PositionComponent)
             ?.position
             ?.let { ChunkUtils.chunkPosFromVec3D(it) }
@@ -107,11 +115,30 @@ class ViewSystem(
         }
 
         if (layers.isNotEmpty() && dimensionType != null) {
-            val world = LayeredWorld(dimensionType!!, layers)
-            chunks.forEach { chunkPos ->
-                val chunkData = world.getChunkData(chunkPos)
-                val lightData = world.getLightData(chunkPos) ?: LightData.EMPTY
-                player.connection.sendPacket(ClientboundLevelChunkWithLightPacket(chunkPos, chunkData, lightData))
+            val playerSentChunks = sentChunks.getOrPut(uuid) { mutableSetOf() }
+            val currentContextIDs = playerComponent.viewContextIDs
+
+            // Если viewContextIDs изменились — сбрасываем кэш отправленных чанков
+            if (lastViewContextIDs[uuid] != currentContextIDs) {
+                playerSentChunks.clear()
+                lastViewContextIDs[uuid] = currentContextIDs
+            }
+
+            // Добавляем чанки из chunksToRefresh в очередь на переотправку
+            playerSentChunks -= player.chunksToRefresh
+
+            // Убираем чанки вышедшие из радиуса видимости
+            playerSentChunks.retainAll(chunks)
+
+            val chunksToSend = chunks - playerSentChunks
+            if (chunksToSend.isNotEmpty()) {
+                val world = LayeredWorld(dimensionType!!, layers)
+                chunksToSend.forEach { chunkPos ->
+                    val chunkData = world.getChunkData(chunkPos)
+                    val lightData = world.getLightData(chunkPos) ?: LightData.EMPTY
+                    player.connection.sendPacket(ClientboundLevelChunkWithLightPacket(chunkPos, chunkData, lightData))
+                    playerSentChunks.add(chunkPos)
+                }
             }
         }
 
