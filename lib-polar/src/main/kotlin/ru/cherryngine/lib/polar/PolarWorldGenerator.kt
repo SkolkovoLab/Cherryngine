@@ -14,11 +14,30 @@ import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.minecraft.world.block.BlockEntity
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
 import ru.cherryngine.lib.minecraft.world.light.LightData
+import ru.cherryngine.lib.minecraft.network.protocol.types.SectionPos
 import ru.cherryngine.lib.minecraft.world.palette.Palette
+import ru.cherryngine.lib.minecraft.registry.types.DimensionType
+import ru.cherryngine.lib.world.ImmutableLayer
 import java.util.*
 
 object PolarWorldGenerator {
     private val logger = LoggerFactory.getLogger(PolarWorldGenerator::class.java)
+
+    fun loadAsLayer(
+        worldBytes: ByteArray,
+        dimensionType: DimensionType,
+        id: String,
+        voidMarker: Block? = Block.STRUCTURE_VOID,
+    ): ImmutableLayer {
+        val layer = ImmutableLayer(dimensionType, id, voidMarker)
+        loadChunks(worldBytes).forEach { (chunkPos, result) ->
+            layer.lightDataMap[chunkPos.pack()] = result.lightData
+            result.sections.forEachIndexed { i, section ->
+                layer.sectionsMap[SectionPos(chunkPos.x, i + dimensionType.minY / 16, chunkPos.z).pack()] = section
+            }
+        }
+        return layer
+    }
 
     fun loadChunks(worldBytes: ByteArray): Map<ChunkPos, PolarChunkResult> {
         val polarWorld = PolarReader.read(worldBytes)
