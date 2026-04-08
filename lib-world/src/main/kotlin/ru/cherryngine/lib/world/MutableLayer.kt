@@ -69,6 +69,10 @@ class MutableLayer(
         changeTracker?.markDirty(id, ChunkPos(pos.x shr 4, pos.z shr 4))
     }
 
+    fun putSection(pos: SectionPos, section: ChunkSection) {
+        sectionsMap[pos.pack()] = section
+    }
+
     fun iterateSections(): Iterable<Map.Entry<Long, ChunkSection>> = sectionsMap.entries
 
     fun clear() {

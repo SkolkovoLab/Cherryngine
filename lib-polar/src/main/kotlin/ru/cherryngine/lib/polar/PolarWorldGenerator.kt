@@ -18,6 +18,8 @@ import ru.cherryngine.lib.minecraft.network.protocol.types.SectionPos
 import ru.cherryngine.lib.minecraft.world.palette.Palette
 import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 import ru.cherryngine.lib.world.ImmutableLayer
+import ru.cherryngine.lib.world.MutableLayer
+import ru.cherryngine.lib.world.MutableLayerChangeTracker
 import java.util.*
 
 object PolarWorldGenerator {
@@ -34,6 +36,23 @@ object PolarWorldGenerator {
             layer.lightDataMap[chunkPos.pack()] = result.lightData
             result.sections.forEachIndexed { i, section ->
                 layer.sectionsMap[SectionPos(chunkPos.x, i + dimensionType.minY / 16, chunkPos.z).pack()] = section
+            }
+        }
+        return layer
+    }
+
+    fun loadAsMutableLayer(
+        worldBytes: ByteArray,
+        dimensionType: DimensionType,
+        id: String,
+        voidMarker: Block? = Block.STRUCTURE_VOID,
+        changeTracker: MutableLayerChangeTracker? = null,
+    ): MutableLayer {
+        val layer = MutableLayer(id, voidMarker, changeTracker)
+        loadChunks(worldBytes).forEach { (chunkPos, result) ->
+            result.sections.forEachIndexed { i, section ->
+                val sectionPos = SectionPos(chunkPos.x, i + dimensionType.minY / 16, chunkPos.z)
+                layer.putSection(sectionPos, section)
             }
         }
         return layer
