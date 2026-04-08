@@ -26,14 +26,20 @@ class LayeredWorld(
     layers: List<LayerEntry> = emptyList(),
 ) : World {
     private val _layers: MutableList<LayerEntry> = layers.toMutableList()
+    private var _sortedCache: List<LayerEntry>? = null
 
-    val layersSorted: List<LayerEntry> get() = _layers.sortedByDescending { it.priority }
+    val layersSorted: List<LayerEntry>
+        get() = _sortedCache ?: _layers.sortedByDescending { it.priority }.also { _sortedCache = it }
 
     fun addLayer(layer: Layer, priority: Int = 0) {
         _layers.add(LayerEntry(layer, priority))
+        _sortedCache = null
     }
 
-    override fun getBlock(pos: Vec3I): Block {
+    override fun getBlock(position: Vec3I): Block = getBlock(position.x, position.y, position.z)
+
+    fun getBlock(x: Int, y: Int, z: Int): Block {
+        val pos = Vec3I(x, y, z)
         for (entry in layersSorted) {
             val block = entry.layer.getBlock(pos) ?: continue
             return if (block == entry.layer.voidMarker) Block.AIR else block
@@ -41,14 +47,16 @@ class LayeredWorld(
         return Block.AIR
     }
 
-    override fun getSectionOrNull(pos: SectionPos): ChunkSection? {
+    override fun getSectionOrNull(position: SectionPos): ChunkSection? {
         val sorted = layersSorted
-        if (sorted.none { it.layer.getSectionOrNull(pos) != null }) return null
+        if (sorted.none { it.layer.getSectionOrNull(position) != null }) return null
 
         val result = ChunkSection.empty()
-        val base = Vec3I(pos.x * 16, pos.y * 16, pos.z * 16)
+        val baseX = position.x * 16
+        val baseY = position.y * 16
+        val baseZ = position.z * 16
         for (x in 0..<16) for (y in 0..<16) for (z in 0..<16) {
-            val block = getBlock(base + Vec3I(x, y, z))
+            val block = getBlock(baseX + x, baseY + y, baseZ + z)
             result.setBlock(x, y, z, block.getStateId())
         }
         return result

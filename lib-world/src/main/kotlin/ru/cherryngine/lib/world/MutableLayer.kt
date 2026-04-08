@@ -27,6 +27,7 @@ import ru.cherryngine.lib.minecraft.world.light.LightData
 class MutableLayer(
     override val id: String,
     override val voidMarker: Block? = Block.STRUCTURE_VOID,
+    val changeTracker: MutableLayerChangeTracker? = null,
 ) : Layer {
     private val sectionsMap: MutableMap<Long, ChunkSection> = Long2ObjectOpenHashMap()
 
@@ -49,6 +50,7 @@ class MutableLayer(
             ChunkUtils.globalToSectionRelative(pos.z),
             block.getStateId(),
         )
+        changeTracker?.markDirty(id, ChunkPos(pos.x shr 4, pos.z shr 4))
     }
 
     fun putVoid(pos: Vec3I) {
@@ -64,6 +66,13 @@ class MutableLayer(
             ChunkUtils.globalToSectionRelative(pos.z),
             0,
         )
+        changeTracker?.markDirty(id, ChunkPos(pos.x shr 4, pos.z shr 4))
+    }
+
+    fun iterateSections(): Iterable<Map.Entry<Long, ChunkSection>> = sectionsMap.entries
+
+    fun clear() {
+        sectionsMap.clear()
     }
 
     override fun getSectionOrNull(pos: SectionPos): ChunkSection? = sectionsMap[pos.pack()]

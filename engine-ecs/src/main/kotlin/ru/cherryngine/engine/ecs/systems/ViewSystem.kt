@@ -15,16 +15,23 @@ import ru.cherryngine.engine.ecs.components.ViewableComponent
 import ru.cherryngine.engine.ecs.events.ViewableProvidersEvent
 import ru.cherryngine.lib.minecraft.network.protocol.packets.ProtocolState
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
+import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.world.light.LightData
+import ru.cherryngine.lib.world.ChunkPool
+import ru.cherryngine.lib.world.LayerClassification
 import ru.cherryngine.lib.world.LayerEntry
-import ru.cherryngine.lib.world.LayeredWorld
+import ru.cherryngine.lib.world.MutableLayerChangeTracker
+import ru.cherryngine.lib.world.MutableOverlay
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSectionBlocksUpdatePacket
 import java.util.UUID
 
 class ViewSystem(
     val playerManager: PlayerManager,
+    val chunkPool: ChunkPool = ChunkPool(),
+    val changeTracker: MutableLayerChangeTracker? = null,
 ) : IteratingSystem(
     family { all(PlayerComponent) }
 ) {
@@ -115,6 +122,7 @@ class ViewSystem(
         }
 
         if (layers.isNotEmpty() && dimensionType != null) {
+            val classification = LayerClassification.classify(layers)
             val playerSentChunks = sentChunks.getOrPut(uuid) { mutableSetOf() }
             val currentContextIDs = playerComponent.viewContextIDs
 
@@ -127,18 +135,34 @@ class ViewSystem(
             // Добавляем чанки из chunksToRefresh в очередь на переотправку
             playerSentChunks -= player.chunksToRefresh
 
+            // Dirty чанки из mutable слоёв — тоже нужно переотправить overlay
+            val dirtyChunks = changeTracker?.getDirty() ?: emptyMap()
+            val mutableLayerIds = classification.mutableLayers.map { it.layer.id }.toSet()
+            val dirtyForPlayer = dirtyChunks.filterKeys { it in mutableLayerIds }.values.flatten().toSet()
+            val alreadySentDirty = dirtyForPlayer.intersect(playerSentChunks).intersect(chunks)
+
             // Убираем чанки вышедшие из радиуса видимости
             playerSentChunks.retainAll(chunks)
 
+            // Отправка новых чанков: immutable base из пула + mutable overlay
             val chunksToSend = chunks - playerSentChunks
-            if (chunksToSend.isNotEmpty()) {
-                val world = LayeredWorld(dimensionType!!, layers)
-                chunksToSend.forEach { chunkPos ->
-                    val chunkData = world.getChunkData(chunkPos)
-                    val lightData = world.getLightData(chunkPos) ?: LightData.EMPTY
-                    player.connection.sendPacket(ClientboundLevelChunkWithLightPacket(chunkPos, chunkData, lightData))
-                    playerSentChunks.add(chunkPos)
-                }
+            for (chunkPos in chunksToSend) {
+                val baseChunkData = chunkPool.get(
+                    classification.immutableKey, chunkPos, dimensionType, classification.immutableLayers
+                )
+                val lightData = chunkPool.getLightData(classification.immutableLayers, chunkPos) ?: LightData.EMPTY
+                player.connection.sendPacket(ClientboundLevelChunkWithLightPacket(chunkPos, baseChunkData, lightData))
+
+                sendMutableOverlay(player, classification, dimensionType, chunkPos, baseChunkData)
+                playerSentChunks.add(chunkPos)
+            }
+
+            // Обновление dirty чанков из mutable слоёв (уже отправленные ранее)
+            for (chunkPos in alreadySentDirty) {
+                val baseChunkData = chunkPool.get(
+                    classification.immutableKey, chunkPos, dimensionType, classification.immutableLayers
+                )
+                sendMutableOverlay(player, classification, dimensionType, chunkPos, baseChunkData)
             }
         }
 
@@ -166,5 +190,19 @@ class ViewSystem(
         }
 
         player.chunksToRefresh.clear()
+    }
+
+    private fun sendMutableOverlay(
+        player: Player,
+        classification: LayerClassification,
+        dimensionType: DimensionType,
+        chunkPos: ChunkPos,
+        baseChunkData: ChunkData,
+    ) {
+        if (classification.mutableLayers.isEmpty()) return
+        val overlay = MutableOverlay.computeOverlay(classification, dimensionType, chunkPos, baseChunkData)
+        for ((sectionPos, blockChanges) in overlay) {
+            player.connection.sendPacket(ClientboundSectionBlocksUpdatePacket(sectionPos, blockChanges))
+        }
     }
 }
