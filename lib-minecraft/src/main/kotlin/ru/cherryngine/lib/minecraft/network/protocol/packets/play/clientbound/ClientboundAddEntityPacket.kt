@@ -15,10 +15,10 @@ data class ClientboundAddEntityPacket(
     val entityUUID: UUID,
     val entityType: EntityType,
     val location: Vec3D,
+    val velocity: Vec3D,
     val yawPitch: YawPitch,
     val headYaw: Float,
     val entityData: Int,
-    val velocity: Vec3D,
 ) : ClientboundPacket {
     companion object {
         val STREAM_CODEC = StreamCodec.of(
@@ -26,10 +26,10 @@ data class ClientboundAddEntityPacket(
             StreamCodec.UUID, ClientboundAddEntityPacket::entityUUID,
             Registries.entityType.streamCodec, ClientboundAddEntityPacket::entityType,
             LocationStreamCodecs.VEC_3D, ClientboundAddEntityPacket::location,
+            LpVec3StreamCodec, ClientboundAddEntityPacket::velocity,
             LocationStreamCodecs.ANGLE_PITCH_YAW, ClientboundAddEntityPacket::yawPitch,
             LocationStreamCodecs.ANGLE, ClientboundAddEntityPacket::headYaw,
             StreamCodec.VAR_INT, ClientboundAddEntityPacket::entityData,
-            LpVec3StreamCodec, ClientboundAddEntityPacket::velocity,
             ::ClientboundAddEntityPacket
         )
     }

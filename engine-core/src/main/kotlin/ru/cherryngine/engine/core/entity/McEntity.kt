@@ -48,9 +48,9 @@ class McEntity(
                 entityId, UUID.randomUUID(),
                 entityType,
                 position,
+                Vec3D.ZERO,
                 yawPitch, yawPitch.yaw,
-                0,
-                Vec3D.ZERO
+                0
             )
         )
         player.connection.sendPacket(ClientboundSetEntityDataPacket(entityId, metadata.entries))
