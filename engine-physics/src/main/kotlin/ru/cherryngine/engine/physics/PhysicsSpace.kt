@@ -4,17 +4,23 @@ import com.github.stephengold.joltjni.*
 import com.github.stephengold.joltjni.enumerate.EActivation
 import com.github.stephengold.joltjni.enumerate.EMotionType
 import com.github.stephengold.joltjni.enumerate.EPhysicsUpdateError
+import com.github.stephengold.joltjni.enumerate.ValidateResult
 import com.github.stephengold.joltjni.readonly.ConstPlane
 import com.github.stephengold.joltjni.readonly.ConstShape
 import com.github.stephengold.joltjni.readonly.Vec3Arg
+import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Transform
 import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.lib.math.Vec3I
 
 
 class PhysicsSpace {
     val physicsSystem: PhysicsSystem
     val tempAllocator: TempAllocator
     val jobSystem: JobSystem
+
+    val bodies = HashMap<Long, PhysicsBody>()
+    val bodyContexts = HashMap<Long, Set<String>>()
 
     init {
         JoltLoader.checkAndInit()
@@ -64,29 +70,18 @@ class PhysicsSpace {
         // Default: -9.81f
         // Minecraft: -31.36f
         physicsSystem.setGravity(Vec3(0f, -17f, 0f))
+
+        physicsSystem.setContactListener(ContextContactListener())
     }
 
-    fun addFloor(y: Double): PhysicsBody {
-        val normal: Vec3Arg = Vec3.sAxisY()
-        val plane: ConstPlane = Plane(normal, -y.toFloat())
-        val floorShape: ConstShape = PlaneShape(plane)
-
-        val bodyCreationSettings = BodyCreationSettings()
+    fun addTerrain(pos: Vec3I): PhysicsBody {
+        val bodySettings = BodyCreationSettings()
             .setMotionType(EMotionType.Static)
             .setObjectLayer(Layers.NON_MOVING)
-            .setShape(floorShape)
-
-        return createBody(bodyCreationSettings, EActivation.DontActivate)
+            .setShape(BoxShape(Vec3(0.5f, 0.5f, 0.5f)))
+            .setPosition(RVec3(pos.x + 0.5, pos.y + 0.5, pos.z + 0.5))
+        return createBody(bodySettings, EActivation.DontActivate)
     }
-
-    fun update(delta: Float) {
-        val steps = 1
-        physicsSystem.update(delta, steps, tempAllocator, jobSystem).also { errors ->
-            check(errors == EPhysicsUpdateError.None) { errors }
-        }
-    }
-
-    val bodies = HashMap<Long, PhysicsBody>()
 
     fun addCube(position: Vec3D, size: Vec3D): PhysicsBody {
         val bodyCreationSettings = BodyCreationSettings()
@@ -99,10 +94,25 @@ class PhysicsSpace {
         return createBody(bodyCreationSettings, EActivation.Activate)
     }
 
+    fun update(delta: Float) {
+        val steps = 1
+        physicsSystem.update(delta, steps, tempAllocator, jobSystem).also { errors ->
+            check(errors == EPhysicsUpdateError.None) { errors }
+        }
+    }
+
     fun createBody(bodyCreationSettings: BodyCreationSettings, eActivation: EActivation): PhysicsBody {
         val physicsBody = PhysicsBody(bodyCreationSettings, eActivation)
         bodies[physicsBody.body.va()] = physicsBody
         return physicsBody
+    }
+
+    fun registerBodyContexts(body: PhysicsBody, contexts: Set<String>) {
+        bodyContexts[body.body.va()] = contexts
+    }
+
+    fun unregisterBodyContexts(body: PhysicsBody) {
+        bodyContexts.remove(body.body.va())
     }
 
     fun destroy() {
@@ -128,10 +138,39 @@ class PhysicsSpace {
             return Transform(rVec3.vec3D(), quat.qRot())
         }
 
+        fun getWorldBounds(): Cuboid {
+            val bounds = body.getWorldSpaceBounds()
+            return Cuboid(bounds.getMin().vec3D(), bounds.getMax().vec3D())
+        }
+
         fun remove() {
             physicsSystem.getBodyInterface().removeBody(body.id)
             physicsSystem.getBodyInterface().destroyBody(body.id)
             bodies.remove(body.va())
+            bodyContexts.remove(body.va())
+        }
+    }
+
+    private inner class ContextContactListener : CustomContactListener() {
+        override fun onContactValidate(
+            body1Va: Long,
+            body2Va: Long,
+            baseOffsetX: Double,
+            baseOffsetY: Double,
+            baseOffsetZ: Double,
+            manifoldVa: Long,
+        ): Int {
+            val ctx1 = bodyContexts[body1Va]
+            val ctx2 = bodyContexts[body2Va]
+            // Оба тела зарегистрированы (динамические) — проверяем пересечение контекстов
+            if (ctx1 != null && ctx2 != null) {
+                if (ctx1.none { it in ctx2 }) {
+                    return ValidateResult.RejectAllContactsForThisBodyPair.ordinal
+                }
+            }
+            // Terrain тела (не в bodyContexts) — всегда проходят,
+            // их фильтрация уже сделана на уровне TerrainGenerator
+            return ValidateResult.AcceptAllContactsForThisBodyPair.ordinal
         }
     }
 }
