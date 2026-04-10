@@ -8,19 +8,24 @@ import com.github.stephengold.joltjni.enumerate.ValidateResult
 import com.github.stephengold.joltjni.readonly.ConstPlane
 import com.github.stephengold.joltjni.readonly.ConstShape
 import com.github.stephengold.joltjni.readonly.Vec3Arg
+import jakarta.inject.Singleton
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Transform
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
+import java.util.*
 
 
+@Singleton
 class PhysicsSpace {
     val physicsSystem: PhysicsSystem
     val tempAllocator: TempAllocator
     val jobSystem: JobSystem
 
-    val bodies = HashMap<Long, PhysicsBody>()
     val bodyContexts = HashMap<Long, Set<String>>()
+
+    private val bodyByPhysicsId = HashMap<UUID, PhysicsBody>()
+    private val seenThisTick = HashSet<UUID>()
 
     init {
         JoltLoader.checkAndInit()
@@ -74,6 +79,31 @@ class PhysicsSpace {
         physicsSystem.setContactListener(ContextContactListener())
     }
 
+    fun getOrCreateBody(physicsId: UUID, physContextIDs: Set<String>, factory: () -> PhysicsBody): PhysicsBody {
+        return bodyByPhysicsId.getOrPut(physicsId) {
+            factory().also { body ->
+                if (physContextIDs.isNotEmpty()) registerBodyContexts(body, physContextIDs)
+            }
+        }
+    }
+
+    fun keepAlive(physicsId: UUID) {
+        seenThisTick.add(physicsId)
+    }
+
+    fun beginTick() {
+        seenThisTick.clear()
+    }
+
+    fun endTick() {
+        val toRemove = bodyByPhysicsId.keys.filter { it !in seenThisTick }
+        toRemove.forEach { uuid ->
+            val body = bodyByPhysicsId.remove(uuid)!!
+            unregisterBodyContexts(body)
+            body.remove()
+        }
+    }
+
     fun addTerrain(pos: Vec3I): PhysicsBody {
         val bodySettings = BodyCreationSettings()
             .setMotionType(EMotionType.Static)
@@ -102,9 +132,7 @@ class PhysicsSpace {
     }
 
     fun createBody(bodyCreationSettings: BodyCreationSettings, eActivation: EActivation): PhysicsBody {
-        val physicsBody = PhysicsBody(bodyCreationSettings, eActivation)
-        bodies[physicsBody.body.va()] = physicsBody
-        return physicsBody
+        return PhysicsBody(bodyCreationSettings, eActivation)
     }
 
     fun registerBodyContexts(body: PhysicsBody, contexts: Set<String>) {
@@ -146,7 +174,6 @@ class PhysicsSpace {
         fun remove() {
             physicsSystem.getBodyInterface().removeBody(body.id)
             physicsSystem.getBodyInterface().destroyBody(body.id)
-            bodies.remove(body.va())
             bodyContexts.remove(body.va())
         }
     }

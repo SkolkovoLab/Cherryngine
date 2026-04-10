@@ -1,5 +1,6 @@
 package ru.cherryngine.engine.physics.terrain
 
+import jakarta.inject.Singleton
 import ru.cherryngine.engine.physics.PhysicsSpace
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Vec3I
@@ -9,16 +10,19 @@ import ru.cherryngine.lib.world.LayeredWorld
 import kotlin.math.ceil
 import kotlin.math.floor
 
+@Singleton
 class TerrainGenerator(private val physicsSpace: PhysicsSpace) {
-    private val terrainBodies = HashMap<Vec3I, TerrainBodyEntry>()
+    private data class TerrainKey(val pos: Vec3I, val contextKey: Set<String>)
 
     private data class TerrainBodyEntry(
         val body: PhysicsSpace.PhysicsBody,
         val blockStateId: Int,
     )
 
+    private val terrainBodies = HashMap<TerrainKey, TerrainBodyEntry>()
+
     fun step(activeBodies: List<ActiveBodyInfo>, layers: List<LayerWithContext>) {
-        val keep = HashSet<Vec3I>()
+        val keep = HashSet<TerrainKey>()
 
         for (bodyInfo in activeBodies) {
             val relevantLayers = layers
@@ -34,19 +38,20 @@ class TerrainGenerator(private val physicsSpace: PhysicsSpace) {
                 val block = layeredWorld.getBlock(pos)
                 if (block.isAir()) return@forEachBlockInAABB
 
-                keep.add(pos)
+                val key = TerrainKey(pos, bodyInfo.physContextIDs)
+                keep.add(key)
                 val stateId = block.getStateId()
-                val existing = terrainBodies[pos]
+                val existing = terrainBodies[key]
                 if (existing != null && existing.blockStateId == stateId) return@forEachBlockInAABB
 
                 existing?.body?.remove()
                 val body = physicsSpace.addTerrain(pos)
-                terrainBodies[pos] = TerrainBodyEntry(body, stateId)
+                terrainBodies[key] = TerrainBodyEntry(body, stateId)
             }
         }
 
-        terrainBodies.entries.removeIf { (pos, entry) ->
-            if (pos !in keep) {
+        terrainBodies.entries.removeIf { (key, entry) ->
+            if (key !in keep) {
                 entry.body.remove()
                 true
             } else false
