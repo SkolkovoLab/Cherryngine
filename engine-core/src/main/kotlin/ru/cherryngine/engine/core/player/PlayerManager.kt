@@ -24,6 +24,7 @@ import ru.cherryngine.lib.minecraft.network.protocol.packets.status.ServerboundS
 import ru.cherryngine.lib.minecraft.network.protocol.types.MovePlayerFlags
 import ru.cherryngine.lib.minecraft.network.protocol.types.ServerStatus
 import ru.cherryngine.lib.minecraft.registry.Registries
+import kotlinx.coroutines.channels.Channel
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -32,10 +33,9 @@ class PlayerManager(
     val playerCreatedEventPublisher: ApplicationEventPublisher<PlayerCreatedEvent>,
     val playerConfigurationAsyncEventPublisher: ApplicationEventPublisher<PlayerConfigurationAsyncEvent>,
 ) {
-    val queues: MutableMap<UUID, MutableList<ServerboundPacket>> =
-        ConcurrentHashMap<UUID, MutableList<ServerboundPacket>>()
-    val toCreatePlayers = mutableSetOf<UUID>()
-    val toRemovePlayers = mutableSetOf<UUID>()
+    val playerJoinChannel = Channel<UUID>(Channel.UNLIMITED)
+    val playerLeaveChannel = Channel<UUID>(Channel.UNLIMITED)
+    val packetChannel = Channel<Pair<UUID, ServerboundPacket>>(Channel.UNLIMITED)
 
     private val playersByUUID: MutableMap<UUID, Player> = ConcurrentHashMap()
     private val playersByUsername: MutableMap<String, Player> = ConcurrentHashMap()
@@ -95,7 +95,7 @@ class PlayerManager(
                     player = Player(connection)
                     playersByUUID[uuid] = player
                     playersByUsername[username.lowercase()] = player
-                    toCreatePlayers.add(uuid)
+                    playerJoinChannel.trySend(uuid)
                     playerCreatedEventPublisher.publishEvent(PlayerCreatedEvent(player))
                 } else {
                     player = playersByUUID[uuid]!!
@@ -134,8 +134,7 @@ class PlayerManager(
         }
 
         if (connection.state == ProtocolState.PLAY || connection.state == ProtocolState.CONFIGURATION) {
-            val queue = queues.computeIfAbsent(connection.gameProfile.uuid) { arrayListOf() }
-            queue.add(packet)
+            packetChannel.trySend(connection.gameProfile.uuid to packet)
         }
     }
 
@@ -157,7 +156,7 @@ class PlayerManager(
         if (connection.state == ProtocolState.PLAY || connection.state == ProtocolState.CONFIGURATION) {
             val uuid = connection.gameProfile.uuid
             val username = connection.gameProfile.username
-            toRemovePlayers.add(uuid)
+            playerLeaveChannel.trySend(uuid)
             playersByUUID.remove(uuid)
             playersByUsername.remove(username.lowercase())
         }
