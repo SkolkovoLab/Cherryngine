@@ -10,7 +10,7 @@ import org.incendo.cloud.parser.ArgumentParser
 import org.incendo.cloud.parser.flag.CommandFlagParser
 import org.incendo.cloud.parser.standard.*
 import org.incendo.cloud.parser.standard.StringParser.StringMode
-import ru.cherryngine.engine.minecraft.commandmanager.CommandSender
+import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.engine.minecraft.commandmanager.SArgumentParser
 import ru.cherryngine.engine.minecraft.commandmanager.commands.args.KeyParser
 import ru.cherryngine.engine.minecraft.commandmanager.commands.args.LocationParser

@@ -4,7 +4,7 @@ import org.incendo.cloud.internal.CommandNode
 import org.incendo.cloud.parser.ArgumentParser
 import org.incendo.cloud.parser.standard.EitherParser
 import org.incendo.cloud.parser.standard.LiteralParser
-import ru.cherryngine.engine.minecraft.commandmanager.CommandSender
+import ru.cherryngine.engine.core.commandmanager.CommandSender
 
 class WrappedNode(
     val node: CommandNode<CommandSender>,

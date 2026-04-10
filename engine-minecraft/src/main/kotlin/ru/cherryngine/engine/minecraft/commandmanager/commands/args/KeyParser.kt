@@ -5,7 +5,7 @@ import net.kyori.adventure.key.Key
 import org.incendo.cloud.context.CommandContext
 import org.incendo.cloud.context.CommandInput
 import org.incendo.cloud.parser.ArgumentParseResult
-import ru.cherryngine.engine.minecraft.commandmanager.CommandSender
+import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.engine.minecraft.commandmanager.SArgumentParser
 import ru.cherryngine.lib.minecraft.network.protocol.types.ArgumentParserType
 import ru.cherryngine.lib.minecraft.utils.toKey

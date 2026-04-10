@@ -1,6 +1,7 @@
 package ru.cherryngine.engine.minecraft.commandmanager
 
 import org.incendo.cloud.parser.ArgumentParser
+import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.lib.minecraft.network.protocol.types.ArgumentParserType
 
 interface SArgumentParser<T> : ArgumentParser<CommandSender, T> {

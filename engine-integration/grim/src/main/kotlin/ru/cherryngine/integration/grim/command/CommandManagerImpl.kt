@@ -10,7 +10,7 @@ import org.incendo.cloud.parser.ParserDescriptor
 import org.incendo.cloud.parser.standard.StringParser
 import org.incendo.cloud.suggestion.Suggestion
 import org.incendo.cloud.suggestion.SuggestionProvider
-import ru.cherryngine.engine.minecraft.commandmanager.CommandSender
+import ru.cherryngine.engine.core.commandmanager.CommandSender
 import java.util.concurrent.CompletableFuture
 import ac.grim.grimac.platform.api.sender.Sender as GrimSender
 

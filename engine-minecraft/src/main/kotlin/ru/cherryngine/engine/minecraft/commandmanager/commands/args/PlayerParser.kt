@@ -5,7 +5,7 @@ import org.incendo.cloud.context.CommandContext
 import org.incendo.cloud.context.CommandInput
 import org.incendo.cloud.parser.ArgumentParseResult
 import org.incendo.cloud.suggestion.BlockingSuggestionProvider
-import ru.cherryngine.engine.minecraft.commandmanager.CommandSender
+import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.engine.minecraft.commandmanager.SArgumentParser
 import ru.cherryngine.engine.minecraft.player.Player
 import ru.cherryngine.engine.minecraft.player.PlayerManager

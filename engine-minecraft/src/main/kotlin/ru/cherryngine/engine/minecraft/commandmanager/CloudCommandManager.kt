@@ -6,6 +6,7 @@ import jakarta.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import net.kyori.adventure.text.format.NamedTextColor
 import org.incendo.cloud.CommandManager
+import ru.cherryngine.engine.core.commandmanager.CommandSender
 import org.incendo.cloud.annotations.AnnotationParser
 import org.incendo.cloud.exception.CommandExecutionException
 import org.incendo.cloud.exception.handling.ExceptionHandler

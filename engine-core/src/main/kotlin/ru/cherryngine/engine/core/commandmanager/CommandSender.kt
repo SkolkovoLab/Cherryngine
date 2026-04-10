@@ -1,4 +1,4 @@
-package ru.cherryngine.engine.minecraft.commandmanager
+package ru.cherryngine.engine.core.commandmanager
 
 import net.kyori.adventure.text.Component
 

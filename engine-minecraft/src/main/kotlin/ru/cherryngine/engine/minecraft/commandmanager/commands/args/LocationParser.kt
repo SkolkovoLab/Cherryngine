@@ -9,7 +9,7 @@ import org.incendo.cloud.parser.standard.DoubleParser.DoubleParseException
 import org.incendo.cloud.parser.standard.IntegerParser
 import org.incendo.cloud.suggestion.BlockingSuggestionProvider
 import org.incendo.cloud.type.range.Range
-import ru.cherryngine.engine.minecraft.commandmanager.CommandSender
+import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.engine.minecraft.commandmanager.SArgumentParser
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.minecraft.network.protocol.types.ArgumentParserType
