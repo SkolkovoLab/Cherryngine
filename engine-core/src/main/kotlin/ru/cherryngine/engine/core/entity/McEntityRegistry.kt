@@ -1,9 +1,7 @@
 package ru.cherryngine.engine.core.entity
 
-import jakarta.inject.Singleton
 import java.util.*
 
-@Singleton
 class McEntityRegistry {
     private val entities = HashMap<UUID, McEntity>()
     private val seenThisTick = HashSet<UUID>()

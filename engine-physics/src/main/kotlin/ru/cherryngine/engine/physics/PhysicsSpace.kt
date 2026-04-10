@@ -8,7 +8,6 @@ import com.github.stephengold.joltjni.enumerate.ValidateResult
 import com.github.stephengold.joltjni.readonly.ConstPlane
 import com.github.stephengold.joltjni.readonly.ConstShape
 import com.github.stephengold.joltjni.readonly.Vec3Arg
-import jakarta.inject.Singleton
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Transform
 import ru.cherryngine.lib.math.Vec3D
@@ -16,7 +15,6 @@ import ru.cherryngine.lib.math.Vec3I
 import java.util.*
 
 
-@Singleton
 class PhysicsSpace {
     val physicsSystem: PhysicsSystem
     val tempAllocator: TempAllocator

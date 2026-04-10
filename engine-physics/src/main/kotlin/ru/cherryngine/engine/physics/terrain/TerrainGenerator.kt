@@ -1,6 +1,5 @@
 package ru.cherryngine.engine.physics.terrain
 
-import jakarta.inject.Singleton
 import ru.cherryngine.engine.physics.PhysicsSpace
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Vec3I
@@ -10,7 +9,6 @@ import ru.cherryngine.lib.world.LayeredWorld
 import kotlin.math.ceil
 import kotlin.math.floor
 
-@Singleton
 class TerrainGenerator(private val physicsSpace: PhysicsSpace) {
     private data class TerrainKey(val pos: Vec3I, val contextKey: Set<String>)
 
