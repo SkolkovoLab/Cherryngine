@@ -26,7 +26,6 @@ import ru.cherryngine.lib.world.LayerEntry
 import ru.cherryngine.lib.world.MutableLayerChangeTracker
 import ru.cherryngine.engine.core.world.MutableOverlay
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSectionBlocksUpdatePacket
-import java.util.UUID
 
 class ViewSystem(
     val playerManager: PlayerManager,
@@ -39,13 +38,10 @@ class ViewSystem(
         const val DEFAULT_RENDER_DISTANCE = 2
     }
 
-    // Отслеживаем уже отправленные чанки и последние viewContextIDs per player
-    private val sentChunks: MutableMap<UUID, MutableSet<ChunkPos>> = mutableMapOf()
-    private val lastViewContextIDs: MutableMap<UUID, Set<String>> = mutableMapOf()
-
     override fun onTickEntity(entity: EcsEntity) {
         val playerComponent = entity[PlayerComponent]
         val player = playerManager.getPlayerNullable(playerComponent.uuid) ?: return
+
         val viewableProviders: MutableSet<ViewableProvider> = mutableSetOf()
         val staticViewableProviders: MutableSet<StaticViewableProvider> = mutableSetOf()
         val layers: MutableList<LayerEntry> = mutableListOf()
@@ -91,9 +87,6 @@ class ViewSystem(
         if (connection.state != ProtocolState.PLAY) return
         val distance = DEFAULT_RENDER_DISTANCE
 
-        val playerComponent = entity[PlayerComponent]
-        val uuid = playerComponent.uuid
-
         val clientChunkPos = entity.getOrNull(PositionComponent)
             ?.position
             ?.let { ChunkUtils.chunkPosFromVec3D(it) }
@@ -123,13 +116,13 @@ class ViewSystem(
 
         if (layers.isNotEmpty() && dimensionType != null) {
             val classification = LayerClassification.classify(layers)
-            val playerSentChunks = sentChunks.getOrPut(uuid) { mutableSetOf() }
-            val currentContextIDs = playerComponent.viewContextIDs
+            val playerSentChunks = player.sentChunks
 
-            // Если viewContextIDs изменились — сбрасываем кэш отправленных чанков
-            if (lastViewContextIDs[uuid] != currentContextIDs) {
+            // Если изменился набор immutable слоёв — клиент видит устаревший base, шлём всё заново
+            val currentKey = classification.immutableKey
+            if (player.sentChunksBase != currentKey) {
+                player.sentChunksBase = currentKey
                 playerSentChunks.clear()
-                lastViewContextIDs[uuid] = currentContextIDs
             }
 
             // Добавляем чанки из chunksToRefresh в очередь на переотправку

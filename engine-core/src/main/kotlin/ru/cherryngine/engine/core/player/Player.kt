@@ -15,6 +15,7 @@ import ru.cherryngine.lib.minecraft.network.protocol.types.MovePlayerFlags
 import ru.cherryngine.lib.minecraft.network.protocol.types.TeleportFlags
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.world.block.Block
+import ru.cherryngine.lib.world.ImmutableLayerKey
 
 class Player(
     val connection: Connection,
@@ -31,6 +32,9 @@ class Player(
     val currentVisibleViewables: MutableSet<Viewable> = hashSetOf()
     val currentVisibleBlocksViewables: MutableList<BlocksViewable> = mutableListOf()
     val chunksToRefresh: MutableSet<ChunkPos> = hashSetOf()
+
+    var sentChunksBase: ImmutableLayerKey? = null
+    val sentChunks: MutableSet<ChunkPos> = mutableSetOf()
 
     fun getBlockId(pos: Vec3I): Int {
         val chunkPos = ChunkUtils.chunkPosFromVec3I(pos)
