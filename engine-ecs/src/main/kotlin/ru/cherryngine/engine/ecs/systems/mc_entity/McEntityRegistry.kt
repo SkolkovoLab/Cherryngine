@@ -1,6 +1,9 @@
-package ru.cherryngine.engine.core.entity
+package ru.cherryngine.engine.ecs.systems.mc_entity
 
-import java.util.*
+import ru.cherryngine.engine.core.entity.McEntity
+import java.util.HashMap
+import java.util.HashSet
+import java.util.UUID
 
 class McEntityRegistry {
     private val entities = HashMap<UUID, McEntity>()
