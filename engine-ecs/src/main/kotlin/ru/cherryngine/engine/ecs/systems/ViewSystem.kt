@@ -2,12 +2,12 @@ package ru.cherryngine.engine.ecs.systems
 
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
-import ru.cherryngine.engine.core.player.Player
-import ru.cherryngine.engine.core.player.PlayerManager
-import ru.cherryngine.engine.core.view.BlocksViewable
-import ru.cherryngine.engine.core.view.StaticViewableProvider
-import ru.cherryngine.engine.core.view.Viewable
-import ru.cherryngine.engine.core.view.ViewableProvider
+import ru.cherryngine.engine.minecraft.player.Player
+import ru.cherryngine.engine.minecraft.player.PlayerManager
+import ru.cherryngine.engine.minecraft.view.BlocksViewable
+import ru.cherryngine.engine.minecraft.view.StaticViewableProvider
+import ru.cherryngine.engine.minecraft.view.Viewable
+import ru.cherryngine.engine.minecraft.view.ViewableProvider
 import ru.cherryngine.engine.ecs.EcsEntity
 import ru.cherryngine.engine.ecs.components.PlayerComponent
 import ru.cherryngine.engine.ecs.components.PositionComponent
@@ -20,11 +20,11 @@ import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.world.light.LightData
-import ru.cherryngine.engine.core.ChunkPool
-import ru.cherryngine.engine.core.world.LayerClassification
+import ru.cherryngine.engine.minecraft.ChunkPool
+import ru.cherryngine.engine.minecraft.world.LayerClassification
 import ru.cherryngine.lib.world.LayerEntry
 import ru.cherryngine.lib.world.MutableLayerChangeTracker
-import ru.cherryngine.engine.core.world.MutableOverlay
+import ru.cherryngine.engine.minecraft.world.MutableOverlay
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSectionBlocksUpdatePacket
 
 class ViewSystem(

@@ -12,6 +12,7 @@ rootProject.name = "Cherryngine"
 include(
     "engine-core",
     "engine-ecs",
+    "engine-minecraft",
     "engine-integration:grim",
     "engine-integration:viaversion",
     "engine-physics",

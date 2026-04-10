@@ -10,8 +10,8 @@ import ac.grim.grimac.utils.math.Location
 import com.github.retrooper.packetevents.protocol.player.GameMode
 import com.github.retrooper.packetevents.util.Vector3d
 import net.kyori.adventure.text.Component
-import ru.cherryngine.engine.core.commandmanager.CommandSender
-import ru.cherryngine.engine.core.player.Player
+import ru.cherryngine.engine.minecraft.commandmanager.CommandSender
+import ru.cherryngine.engine.minecraft.player.Player
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import java.util.*

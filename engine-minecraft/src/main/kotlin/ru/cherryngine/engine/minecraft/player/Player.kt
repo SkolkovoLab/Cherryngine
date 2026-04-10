@@ -1,0 +1,75 @@
+package ru.cherryngine.engine.minecraft.player
+
+import net.kyori.adventure.text.Component
+import ru.cherryngine.engine.minecraft.commandmanager.CommandSender
+import ru.cherryngine.engine.minecraft.view.BlocksViewable
+import ru.cherryngine.engine.minecraft.view.Viewable
+import ru.cherryngine.lib.math.Vec3D
+import ru.cherryngine.lib.math.Vec3I
+import ru.cherryngine.lib.math.YawPitch
+import ru.cherryngine.lib.minecraft.network.Connection
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundPlayerPositionPacket
+import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSystemChatPacket
+import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.network.protocol.types.MovePlayerFlags
+import ru.cherryngine.lib.minecraft.network.protocol.types.TeleportFlags
+import ru.cherryngine.lib.minecraft.utils.ChunkUtils
+import ru.cherryngine.lib.minecraft.world.block.Block
+import ru.cherryngine.lib.world.ImmutableLayerKey
+
+class Player(
+    val connection: Connection,
+) : CommandSender {
+    val gameProfile = connection.gameProfile
+    val uuid get() = gameProfile.uuid
+    val username get() = gameProfile.username
+
+    var clientPosition: Vec3D = Vec3D.ZERO
+    var clientYawPitch: YawPitch = YawPitch.ZERO
+    var clientMovePlayerFlags: MovePlayerFlags = MovePlayerFlags(false, false)
+    var isSneaking: Boolean = false
+
+    val currentVisibleViewables: MutableSet<Viewable> = hashSetOf()
+    val currentVisibleBlocksViewables: MutableList<BlocksViewable> = mutableListOf()
+    val chunksToRefresh: MutableSet<ChunkPos> = hashSetOf()
+
+    var sentChunksBase: ImmutableLayerKey? = null
+    val sentChunks: MutableSet<ChunkPos> = mutableSetOf()
+
+    fun getBlockId(pos: Vec3I): Int {
+        val chunkPos = ChunkUtils.chunkPosFromVec3I(pos)
+        val blockPos = Vec3I(
+            ChunkUtils.globalToSectionRelative(pos.x),
+            pos.y,
+            ChunkUtils.globalToSectionRelative(pos.z)
+        )
+        val block = currentVisibleBlocksViewables.asReversed().firstNotNullOfOrNull {
+            if (it.chunkPos != chunkPos) return@firstNotNullOfOrNull null
+            it.getBlockId(blockPos)
+        }
+        return block ?: 0
+    }
+
+    fun getBlock(pos: Vec3I): Block {
+        return Block.getBlockByStateId(getBlockId(pos))
+    }
+
+    fun teleport(position: Vec3D, yawPitch: YawPitch) {
+        clientPosition = position
+        clientYawPitch = yawPitch
+
+        connection.sendPacket(
+            ClientboundPlayerPositionPacket(
+                0,
+                position,
+                Vec3D.ZERO,
+                yawPitch,
+                TeleportFlags.EMPTY
+            )
+        )
+    }
+
+    override fun sendMessage(message: Component) {
+        connection.sendPacket(ClientboundSystemChatPacket(message, false))
+    }
+}

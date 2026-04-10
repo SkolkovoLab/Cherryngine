@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     api(project(":engine-core"))
+    api(project(":engine-minecraft"))
     compileOnly(project(":lib-viaversion"))
 
     api("ac.grim.grimac:common:2.3.73-c2c044f+lite-no_relocate")

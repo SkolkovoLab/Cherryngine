@@ -16,9 +16,9 @@ import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
 import jakarta.inject.Singleton
 import org.incendo.cloud.CommandManager
-import ru.cherryngine.engine.core.commandmanager.CommandSender
-import ru.cherryngine.engine.core.events.PacketEvent
-import ru.cherryngine.engine.core.events.PlayerCreatedEvent
+import ru.cherryngine.engine.minecraft.commandmanager.CommandSender
+import ru.cherryngine.engine.minecraft.events.PacketEvent
+import ru.cherryngine.engine.minecraft.events.PlayerCreatedEvent
 import ru.cherryngine.integration.grim.command.CommandManagerImpl
 import ru.cherryngine.integration.grim.packetevents.PacketEventsImpl
 import ru.cherryngine.lib.minecraft.network.NettyServer
