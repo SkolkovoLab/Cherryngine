@@ -37,6 +37,8 @@ class MinecraftWorldServiceHandler(
         player.sentChunks.clear()
     }
 
+    fun getContextsForPlayer(uuid: UUID): Set<String> = playerContexts[uuid] ?: emptySet()
+
     fun getLayersForPlayer(uuid: UUID): List<LayerEntry> {
         val contextIDs = playerContexts[uuid] ?: return emptyList()
         return contextIDs.flatMap { layersByContext[it] ?: emptyList() }

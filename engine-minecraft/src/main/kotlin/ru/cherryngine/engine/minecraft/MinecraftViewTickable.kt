@@ -1,16 +1,10 @@
-package ru.cherryngine.engine.minecraft.systems
+package ru.cherryngine.engine.minecraft
 
-import com.github.quillraven.fleks.IteratingSystem
-import com.github.quillraven.fleks.World.Companion.family
+import jakarta.inject.Singleton
 import ru.cherryngine.engine.core.PlayerManager
-import ru.cherryngine.engine.ecs.EcsEntity
-import ru.cherryngine.engine.ecs.components.PlayerComponent
-import ru.cherryngine.engine.ecs.components.PositionComponent
-import ru.cherryngine.engine.minecraft.ChunkPool
-import ru.cherryngine.engine.minecraft.MinecraftWorldServiceHandler
+import ru.cherryngine.engine.core.Tickable
 import ru.cherryngine.engine.minecraft.entity.McEntityRegistry
 import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
-import ru.cherryngine.engine.minecraft.view.BlocksViewable
 import ru.cherryngine.engine.minecraft.view.Viewable
 import ru.cherryngine.engine.minecraft.world.LayerClassification
 import ru.cherryngine.engine.minecraft.world.MutableOverlay
@@ -24,39 +18,38 @@ import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.minecraft.world.light.LightData
 import ru.cherryngine.lib.world.LayerEntry
 import ru.cherryngine.lib.world.MutableLayerChangeTracker
+import kotlin.time.Duration
 
-class MinecraftViewSystem(
-    val playerManager: PlayerManager,
-    val chunkPool: ChunkPool,
-    val worldServiceHandler: MinecraftWorldServiceHandler,
-    val mcEntityRegistry: McEntityRegistry,
-    val changeTracker: MutableLayerChangeTracker? = null,
-) : IteratingSystem(
-    family { all(PlayerComponent) }
-) {
+@Singleton
+class MinecraftViewTickable(
+    private val playerManager: PlayerManager,
+    private val chunkPool: ChunkPool,
+    private val worldServiceHandler: MinecraftWorldServiceHandler,
+    private val mcEntityRegistry: McEntityRegistry,
+    private val changeTracker: MutableLayerChangeTracker? = null,
+) : Tickable {
     companion object {
         const val DEFAULT_RENDER_DISTANCE = 2
     }
 
-    override fun onTickEntity(entity: EcsEntity) {
-        val playerComponent = entity[PlayerComponent]
-        val player = playerManager.getPlayerNullable(playerComponent.uuid) as? MinecraftPlayer ?: return
+    override fun tick(delta: Duration) {
+        for (player in playerManager.onlinePlayers()) {
+            val mcPlayer = player as? MinecraftPlayer ?: continue
+            val layers = worldServiceHandler.getLayersForPlayer(player.uuid)
+            val dimensionType = worldServiceHandler.dimensionType
+            val playerContextIDs = worldServiceHandler.getContextsForPlayer(player.uuid)
+            val viewables = mcEntityRegistry.allEntities()
+                .filter { entity ->
+                    val ctx = entity.viewContextIDs
+                    ctx.isEmpty() || ctx.any { it in playerContextIDs }
+                }
+                .toSet()
 
-        val layers = worldServiceHandler.getLayersForPlayer(playerComponent.uuid)
-        val dimensionType = worldServiceHandler.dimensionType
-        val playerContextIDs = playerComponent.viewContextIDs
-        val viewables: Set<Viewable> = mcEntityRegistry.allEntities()
-            .filter { entity ->
-                val entityContexts = entity.viewContextIDs
-                entityContexts.isEmpty() || entityContexts.any { it in playerContextIDs }
-            }
-            .toSet()
-
-        update(entity, player, viewables, layers, dimensionType)
+            update(mcPlayer, viewables, layers, dimensionType)
+        }
     }
 
-    fun update(
-        entity: EcsEntity,
+    private fun update(
         player: MinecraftPlayer,
         viewables: Set<Viewable>,
         layers: List<LayerEntry>,
@@ -66,10 +59,7 @@ class MinecraftViewSystem(
         if (connection.state != ProtocolState.PLAY) return
         val distance = DEFAULT_RENDER_DISTANCE
 
-        val clientChunkPos = entity.getOrNull(PositionComponent)
-            ?.position
-            ?.let { ChunkUtils.chunkPosFromVec3D(it) }
-            ?: ChunkPos.ZERO
+        val clientChunkPos = ChunkUtils.chunkPosFromVec3D(player.clientPosition)
 
         val currentVisibleViewables = player.currentVisibleViewables
         val currentVisibleStaticViewables = player.currentVisibleBlocksViewables
