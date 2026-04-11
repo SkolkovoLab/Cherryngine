@@ -44,7 +44,13 @@ class MinecraftViewSystem(
 
         val layers = worldServiceHandler.getLayersForPlayer(playerComponent.uuid)
         val dimensionType = worldServiceHandler.dimensionType
-        val viewables: Set<Viewable> = mcEntityRegistry.allEntities().toSet()
+        val playerContextIDs = playerComponent.viewContextIDs
+        val viewables: Set<Viewable> = mcEntityRegistry.allEntities()
+            .filter { entity ->
+                val entityContexts = entity.viewContextIDs
+                entityContexts.isEmpty() || entityContexts.any { it in playerContextIDs }
+            }
+            .toSet()
 
         update(entity, player, viewables, layers, dimensionType)
     }

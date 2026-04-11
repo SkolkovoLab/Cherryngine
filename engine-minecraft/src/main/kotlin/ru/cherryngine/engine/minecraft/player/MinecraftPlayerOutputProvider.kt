@@ -1,5 +1,6 @@
 package ru.cherryngine.engine.minecraft.player
 
+import jakarta.inject.Singleton
 import net.kyori.adventure.text.Component
 import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.core.PlayerOutputProvider
@@ -7,6 +8,7 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import java.util.UUID
 
+@Singleton
 class MinecraftPlayerOutputProvider(
     private val playerManager: PlayerManager,
 ) : PlayerOutputProvider {

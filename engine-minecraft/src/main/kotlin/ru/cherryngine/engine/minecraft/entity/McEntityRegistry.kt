@@ -1,9 +1,11 @@
 package ru.cherryngine.engine.minecraft.entity
 
+import jakarta.inject.Singleton
 import java.util.HashMap
 import java.util.HashSet
 import java.util.UUID
 
+@Singleton
 class McEntityRegistry {
     private val entities = HashMap<UUID, McEntity>()
     private val seenThisTick = HashSet<UUID>()
@@ -18,6 +20,12 @@ class McEntityRegistry {
 
     fun beginTick() {
         seenThisTick.clear()
+    }
+
+    fun get(mcEntityId: UUID): McEntity? = entities[mcEntityId]
+
+    fun remove(mcEntityId: UUID) {
+        entities.remove(mcEntityId)
     }
 
     fun allEntities(): Collection<McEntity> = entities.values

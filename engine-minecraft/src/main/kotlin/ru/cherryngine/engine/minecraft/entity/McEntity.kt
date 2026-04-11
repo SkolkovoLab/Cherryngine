@@ -23,6 +23,7 @@ class McEntity(
     private val viewers = mutableSetOf<MinecraftPlayer>()
 
     override var viewerPredicate: (MinecraftPlayer) -> Boolean = { true }
+    var viewContextIDs: Set<String> = emptySet()
 
     override val chunkPos: ChunkPos
         get() = ChunkUtils.chunkPosFromVec3D(position)
