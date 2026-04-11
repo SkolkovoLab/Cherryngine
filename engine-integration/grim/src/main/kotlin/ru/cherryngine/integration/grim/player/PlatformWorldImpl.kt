@@ -3,7 +3,7 @@ package ru.cherryngine.integration.grim.player
 import ac.grim.grimac.platform.api.world.PlatformChunk
 import ac.grim.grimac.platform.api.world.PlatformWorld
 import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState
-import ru.cherryngine.engine.minecraft.player.Player
+import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
 import ru.cherryngine.lib.math.Vec3I
 import java.util.*
 

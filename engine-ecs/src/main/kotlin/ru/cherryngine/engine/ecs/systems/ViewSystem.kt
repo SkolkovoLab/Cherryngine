@@ -2,8 +2,8 @@ package ru.cherryngine.engine.ecs.systems
 
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
-import ru.cherryngine.engine.minecraft.player.Player
-import ru.cherryngine.engine.minecraft.player.PlayerManager
+import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
+import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.minecraft.view.BlocksViewable
 import ru.cherryngine.engine.minecraft.view.StaticViewableProvider
 import ru.cherryngine.engine.minecraft.view.Viewable
@@ -40,7 +40,7 @@ class ViewSystem(
 
     override fun onTickEntity(entity: EcsEntity) {
         val playerComponent = entity[PlayerComponent]
-        val player = playerManager.getPlayerNullable(playerComponent.uuid) ?: return
+        val player = playerManager.getPlayerNullable(playerComponent.uuid) as? MinecraftPlayer ?: return
 
         val viewableProviders: MutableSet<ViewableProvider> = mutableSetOf()
         val staticViewableProviders: MutableSet<StaticViewableProvider> = mutableSetOf()
@@ -77,7 +77,7 @@ class ViewSystem(
 
     fun update(
         entity: EcsEntity,
-        player: Player,
+        player: MinecraftPlayer,
         viewableProviders: Set<ViewableProvider>,
         staticViewableProviders: Set<StaticViewableProvider>,
         layers: List<LayerEntry>,
@@ -186,7 +186,7 @@ class ViewSystem(
     }
 
     private fun sendMutableOverlay(
-        player: Player,
+        player: MinecraftPlayer,
         classification: LayerClassification,
         dimensionType: DimensionType,
         chunkPos: ChunkPos,

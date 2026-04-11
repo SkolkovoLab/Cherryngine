@@ -7,23 +7,24 @@ import org.incendo.cloud.parser.ArgumentParseResult
 import org.incendo.cloud.suggestion.BlockingSuggestionProvider
 import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.engine.minecraft.commandmanager.SArgumentParser
-import ru.cherryngine.engine.minecraft.player.Player
-import ru.cherryngine.engine.minecraft.player.PlayerManager
+import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
+import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.lib.minecraft.network.protocol.types.ArgumentParserType
 
 @Singleton
 class PlayerParser(
     private val playerManager: PlayerManager,
-) : SArgumentParser<Player>, BlockingSuggestionProvider.Strings<CommandSender> {
-    override val type: Class<Player> = Player::class.java
+) : SArgumentParser<MinecraftPlayer>, BlockingSuggestionProvider.Strings<CommandSender> {
+    override val type: Class<MinecraftPlayer> = MinecraftPlayer::class.java
     override val argumentParserType: ArgumentParserType = ArgumentParserType.GameProfile
 
     override fun parse(
         commandContext: CommandContext<CommandSender>,
         commandInput: CommandInput,
-    ): ArgumentParseResult<Player> {
+    ): ArgumentParseResult<MinecraftPlayer> {
         val input = commandInput.readString()
-        val player = playerManager.getPlayerNullable(input)!!
+        val player = playerManager.getPlayerNullable(input) as? MinecraftPlayer
+            ?: return ArgumentParseResult.failure(IllegalArgumentException("Player '$input' not found"))
         return ArgumentParseResult.success(player)
     }
 
@@ -31,10 +32,6 @@ class PlayerParser(
         commandContext: CommandContext<CommandSender?>,
         input: CommandInput,
     ): Iterable<String> {
-        return getPlayers(commandContext.sender()).map { it.username }.toList()
-    }
-
-    private fun getPlayers(sender: CommandSender): Sequence<Player> {
-        return playerManager.onlinePlayers().asSequence()
+        return playerManager.onlinePlayers().map { it.username }.toList()
     }
 }

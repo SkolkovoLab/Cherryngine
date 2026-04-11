@@ -1,6 +1,7 @@
 package ru.cherryngine.engine.minecraft.player
 
 import net.kyori.adventure.text.Component
+import ru.cherryngine.engine.core.Player
 import ru.cherryngine.engine.core.commandmanager.CommandSender
 import ru.cherryngine.engine.minecraft.view.BlocksViewable
 import ru.cherryngine.engine.minecraft.view.Viewable
@@ -17,12 +18,11 @@ import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.world.ImmutableLayerKey
 
-class Player(
+class MinecraftPlayer(
     val connection: Connection,
-) : CommandSender {
-    val gameProfile = connection.gameProfile
-    val uuid get() = gameProfile.uuid
-    val username get() = gameProfile.username
+) : Player, CommandSender {
+    override val uuid get() = connection.gameProfile.uuid
+    override val username get() = connection.gameProfile.username
 
     var clientPosition: Vec3D = Vec3D.ZERO
     var clientYawPitch: YawPitch = YawPitch.ZERO

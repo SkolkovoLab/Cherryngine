@@ -4,7 +4,7 @@ import ac.grim.grimac.platform.api.sender.SenderFactory
 import jakarta.inject.Singleton
 import net.kyori.adventure.text.Component
 import ru.cherryngine.engine.core.commandmanager.CommandSender
-import ru.cherryngine.engine.minecraft.player.Player
+import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
 import java.util.*
 
 @Singleton

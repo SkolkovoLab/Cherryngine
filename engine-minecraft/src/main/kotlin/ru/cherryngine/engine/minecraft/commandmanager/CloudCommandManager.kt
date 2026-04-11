@@ -19,8 +19,8 @@ import org.incendo.cloud.suggestion.Suggestion
 import org.slf4j.Logger
 import ru.cherryngine.engine.minecraft.commandmanager.brigadier.CommandNodeUtils
 import ru.cherryngine.engine.minecraft.events.PacketEvent
-import ru.cherryngine.engine.minecraft.player.Player
-import ru.cherryngine.engine.minecraft.player.PlayerManager
+import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
+import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.core.utils.component
 import ru.cherryngine.lib.minecraft.network.Connection
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundCommandSuggestionsPacket
@@ -70,11 +70,11 @@ class CloudCommandManager(
         connection.sendPacket(commandsPacket)
     }
 
-    private fun onCommandPacket(packet: ServerboundChatCommandPacket, player: Player) {
+    private fun onCommandPacket(packet: ServerboundChatCommandPacket, player: MinecraftPlayer) {
         commandExecutor().executeCommand(player, packet.command)
     }
 
-    private fun onTabCompletePacket(packet: ServerboundCommandSuggestionPacket, player: Player) {
+    private fun onTabCompletePacket(packet: ServerboundCommandSuggestionPacket, player: MinecraftPlayer) {
         val future = suggestionFactory().suggest(player, packet.text.removePrefix("/"))
         future.whenComplete { suggestions, throwable ->
             if (throwable != null) throw throwable
@@ -93,8 +93,8 @@ class CloudCommandManager(
     fun onPacket(event: PacketEvent) {
         val (connection, packet) = event
         when (packet) {
-            is ServerboundChatCommandPacket -> onCommandPacket(packet, playerManager.getPlayer(connection))
-            is ServerboundCommandSuggestionPacket -> onTabCompletePacket(packet, playerManager.getPlayer(connection))
+            is ServerboundChatCommandPacket -> onCommandPacket(packet, playerManager.getPlayer(connection.gameProfile.uuid) as MinecraftPlayer)
+            is ServerboundCommandSuggestionPacket -> onTabCompletePacket(packet, playerManager.getPlayer(connection.gameProfile.uuid) as MinecraftPlayer)
             is ServerboundPlayerLoadedPacket -> onPlayerInit(connection)
         }
     }

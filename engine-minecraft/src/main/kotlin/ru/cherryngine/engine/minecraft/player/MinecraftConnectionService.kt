@@ -4,6 +4,7 @@ import io.micronaut.context.event.ApplicationEventPublisher
 import io.micronaut.runtime.event.annotation.EventListener
 import jakarta.inject.Singleton
 import net.kyori.adventure.text.minimessage.MiniMessage
+import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.minecraft.events.DisconnectEvent
 import ru.cherryngine.engine.minecraft.events.PacketEvent
 import ru.cherryngine.engine.minecraft.events.PlayerConfigurationAsyncEvent
@@ -26,37 +27,14 @@ import ru.cherryngine.lib.minecraft.network.protocol.types.ServerStatus
 import ru.cherryngine.lib.minecraft.registry.Registries
 import kotlinx.coroutines.channels.Channel
 import java.util.*
-import java.util.concurrent.ConcurrentHashMap
 
 @Singleton
-class PlayerManager(
+class MinecraftConnectionService(
+    private val playerManager: PlayerManager,
     val playerCreatedEventPublisher: ApplicationEventPublisher<PlayerCreatedEvent>,
     val playerConfigurationAsyncEventPublisher: ApplicationEventPublisher<PlayerConfigurationAsyncEvent>,
 ) {
-    val playerJoinChannel = Channel<UUID>(Channel.UNLIMITED)
-    val playerLeaveChannel = Channel<UUID>(Channel.UNLIMITED)
     val packetChannel = Channel<Pair<UUID, ServerboundPacket>>(Channel.UNLIMITED)
-
-    private val playersByUUID: MutableMap<UUID, Player> = ConcurrentHashMap()
-    private val playersByUsername: MutableMap<String, Player> = ConcurrentHashMap()
-
-    fun getPlayerNullable(uuid: UUID): Player? {
-        return playersByUUID[uuid]
-    }
-
-    fun getPlayerNullable(username: String): Player? {
-        return playersByUsername[username.lowercase()]
-    }
-
-    fun getPlayer(uuid: UUID): Player {
-        return playersByUUID[uuid] ?: throw NullPointerException("Player $uuid not found")
-    }
-
-    fun getPlayer(connection: Connection): Player {
-        return getPlayer(connection.gameProfile.uuid)
-    }
-
-    fun onlinePlayers() = playersByUUID.values.toList()
 
     @EventListener
     fun onPacket(event: PacketEvent) {
@@ -89,16 +67,14 @@ class PlayerManager(
                 }
 
                 val uuid = connection.gameProfile.uuid
-                val username = connection.gameProfile.username
-                val player: Player
-                if (uuid !in playersByUUID) {
-                    player = Player(connection)
-                    playersByUUID[uuid] = player
-                    playersByUsername[username.lowercase()] = player
-                    playerJoinChannel.trySend(uuid)
+                val existing = playerManager.getPlayerNullable(uuid)
+                val player: MinecraftPlayer
+                if (existing == null) {
+                    player = MinecraftPlayer(connection)
+                    playerManager.register(player)
                     playerCreatedEventPublisher.publishEvent(PlayerCreatedEvent(player))
                 } else {
-                    player = playersByUUID[uuid]!!
+                    player = existing as MinecraftPlayer
                 }
 
                 Thread.startVirtualThread {
@@ -128,7 +104,7 @@ class PlayerManager(
             )
 
             is ServerboundPlayerInputPacket -> {
-                val player = playersByUUID[connection.gameProfile.uuid] ?: return
+                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) as? MinecraftPlayer ?: return
                 player.isSneaking = true
             }
         }
@@ -144,7 +120,7 @@ class PlayerManager(
         yawPitch: YawPitch?,
         flags: MovePlayerFlags,
     ) {
-        val player = playersByUUID[connection.gameProfile.uuid] ?: return
+        val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) as? MinecraftPlayer ?: return
         if (pos != null) player.clientPosition = pos
         if (yawPitch != null) player.clientYawPitch = yawPitch
         player.clientMovePlayerFlags = flags
@@ -155,10 +131,7 @@ class PlayerManager(
         val connection = event.connection
         if (connection.state == ProtocolState.PLAY || connection.state == ProtocolState.CONFIGURATION) {
             val uuid = connection.gameProfile.uuid
-            val username = connection.gameProfile.username
-            playerLeaveChannel.trySend(uuid)
-            playersByUUID.remove(uuid)
-            playersByUsername.remove(username.lowercase())
+            playerManager.unregister(uuid)
         }
     }
 }
