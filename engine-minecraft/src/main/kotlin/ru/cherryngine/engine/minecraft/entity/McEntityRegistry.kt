@@ -20,6 +20,8 @@ class McEntityRegistry {
         seenThisTick.clear()
     }
 
+    fun allEntities(): Collection<McEntity> = entities.values
+
     fun endTick(onRemove: (McEntity) -> Unit) {
         val toRemove = entities.keys.filter { it !in seenThisTick }
         toRemove.forEach { uuid ->
