@@ -25,6 +25,7 @@ cloud = "2.0.0"
 creative = "1.7.3"
 viaversion = "5.7.1"
 minestom-data = "1.21.11-rv1"
+mcprotocollib = "1.21.11-SNAPSHOT"
 
 [libraries]
 
@@ -65,6 +66,7 @@ kyori-adventure-text-serializer-gson = { module = "net.kyori:adventure-text-seri
 kyori-adventure-text-serializer-ansi = { module = "net.kyori:adventure-text-serializer-ansi", version.ref = "kyori-adventure" }
 kyori-adventure-text-serializer-plain = { module = "net.kyori:adventure-text-serializer-plain", version.ref = "kyori-adventure" }
 minestom-data = { module = "net.minestom:data", version.ref = "minestom-data" }
+mcprotocollib = { module = "org.geysermc.mcprotocollib:protocol", version.ref = "mcprotocollib" }
 
 cloud-core = { module = "org.incendo:cloud-core", version.ref = "cloud" }
 cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud" }

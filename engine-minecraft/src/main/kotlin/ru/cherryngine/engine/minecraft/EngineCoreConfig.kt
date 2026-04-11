@@ -2,7 +2,7 @@ package ru.cherryngine.engine.minecraft
 
 import io.micronaut.context.annotation.ConfigurationProperties
 
-@ConfigurationProperties("engine.core")
+@ConfigurationProperties("engine.minecraft")
 data class EngineCoreConfig(
     val address: String = "0.0.0.0",
     val port: Int = 25565,

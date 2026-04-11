@@ -13,6 +13,7 @@ include(
     "engine-core",
     "engine-ecs",
     "engine-minecraft",
+    "engine-mcprotocollib",
     "engine-integration:grim",
     "engine-integration:viaversion",
     "engine-physics",

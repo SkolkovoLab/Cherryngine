@@ -17,4 +17,6 @@ repositories {
     maven("https://repo.codemc.io/repository/maven-releases/")
     maven("https://repo.codemc.io/repository/maven-snapshots/")
     maven("https://nexus.scarsz.me/content/groups/public/") // Configuralize for GrimAC
+    maven("https://repo.opencollab.dev/maven-releases/") // MCProtocolLib deps
+    maven("https://repo.opencollab.dev/maven-snapshots/") // MCProtocolLib
 }
