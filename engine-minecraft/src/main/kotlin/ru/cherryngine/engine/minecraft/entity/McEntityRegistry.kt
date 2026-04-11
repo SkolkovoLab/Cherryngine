@@ -1,9 +1,7 @@
 package ru.cherryngine.engine.minecraft.entity
 
-import jakarta.inject.Singleton
 import java.util.UUID
 
-@Singleton
 class McEntityRegistry {
     private val entities = HashMap<UUID, McEntity>()
 

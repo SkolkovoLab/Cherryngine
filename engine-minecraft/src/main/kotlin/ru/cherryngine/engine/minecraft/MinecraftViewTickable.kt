@@ -1,6 +1,5 @@
 package ru.cherryngine.engine.minecraft
 
-import jakarta.inject.Singleton
 import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.core.Tickable
 import ru.cherryngine.engine.minecraft.entity.McEntityRegistry
@@ -20,7 +19,6 @@ import ru.cherryngine.lib.world.LayerEntry
 import ru.cherryngine.lib.world.MutableLayerChangeTracker
 import kotlin.time.Duration
 
-@Singleton
 class MinecraftViewTickable(
     private val playerManager: PlayerManager,
     private val chunkPool: ChunkPool,
