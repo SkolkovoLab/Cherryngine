@@ -1,6 +1,8 @@
 # Cherryngine Engine
 
-Ядро для Minecraft-серверов на Kotlin. Пишется с нуля, без Minestom. Ядро — это **фреймворк**: подключается в проект, к нему добавляются библиотеки с готовыми системами, и на их базе собирается конкретный игровой режим.
+Ядро для игровых серверов на Kotlin. Пишется с нуля, без Minestom. Ядро — это **фреймворк**: подключается в проект, к нему добавляются библиотеки с готовыми системами, и на их базе собирается конкретный игровой режим.
+
+Изначально разрабатывалось для Minecraft-серверов, но архитектура намеренно протокол-независимая — в одном инстансе могут одновременно играть игроки с разных платформ (Minecraft, Hytale, и т.д.).
 
 ---
 
@@ -8,8 +10,8 @@
 
 - **Максимальная гибкость.** Всё переопределяемо, никаких жёстких ограничений.
 - **Сложное ядро, простые реализации.** Вся сложность — в ядре, разработчики геймплея пишут простой код.
-- **Нет ванилы.** Режимы — перенос других игр в Minecraft (CS, GTA, билд-баттл, RPG и т.д.). Redstone, mob AI, генерация мира, физика воды — не поддерживаются.
-- **Слоистая архитектура.** Слабые разработчики пишут декларативный код, средние — ECS-системы, сильные — ядро.
+- **Нет ванилы.** Режимы — перенос других игр (CS, GTA, билд-баттл, RPG и т.д.). Redstone, mob AI, генерация мира — не поддерживаются.
+- **Платформа первична, ECS — адаптер поверх неё.** ECS системы не знают про Minecraft. Платформенная логика живёт в отдельных сервисах и Tickable.
 - **Слои общаются через компоненты, а не через прямые вызовы.** Геймплейная система не "вызывает" платформенную — она ставит компонент, платформенная система его обрабатывает.
 - **Никаких глобальных синглтонов с игровым состоянием.** Всё состояние принадлежит конкретному Instance.
 - **Events — не основной механизм коммуникации.** Если тянет сделать ивент — подумай, не лучше ли компонент + система.
@@ -17,106 +19,190 @@
 
 ---
 
-## Слоистая архитектура
+## Архитектурные слои
 
 ```
 Уровни (контент)         — декларативный DSL, пишут слабые разработчики
-   |
-Геймплейные системы      — WeaponSystem, AbilitySystem
-   |
-Базовые системы          — MovementSystem, DamageSystem
-   |
-Платформенные системы    — ViewSystem, ConnectionSystem, WorldSystem
-   |
-Protocol API             — абстракция над пакетами
-   |
-Реализации протокола     — адаптеры под конкретные версии
+|
+Геймплейные системы      — WeaponSystem, AbilitySystem (ECS)
+|
+Базовые ECS системы      — MovementSystem, DamageSystem
+|
+Платформенные сервисы    — WorldService, PlayerService (НЕ ECS)
+|
+Protocol API             — абстракции: Player, Tickable, InstanceSetup
+|
+Реализации протокола     — MinecraftPlayer, MinecraftViewTickable и т.д.
 ```
 
 ---
 
 ## Instance — единица изоляции
 
-**Instance** — изолированный игровой контекст (сессия, матч, лобби, арена). Концептуально — актор:
+**`Instance`** — изолированный игровой контекст (сессия, матч, лобби, арена). Принимает список `Tickable` и тикает их в правильном порядке:
 
-- Собственное состояние, свой тик, свой ECS-мир, один `PhysicsSpace`
-- Никто снаружи не лезет внутрь напрямую
-- Между инстансами — только асинхронные сообщения
-- Нельзя "перенести" entity между инстансами, только удалить из одного и создать в другом
-- Потенциально может жить на другой машине (location transparency)
+```kotlin
+// engine-core
+class Instance(
+    val tickDuration: Duration,
+    val tickables: List<Tickable>,
+) : AutoCloseable {
+    fun start() { ... }
+    fun stop() { ... }
+}
+
+// Типичная сборка:
+Instance(
+    tickDuration = 50.milliseconds,
+    tickables = listOf(
+        EcsWorldTickable(ecsWorld),          // ECS тик — платформо-независимый
+        MinecraftViewTickable(...),           // Minecraft тик — отправка чанков, entity
+    )
+)
+```
 
 **Следствия:**
 
-1. **Нет глобального состояния.** Никаких `PlayerManager.getPlayer(uuid)` как игровой сущности.
-2. **Между Instance — только ID и сериализуемые сообщения.** Никаких прямых ссылок на объекты из другого Instance.
-3. **Все сообщения между Instance — `@Serializable`.** Даже если сейчас всё в одном процессе.
-4. **Тики Instance независимы.** Один лагает — другие не страдают.
-5. **Нет глобальной БД на уровне ядра.** Если Instance нужны сохранения — система внутри него сама общается с БД асинхронно.
+1. **Нет глобального состояния.** `PlayerManager` хранит `Player` интерфейс, не игровую сущность.
+2. **Тики независимы.** Один инстанс лагает — другие не страдают.
+3. **Per-instance объекты** (`McEntityRegistry`, фабрики view) создаются через `InstanceSetupFactory.create()`, не через DI.
 
 ---
 
-## Connection vs Player (критично!)
+## Кроссплатформенность
 
-**В ядре нет класса Player как игровой сущности.** Есть три разных концепции:
+**Принцип:** один инстанс может обслуживать игроков с разных платформ одновременно.
 
-- **Connection** — TCP-сокет с клиентом, протокольное состояние. Живёт на gateway-слое **вне** инстансов, в `engine-core`.
-- **`Player` в `engine-core`** — клиентский стейт: что уже отправлено клиенту, текущее состояние соединения, позиция клиента, видимые чанки. Это не игровая сущность — это состояние соединения.
-- **Entity внутри Instance** — обычная ECS entity с компонентами (`PlayerComponent(uuid)`, `PositionComponent`). Это игровое представление персонажа.
+**`Player`** в `engine-core` — интерфейс:
+```kotlin
+interface Player {
+    val uuid: UUID
+    val username: String
+    fun sendMessage(message: Component)
+}
+```
 
-Связь между Connection и ECS entity — через UUID. Connection-уровневые события (`ConnectEvent`, `DisconnectEvent`, `PacketEvent`) — глобальные через Micronaut event bus, так как Connection живёт глобально вне инстансов.
+Реализации: `MinecraftPlayer`, `HytalePlayer` (гипотетически).
 
-**Почему это важно:** радикальное отличие от Bukkit/Spigot, где Player — и сущность, и подключение. Разделение даёт reconnect, спектатор-режимы, distributed-архитектуру.
+**`WorldService`** — диспетчер с паттерном handler:
+```kotlin
+// engine-core
+class WorldService(private val handlers: List<WorldServiceHandler>) {
+    fun setPlayerContext(contextIDs: Set<String>, player: Player) {
+        handlers.firstOrNull { it.canHandle(player) }?.setPlayerContext(player.uuid, contextIDs)
+    }
+}
+
+interface WorldServiceHandler {
+    fun canHandle(player: Player): Boolean  // проверяется через instanceof
+    fun setPlayerContext(uuid: UUID, contextIDs: Set<String>)
+    fun onPlayerJoin(player: Player)
+    fun onPlayerLeave(player: Player)
+}
+```
+
+`@Singleton` реализации регистрируются в Micronaut DI — `WorldService` получает их список автоматически. Новая платформа = новый `@Singleton`, ничего не меняется.
+
+**View для entity** — Composite паттерн:
+```kotlin
+// AxolotlView делегирует всем платформам
+class CompositeAxolotlView(private val views: List<AxolotlView>) : AxolotlView {
+    override fun updatePosition(position: Vec3D, yawPitch: YawPitch) =
+        views.forEach { it.updatePosition(position, yawPitch) }
+    // ...
+}
+```
+
+Аксолотль виден и Minecraft-игроку и Hytale-игроку одновременно — каждый получает пакеты своей платформы.
+
+---
+
+## InstanceSetup — per-instance платформенные ресурсы
+
+`McEntityRegistry`, фабрики view и платформенные Tickable должны быть **per-instance**, не `@Singleton`. Для этого используется паттерн `InstanceSetupFactory`:
+
+```kotlin
+// engine-core
+interface InstanceSetup {
+    fun createTickables(): List<Tickable>
+}
+
+interface InstanceSetupFactory<T : InstanceSetup> {
+    fun create(): T
+}
+```
+
+```kotlin
+// impl-demo
+interface DemoInstanceSetup : InstanceSetup {
+    val axolotlViewFactory: AxolotlViewFactory
+    val cubeViewFactory: CubeViewFactory
+}
+
+interface DemoInstanceSetupFactory : InstanceSetupFactory<DemoInstanceSetup>
+```
+
+```kotlin
+// impl-demo:minecraft — @Singleton фабрика создаёт per-instance setup
+@Singleton
+class MinecraftDemoInstanceSetupFactory(...) : DemoInstanceSetupFactory {
+    override fun create() = MinecraftDemoInstanceSetup(...) // создаёт McEntityRegistry внутри
+}
+```
+
+`DemoInit` получает `List<DemoInstanceSetupFactory>` через DI — по одной на каждую платформу. Вызывает `create()` для получения per-instance объектов.
 
 ---
 
 ## ECS — основа геймплейного слоя
 
-Внутри Instance всё состояние живёт в ECS. Реализация — **Fleks** (нативный Kotlin ECS).
+ECS **не знает про Minecraft**. Реализация — **Fleks 2.12**.
 
 **Ключевые принципы:**
 
-- **Data-only компоненты.** Компоненты — `data class`, без лямбд, ссылок на внешние ресурсы, `File`/`Socket`/`Thread`. Поведение — только в системах. Это необходимо для будущей сериализации инстансов.
-- **Системы не хранят состояние в полях класса.** Всё состояние между тиками — в компонентах или resources. Нарушение ломает сериализацию инстансов.
-- **Явный порядок систем внутри тика.** Никаких "приоритетов слушателей", никаких глобальных ивентов как основного механизма.
-- **Порядок событий — через фазы тика.** Все источники урона собираются → применяются модификаторы → суммируется → проверяется смерть. Всё за один тик, детерминированно.
+- **Data-only компоненты.** `data class`, без лямбд, ссылок на `File`/`Socket`/`Thread`. Поведение — только в системах.
+- **Системы не хранят состояние в полях класса.** Всё состояние между тиками — в компонентах. Нарушение ломает сериализацию инстансов.
+- **Явный порядок систем.** Никаких "приоритетов слушателей".
 - **Реактивность — через change detection.** Система запрашивает "дай всех у кого `Health` изменилось", не через подписки.
 
-**Текущий порядок систем в тике:**
+**Порядок систем в тике:**
 ```
-1. ReadClientPosition    — чтение входящих позиций клиента
-2. CommandActions        — выполнение команд
-3. [Геймплейные системы] — игровая логика
-4. PhysicsSystem         — симуляция физики
-5. [World/Layer системы] — подготовка данных мира
-6. ViewSystem            — отправка блоков клиенту
-7. WriteClientPosition   — отправка позиций клиенту
-8. ClearEvents           — очистка event-компонентов
+1. PlayerInitSystem       — join/leave из каналов PlayerManager → ECS entity
+2. ReadClientPosition     — позиция клиента → PositionComponent
+3. CommandActions         — выполнение команд из очереди
+4. [Геймплейные системы]  — игровая логика
+5. PhysicsSystem          — симуляция физики
+6. ViewContextSyncSystem  — PlayerComponent.viewContextIDs → WorldService
+7. WriteClientPosition    — PositionComponent → телепорт клиенту
+8. ClearEvents            — очистка event-компонентов
+```
+
+**`PlayerIndex`** — O(1) поиск ECS entity по UUID через `FamilyHook`:
+```kotlin
+val entity = playerIndex.getOrThrow(uuid) // не O(n) поиск!
 ```
 
 ---
 
 ## Система слоёв (Layer System)
 
-Нативная поддержка персонального вида мира для каждого игрока. Используется для двух независимых задач: **визуализация** (`viewContextIDs`) и **физика** (`physContextIDs`).
+Нативная поддержка персонального вида мира для каждого игрока без копирования мира. Используется для **визуализации** (`viewContextIDs`) и **физики** (`physContextIDs`).
 
 ### Кейсы
 
-- **Билд-баттл**: у каждого игрока свой холст на одних координатах, во время голосования все смотрят один холст.
-- **Квартиры (GTA Online style)**: игрок в своей квартире видит улицу через окно, но снаружи квартира не видна. У каждого игрока своя квартира на одном и том же месте.
+- **Квартиры (GTA Online style)**: каждый игрок видит свою квартиру на одних координатах.
+- **Билд-баттл**: у каждого игрока свой холст, во время голосования все видят один холст.
 - **Обычные арены**: один слой, все всех видят.
 
 ### Концепция слоёв
 
-**Layer** — единица контента с блоками. Типы:
-- **Immutable** — загружается из файла (Polar формат), не изменяется. Быстрое чтение.
-- **Mutable** — sparse, записываемый. Для динамического контента: квартиры, разрушаемые объекты.
-
-Свойства слоя: `id`, `priority` (порядок наложения), `voidMarker` (блок "явного воздуха", по умолчанию `structure_void`).
+**Layer** — единица контента с блоками:
+- **Immutable** — загружается из файла (Polar формат), быстрое чтение.
+- **Mutable** — sparse, записываемый. Для динамического контента.
 
 **Семантика блоков:**
-- `null` — слой не определяет блок в этой точке, наследуй из нижнего слоя
-- `voidMarker` — явный воздух, НЕ наследуй ничего снизу (вырезает дыры)
-- Air (stateId=0) — прозрачный, то же что null
+- `null` — слой не определяет блок, наследуй из нижнего
+- `voidMarker` (по умолчанию `structure_void`) — явный воздух, вырезает дыры в нижних слоях
 - Любой другой блок — конкретный блок
 
 **Алгоритм композиции:**
@@ -127,52 +213,30 @@ Protocol API             — абстракция над пакетами
         если block == voidMarker -> AIR
         иначе -> block
     иначе -> следующий слой
-если ни один слой не определил -> AIR
 ```
 
 ### viewContextIDs — видимость блоков
 
-У каждого игрока (ECS entity) есть `PlayerComponent.viewContextIDs: Set<String>`. У каждого слоя (layer-entity) есть `ViewableComponent(viewContextIDs)`. `ViewSystem` собирает слои, чьи `viewContextIDs` пересекаются с подписками игрока.
+`PlayerComponent.viewContextIDs` определяет что игрок видит. `ViewContextSyncSystem` синхронизирует это в `WorldService`. `MinecraftWorldServiceHandler` отправляет нужные чанки.
 
-**Смена подписок:** при входе в квартиру `ApartSystem` меняет `viewContextIDs` игрока — `ViewSystem` автоматически отправляет новые чанки.
-
-**Оптимизация отправки чанков:**
-- Слои классифицируются на immutable и mutable (`LayerClassification`).
-- Immutable композиция кэшируется в `ChunkPool` (ключ: `ImmutableLayerKey` + `ChunkPos`). Игроки с одинаковым набором immutable слоёв делят один кэш.
-- Immutable base → `LevelChunkWithLightPacket`.
-- Mutable overlay (diff) → `SectionBlocksUpdatePacket`.
-- При смене `viewContextIDs` инвалидируется только та часть кэша где изменился immutable base (по `ImmutableLayerKey`). Mutable overlay всегда дифф.
-
-**Клиентский стейт чанков** хранится в `Player`:
-- `sentChunksBase: ImmutableLayerKey?` — для какого immutable base отправлены чанки
-- `sentChunks: MutableSet<ChunkPos>` — какие чанки уже есть у клиента
+**Оптимизация чанков:**
+- Immutable композиция кэшируется в `ChunkPool` (ключ: `ImmutableLayerKey` + `ChunkPos`)
+- Immutable base → `LevelChunkWithLightPacket`
+- Mutable overlay (diff) → `SectionBlocksUpdatePacket`
 
 ### physContextIDs — физические коллизии
 
-У каждого физического тела (`PhysicsComponent`) есть `physContextIDs: Set<String>`. Определяет с какими блоками и объектами тело сталкивается.
-
-**Terrain generation (по образцу Rayon):**
-Каждый тик `TerrainGenerator` динамически добавляет/удаляет статичные Jolt-тела (блоки) вокруг каждого активного физического объекта. Блоки берутся из `LayeredWorld` построенного из слоёв соответствующих `physContextIDs` тела. Предмет Васяна получает слои `["street", "apt_vasya"]` — его стол физически существует. Предмет Петяна получает `["street", "apt_petya"]` — стол на том же месте другой.
-
-**Фильтрация коллизий между объектами:**
-Один `PhysicsSpace` на весь инстанс. `ContactListener` в Jolt фильтрует коллизии между динамическими телами: два тела сталкиваются только если у них есть хотя бы один общий physContext. Terrain тела (NON_MOVING) фильтруются на уровне TerrainGenerator — они уже построены из правильных слоёв.
+`PhysicsComponent.physContextIDs` определяет с какими блоками тело сталкивается. `TerrainGenerator` динамически добавляет/удаляет Jolt-тела из слоёв соответствующих контексту. `ContactListener` фильтрует коллизии между динамическими телами по пересечению контекстов.
 
 ---
 
 ## Физика (engine-physics)
 
-Реализована на **Jolt Physics** через **jolt-jni**.
+Реализована на **Jolt Physics** через **jolt-jni**. Один `PhysicsSpace` на инстанс.
 
-**Архитектура:**
-- Один `PhysicsSpace` на инстанс.
-- `PhysicsSpace` — управление Jolt `PhysicsSystem`. ObjectLayers: `MOVING` (динамические тела), `NON_MOVING` (terrain, статичные объекты). Гравитация: -17 (Minecraft-adjusted).
-- `TerrainGenerator` — динамическое добавление/удаление terrain тел из слоёв по `physContextIDs` активных тел.
-- `TerrainBody` — статичное Jolt тело представляющее один блок.
-- `ContactListener` — фильтрация коллизий по пересечению `physContextIDs`.
-
-**Форма блоков:** `BoxShape(0.5, 0.5, 0.5)` для простых блоков. Сложные формы (ступеньки, заборы, полублоки) — открытый вопрос.
-
-Зависимости: engine-core, Jolt JNI.
+- `PhysicsSpace` — Jolt `PhysicsSystem`, heartbeat паттерн (`beginTick`/`keepAlive`/`endTick`) для auto-cleanup тел.
+- `TerrainGenerator` — динамические terrain тела. Ключ кэша: `TerrainKey(Vec3I, Set<String>)` — отдельные тела для разных physContextIDs на одних координатах.
+- `ContactListener` — фильтрация по пересечению `physContextIDs`.
 
 ---
 
@@ -183,108 +247,77 @@ Protocol API             — абстракция над пакетами
 Автономные модули без зависимости на движок.
 
 #### lib-math
-Математические примитивы: `Vec3D`, `Vec3I`, `YawPitch`, `Cuboid` (AABB), `Transform`, `QRot`.
+`Vec3D`, `Vec3I`, `YawPitch`, `Cuboid` (AABB), `Transform`, `QRot`.
 
 #### lib-minecraft
-Низкоуровневая реализация протокола Minecraft, реестры, примитивы мира (~612 файлов).
+Низкоуровневая реализация протокола Minecraft (~612 файлов).
 
-- **Сеть:** `Connection` (Netty, состояния handshake→login→configuration→play), `NettyServer`, полный набор пакетов, шифрование (RSA+AES), сжатие (zlib), `StreamCodec`.
-- **Кодеки:** `Codec<T>` (NBT/JSON/YAML), `StructCodec`, `ListCodec`, `MapCodec`, `UnionCodec`, `OptionalCodec`.
-- **Мир:** `Block`, `ChunkSection` (16x16x16 с палитрой), `Palette` (SingleValued/Indirect/Direct), `ChunkData`, `LightData`.
-- **Реестры:** `Registries`, блоки/предметы/биомы/измерения/звуки/атрибуты, `TagRegistry`. Данные генерируются из файлов Minestom через `lib-minecraft:generator` (KotlinPoet).
-- **Компоненты предметов:** ~97 data-классов (ArmorTrim, Enchantments, Food и т.д.).
-
-Зависимости: lib-math, Netty, Kyori Adventure.
+- Сеть: `Connection` (Netty), `NettyServer`, полный набор пакетов, шифрование, сжатие, `StreamCodec`.
+- Кодеки: `Codec<T>` (NBT/JSON/YAML), комбинаторные кодеки.
+- Мир: `Block`, `ChunkSection`, `Palette`, `ChunkData`, `LightData`.
+- Реестры: блоки, предметы, биомы, измерения, звуки, атрибуты, `TagRegistry`.
 
 #### lib-world
-Система слоёв и композиция миров.
-
-- `World` — интерфейс: запросы блоков, секций, освещения, heightmap, block entities. `getChunkData()` собирает `ChunkData`.
-- `Layer` — composable слой. `getBlock()` возвращает `null` или `Block`. `voidMarker` — "явный воздух".
-- `ImmutableLayer` — неизменяемый, секции в `Long2ObjectOpenHashMap`.
-- `MutableLayer` — sparse editable. `setBlock`, `putVoid`, `remove`, `putSection`.
-- `LayeredWorld` — составной мир из слоёв с приоритетами.
-- `ImmutableLayerKey` — ключ идентификации набора immutable слоёв.
-- `MutableLayerChangeTracker` — отслеживает dirty chunks. Non-destructive `getDirty()`, `clear()` в конце тика.
-- `LightEngine` — расчёт освещения (WIP).
-
-Зависимости: lib-minecraft.
+- `ImmutableLayer`, `MutableLayer`, `LayeredWorld`, `ImmutableLayerKey`.
+- `MutableLayerChangeTracker` — dirty chunks между тиками.
+- `LightEngine` (WIP).
 
 #### lib-polar
-Загрузка миров из формата Polar (бинарный, ZSTD-сжатие).
-
-- `PolarReader` — десериализация из байтов.
-- `PolarWorldGenerator` — загрузка в `ImmutableLayer` (`loadAsLayer`) и `MutableLayer` (`loadAsMutableLayer`).
-- `PolarDataConverter` — миграция версий данных Minecraft.
-
-Зависимости: lib-minecraft, lib-world, zstd-jni.
+Загрузка миров из формата Polar (ZSTD). `loadAsLayer`, `loadAsMutableLayer`.
 
 #### lib-jackson
-Jackson-сериализация для игровых типов. `JsonMapper`, `YAMLMapper`, `CommentsYamlMapper`. Кастомные процессоры: Vec3D, Transform, QRot, Key, MiniMessage, Cuboid.
+Jackson JSON/YAML с процессорами для игровых типов.
 
 #### lib-adventure-serializer-nbt
-Мост между Kyori Adventure компонентами и Minecraft NBT.
+Мост Kyori Adventure ↔ Minecraft NBT.
 
 #### lib-viaversion
-Обёртка над ViaVersion/ViaBackwards для поддержки нескольких версий протокола.
+Обёртка ViaVersion/ViaBackwards.
 
 ---
 
 ### Движок (engine-*)
 
-Модули серверного фреймворка. Используют Micronaut DI (compile-time, без рефлексии).
-
 #### engine-core
-Высокоуровневый серверный фреймворк.
+Протокол-независимое ядро. Не зависит от `lib-minecraft`.
 
-- `Main` + `CherryngineRunner` — точка входа, запуск Netty сервера.
-- `EngineCoreConfig` — адрес, порт, mojangAuth, compressionThreshold.
-- `Player` — клиентский стейт: connection, game profile, позиция клиента, `sentChunks`, `sentChunksBase`.
-- `PlayerManager` (@Singleton) — lifecycle игроков через `Channel<UUID>` (join/leave), очередь пакетов через `Channel<Pair<UUID, Packet>>`. Thread-safe мост между Netty и ECS тиком.
-- Connection events (Micronaut): `ConnectEvent`, `DisconnectEvent`, `PacketEvent`, `PlayerCreatedEvent`, `PlayerConfigurationAsyncEvent`, `SetGameProfileEvent`.
-- `CloudCommandManager` — Cloud command framework + Brigadier интеграция.
-- `ChunkPool` (@Singleton) — кэш `ChunkData` для immutable слоёв. Ключ: `ImmutableLayerKey` + `ChunkPos`.
-- `LayerClassification` — разделение слоёв на immutable/mutable с предвычисленным `ImmutableLayerKey`.
-- `MutableOverlay` — diff между полной композицией и immutable base.
+- `Player` (интерфейс) — uuid, username, sendMessage.
+- `PlayerManager` (@Singleton) — register/unregister/getPlayer, `playerJoinChannel`/`playerLeaveChannel`.
+- `PlayerInputProvider`, `PlayerOutputProvider` — интерфейсы для чтения/записи состояния клиента.
+- `WorldService` + `WorldServiceHandler` — диспетчер с canHandle(player).
+- `PlayerService` + `PlayerServiceHandler` — onPlayerJoin/onPlayerLeave.
+- `CommandSender` (интерфейс).
+- `Instance` — контейнер с `List<Tickable>`.
+- `Tickable` — интерфейс для тикаемых объектов.
+- `InstanceSetup` + `InstanceSetupFactory` — паттерн для per-instance ресурсов.
 - `StableTicker` — стабильный тикер с компенсацией задержек.
 
-Зависимости: lib-minecraft, lib-world, lib-jackson, Micronaut, Kyori Adventure, Cloud commands, kotlinx.coroutines.
-
 #### engine-ecs
-ECS-интеграция на базе Fleks 2.12.
+ECS без Minecraft. Зависит только от `engine-core`.
 
-**Компоненты:**
-- `PlayerComponent` — UUID + `viewContextIDs`.
-- `PositionComponent` — позиция + YawPitch.
-- `ViewableComponent` — `viewContextIDs` слоя.
+- `EcsWorldTickable` — оборачивает ECS мир в `Tickable`.
+- `PlayerIndex` — O(1) поиск ECS entity по UUID через `FamilyHook`.
+- Компоненты: `PlayerComponent`, `PositionComponent`, `ViewableComponent`.
+- События: `EcsEvent`, `LastPlayerPositionEvent`.
+- Системы: `ReadClientPositionSystem(PlayerInputProvider)`, `WriteClientPositionSystem(PlayerOutputProvider)`, `ViewContextSyncSystem(WorldService)`, `CommandActionsSystem`, `ClearEventsSystem`.
 
-**Event-компоненты (очищаются в конце тика):**
-- `PacketsEvent` — входящие пакеты.
-- `ViewableProvidersEvent` — слои + viewable providers.
-- `LastPlayerPositionEvent` — предыдущая позиция.
+#### engine-minecraft
+Minecraft-реализация. Не зависит от `engine-ecs`.
 
-**Системы:**
-- `ReadClientPositionSystem`, `WriteClientPositionSystem`.
-- `ViewSystem` — отправка блоков клиенту по viewContextIDs. Immutable base из ChunkPool, mutable overlay как diff.
-- `CommandActionsSystem`, `ClearEventsSystem`, `PacketLogSystem`.
-
-Зависимости: engine-core, Fleks 2.12.
+- `MinecraftPlayer : Player` — clientPosition, sentChunks, connection.
+- `MinecraftConnectionService` — обработка пакетов, onMove, onDisconnect.
+- `MinecraftPlayerInputProvider`, `MinecraftPlayerOutputProvider`.
+- `MinecraftWorldServiceHandler` (@Singleton) — хранит контексты игроков, слои, отправляет чанки.
+- `MinecraftViewTickable` — per-instance (не @Singleton), отправка блоков и entity без ECS.
+- `McEntity`, `McEntityRegistry` — per-instance (не @Singleton).
+- `ChunkPool` (@Singleton), `LayerClassification`, `MutableOverlay`.
+- `Viewable`, `BlocksViewable`, `ViewableProvider`.
+- `CloudCommandManager` — Cloud commands + Brigadier + Minecraft пакеты.
 
 #### engine-physics
-Физика на базе Jolt через jolt-jni.
-
-- `PhysicsSpace` — Jolt `PhysicsSystem`, `ContactListener` (фильтрация по physContextIDs), управление телами.
-- `TerrainGenerator` — динамическое добавление/удаление terrain тел из слоёв по physContextIDs активных тел.
-- `TerrainBody` — статичное Jolt тело представляющее один блок.
-- `JoltLoader` — загрузка нативных библиотек (Windows64, Linux64).
-
-Зависимости: engine-core, Jolt JNI.
-
-#### engine-integration:grim
-Интеграция с GrimAC (античит). Адаптеры команд, менеджеров, PacketEvents, stub-реализации интерфейсов.
-
-#### engine-integration:viaversion
-Мост к ViaVersion для мультиверсионности протокола.
+- `PhysicsSpace` — per-instance, Jolt Physics.
+- `TerrainGenerator` — per-instance, динамические terrain тела.
+- `TerrainLayerProvider` — интерфейс для предоставления слоёв физике.
 
 ---
 
@@ -292,34 +325,44 @@ ECS-интеграция на базе Fleks 2.12.
 
 ```
 lib-math
-  |
   +-- lib-minecraft
-  |     |
   |     +-- lib-world
-  |     |     |
   |     |     +-- lib-polar
-  |     |
   |     +-- lib-viaversion
-  |
   +-- lib-jackson
 
 lib-adventure-serializer-nbt (standalone)
 
-engine-core
-  +-- lib-minecraft, lib-world, lib-jackson
-  |
-  +-- engine-ecs
-  |     +-- engine-core, Fleks
-  |
-  +-- engine-physics
-  |     +-- engine-core, Jolt JNI
-  |
+engine-core                    (зависит от lib-math, Kyori, Cloud commands)
+  +-- engine-ecs               (engine-core + Fleks)
+  +-- engine-minecraft         (engine-core + lib-minecraft + lib-world + lib-jackson)
+  +-- engine-physics           (engine-core + Jolt JNI)
   +-- engine-integration:grim
-  |     +-- engine-core
-  |
   +-- engine-integration:viaversion
-        +-- engine-core, lib-viaversion
 ```
+
+**Ключевое: `engine-ecs` ↔ `engine-minecraft` — нет зависимости в обе стороны.**
+
+---
+
+## Демо-проект (impl-demo)
+
+Демонстрирует архитектуру на практике. Два подмодуля:
+
+### impl-demo (платформо-независимая часть)
+- `DemoInit` (@Singleton) — создаёт ECS мир и `Instance`. Получает `List<DemoInstanceSetupFactory>` через DI.
+- `GameWorldProvider` (интерфейс) — список имён слоёв.
+- `DemoInstanceSetup` + `DemoInstanceSetupFactory` — паттерн per-instance ресурсов.
+- `AxolotlView`, `CubeView` — интерфейсы отображения.
+- `CompositeAxolotlViewFactory`, `CompositeCubeViewFactory` — делегируют всем платформам.
+- Системы: `PlayerInitSystem`, `AxolotlModelSystem`, `CubeModelSystem`, `ApartSystem`, `PhysicsSystem`.
+
+### impl-demo:minecraft (Minecraft реализация)
+- `DemoWorlds : GameWorldProvider` — загружает Polar файлы.
+- `MinecraftDemoInstanceSetup` — создаёт `McEntityRegistry`, `MinecraftAxolotlViewFactory`, `MinecraftCubeViewFactory`, `MinecraftViewTickable` — все шарят один реестр.
+- `MinecraftDemoInstanceSetupFactory` (@Singleton).
+- `WorldSystem` — регистрирует слои в `MinecraftWorldServiceHandler`.
+- `TestCommand` — команды для тестирования.
 
 ---
 
@@ -328,7 +371,7 @@ engine-core
 - **Язык:** Kotlin
 - **DI:** Micronaut (compile-time, без рефлексии)
 - **ECS:** Fleks 2.12
-- **Сеть:** Netty + собственная реализация протокола Minecraft 1.21.4
+- **Сеть:** Netty + протокол Minecraft
 - **Мультиверсия:** ViaVersion / ViaBackwards
 - **Физика:** Jolt Physics (через jolt-jni)
 - **Сериализация:** kotlinx.serialization, Jackson (JSON/YAML), NBT
@@ -341,58 +384,66 @@ engine-core
 
 ## Открытые вопросы
 
-1. **Освещение в композированных чанках.** Как считать свет для микса слоёв. Варианты: финальный микс с кэшированием, свет базового слоя с артефактами, гибрид.
-
-2. **Smart resubscribe.** Минимизация пакетов при смене viewContextIDs. Diff или полный resend.
-
-3. **Сложные формы блоков в физике.** Сейчас все блоки — `BoxShape(0.5)`. Ступеньки, заборы, полублоки требуют отдельного решения.
-
-4. **Тики с разной частотой.** Нужны ли инстансам разные TPS (лобби 5, матч 20)?
-
-5. **DSL для разработчиков уровней.** Kotlin scripting, декларативные конфиги или билдеры.
-
-6. **Gateway для distributed-режима.** Где живут Connections, как проксируются пакеты между gateway и instance на другой машине.
-
-7. **Глобальные сервисы.** Профили, статистика, экономика, чат между инстансами — отдельные сервисы с асинхронным API.
-
-8. **Multi-world внутри Instance.** Могут ли в одном Instance быть несколько независимых пространств блоков. Текущая позиция: через Layer System. Вводить `World` как отдельный концепт — только если слоёв окажется недостаточно.
+1. **Освещение в композированных чанках.** Как считать свет для микса слоёв.
+2. **Smart resubscribe.** Минимизация пакетов при смене viewContextIDs.
+3. **Сложные формы блоков в физике.** Ступеньки, заборы, полублоки.
+4. **Тики с разной частотой.** Нужны ли инстансам разные TPS?
+5. **DSL для разработчиков уровней.** Kotlin scripting, конфиги или билдеры.
+6. **Instance как система сообщений.** Lobby instance → game instance через асинхронные сообщения. Детали не проработаны.
+7. **Глобальные сервисы.** Профили, статистика, экономика, чат между инстансами.
+8. **Multi-world внутри Instance.** Текущая позиция: через Layer System.
 
 ---
 
 ## Антипаттерны
 
-**1. Глобальный singleton с игровым состоянием**
+**1. ECS система зависит от платформы**
+```kotlin
+class SomeSystem(playerManager: PlayerManager) // ❌ — PlayerManager из engine-core, но
+class SomeSystem(registry: McEntityRegistry)   // ❌ — McEntityRegistry из engine-minecraft
+```
+ECS системы зависят только от `engine-core` интерфейсов.
+
+**2. Платформенная логика в ECS системе**
+```kotlin
+class ViewSystem : IteratingSystem() {
+    override fun onTickEntity(entity) {
+        player.connection.sendPacket(...) // ❌ — пакеты в ECS
+    }
+}
+```
+Платформенная логика живёт в `Tickable`, не в ECS.
+
+**3. Per-instance объект как @Singleton**
+```kotlin
+@Singleton class McEntityRegistry // ❌ — создаётся через InstanceSetupFactory
+```
+
+**4. Глобальный singleton с игровым состоянием**
 ```kotlin
 object PlayerManager { fun getPlayer(uuid: UUID): Player? } // ❌
 ```
-Ломает изоляцию, тестируемость, distributed deployment.
 
-**2. События как основной механизм коммуникации**
-```kotlin
-eventBus.publish(PlayerDamageEvent(player, 10)) // ❌
-// → entity[PendingDamage] = PendingDamage(amount=10) // ✓
-```
-
-**3. Логика в компонентах**
-```kotlin
-data class Health(var current: Int) {
-    fun damage(amount: Int) { ... } // ❌ логика в данных
-}
-```
-
-**4. Прямые ссылки на entity между Instance**
-```kotlin
-class Quest(val player: Player) // ❌ — только ID
-```
-
-**5. Состояние в полях системы**
+**5. Состояние в полях ECS системы**
 ```kotlin
 class WeaponSystem : System() {
     private val cooldowns = mutableMapOf<EntityId, Long>() // ❌ — в компонент
 }
 ```
 
-**6. Реактивность через подписки**
+**6. Логика в компонентах**
 ```kotlin
-healthComponent.onChange { newValue -> updateUI(newValue) } // ❌ — через change detection
+data class Health(var current: Int) {
+    fun damage(amount: Int) { ... } // ❌
+}
+```
+
+**7. Реактивность через подписки**
+```kotlin
+healthComponent.onChange { updateUI(it) } // ❌ — через change detection в системе
+```
+
+**8. Прямые ссылки между инстансами**
+```kotlin
+class Quest(val player: MinecraftPlayer) // ❌ — только UUID
 ```
