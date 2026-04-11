@@ -14,9 +14,8 @@ class ViewContextSyncSystem(
     family { all(PlayerComponent) }
 ) {
     override fun onTickEntity(entity: EcsEntity) {
-        val uuid = entity[PlayerComponent].uuid
-        val contextIDs = entity[PlayerComponent].viewContextIDs
-        val player = playerManager.getPlayerNullable(uuid) ?: return
-        worldService.setPlayerContext(uuid, contextIDs, player)
+        val playerComponent = entity[PlayerComponent]
+        val player = playerManager.getPlayerNullable(playerComponent.uuid) ?: return
+        worldService.setPlayerContext(playerComponent.viewContextIDs, player)
     }
 }
