@@ -33,6 +33,7 @@ class MinecraftPlayer(
     val chunksToRefresh: MutableSet<ChunkPos> = hashSetOf()
 
     var sentChunksBase: ImmutableLayerKey? = null
+    var sentChunkCacheCenter: ChunkPos? = null
     val sentChunks: MutableSet<ChunkPos> = mutableSetOf()
 
     fun getBlockId(pos: Vec3I): Int {

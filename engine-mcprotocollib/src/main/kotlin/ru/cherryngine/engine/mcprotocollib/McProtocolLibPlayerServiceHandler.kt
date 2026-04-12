@@ -11,9 +11,12 @@ import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.entity.play
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.level.ClientboundGameEventPacket
 import ru.cherryngine.engine.core.player.Player
 import ru.cherryngine.engine.core.services.PlayerServiceHandler
+import ru.cherryngine.engine.core.services.SpawnSettings
 
 @Singleton
-class McProtocolLibPlayerServiceHandler : PlayerServiceHandler {
+class McProtocolLibPlayerServiceHandler(
+    private val spawnSettings: SpawnSettings,
+) : PlayerServiceHandler {
     override fun canHandle(player: Player) = player is McProtocolLibPlayer
 
     override fun onPlayerJoin(player: Player) {
@@ -47,12 +50,16 @@ class McProtocolLibPlayerServiceHandler : PlayerServiceHandler {
             )
         )
 
+        mcplPlayer.clientPosition = spawnSettings.position
+        mcplPlayer.clientYawPitch = spawnSettings.yawPitch
+
+        val spawnPos = Vector3d.from(spawnSettings.position.x, spawnSettings.position.y, spawnSettings.position.z)
         session.send(
             ClientboundPlayerPositionPacket(
                 0,
+                spawnPos,
                 Vector3d.ZERO,
-                Vector3d.ZERO,
-                0f, 0f,
+                spawnSettings.yawPitch.yaw, spawnSettings.yawPitch.pitch,
                 emptyList()
             )
         )

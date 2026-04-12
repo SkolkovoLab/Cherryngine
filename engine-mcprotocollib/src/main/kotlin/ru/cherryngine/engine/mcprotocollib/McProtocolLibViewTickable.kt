@@ -5,6 +5,7 @@ import org.geysermc.mcprotocollib.protocol.data.game.level.LightUpdateData
 import org.geysermc.mcprotocollib.protocol.data.game.level.block.BlockChangeEntry
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.level.ClientboundLevelChunkWithLightPacket
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.level.ClientboundSectionBlocksUpdatePacket
+import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.level.ClientboundSetChunkCacheCenterPacket
 import ru.cherryngine.engine.core.instance.ServerWorld
 import ru.cherryngine.engine.core.instance.Tickable
 import ru.cherryngine.engine.core.player.PlayerManager
@@ -57,6 +58,12 @@ class McProtocolLibViewTickable(
     ) {
         val distance = DEFAULT_RENDER_DISTANCE
         val clientChunkPos = ChunkUtils.chunkPosFromVec3D(player.clientPosition)
+
+        if (player.sentChunkCacheCenter != clientChunkPos) {
+            player.sentChunkCacheCenter = clientChunkPos
+            player.session.send(ClientboundSetChunkCacheCenterPacket(clientChunkPos.x, clientChunkPos.z))
+        }
+
         val currentVisible = player.currentVisibleEntities
         val chunks = ChunkUtils.getChunksInRange(clientChunkPos, distance).toSet()
 

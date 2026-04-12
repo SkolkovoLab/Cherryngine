@@ -26,6 +26,7 @@ class McProtocolLibPlayer(
     var clientPosition: Vec3D = Vec3D.ZERO
     var clientYawPitch: YawPitch = YawPitch.ZERO
 
+    var sentChunkCacheCenter: ChunkPos? = null
     val sentChunks: MutableSet<ChunkPos> = mutableSetOf()
     var sentChunksBase: ImmutableLayerKey? = null
     val currentVisibleEntities: MutableSet<McProtocolLibEntity> = hashSetOf()
