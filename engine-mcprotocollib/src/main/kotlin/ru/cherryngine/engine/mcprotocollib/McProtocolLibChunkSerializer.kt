@@ -4,7 +4,7 @@ import io.netty.buffer.Unpooled
 import org.geysermc.mcprotocollib.protocol.data.game.level.HeightmapTypes
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkHeightmapType
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
-import java.util.EnumMap
+import java.util.*
 
 object McProtocolLibChunkSerializer {
     /**

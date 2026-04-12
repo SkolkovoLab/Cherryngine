@@ -1,8 +1,8 @@
 package ru.cherryngine.engine.minecraft
 
 import jakarta.inject.Singleton
-import ru.cherryngine.engine.core.Player
-import ru.cherryngine.engine.core.PlayerServiceHandler
+import ru.cherryngine.engine.core.player.Player
+import ru.cherryngine.engine.core.services.PlayerServiceHandler
 import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch

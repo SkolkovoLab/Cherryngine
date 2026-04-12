@@ -1,6 +1,6 @@
 package ru.cherryngine.engine.mcprotocollib
 
-import java.util.UUID
+import java.util.*
 
 class McProtocolLibEntityRegistry {
     private val entities = HashMap<UUID, McProtocolLibEntity>()

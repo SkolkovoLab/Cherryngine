@@ -2,8 +2,8 @@ package ru.cherryngine.engine.ecs.systems
 
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
-import ru.cherryngine.engine.core.PlayerManager
-import ru.cherryngine.engine.core.WorldService
+import ru.cherryngine.engine.core.player.PlayerManager
+import ru.cherryngine.engine.core.services.WorldService
 import ru.cherryngine.engine.ecs.EcsEntity
 import ru.cherryngine.engine.ecs.components.PlayerComponent
 

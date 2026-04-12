@@ -1,6 +1,6 @@
 package ru.cherryngine.engine.minecraft.entity
 
-import java.util.UUID
+import java.util.*
 
 class McEntityRegistry {
     private val entities = HashMap<UUID, McEntity>()

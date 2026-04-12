@@ -1,8 +1,7 @@
 package ru.cherryngine.engine.minecraft.player
 
 import net.kyori.adventure.text.Component
-import ru.cherryngine.engine.core.Player
-import ru.cherryngine.engine.core.commandmanager.CommandSender
+import ru.cherryngine.engine.core.player.Player
 import ru.cherryngine.engine.minecraft.view.BlocksViewable
 import ru.cherryngine.engine.minecraft.view.Viewable
 import ru.cherryngine.lib.math.Vec3D

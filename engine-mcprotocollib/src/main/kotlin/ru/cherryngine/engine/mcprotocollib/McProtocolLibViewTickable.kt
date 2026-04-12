@@ -5,8 +5,8 @@ import org.geysermc.mcprotocollib.protocol.data.game.level.LightUpdateData
 import org.geysermc.mcprotocollib.protocol.data.game.level.block.BlockChangeEntry
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.level.ClientboundLevelChunkWithLightPacket
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.level.ClientboundSectionBlocksUpdatePacket
-import ru.cherryngine.engine.core.PlayerManager
-import ru.cherryngine.engine.core.Tickable
+import ru.cherryngine.engine.core.instance.Tickable
+import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.minecraft.network.protocol.types.SectionPos
 import ru.cherryngine.lib.minecraft.registry.types.DimensionType
@@ -15,7 +15,7 @@ import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.minecraft.world.light.LightData
 import ru.cherryngine.lib.world.LayerEntry
 import ru.cherryngine.lib.world.MutableLayerChangeTracker
-import java.util.BitSet
+import java.util.*
 import kotlin.time.Duration
 
 class McProtocolLibViewTickable(

@@ -1,11 +1,11 @@
 package ru.cherryngine.engine.minecraft.player
 
 import jakarta.inject.Singleton
-import ru.cherryngine.engine.core.PlayerInputProvider
-import ru.cherryngine.engine.core.PlayerManager
+import ru.cherryngine.engine.core.player.PlayerInputProvider
+import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
-import java.util.UUID
+import java.util.*
 
 @Singleton
 class MinecraftPlayerInputProvider(

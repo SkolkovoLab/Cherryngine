@@ -1,6 +1,6 @@
 package ru.cherryngine.engine.ecs
 
-import ru.cherryngine.engine.core.Tickable
+import ru.cherryngine.engine.core.instance.Tickable
 import kotlin.time.Duration
 
 class EcsWorldTickable(private val world: EcsWorld) : Tickable {

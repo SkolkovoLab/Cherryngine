@@ -1,8 +1,8 @@
-package ru.cherryngine.engine.core
+package ru.cherryngine.engine.core.player
 
 import jakarta.inject.Singleton
 import kotlinx.coroutines.channels.Channel
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 @Singleton

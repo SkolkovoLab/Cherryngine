@@ -1,4 +1,6 @@
-package ru.cherryngine.engine.core
+package ru.cherryngine.engine.core.services
+
+import ru.cherryngine.engine.core.player.Player
 
 interface PlayerServiceHandler {
     fun canHandle(player: Player): Boolean

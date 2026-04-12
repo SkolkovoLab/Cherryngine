@@ -1,6 +1,6 @@
 package ru.cherryngine.engine.core.commandmanager
 
-import ru.cherryngine.engine.core.Player
+import ru.cherryngine.engine.core.player.Player
 import java.util.concurrent.CompletableFuture
 
 interface CommandServiceHandler {

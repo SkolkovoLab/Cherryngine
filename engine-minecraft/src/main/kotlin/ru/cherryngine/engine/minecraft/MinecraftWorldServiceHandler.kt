@@ -1,13 +1,13 @@
 package ru.cherryngine.engine.minecraft
 
 import jakarta.inject.Singleton
-import ru.cherryngine.engine.core.Player
-import ru.cherryngine.engine.core.PlayerManager
-import ru.cherryngine.engine.core.WorldServiceHandler
+import ru.cherryngine.engine.core.player.Player
+import ru.cherryngine.engine.core.player.PlayerManager
+import ru.cherryngine.engine.core.services.WorldServiceHandler
 import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
 import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 import ru.cherryngine.lib.world.LayerEntry
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 @Singleton

@@ -6,7 +6,6 @@ import org.incendo.cloud.context.CommandContext
 import org.incendo.cloud.context.CommandInput
 import org.incendo.cloud.execution.ExecutionCoordinator
 import org.incendo.cloud.internal.CommandRegistrationHandler
-import org.incendo.cloud.parser.ParserDescriptor
 import org.incendo.cloud.parser.standard.StringParser
 import org.incendo.cloud.suggestion.Suggestion
 import org.incendo.cloud.suggestion.SuggestionProvider

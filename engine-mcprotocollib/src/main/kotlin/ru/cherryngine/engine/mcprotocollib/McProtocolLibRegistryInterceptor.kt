@@ -1,6 +1,7 @@
 package ru.cherryngine.engine.mcprotocollib
 
 import io.netty.buffer.Unpooled
+import org.geysermc.mcprotocollib.network.Session
 import org.geysermc.mcprotocollib.network.event.session.PacketSendingEvent
 import org.geysermc.mcprotocollib.network.event.session.SessionAdapter
 import org.geysermc.mcprotocollib.protocol.packet.configuration.clientbound.ClientboundFinishConfigurationPacket
@@ -9,7 +10,6 @@ import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.minecraft.registry.Registries
 import ru.cherryngine.lib.minecraft.registry.TagRegistry
 import ru.cherryngine.lib.minecraft.utils.registry.DataDrivenRegistry
-import org.geysermc.mcprotocollib.network.Session
 import org.geysermc.mcprotocollib.protocol.packet.common.clientbound.ClientboundUpdateTagsPacket as McplUpdateTagsPacket
 
 /**

@@ -12,10 +12,10 @@ import org.geysermc.mcprotocollib.protocol.MinecraftConstants
 import org.geysermc.mcprotocollib.protocol.MinecraftProtocol
 import org.geysermc.mcprotocollib.protocol.ServerLoginHandler
 import org.slf4j.LoggerFactory
-import ru.cherryngine.engine.core.PlayerManager
-import ru.cherryngine.engine.core.PlayerService
-import ru.cherryngine.engine.core.WorldService
 import ru.cherryngine.engine.core.commandmanager.CommandService
+import ru.cherryngine.engine.core.player.PlayerManager
+import ru.cherryngine.engine.core.services.PlayerService
+import ru.cherryngine.engine.core.services.WorldService
 import java.net.InetSocketAddress
 
 @Singleton

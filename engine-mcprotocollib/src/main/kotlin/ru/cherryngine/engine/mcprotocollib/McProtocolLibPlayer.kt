@@ -5,12 +5,12 @@ import org.geysermc.mcprotocollib.auth.GameProfile
 import org.geysermc.mcprotocollib.network.Session
 import org.geysermc.mcprotocollib.protocol.MinecraftConstants
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.ClientboundSystemChatPacket
-import ru.cherryngine.engine.core.Player
+import ru.cherryngine.engine.core.player.Player
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.world.ImmutableLayerKey
-import java.util.UUID
+import java.util.*
 
 class McProtocolLibPlayer(
     val session: Session,

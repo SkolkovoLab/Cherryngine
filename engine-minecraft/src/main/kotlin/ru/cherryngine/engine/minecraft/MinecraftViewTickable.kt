@@ -1,7 +1,7 @@
 package ru.cherryngine.engine.minecraft
 
-import ru.cherryngine.engine.core.PlayerManager
-import ru.cherryngine.engine.core.Tickable
+import ru.cherryngine.engine.core.instance.Tickable
+import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.minecraft.entity.McEntityRegistry
 import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
 import ru.cherryngine.engine.minecraft.view.Viewable

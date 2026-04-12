@@ -2,8 +2,8 @@ package ru.cherryngine.engine.minecraft.commandmanager
 
 import io.micronaut.runtime.event.annotation.EventListener
 import jakarta.inject.Singleton
-import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.core.commandmanager.CommandService
+import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.minecraft.events.PacketEvent
 import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundCommandSuggestionsPacket

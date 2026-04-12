@@ -1,4 +1,4 @@
-package ru.cherryngine.engine.core
+package ru.cherryngine.engine.core.instance
 
 import kotlin.time.Duration
 

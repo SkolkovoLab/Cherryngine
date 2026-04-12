@@ -1,7 +1,6 @@
 package ru.cherryngine.engine.ecs
 
-import ru.cherryngine.engine.ecs.components.PlayerComponent
-import java.util.UUID
+import java.util.*
 
 class PlayerIndex {
     private val index = HashMap<UUID, EcsEntity>()

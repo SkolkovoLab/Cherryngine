@@ -6,7 +6,7 @@ import ac.grim.grimac.platform.api.player.PlatformPlayerFactory
 import ac.grim.grimac.platform.api.sender.SenderFactory
 import jakarta.inject.Singleton
 import ru.cherryngine.engine.core.commandmanager.CommandSender
-import ru.cherryngine.engine.core.PlayerManager
+import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.lib.minecraft.network.Connection
 import java.util.*
 

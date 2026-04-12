@@ -1,6 +1,7 @@
-package ru.cherryngine.engine.core
+package ru.cherryngine.engine.core.services
 
 import jakarta.inject.Singleton
+import ru.cherryngine.engine.core.player.Player
 
 @Singleton
 class WorldService(private val handlers: List<WorldServiceHandler>) {

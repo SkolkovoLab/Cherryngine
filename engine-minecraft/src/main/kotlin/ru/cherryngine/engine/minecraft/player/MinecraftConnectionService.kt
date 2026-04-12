@@ -4,10 +4,10 @@ import io.micronaut.context.event.ApplicationEventPublisher
 import io.micronaut.runtime.event.annotation.EventListener
 import jakarta.inject.Singleton
 import net.kyori.adventure.text.minimessage.MiniMessage
-import ru.cherryngine.engine.core.PlayerManager
-import ru.cherryngine.engine.core.PlayerService
-import ru.cherryngine.engine.core.WorldService
 import ru.cherryngine.engine.core.commandmanager.CommandService
+import ru.cherryngine.engine.core.player.PlayerManager
+import ru.cherryngine.engine.core.services.PlayerService
+import ru.cherryngine.engine.core.services.WorldService
 import ru.cherryngine.engine.minecraft.events.DisconnectEvent
 import ru.cherryngine.engine.minecraft.events.PacketEvent
 import ru.cherryngine.engine.minecraft.events.PlayerConfigurationAsyncEvent

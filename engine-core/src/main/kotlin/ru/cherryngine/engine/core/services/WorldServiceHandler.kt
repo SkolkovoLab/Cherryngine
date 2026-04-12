@@ -1,6 +1,7 @@
-package ru.cherryngine.engine.core
+package ru.cherryngine.engine.core.services
 
-import java.util.UUID
+import ru.cherryngine.engine.core.player.Player
+import java.util.*
 
 interface WorldServiceHandler {
     fun canHandle(player: Player): Boolean

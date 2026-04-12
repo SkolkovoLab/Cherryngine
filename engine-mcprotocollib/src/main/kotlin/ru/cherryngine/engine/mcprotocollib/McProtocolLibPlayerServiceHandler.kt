@@ -9,8 +9,8 @@ import org.geysermc.mcprotocollib.protocol.data.game.level.notify.GameEvent
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.ClientboundLoginPacket
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.entity.player.ClientboundPlayerPositionPacket
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.level.ClientboundGameEventPacket
-import ru.cherryngine.engine.core.Player
-import ru.cherryngine.engine.core.PlayerServiceHandler
+import ru.cherryngine.engine.core.player.Player
+import ru.cherryngine.engine.core.services.PlayerServiceHandler
 
 @Singleton
 class McProtocolLibPlayerServiceHandler : PlayerServiceHandler {

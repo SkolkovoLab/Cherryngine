@@ -1,7 +1,7 @@
 package ru.cherryngine.engine.core.commandmanager
 
 import jakarta.inject.Singleton
-import ru.cherryngine.engine.core.Player
+import ru.cherryngine.engine.core.player.Player
 import java.util.concurrent.CompletableFuture
 
 @Singleton

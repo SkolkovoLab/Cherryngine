@@ -5,9 +5,6 @@ import com.github.stephengold.joltjni.enumerate.EActivation
 import com.github.stephengold.joltjni.enumerate.EMotionType
 import com.github.stephengold.joltjni.enumerate.EPhysicsUpdateError
 import com.github.stephengold.joltjni.enumerate.ValidateResult
-import com.github.stephengold.joltjni.readonly.ConstPlane
-import com.github.stephengold.joltjni.readonly.ConstShape
-import com.github.stephengold.joltjni.readonly.Vec3Arg
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Transform
 import ru.cherryngine.lib.math.Vec3D
