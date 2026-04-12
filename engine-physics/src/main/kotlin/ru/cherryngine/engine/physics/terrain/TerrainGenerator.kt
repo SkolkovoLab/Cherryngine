@@ -4,6 +4,7 @@ import ru.cherryngine.engine.physics.PhysicsSpace
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.minecraft.registry.types.DimensionType
+import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.world.LayerEntry
 import ru.cherryngine.lib.world.LayeredWorld
 import kotlin.math.ceil
@@ -36,6 +37,9 @@ class TerrainGenerator(private val physicsSpace: PhysicsSpace) {
                 val block = layeredWorld.getBlock(pos)
                 if (block.isAir()) return@forEachBlockInAABB
 
+                val collisionCuboids = getCollisionCuboids(block)
+                if (collisionCuboids.isEmpty()) return@forEachBlockInAABB
+
                 val key = TerrainKey(pos, bodyInfo.physContextIDs)
                 keep.add(key)
                 val stateId = block.getStateId()
@@ -43,7 +47,7 @@ class TerrainGenerator(private val physicsSpace: PhysicsSpace) {
                 if (existing != null && existing.blockStateId == stateId) return@forEachBlockInAABB
 
                 existing?.body?.remove()
-                val body = physicsSpace.addTerrain(pos)
+                val body = physicsSpace.addTerrain(pos, collisionCuboids)
                 terrainBodies[key] = TerrainBodyEntry(body, stateId)
             }
         }
@@ -54,6 +58,19 @@ class TerrainGenerator(private val physicsSpace: PhysicsSpace) {
                 true
             } else false
         }
+    }
+
+    private fun getCollisionCuboids(block: Block): List<Cuboid> {
+        val registryBlock = block.registryBlock
+        val stateId = block.getStateId()
+        val stateString = registryBlock.possibleStatesReversed[stateId]
+        if (stateString != null) {
+            val idx = stateString.indexOf('[')
+            val stateKey = if (idx != -1) stateString.substring(idx) else "[]"
+            val stateCollision = registryBlock.states[stateKey]?.collisionShape
+            if (stateCollision != null) return stateCollision.cuboids
+        }
+        return registryBlock.collisionShape.cuboids
     }
 
     private inline fun forEachBlockInAABB(aabb: Cuboid, action: (Vec3I) -> Unit) {

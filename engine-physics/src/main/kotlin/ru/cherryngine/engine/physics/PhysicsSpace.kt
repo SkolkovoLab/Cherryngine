@@ -99,11 +99,28 @@ class PhysicsSpace {
         }
     }
 
-    fun addTerrain(pos: Vec3I): PhysicsBody {
+    fun addTerrain(pos: Vec3I, collisionCuboids: List<Cuboid>): PhysicsBody {
+        if (collisionCuboids.size == 1) {
+            val cuboid = collisionCuboids[0]
+            val halfExtents = (cuboid.size * 0.5).joltVec3()
+            val bodySettings = BodyCreationSettings()
+                .setMotionType(EMotionType.Static)
+                .setObjectLayer(Layers.NON_MOVING)
+                .setShape(BoxShape(halfExtents))
+                .setPosition(RVec3(pos.x + cuboid.centerX, pos.y + cuboid.centerY, pos.z + cuboid.centerZ))
+            return createBody(bodySettings, EActivation.DontActivate)
+        }
+
+        val compoundSettings = StaticCompoundShapeSettings()
+        for (cuboid in collisionCuboids) {
+            val halfExtents = (cuboid.size * 0.5).joltVec3()
+            val offset = (cuboid.center - Vec3D(0.5, 0.5, 0.5)).joltVec3()
+            compoundSettings.addShape(offset, Quat.sIdentity(), BoxShape(halfExtents))
+        }
         val bodySettings = BodyCreationSettings()
             .setMotionType(EMotionType.Static)
             .setObjectLayer(Layers.NON_MOVING)
-            .setShape(BoxShape(Vec3(0.5f, 0.5f, 0.5f)))
+            .setShape(compoundSettings.create().get())
             .setPosition(RVec3(pos.x + 0.5, pos.y + 0.5, pos.z + 0.5))
         return createBody(bodySettings, EActivation.DontActivate)
     }
