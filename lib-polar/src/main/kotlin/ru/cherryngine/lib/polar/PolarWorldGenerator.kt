@@ -63,14 +63,37 @@ object PolarWorldGenerator {
             val sectionsCount = polarChunk.sections.size
             val sections = List(sectionsCount) {
                 val polarSection = polarChunk.sections[it]
+
+                val blockStateIds = polarSection.blockPalette().map { parseBlockState(it).getStateId() }.toIntArray()
+                val blockData = polarSection.blockData()
                 val blockPalette = Palette.blocks()
                 blockPalette.setAll { x, y, z ->
-                    getBlock(polarSection, x, y, z).getStateId()
+                    if (blockData == null) {
+                        blockStateIds[0]
+                    } else {
+                        val blockIndex = (y shl 8) or (z shl 4) or x
+                        blockStateIds[blockData[blockIndex]]
+                    }
                 }
+
+                val biomeIds = polarSection.biomePalette().map { Registries.biome[it].id }.toIntArray()
+                val defaultBiomeId = Registries.biome[Biomes.PLAINS].id
+                val biomeData = polarSection.biomeData()
                 val biomePalette = Palette.biomes()
                 biomePalette.setAll { x, y, z ->
-                    Registries.biome[getBiome(polarSection, x, y, z)].id
+                    if (biomeData == null) {
+                        biomeIds[0]
+                    } else {
+                        val biomeIndex = (y shl 8) or (z shl 4) or x
+                        val paletteIndex = biomeData.getOrNull(biomeIndex)
+                        if (paletteIndex != null && paletteIndex in biomeIds.indices) {
+                            biomeIds[paletteIndex]
+                        } else {
+                            defaultBiomeId
+                        }
+                    }
                 }
+
                 ChunkSection(blockPalette, biomePalette)
             }
 
