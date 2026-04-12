@@ -1,5 +1,6 @@
 package ru.cherryngine.engine.minecraft
 
+import ru.cherryngine.engine.core.instance.ServerWorld
 import ru.cherryngine.engine.core.instance.Tickable
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.minecraft.entity.McEntityRegistry
@@ -24,6 +25,7 @@ class MinecraftViewTickable(
     private val chunkPool: ChunkPool,
     private val worldServiceHandler: MinecraftWorldServiceHandler,
     private val mcEntityRegistry: McEntityRegistry,
+    private val serverWorld: ServerWorld,
     private val changeTracker: MutableLayerChangeTracker? = null,
 ) : Tickable {
     companion object {
@@ -33,9 +35,9 @@ class MinecraftViewTickable(
     override fun tick(delta: Duration) {
         for (player in playerManager.onlinePlayers()) {
             val mcPlayer = player as? MinecraftPlayer ?: continue
-            val layers = worldServiceHandler.getLayersForPlayer(player.uuid)
-            val dimensionType = worldServiceHandler.dimensionType
             val playerContextIDs = worldServiceHandler.getContextsForPlayer(player.uuid)
+            val layers = serverWorld.getLayersForContexts(playerContextIDs)
+            val dimensionType = serverWorld.dimensionType
             val viewables = mcEntityRegistry.allEntities()
                 .filter { entity ->
                     val ctx = entity.viewContextIDs

@@ -5,6 +5,7 @@ import org.geysermc.mcprotocollib.protocol.data.game.level.LightUpdateData
 import org.geysermc.mcprotocollib.protocol.data.game.level.block.BlockChangeEntry
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.level.ClientboundLevelChunkWithLightPacket
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.level.ClientboundSectionBlocksUpdatePacket
+import ru.cherryngine.engine.core.instance.ServerWorld
 import ru.cherryngine.engine.core.instance.Tickable
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
@@ -23,6 +24,7 @@ class McProtocolLibViewTickable(
     private val chunkPool: McProtocolLibChunkPool,
     private val worldServiceHandler: McProtocolLibWorldServiceHandler,
     private val entityRegistry: McProtocolLibEntityRegistry,
+    private val serverWorld: ServerWorld,
     private val changeTracker: MutableLayerChangeTracker? = null,
 ) : Tickable {
     companion object {
@@ -32,9 +34,9 @@ class McProtocolLibViewTickable(
     override fun tick(delta: Duration) {
         for (player in playerManager.onlinePlayers()) {
             val mcplPlayer = player as? McProtocolLibPlayer ?: continue
-            val layers = worldServiceHandler.getLayersForPlayer(player.uuid)
-            val dimensionType = worldServiceHandler.dimensionType
             val playerContextIDs = worldServiceHandler.getContextsForPlayer(player.uuid)
+            val layers = serverWorld.getLayersForContexts(playerContextIDs)
+            val dimensionType = serverWorld.dimensionType
 
             val visibleEntities = entityRegistry.allEntities()
                 .filter { entity ->
