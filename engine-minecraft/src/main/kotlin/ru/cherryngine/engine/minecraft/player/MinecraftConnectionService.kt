@@ -7,6 +7,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.core.PlayerService
 import ru.cherryngine.engine.core.WorldService
+import ru.cherryngine.engine.core.commandmanager.CommandService
 import ru.cherryngine.engine.minecraft.events.DisconnectEvent
 import ru.cherryngine.engine.minecraft.events.PacketEvent
 import ru.cherryngine.engine.minecraft.events.PlayerConfigurationAsyncEvent
@@ -34,6 +35,7 @@ class MinecraftConnectionService(
     private val playerManager: PlayerManager,
     private val playerService: PlayerService,
     private val worldService: WorldService,
+    private val commandService: CommandService,
     val playerCreatedEventPublisher: ApplicationEventPublisher<PlayerCreatedEvent>,
     val playerConfigurationAsyncEventPublisher: ApplicationEventPublisher<PlayerConfigurationAsyncEvent>,
 ) {
@@ -88,6 +90,7 @@ class MinecraftConnectionService(
                 val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) ?: return
                 playerService.onPlayerJoin(player)
                 worldService.onPlayerJoin(player)
+                commandService.onPlayerJoin(player)
             }
 
             is ServerboundMovePlayerPosPacket -> onMove(

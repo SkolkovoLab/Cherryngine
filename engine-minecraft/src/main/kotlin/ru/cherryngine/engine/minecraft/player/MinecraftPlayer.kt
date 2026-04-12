@@ -20,7 +20,7 @@ import ru.cherryngine.lib.world.ImmutableLayerKey
 
 class MinecraftPlayer(
     val connection: Connection,
-) : Player, CommandSender {
+) : Player {
     override val uuid get() = connection.gameProfile.uuid
     override val username get() = connection.gameProfile.username
 

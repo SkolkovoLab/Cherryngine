@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory
 import ru.cherryngine.engine.core.PlayerManager
 import ru.cherryngine.engine.core.PlayerService
 import ru.cherryngine.engine.core.WorldService
+import ru.cherryngine.engine.core.commandmanager.CommandService
 import java.net.InetSocketAddress
 
 @Singleton
@@ -22,6 +23,7 @@ class McProtocolLibServer(
     private val playerManager: PlayerManager,
     private val playerService: PlayerService,
     private val worldService: WorldService,
+    private val commandService: CommandService,
     private val config: McProtocolLibConfig,
 ) : ApplicationEventListener<StartupEvent> {
     private val log = LoggerFactory.getLogger(McProtocolLibServer::class.java)
@@ -47,6 +49,7 @@ class McProtocolLibServer(
             playerManager.register(player)
             playerService.onPlayerJoin(player)
             worldService.onPlayerJoin(player)
+            commandService.onPlayerJoin(player)
         })
 
         server.addListener(object : ServerAdapter() {
@@ -54,7 +57,7 @@ class McProtocolLibServer(
                 // Registry interceptor must be added first to cancel MCProtocolLib's
                 // default registry data and replace it with the engine's registries
                 event.session.addListener(McProtocolLibRegistryInterceptor())
-                event.session.addListener(McProtocolLibSessionListener(playerManager))
+                event.session.addListener(McProtocolLibSessionListener(playerManager, commandService))
             }
 
             override fun sessionRemoved(event: SessionRemovedEvent) {
