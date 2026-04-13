@@ -128,6 +128,15 @@ class PhysicsSpace(
         return createBody(bodySettings, EActivation.DontActivate)
     }
 
+    fun addPlayer(position: Vec3D): PhysicsBody {
+        val bodySettings = BodyCreationSettings()
+            .setMotionType(EMotionType.Kinematic)
+            .setObjectLayer(Layers.MOVING)
+            .setShape(CapsuleShape(0.7f, 0.3f))
+            .setPosition(position.joltRVec3())
+        return createBody(bodySettings, EActivation.Activate)
+    }
+
     fun addCube(position: Vec3D, size: Vec3D): PhysicsBody {
         val bodyCreationSettings = BodyCreationSettings()
             .setMotionType(EMotionType.Dynamic)
@@ -188,6 +197,15 @@ class PhysicsSpace(
             val quat = Quat()
             body.getPositionAndRotation(rVec3, quat)
             return Transform(rVec3.vec3D(), quat.qRot())
+        }
+
+        fun moveKinematic(position: Vec3D, delta: Float) {
+            physicsSystem.getBodyInterface().moveKinematic(
+                body.id,
+                position.joltRVec3(),
+                Quat.sIdentity(),
+                delta
+            )
         }
 
         fun getLinearVelocity(): Vec3D {
