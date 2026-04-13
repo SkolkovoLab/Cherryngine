@@ -4,6 +4,7 @@ import com.github.stephengold.joltjni.*
 import com.github.stephengold.joltjni.enumerate.EActivation
 import com.github.stephengold.joltjni.enumerate.EMotionQuality
 import com.github.stephengold.joltjni.enumerate.EMotionType
+import com.github.stephengold.joltjni.enumerate.EOverrideMassProperties
 import com.github.stephengold.joltjni.enumerate.EPhysicsUpdateError
 import com.github.stephengold.joltjni.enumerate.ValidateResult
 import ru.cherryngine.lib.math.Cuboid
@@ -130,9 +131,16 @@ class PhysicsSpace(
 
     fun addPlayer(position: Vec3D): PhysicsBody {
         val bodySettings = BodyCreationSettings()
-            .setMotionType(EMotionType.Kinematic)
+            .setMotionType(EMotionType.Dynamic)
             .setObjectLayer(Layers.MOVING)
-            .setShape(CapsuleShape(0.7f, 0.3f))
+            .setShape(CapsuleShape(0.6f, 0.3f))
+            .setGravityFactor(0f)
+            .setAngularDamping(999f)
+            .setLinearDamping(0f)
+            .setMassPropertiesOverride(
+                MassProperties().apply { println("mass = $mass"); setMass(500f) }
+            )
+            .setOverrideMassProperties(EOverrideMassProperties.CalculateInertia)
             .setPosition(position.joltRVec3())
         return createBody(bodySettings, EActivation.Activate)
     }
@@ -206,6 +214,14 @@ class PhysicsSpace(
                 Quat.sIdentity(),
                 delta
             )
+        }
+
+        fun setLinearVelocity(velocity: Vec3D) {
+            physicsSystem.getBodyInterface().setLinearVelocity(body.id, velocity.joltVec3())
+        }
+
+        fun setAngularVelocity(velocity: Vec3D) {
+            physicsSystem.getBodyInterface().setAngularVelocity(body.id, velocity.joltVec3())
         }
 
         fun getLinearVelocity(): Vec3D {
