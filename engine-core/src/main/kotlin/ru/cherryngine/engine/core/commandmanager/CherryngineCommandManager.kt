@@ -13,11 +13,11 @@ import org.incendo.cloud.kotlin.coroutines.annotations.installCoroutineSupport
 import org.incendo.cloud.meta.CommandMeta
 import org.incendo.cloud.meta.SimpleCommandMeta
 import org.incendo.cloud.parser.ArgumentParser
-import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import ru.cherryngine.engine.core.utils.component
 
 class CherryngineCommandManager(
-    private val logger: Logger,
+    parsers: List<SArgumentParser<*>> = emptyList(),
 ) : CommandManager<CommandSender>(
     ExecutionCoordinator.coordinatorFor(ExecutionCoordinator.nonSchedulingExecutor()),
     CommandRegistrationHandler.nullCommandRegistrationHandler()
@@ -39,6 +39,7 @@ class CherryngineCommandManager(
             CommandExecutionException::class.java,
             ExceptionHandler.unwrappingHandler()
         )
+        parsers.forEach { registerParser(it.type, it) }
     }
 
     override fun hasPermission(sender: CommandSender, permission: String) = true
@@ -53,5 +54,9 @@ class CherryngineCommandManager(
         parserRegistry().registerParserSupplier(
             TypeToken.get(type) as TypeToken<Any>
         ) { parser as ArgumentParser<CommandSender, Any> }
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(CherryngineCommandManager::class.java)
     }
 }

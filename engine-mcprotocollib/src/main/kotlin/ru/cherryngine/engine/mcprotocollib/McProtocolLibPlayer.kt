@@ -11,6 +11,7 @@ import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
 import ru.cherryngine.lib.world.ImmutableLayerKey
 import java.util.*
+import java.util.concurrent.ConcurrentLinkedQueue
 
 class McProtocolLibPlayer(
     val session: Session,
@@ -25,6 +26,8 @@ class McProtocolLibPlayer(
 
     var clientPosition: Vec3D = Vec3D.ZERO
     var clientYawPitch: YawPitch = YawPitch.ZERO
+    val pendingCommands: ConcurrentLinkedQueue<String> = ConcurrentLinkedQueue()
+    val pendingSuggestions: ConcurrentLinkedQueue<Pair<Int, String>> = ConcurrentLinkedQueue()
 
     var sentChunkCacheCenter: ChunkPos? = null
     val sentChunks: MutableSet<ChunkPos> = mutableSetOf()

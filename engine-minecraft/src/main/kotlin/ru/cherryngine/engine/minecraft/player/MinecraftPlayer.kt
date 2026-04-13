@@ -8,6 +8,7 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.network.Connection
+import java.util.concurrent.ConcurrentLinkedQueue
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundPlayerPositionPacket
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSystemChatPacket
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
@@ -27,6 +28,8 @@ class MinecraftPlayer(
     var clientYawPitch: YawPitch = YawPitch.ZERO
     var clientMovePlayerFlags: MovePlayerFlags = MovePlayerFlags(false, false)
     var isSneaking: Boolean = false
+    val pendingCommands: ConcurrentLinkedQueue<String> = ConcurrentLinkedQueue()
+    val pendingSuggestions: ConcurrentLinkedQueue<Pair<Int, String>> = ConcurrentLinkedQueue()
 
     val currentVisibleViewables: MutableSet<Viewable> = hashSetOf()
     val currentVisibleBlocksViewables: MutableList<BlocksViewable> = mutableListOf()

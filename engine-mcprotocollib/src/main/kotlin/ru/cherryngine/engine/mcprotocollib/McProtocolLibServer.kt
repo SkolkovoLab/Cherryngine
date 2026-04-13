@@ -12,7 +12,6 @@ import org.geysermc.mcprotocollib.protocol.MinecraftConstants
 import org.geysermc.mcprotocollib.protocol.MinecraftProtocol
 import org.geysermc.mcprotocollib.protocol.ServerLoginHandler
 import org.slf4j.LoggerFactory
-import ru.cherryngine.engine.core.commandmanager.CommandService
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.services.PlayerService
 import ru.cherryngine.engine.core.services.WorldService
@@ -23,7 +22,6 @@ class McProtocolLibServer(
     private val playerManager: PlayerManager,
     private val playerService: PlayerService,
     private val worldService: WorldService,
-    private val commandService: CommandService,
     private val config: McProtocolLibConfig,
 ) : ApplicationEventListener<StartupEvent> {
     private val log = LoggerFactory.getLogger(McProtocolLibServer::class.java)
@@ -49,16 +47,13 @@ class McProtocolLibServer(
             playerManager.register(player)
             playerService.onPlayerJoin(player)
             worldService.onPlayerJoin(player)
-            commandService.onPlayerJoin(player)
             playerManager.notifyJoin(player.uuid)
         })
 
         server.addListener(object : ServerAdapter() {
             override fun sessionAdded(event: SessionAddedEvent) {
-                // Registry interceptor must be added first to cancel MCProtocolLib's
-                // default registry data and replace it with the engine's registries
                 event.session.addListener(McProtocolLibRegistryInterceptor())
-                event.session.addListener(McProtocolLibSessionListener(playerManager, commandService))
+                event.session.addListener(McProtocolLibSessionListener(playerManager))
             }
 
             override fun sessionRemoved(event: SessionRemovedEvent) {
@@ -67,7 +62,6 @@ class McProtocolLibServer(
                 log.info("McProtocolLib player disconnected: {} ({})", profile.name, profile.id)
                 worldService.onPlayerLeave(player)
                 playerService.onPlayerLeave(player)
-                commandService.onPlayerLeave(player)
                 playerManager.unregister(profile.id)
             }
         })

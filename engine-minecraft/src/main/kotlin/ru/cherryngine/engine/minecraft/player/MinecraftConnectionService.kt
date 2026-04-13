@@ -4,7 +4,6 @@ import io.micronaut.context.event.ApplicationEventPublisher
 import io.micronaut.runtime.event.annotation.EventListener
 import jakarta.inject.Singleton
 import net.kyori.adventure.text.minimessage.MiniMessage
-import ru.cherryngine.engine.core.commandmanager.CommandService
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.services.PlayerService
 import ru.cherryngine.engine.core.services.WorldService
@@ -35,7 +34,6 @@ class MinecraftConnectionService(
     private val playerManager: PlayerManager,
     private val playerService: PlayerService,
     private val worldService: WorldService,
-    private val commandService: CommandService,
     val playerCreatedEventPublisher: ApplicationEventPublisher<PlayerCreatedEvent>,
     val playerConfigurationAsyncEventPublisher: ApplicationEventPublisher<PlayerConfigurationAsyncEvent>,
 ) {
@@ -90,7 +88,6 @@ class MinecraftConnectionService(
                 val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) ?: return
                 playerService.onPlayerJoin(player)
                 worldService.onPlayerJoin(player)
-                commandService.onPlayerJoin(player)
                 playerManager.notifyJoin(player.uuid)
             }
 
@@ -113,6 +110,16 @@ class MinecraftConnectionService(
                 connection,
                 null, null, packet.flags
             )
+
+            is ServerboundChatCommandPacket -> {
+                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) as? MinecraftPlayer ?: return
+                player.pendingCommands.offer(packet.command)
+            }
+
+            is ServerboundCommandSuggestionPacket -> {
+                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) as? MinecraftPlayer ?: return
+                player.pendingSuggestions.offer(Pair(packet.transactionId, packet.text.removePrefix("/")))
+            }
 
             is ServerboundPlayerInputPacket -> {
                 val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) as? MinecraftPlayer ?: return
@@ -142,7 +149,6 @@ class MinecraftConnectionService(
             if (player != null) {
                 worldService.onPlayerLeave(player)
                 playerService.onPlayerLeave(player)
-                commandService.onPlayerLeave(player)
             }
             playerManager.unregister(uuid)
         }
