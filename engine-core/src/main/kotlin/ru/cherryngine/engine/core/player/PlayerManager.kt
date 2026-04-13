@@ -16,7 +16,10 @@ class PlayerManager {
     fun register(player: Player) {
         playersByUUID[player.uuid] = player
         playersByUsername[player.username.lowercase()] = player
-        playerJoinChannel.trySend(player.uuid)
+    }
+
+    fun notifyJoin(uuid: UUID) {
+        playerJoinChannel.trySend(uuid)
     }
 
     fun unregister(uuid: UUID) {

@@ -91,6 +91,7 @@ class MinecraftConnectionService(
                 playerService.onPlayerJoin(player)
                 worldService.onPlayerJoin(player)
                 commandService.onPlayerJoin(player)
+                playerManager.notifyJoin(player.uuid)
             }
 
             is ServerboundMovePlayerPosPacket -> onMove(
@@ -141,6 +142,7 @@ class MinecraftConnectionService(
             if (player != null) {
                 worldService.onPlayerLeave(player)
                 playerService.onPlayerLeave(player)
+                commandService.onPlayerLeave(player)
             }
             playerManager.unregister(uuid)
         }

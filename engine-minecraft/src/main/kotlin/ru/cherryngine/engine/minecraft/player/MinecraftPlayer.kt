@@ -23,8 +23,8 @@ class MinecraftPlayer(
     override val uuid get() = connection.gameProfile.uuid
     override val username get() = connection.gameProfile.username
 
-    var clientPosition: Vec3D = Vec3D.ZERO
-    var clientYawPitch: YawPitch = YawPitch.ZERO
+    var clientPosition: Vec3D? = null
+    var clientYawPitch: YawPitch? = null
     var clientMovePlayerFlags: MovePlayerFlags = MovePlayerFlags(false, false)
     var isSneaking: Boolean = false
 

@@ -10,6 +10,10 @@ class CommandService(private val handlers: List<CommandServiceHandler>) {
         handlers.firstOrNull { it.canHandle(player) }?.onPlayerJoin(player)
     }
 
+    fun onPlayerLeave(player: Player) {
+        handlers.firstOrNull { it.canHandle(player) }?.onPlayerLeave(player)
+    }
+
     fun execute(player: Player, command: String) {
         handlers.firstOrNull { it.canHandle(player) }?.execute(player, command)
     }

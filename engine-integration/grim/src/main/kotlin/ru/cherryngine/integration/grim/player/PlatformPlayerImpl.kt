@@ -55,7 +55,7 @@ class PlatformPlayerImpl(
     }
 
     override fun getPosition(): Vector3d {
-        val (x, y, z) = player.clientPosition
+        val (x, y, z) = player.clientPosition ?: return Vector3d(0.0, 0.0, 0.0)
         return Vector3d(x, y, z)
     }
 
@@ -111,13 +111,13 @@ class PlatformPlayerImpl(
     }
 
     override fun getLocation(): Location {
-        val (x, y, z) = player.clientPosition
-        val (yaw, pitch) = player.clientYawPitch
+        val (x, y, z) = player.clientPosition ?: return Location(world, 0.0, 0.0, 0.0, 0f, 0f)
+        val (yaw, pitch) = player.clientYawPitch ?: return Location(world, x, y, z, 0f, 0f)
         return Location(world, x, y, z, yaw, pitch)
     }
 
     override fun distanceSquared(x: Double, y: Double, z: Double): Double {
-        return player.clientPosition.minus(x, y, z).lengthSquared()
+        return (player.clientPosition ?: Vec3D.ZERO).minus(x, y, z).lengthSquared()
     }
 
     override fun getUniqueId(): UUID {

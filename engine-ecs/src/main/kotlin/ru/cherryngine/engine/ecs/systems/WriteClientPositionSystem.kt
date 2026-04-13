@@ -11,14 +11,14 @@ import ru.cherryngine.engine.ecs.events.LastPlayerPositionEvent
 class WriteClientPositionSystem(
     val outputProvider: PlayerOutputProvider,
 ) : IteratingSystem(
-    family { all(PlayerComponent, PositionComponent, LastPlayerPositionEvent) }
+    family { all(PlayerComponent, PositionComponent) }
 ) {
     override fun onTickEntity(entity: EcsEntity) {
         val uuid = entity[PlayerComponent].uuid
         val pos = entity[PositionComponent]
-        val last = entity[LastPlayerPositionEvent]
+        val last = entity.getOrNull(LastPlayerPositionEvent)
 
-        if (pos.position != last.position || pos.yawPitch != last.yawPitch) {
+        if (last == null || pos.position != last.position || pos.yawPitch != last.yawPitch) {
             outputProvider.teleport(uuid, pos.position, pos.yawPitch)
         }
     }

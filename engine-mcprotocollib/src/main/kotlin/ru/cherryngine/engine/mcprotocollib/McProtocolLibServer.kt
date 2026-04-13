@@ -50,6 +50,7 @@ class McProtocolLibServer(
             playerService.onPlayerJoin(player)
             worldService.onPlayerJoin(player)
             commandService.onPlayerJoin(player)
+            playerManager.notifyJoin(player.uuid)
         })
 
         server.addListener(object : ServerAdapter() {
@@ -66,6 +67,7 @@ class McProtocolLibServer(
                 log.info("McProtocolLib player disconnected: {} ({})", profile.name, profile.id)
                 worldService.onPlayerLeave(player)
                 playerService.onPlayerLeave(player)
+                commandService.onPlayerLeave(player)
                 playerManager.unregister(profile.id)
             }
         })

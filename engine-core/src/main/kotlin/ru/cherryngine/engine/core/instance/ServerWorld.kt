@@ -9,10 +9,16 @@ import ru.cherryngine.lib.world.LayeredWorld
 
 class ServerWorld {
     private val layersByContext = HashMap<String, MutableList<LayerEntry>>()
+    private val worldCache = HashMap<Set<String>, LayeredWorld>()
     var dimensionType: DimensionType? = null
+        set(value) {
+            field = value
+            worldCache.clear()
+        }
 
     fun registerLayer(contextID: String, entry: LayerEntry) {
         layersByContext.getOrPut(contextID) { mutableListOf() }.add(entry)
+        worldCache.clear()
     }
 
     fun getLayersForContexts(contextIDs: Set<String>): List<LayerEntry> =
@@ -20,11 +26,15 @@ class ServerWorld {
 
     fun getLayersByContext(): Map<String, List<LayerEntry>> = layersByContext
 
-    fun getBlock(pos: Vec3I, contextIDs: Set<String>): Block {
-        val dt = dimensionType ?: return Block.AIR
+    private fun getLayeredWorld(contextIDs: Set<String>): LayeredWorld? {
+        val dt = dimensionType ?: return null
         val layers = getLayersForContexts(contextIDs)
-        if (layers.isEmpty()) return Block.AIR
-        return LayeredWorld(dt, layers).getBlock(pos)
+        if (layers.isEmpty()) return null
+        return worldCache.getOrPut(contextIDs) { LayeredWorld(dt, layers) }
+    }
+
+    fun getBlock(pos: Vec3I, contextIDs: Set<String>): Block {
+        return getLayeredWorld(contextIDs)?.getBlock(pos) ?: Block.AIR
     }
 
     fun isSolid(pos: Vec3I, contextIDs: Set<String>): Boolean {
@@ -37,15 +47,10 @@ class ServerWorld {
         maxDistance: Double,
         contextIDs: Set<String>,
     ): RaycastResult? {
-        val dt = dimensionType ?: return null
-        val layers = getLayersForContexts(contextIDs)
-        if (layers.isEmpty()) return null
-        val world = LayeredWorld(dt, layers)
-
+        val world = getLayeredWorld(contextIDs) ?: return null
         val stepSize = 0.1
         var distance = 0.0
         val dir = direction.normalize()
-
         while (distance <= maxDistance) {
             val pos = from + dir * distance
             val blockPos = Vec3I(
@@ -53,8 +58,7 @@ class ServerWorld {
                 Math.floor(pos.y).toInt(),
                 Math.floor(pos.z).toInt(),
             )
-            val block = world.getBlock(blockPos)
-            if (!block.isAir()) {
+            if (!world.getBlock(blockPos).isAir()) {
                 return RaycastResult(pos, blockPos)
             }
             distance += stepSize

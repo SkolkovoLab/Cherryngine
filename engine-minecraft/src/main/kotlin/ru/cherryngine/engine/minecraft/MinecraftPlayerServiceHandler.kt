@@ -3,21 +3,15 @@ package ru.cherryngine.engine.minecraft
 import jakarta.inject.Singleton
 import ru.cherryngine.engine.core.player.Player
 import ru.cherryngine.engine.core.services.PlayerServiceHandler
-import ru.cherryngine.engine.core.services.SpawnSettings
 import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
-import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundGameEventPacket
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundLoginPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundPlayerPositionPacket
 import ru.cherryngine.lib.minecraft.network.protocol.types.GameMode
-import ru.cherryngine.lib.minecraft.network.protocol.types.TeleportFlags
 import ru.cherryngine.lib.minecraft.registry.Registries
 import ru.cherryngine.lib.minecraft.registry.keys.DimensionTypes
 
 @Singleton
-class MinecraftPlayerServiceHandler(
-    private val spawnSettings: SpawnSettings,
-) : PlayerServiceHandler {
+class MinecraftPlayerServiceHandler : PlayerServiceHandler {
     override fun canHandle(player: Player) = player is MinecraftPlayer
 
     override fun onPlayerJoin(player: Player) {
@@ -46,19 +40,6 @@ class MinecraftPlayerServiceHandler(
                 0,
                 32,
                 false
-            )
-        )
-
-        mcPlayer.clientPosition = spawnSettings.position
-        mcPlayer.clientYawPitch = spawnSettings.yawPitch
-
-        connection.sendPacket(
-            ClientboundPlayerPositionPacket(
-                0,
-                spawnSettings.position,
-                Vec3D.ZERO,
-                spawnSettings.yawPitch,
-                TeleportFlags.EMPTY
             )
         )
 
