@@ -3,14 +3,15 @@ package ru.cherryngine.engine.physics.terrain
 import ru.cherryngine.engine.physics.PhysicsSpace
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 import ru.cherryngine.lib.minecraft.world.block.Block
-import ru.cherryngine.lib.world.LayerEntry
 import ru.cherryngine.lib.world.LayeredWorld
 import kotlin.math.ceil
 import kotlin.math.floor
+import kotlin.math.max
 
-class TerrainGenerator(private val physicsSpace: PhysicsSpace) {
+class TerrainGenerator(
+    private val physicsSpace: PhysicsSpace
+) {
     private data class TerrainKey(val pos: Vec3I, val contextKey: Set<String>)
 
     private data class TerrainBodyEntry(
@@ -20,7 +21,7 @@ class TerrainGenerator(private val physicsSpace: PhysicsSpace) {
 
     private val terrainBodies = HashMap<TerrainKey, TerrainBodyEntry>()
 
-    fun step(activeBodies: List<ActiveBodyInfo>, layers: List<LayerWithContext>) {
+    fun step(delta: Float, activeBodies: List<ActiveBodyInfo>, layers: List<LayerWithContext>) {
         val keep = HashSet<TerrainKey>()
 
         for (bodyInfo in activeBodies) {
@@ -31,7 +32,13 @@ class TerrainGenerator(private val physicsSpace: PhysicsSpace) {
             val dimensionType = relevantLayers.first().dimensionType
             val layeredWorld = LayeredWorld(dimensionType, relevantLayers.map { it.entry })
 
-            val aabb = bodyInfo.aabb.expand(0.5)
+            // Расширяем AABB в направлении движения, чтобы быстрые тела не пролетали сквозь блоки
+            // На практике 0.25 от этого значения вполне хватает, так что уменьшаем
+            val d = bodyInfo.velocity * delta.toDouble() * 0.25
+            val aabb = bodyInfo.aabb.expand(0.5).expand(
+                max(0.0, -d.x), max(0.0, -d.y), max(0.0, -d.z),
+                max(0.0, d.x), max(0.0, d.y), max(0.0, d.z),
+            )
 
             forEachBlockInAABB(aabb) { pos ->
                 val block = layeredWorld.getBlock(pos)
@@ -90,14 +97,3 @@ class TerrainGenerator(private val physicsSpace: PhysicsSpace) {
         }
     }
 }
-
-data class ActiveBodyInfo(
-    val aabb: Cuboid,
-    val physContextIDs: Set<String>,
-)
-
-data class LayerWithContext(
-    val entry: LayerEntry,
-    val contextIDs: Set<String>,
-    val dimensionType: DimensionType,
-)

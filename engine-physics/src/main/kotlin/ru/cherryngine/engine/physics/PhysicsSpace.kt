@@ -2,6 +2,7 @@ package ru.cherryngine.engine.physics
 
 import com.github.stephengold.joltjni.*
 import com.github.stephengold.joltjni.enumerate.EActivation
+import com.github.stephengold.joltjni.enumerate.EMotionQuality
 import com.github.stephengold.joltjni.enumerate.EMotionType
 import com.github.stephengold.joltjni.enumerate.EPhysicsUpdateError
 import com.github.stephengold.joltjni.enumerate.ValidateResult
@@ -12,7 +13,9 @@ import ru.cherryngine.lib.math.Vec3I
 import java.util.*
 
 
-class PhysicsSpace {
+class PhysicsSpace(
+    val linearCastSpeedThreshold: Float = 10f,
+) {
     val physicsSystem: PhysicsSystem
     val tempAllocator: TempAllocator
     val jobSystem: JobSystem
@@ -137,6 +140,15 @@ class PhysicsSpace {
     }
 
     fun update(delta: Float) {
+        // Динамически переключаем MotionQuality по скорости
+        val bodyInterface = physicsSystem.getBodyInterface()
+        for (body in bodyByPhysicsId.values) {
+            if (body.body.isStatic) continue
+            val speed = body.body.getLinearVelocity().length()
+            val quality = if (speed > linearCastSpeedThreshold) EMotionQuality.LinearCast else EMotionQuality.Discrete
+            bodyInterface.setMotionQuality(body.body.id, quality)
+        }
+
         val steps = 1
         physicsSystem.update(delta, steps, tempAllocator, jobSystem).also { errors ->
             check(errors == EPhysicsUpdateError.None) { errors }
@@ -176,6 +188,10 @@ class PhysicsSpace {
             val quat = Quat()
             body.getPositionAndRotation(rVec3, quat)
             return Transform(rVec3.vec3D(), quat.qRot())
+        }
+
+        fun getLinearVelocity(): Vec3D {
+            return body.getLinearVelocity().vec3D()
         }
 
         fun getWorldBounds(): Cuboid {
