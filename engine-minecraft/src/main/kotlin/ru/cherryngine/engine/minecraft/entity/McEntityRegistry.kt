@@ -1,19 +1,9 @@
 package ru.cherryngine.engine.minecraft.entity
 
-import java.util.*
-
 class McEntityRegistry {
-    private val entities = HashMap<UUID, McEntity>()
+    private val entities = mutableSetOf<McEntity>()
 
-    fun getOrCreate(mcEntityId: UUID, factory: () -> McEntity): McEntity {
-        return entities.getOrPut(mcEntityId, factory)
-    }
-
-    fun get(mcEntityId: UUID): McEntity? = entities[mcEntityId]
-
-    fun remove(mcEntityId: UUID) {
-        entities.remove(mcEntityId)
-    }
-
-    fun allEntities(): Collection<McEntity> = entities.values
+    fun add(mcEntity: McEntity) { entities.add(mcEntity) }
+    fun remove(mcEntity: McEntity) { entities.remove(mcEntity) }
+    fun allEntities(): Collection<McEntity> = entities
 }
