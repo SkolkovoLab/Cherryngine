@@ -53,14 +53,16 @@ class TerrainGenerator(
                 val existing = terrainBodies[key]
                 if (existing != null && existing.blockStateId == stateId) return@forEachBlockInAABB
 
-                existing?.body?.remove()
+                existing?.let { physicsSpace.unregisterBodyContexts(it.body); it.body.remove() }
                 val body = physicsSpace.addTerrain(pos, collisionCuboids)
+                physicsSpace.registerBodyContexts(body, key.contextKey)
                 terrainBodies[key] = TerrainBodyEntry(body, stateId)
             }
         }
 
         terrainBodies.entries.removeIf { (key, entry) ->
             if (key !in keep) {
+                physicsSpace.unregisterBodyContexts(entry.body)
                 entry.body.remove()
                 true
             } else false

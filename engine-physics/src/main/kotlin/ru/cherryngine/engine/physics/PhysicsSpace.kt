@@ -138,7 +138,7 @@ class PhysicsSpace(
             .setAngularDamping(999f)
             .setLinearDamping(0f)
             .setMassPropertiesOverride(
-                MassProperties().apply { println("mass = $mass"); setMass(500f) }
+                MassProperties().apply { setMass(500f) }
             )
             .setOverrideMassProperties(EOverrideMassProperties.CalculateInertia)
             .setPosition(position.joltRVec3())
@@ -180,6 +180,10 @@ class PhysicsSpace(
         bodyContexts[body.body.va()] = contexts
     }
 
+    fun updateBodyContexts(body: PhysicsBody, contexts: Set<String>) {
+        bodyContexts[body.body.va()] = contexts
+    }
+
     fun unregisterBodyContexts(body: PhysicsBody) {
         bodyContexts.remove(body.body.va())
     }
@@ -205,6 +209,14 @@ class PhysicsSpace(
             val quat = Quat()
             body.getPositionAndRotation(rVec3, quat)
             return Transform(rVec3.vec3D(), quat.qRot())
+        }
+
+        fun teleport(position: Vec3D) {
+            physicsSystem.getBodyInterface().setPosition(
+                body.id,
+                position.joltRVec3(),
+                EActivation.Activate
+            )
         }
 
         fun moveKinematic(position: Vec3D, delta: Float) {
