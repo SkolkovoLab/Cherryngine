@@ -57,7 +57,7 @@ class McProtocolLibViewTickable(
         dimensionType: DimensionType?,
     ) {
         val distance = DEFAULT_RENDER_DISTANCE
-        val clientChunkPos = ChunkUtils.chunkPosFromVec3D(player.clientPosition ?: return)
+        val clientChunkPos = ChunkUtils.chunkPosFromVec3D(player.clientPosition)
 
         if (player.sentChunkCacheCenter != clientChunkPos) {
             player.sentChunkCacheCenter = clientChunkPos

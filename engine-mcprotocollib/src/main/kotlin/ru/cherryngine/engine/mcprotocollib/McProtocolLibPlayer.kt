@@ -23,8 +23,8 @@ class McProtocolLibPlayer(
     override val username: String
         get() = profile.name
 
-    var clientPosition: Vec3D? = null
-    var clientYawPitch: YawPitch? = null
+    var clientPosition: Vec3D = Vec3D.ZERO
+    var clientYawPitch: YawPitch = YawPitch.ZERO
 
     var sentChunkCacheCenter: ChunkPos? = null
     val sentChunks: MutableSet<ChunkPos> = mutableSetOf()
