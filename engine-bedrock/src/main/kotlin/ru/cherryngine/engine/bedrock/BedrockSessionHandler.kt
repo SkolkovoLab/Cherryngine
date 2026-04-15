@@ -31,6 +31,14 @@ class BedrockSessionHandler(
 ) : BedrockPacketHandler {
 
     private var player: BedrockPlayer? = null
+    private val log = org.slf4j.LoggerFactory.getLogger(BedrockSessionHandler::class.java)
+
+    override fun handlePacket(packet: BedrockPacket): PacketSignal {
+        if (packet !is PlayerAuthInputPacket) {
+            log.info("<<< {}", packet.javaClass.simpleName)
+        }
+        return super.handlePacket(packet)
+    }
 
     companion object {
         private val EMPTY_LEVEL_CHUNK_DATA: ByteArray = run {
@@ -116,6 +124,13 @@ class BedrockSessionHandler(
         worldService.onPlayerJoin(p)
         playerManager.notifyJoin(p.uuid)
         onReady(p)
+        return PacketSignal.HANDLED
+    }
+
+    override fun handle(packet: CommandRequestPacket): PacketSignal {
+        val p = player ?: return PacketSignal.HANDLED
+        val command = packet.command.removePrefix("/")
+        p.pendingCommands.offer(command)
         return PacketSignal.HANDLED
     }
 
