@@ -14,7 +14,9 @@ import org.cloudburstmc.protocol.bedrock.packet.*
 import org.cloudburstmc.protocol.bedrock.util.EncryptionUtils
 import org.cloudburstmc.protocol.common.PacketSignal
 import org.cloudburstmc.protocol.common.util.OptionalBoolean
+import ru.cherryngine.engine.core.player.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
+import ru.cherryngine.engine.core.player.PlayerRouter
 import ru.cherryngine.engine.core.services.PlayerService
 import ru.cherryngine.engine.core.services.WorldService
 import ru.cherryngine.lib.math.Vec3D
@@ -27,6 +29,8 @@ class BedrockSessionHandler(
     private val playerManager: PlayerManager,
     private val playerService: PlayerService,
     private val worldService: WorldService,
+    private val instanceRouter: InstanceRouter,
+    private val playerRouter: PlayerRouter,
     private val onReady: (BedrockPlayer) -> Unit,
 ) : BedrockPacketHandler {
 
@@ -35,7 +39,7 @@ class BedrockSessionHandler(
 
     override fun handlePacket(packet: BedrockPacket): PacketSignal {
         if (packet !is PlayerAuthInputPacket) {
-            log.info("<<< {}", packet.javaClass.simpleName)
+            log.debug("<<< {}", packet.javaClass.simpleName)
         }
         return super.handlePacket(packet)
     }
@@ -122,7 +126,7 @@ class BedrockSessionHandler(
         playerManager.register(p)
         playerService.onPlayerJoin(p)
         worldService.onPlayerJoin(p)
-        playerManager.notifyJoin(p.uuid)
+        instanceRouter.routePlayer(p.uuid, playerRouter.getInitialInstance(p))
         onReady(p)
         return PacketSignal.HANDLED
     }
@@ -147,6 +151,7 @@ class BedrockSessionHandler(
 
     override fun onDisconnect(reason: CharSequence) {
         val p = player ?: return
+        instanceRouter.removePlayer(p.uuid)
         worldService.onPlayerLeave(p)
         playerService.onPlayerLeave(p)
         playerManager.unregister(p.uuid)

@@ -13,7 +13,9 @@ import org.cloudburstmc.protocol.bedrock.BedrockServerSession
 import org.cloudburstmc.protocol.bedrock.codec.v944.Bedrock_v944
 import org.cloudburstmc.protocol.bedrock.netty.initializer.BedrockServerInitializer
 import org.slf4j.LoggerFactory
+import ru.cherryngine.engine.core.player.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
+import ru.cherryngine.engine.core.player.PlayerRouter
 import ru.cherryngine.engine.core.services.PlayerService
 import ru.cherryngine.engine.core.services.WorldService
 import java.net.InetSocketAddress
@@ -23,6 +25,8 @@ class BedrockServer(
     private val playerManager: PlayerManager,
     private val playerService: PlayerService,
     private val worldService: WorldService,
+    private val instanceRouter: InstanceRouter,
+    private val playerRouter: PlayerRouter,
     private val config: BedrockConfig,
 ) : ApplicationEventListener<StartupEvent> {
     private val log = LoggerFactory.getLogger(BedrockServer::class.java)
@@ -42,7 +46,7 @@ class BedrockServer(
                 override fun initSession(session: BedrockServerSession) {
                     log.info("Bedrock client connected: {}", session.socketAddress)
                     session.packetHandler = BedrockSessionHandler(
-                        session, playerManager, playerService, worldService
+                        session, playerManager, playerService, worldService, instanceRouter, playerRouter
                     ) { /* onReady callback */ }
                 }
             })

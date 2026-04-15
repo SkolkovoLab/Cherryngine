@@ -12,7 +12,9 @@ import org.geysermc.mcprotocollib.protocol.MinecraftConstants
 import org.geysermc.mcprotocollib.protocol.MinecraftProtocol
 import org.geysermc.mcprotocollib.protocol.ServerLoginHandler
 import org.slf4j.LoggerFactory
+import ru.cherryngine.engine.core.player.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
+import ru.cherryngine.engine.core.player.PlayerRouter
 import ru.cherryngine.engine.core.services.PlayerService
 import ru.cherryngine.engine.core.services.WorldService
 import java.net.InetSocketAddress
@@ -22,6 +24,8 @@ class McProtocolLibServer(
     private val playerManager: PlayerManager,
     private val playerService: PlayerService,
     private val worldService: WorldService,
+    private val instanceRouter: InstanceRouter,
+    private val playerRouter: PlayerRouter,
     private val config: McProtocolLibConfig,
 ) : ApplicationEventListener<StartupEvent> {
     private val log = LoggerFactory.getLogger(McProtocolLibServer::class.java)
@@ -47,7 +51,7 @@ class McProtocolLibServer(
             playerManager.register(player)
             playerService.onPlayerJoin(player)
             worldService.onPlayerJoin(player)
-            playerManager.notifyJoin(player.uuid)
+            instanceRouter.routePlayer(player.uuid, playerRouter.getInitialInstance(player))
         })
 
         server.addListener(object : ServerAdapter() {
@@ -60,6 +64,7 @@ class McProtocolLibServer(
                 val profile = event.session.getFlag(MinecraftConstants.PROFILE_KEY) as? GameProfile ?: return
                 val player = playerManager.getPlayerNullable(profile.id) ?: return
                 log.info("McProtocolLib player disconnected: {} ({})", profile.name, profile.id)
+                instanceRouter.removePlayer(profile.id)
                 worldService.onPlayerLeave(player)
                 playerService.onPlayerLeave(player)
                 playerManager.unregister(profile.id)

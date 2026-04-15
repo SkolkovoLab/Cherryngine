@@ -4,7 +4,9 @@ import io.micronaut.context.event.ApplicationEventPublisher
 import io.micronaut.runtime.event.annotation.EventListener
 import jakarta.inject.Singleton
 import net.kyori.adventure.text.minimessage.MiniMessage
+import ru.cherryngine.engine.core.player.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
+import ru.cherryngine.engine.core.player.PlayerRouter
 import ru.cherryngine.engine.core.services.PlayerService
 import ru.cherryngine.engine.core.services.WorldService
 import ru.cherryngine.engine.minecraft.events.DisconnectEvent
@@ -34,6 +36,8 @@ class MinecraftConnectionService(
     private val playerManager: PlayerManager,
     private val playerService: PlayerService,
     private val worldService: WorldService,
+    private val instanceRouter: InstanceRouter,
+    private val playerRouter: PlayerRouter,
     val playerCreatedEventPublisher: ApplicationEventPublisher<PlayerCreatedEvent>,
     val playerConfigurationAsyncEventPublisher: ApplicationEventPublisher<PlayerConfigurationAsyncEvent>,
 ) {
@@ -88,7 +92,7 @@ class MinecraftConnectionService(
                 val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) ?: return
                 playerService.onPlayerJoin(player)
                 worldService.onPlayerJoin(player)
-                playerManager.notifyJoin(player.uuid)
+                instanceRouter.routePlayer(player.uuid, playerRouter.getInitialInstance(player))
             }
 
             is ServerboundMovePlayerPosPacket -> onMove(
@@ -145,6 +149,7 @@ class MinecraftConnectionService(
         val connection = event.connection
         if (connection.state == ProtocolState.PLAY || connection.state == ProtocolState.CONFIGURATION) {
             val uuid = connection.gameProfile.uuid
+            instanceRouter.removePlayer(uuid)
             val player = playerManager.getPlayerNullable(uuid)
             if (player != null) {
                 worldService.onPlayerLeave(player)

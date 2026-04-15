@@ -1,15 +1,11 @@
 package ru.cherryngine.engine.core.player
 
 import jakarta.inject.Singleton
-import kotlinx.coroutines.channels.Channel
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 @Singleton
 class PlayerManager {
-    val playerJoinChannel = Channel<UUID>(Channel.UNLIMITED)
-    val playerLeaveChannel = Channel<UUID>(Channel.UNLIMITED)
-
     private val playersByUUID = ConcurrentHashMap<UUID, Player>()
     private val playersByUsername = ConcurrentHashMap<String, Player>()
 
@@ -18,23 +14,13 @@ class PlayerManager {
         playersByUsername[player.username.lowercase()] = player
     }
 
-    fun notifyJoin(uuid: UUID) {
-        playerJoinChannel.trySend(uuid)
-    }
-
     fun unregister(uuid: UUID) {
-        val player = playersByUUID.remove(uuid)
-        if (player != null) {
-            playersByUsername.remove(player.username.lowercase())
-        }
-        playerLeaveChannel.trySend(uuid)
+        val player = playersByUUID.remove(uuid) ?: return
+        playersByUsername.remove(player.username.lowercase())
     }
 
     fun getPlayerNullable(uuid: UUID): Player? = playersByUUID[uuid]
-
     fun getPlayerNullable(username: String): Player? = playersByUsername[username.lowercase()]
-
     fun getPlayer(uuid: UUID): Player = playersByUUID[uuid] ?: error("Player $uuid not found")
-
     fun onlinePlayers(): Collection<Player> = playersByUUID.values
 }
