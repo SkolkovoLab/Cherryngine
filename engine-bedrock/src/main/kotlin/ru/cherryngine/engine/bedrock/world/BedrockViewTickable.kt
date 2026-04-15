@@ -1,11 +1,12 @@
 package ru.cherryngine.engine.bedrock.world
 
-import io.netty.buffer.Unpooled
 import org.cloudburstmc.math.vector.Vector3i
 import org.cloudburstmc.protocol.bedrock.packet.LevelChunkPacket
 import org.cloudburstmc.protocol.bedrock.packet.NetworkChunkPublisherUpdatePacket
 import ru.cherryngine.engine.bedrock.BedrockPlayer
 import ru.cherryngine.engine.bedrock.BedrockWorldServiceHandler
+import ru.cherryngine.engine.bedrock.entity.BedrockEntity
+import ru.cherryngine.engine.bedrock.entity.BedrockEntityRegistry
 import ru.cherryngine.engine.core.instance.ServerWorld
 import ru.cherryngine.engine.core.instance.Tickable
 import ru.cherryngine.engine.core.player.PlayerManager
@@ -19,10 +20,12 @@ class BedrockViewTickable(
     private val worldServiceHandler: BedrockWorldServiceHandler,
     private val blockMapping: BedrockBlockMapping,
     private val serverWorld: ServerWorld,
+    private val entityRegistry: BedrockEntityRegistry? = null,
 ) : Tickable {
 
     companion object {
         const val RENDER_DISTANCE = 4
+        const val ENTITY_RENDER_DISTANCE = 2
         const val MAX_CHUNKS_PER_TICK = 8
     }
 
@@ -50,10 +53,9 @@ class BedrockViewTickable(
                 bp.session.sendPacket(publisher)
             }
 
+            // Chunks
             val world = LayeredWorld(dimensionType, layers)
             val chunks = ChunkUtils.getChunksInRange(clientChunkPos, RENDER_DISTANCE)
-
-            // Remove chunks no longer in range
             val inRange = chunks.map { ChunkPos.pack(it.x, it.z) }.toSet()
             bp.sentChunks.retainAll(inRange)
 
@@ -80,6 +82,31 @@ class BedrockViewTickable(
 
                 bp.sentChunks.add(packed)
                 sent++
+            }
+
+            // Entities
+            if (entityRegistry != null) {
+                val entityChunks = ChunkUtils.getChunksInRange(clientChunkPos, ENTITY_RENDER_DISTANCE).toSet()
+                val visibleEntities = entityRegistry.allEntities().filter { entity ->
+                    entity.chunkPos in entityChunks &&
+                    (entity.viewContextIDs.isEmpty() || entity.viewContextIDs.any { it in contextIDs }) &&
+                    entity.viewerPredicate(bp)
+                }.toSet()
+
+                // Hide entities no longer visible
+                bp.visibleEntities.removeAll { entity ->
+                    val shouldHide = entity !in visibleEntities
+                    if (shouldHide) entity.hide(bp)
+                    shouldHide
+                }
+
+                // Show new entities
+                for (entity in visibleEntities) {
+                    if (entity !in bp.visibleEntities) {
+                        entity.show(bp)
+                        bp.visibleEntities.add(entity)
+                    }
+                }
             }
         }
     }

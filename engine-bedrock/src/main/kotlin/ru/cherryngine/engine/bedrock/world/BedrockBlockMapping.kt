@@ -1,78 +1,82 @@
 package ru.cherryngine.engine.bedrock.world
 
+import com.google.gson.JsonParser
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import jakarta.inject.Singleton
 import org.cloudburstmc.nbt.NbtMap
 import org.cloudburstmc.nbt.NbtType
 import org.cloudburstmc.nbt.NbtUtils
+import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
 import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.minecraft.world.block.BlockStates
-import java.io.DataInputStream
-import java.util.zip.GZIPInputStream
 
-/**
- * Maps Java block stateIds to Bedrock runtime IDs.
- *
- * Loads the Bedrock block palette from resources and matches blocks by name.
- * States/properties are not matched — each Java block maps to the first
- * Bedrock palette entry with the same name (default state).
- */
 @Singleton
 class BedrockBlockMapping {
     private val log = LoggerFactory.getLogger(BedrockBlockMapping::class.java)
 
     /** javaStateId -> bedrockRuntimeId */
-    private val mapping = Int2IntOpenHashMap().apply { defaultReturnValue(BEDROCK_AIR_RUNTIME_ID) }
+    private val blockMapping = Int2IntOpenHashMap().apply { defaultReturnValue(BEDROCK_AIR_RUNTIME_ID) }
 
     /** Bedrock block palette entries (index = runtime ID) */
     val paletteEntries: List<NbtMap>
 
+    /** item name -> item runtime ID */
+    private val itemRuntimeIds = HashMap<String, Int>()
+
     init {
-        // Load Bedrock block palette
+        // Block palette
         val paletteStream = BedrockBlockMapping::class.java.getResourceAsStream("/bedrock/block_palette.nbt")
             ?: throw IllegalStateException("Missing bedrock/block_palette.nbt resource")
-
         val blockPalette: NbtMap = paletteStream.use { stream ->
-            NbtUtils.createGZIPReader(stream).use { reader ->
-                reader.readTag() as NbtMap
-            }
+            NbtUtils.createGZIPReader(stream).use { it.readTag() as NbtMap }
         }
-
         val vanillaBlocks = blockPalette.getList("blocks", NbtType.COMPOUND)
         paletteEntries = vanillaBlocks.toList()
 
-        // Build name -> first runtimeId index (default state per block name)
         val nameToRuntimeId = HashMap<String, Int>(vanillaBlocks.size)
         for (i in vanillaBlocks.indices) {
-            val entry = vanillaBlocks[i]
-            val name = entry.getString("name")
-            nameToRuntimeId.putIfAbsent(name, i)
+            nameToRuntimeId.putIfAbsent(vanillaBlocks[i].getString("name"), i)
         }
 
-        // Map each Java stateId -> Bedrock runtimeId by block name
         var mapped = 0
         var unmapped = 0
         for ((stateId, block) in BlockStates.blockStates) {
-            val javaName = block.registryBlock.key.toString()
-            val bedrockId = nameToRuntimeId[javaName]
+            val bedrockId = nameToRuntimeId[block.registryBlock.key.toString()]
             if (bedrockId != null) {
-                mapping[stateId] = bedrockId
+                blockMapping[stateId] = bedrockId
                 mapped++
             } else {
                 unmapped++
             }
         }
-
-        log.info("Bedrock block mapping: {} palette entries, {} mapped, {} unmapped (fallback to air)",
+        log.info("Bedrock block mapping: {} palette entries, {} mapped, {} unmapped",
             paletteEntries.size, mapped, unmapped)
+
+        // Item runtime states
+        val itemStream = BedrockBlockMapping::class.java.getResourceAsStream("/bedrock/runtime_item_states.json")
+        if (itemStream != null) {
+            val items = JsonParser.parseReader(itemStream.reader()).asJsonArray
+            for (item in items) {
+                val obj = item.asJsonObject
+                itemRuntimeIds[obj["name"].asString] = obj["id"].asInt
+            }
+            log.info("Bedrock item mapping: {} items loaded", itemRuntimeIds.size)
+        }
     }
 
-    fun getBedrockRuntimeId(javaStateId: Int): Int {
-        return mapping.get(javaStateId)
+    fun getBedrockRuntimeId(javaStateId: Int): Int = blockMapping.get(javaStateId)
+
+    /** Create ItemData for a block/item by name (e.g. "minecraft:tnt") */
+    fun createItemData(name: String): ItemData {
+        val runtimeId = itemRuntimeIds[name] ?: 1
+        return ItemData.builder()
+            .definition(SimpleItemDefinition(name, runtimeId, false))
+            .count(1)
+            .build()
     }
 
     companion object {
-        /** Bedrock runtime ID for air — always 0 in the palette */
         const val BEDROCK_AIR_RUNTIME_ID = 0
     }
 }

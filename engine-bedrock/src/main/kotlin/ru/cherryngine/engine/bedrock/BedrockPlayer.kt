@@ -21,6 +21,7 @@ class BedrockPlayer(
     val pendingCommands: ConcurrentLinkedQueue<String> = ConcurrentLinkedQueue()
     val sentChunks: MutableSet<Long> = mutableSetOf()
     var sentChunkCacheCenter: Long = Long.MIN_VALUE
+    val visibleEntities: MutableSet<ru.cherryngine.engine.bedrock.entity.BedrockEntity> = mutableSetOf()
 
     override fun sendMessage(message: Component) {
         val packet = TextPacket().apply {
