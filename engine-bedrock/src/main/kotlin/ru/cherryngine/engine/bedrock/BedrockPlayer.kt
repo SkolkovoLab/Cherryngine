@@ -19,6 +19,8 @@ class BedrockPlayer(
     var clientYawPitch: YawPitch = YawPitch.ZERO
     val runtimeEntityId: Long = uuid.leastSignificantBits and Long.MAX_VALUE
     val pendingCommands: ConcurrentLinkedQueue<String> = ConcurrentLinkedQueue()
+    val sentChunks: MutableSet<Long> = mutableSetOf()
+    var sentChunkCacheCenter: Long = Long.MIN_VALUE
 
     override fun sendMessage(message: Component) {
         val packet = TextPacket().apply {
