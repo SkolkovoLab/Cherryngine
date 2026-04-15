@@ -25,9 +25,9 @@ class BedrockPlayerOutputProvider(
             position.z.toFloat()
         )
         packet.rotation = Vector3f.from(
-            yawPitch.pitch.toFloat(),
-            yawPitch.yaw.toFloat(),
-            yawPitch.yaw.toFloat()
+            yawPitch.pitch,
+            yawPitch.yaw,
+            yawPitch.yaw
         )
         packet.mode = MovePlayerPacket.Mode.TELEPORT
         packet.teleportationCause = MovePlayerPacket.TeleportationCause.COMMAND
@@ -43,9 +43,9 @@ class BedrockPlayerOutputProvider(
         val packet = SetEntityMotionPacket()
         packet.runtimeEntityId = player.runtimeEntityId
         packet.motion = Vector3f.from(
-            velocity.x.toFloat(),
-            velocity.y.toFloat(),
-            velocity.z.toFloat()
+            velocity.x / 20f,
+            velocity.y / 20f,
+            velocity.z / 20f
         )
         player.session.sendPacket(packet)
     }

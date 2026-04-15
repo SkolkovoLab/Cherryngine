@@ -9,6 +9,7 @@ import org.cloudburstmc.nbt.NbtUtils
 import org.cloudburstmc.protocol.bedrock.BedrockServerSession
 import org.cloudburstmc.protocol.bedrock.codec.v944.Bedrock_v944
 import org.cloudburstmc.protocol.bedrock.data.*
+import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag
 import org.cloudburstmc.protocol.bedrock.packet.*
 import org.cloudburstmc.protocol.bedrock.util.EncryptionUtils
 import org.cloudburstmc.protocol.common.PacketSignal
@@ -32,10 +33,9 @@ class BedrockSessionHandler(
     private var player: BedrockPlayer? = null
 
     companion object {
-        /** Chunk data format from BedrockConnect: 258 zero bytes + empty NBT compound tag */
         private val EMPTY_LEVEL_CHUNK_DATA: ByteArray = run {
             val out = ByteArrayOutputStream()
-            out.write(ByteArray(258)) // Biomes + Border Size + Extra Data Size
+            out.write(ByteArray(258))
             NbtUtils.createNetworkWriter(out).use { it.writeTag(NbtMap.EMPTY) }
             out.toByteArray()
         }
@@ -45,15 +45,11 @@ class BedrockSessionHandler(
 
     override fun handle(packet: RequestNetworkSettingsPacket): PacketSignal {
         session.codec = Bedrock_v944.CODEC
-
         val settings = NetworkSettingsPacket()
         settings.compressionAlgorithm = PacketCompressionAlgorithm.ZLIB
         settings.compressionThreshold = 0
         session.sendPacketImmediately(settings)
-
-        // Стандартный метод compression — как в BedrockConnect
         session.setCompression(PacketCompressionAlgorithm.ZLIB)
-
         return PacketSignal.HANDLED
     }
 
@@ -81,13 +77,11 @@ class BedrockSessionHandler(
 
     override fun handle(packet: ClientToServerHandshakePacket): PacketSignal {
         session.sendPacket(PlayStatusPacket().apply { status = PlayStatusPacket.Status.LOGIN_SUCCESS })
-
         val resourcePacksInfo = ResourcePacksInfoPacket()
         resourcePacksInfo.isForcedToAccept = false
         resourcePacksInfo.worldTemplateId = UUID.randomUUID()
         resourcePacksInfo.worldTemplateVersion = "*"
         session.sendPacket(resourcePacksInfo)
-
         return PacketSignal.HANDLED
     }
 
@@ -111,10 +105,7 @@ class BedrockSessionHandler(
         val chunkRadiusUpdated = ChunkRadiusUpdatedPacket()
         chunkRadiusUpdated.radius = packet.radius
         session.sendPacketImmediately(chunkRadiusUpdated)
-
-        session.sendPacket(PlayStatusPacket().apply {
-            status = PlayStatusPacket.Status.PLAYER_SPAWN
-        })
+        session.sendPacket(PlayStatusPacket().apply { status = PlayStatusPacket.Status.PLAYER_SPAWN })
         return PacketSignal.HANDLED
     }
 
@@ -132,13 +123,10 @@ class BedrockSessionHandler(
         val p = player ?: return PacketSignal.HANDLED
         p.clientPosition = Vec3D(
             packet.position.x.toDouble(),
-            (packet.position.y - 1.62),
+            packet.position.y.toDouble() - 1.62,
             packet.position.z.toDouble()
         )
-        p.clientYawPitch = YawPitch(
-            packet.rotation.y,
-            packet.rotation.x
-        )
+        p.clientYawPitch = YawPitch(packet.rotation.y, packet.rotation.x)
         return PacketSignal.HANDLED
     }
 
@@ -149,12 +137,49 @@ class BedrockSessionHandler(
         playerManager.unregister(p.uuid)
     }
 
-    // ========== Spawn sequence (BedrockConnect pipeline) ==========
+    // ========== Spawn sequence ==========
 
     private fun sendStartGame() {
         val p = player ?: return
 
-        // 1. StartGamePacket
+        val startGame = buildStartGamePacket(p)
+        session.sendPacket(startGame)
+        session.sendPacket(ItemComponentPacket())
+        session.sendPacket(CreativeContentPacket())
+
+        // Empty chunks 6x6 grid for initial spawn
+        for (x in -3 until 3) {
+            for (z in -3 until 3) {
+                val chunk = LevelChunkPacket()
+                chunk.chunkX = x
+                chunk.chunkZ = z
+                chunk.subChunksLength = 0
+                chunk.data = Unpooled.wrappedBuffer(EMPTY_LEVEL_CHUNK_DATA)
+                session.sendPacket(chunk)
+            }
+        }
+
+        // Entity flags (HAS_GRAVITY required for physics)
+        val entityData = SetEntityDataPacket()
+        entityData.runtimeEntityId = p.runtimeEntityId
+        entityData.metadata.getOrCreateFlags().apply {
+            put(EntityFlag.HAS_GRAVITY, true)
+            put(EntityFlag.HAS_COLLISION, true)
+        }
+        session.sendPacket(entityData)
+
+        // Movement speed
+        val attributes = UpdateAttributesPacket()
+        attributes.runtimeEntityId = p.runtimeEntityId
+        attributes.attributes = listOf(
+            AttributeData("minecraft:movement", 0f, 0.24f, 0.1f, 0.1f)
+        )
+        session.sendPacket(attributes)
+
+        session.sendPacket(PlayStatusPacket().apply { status = PlayStatusPacket.Status.PLAYER_SPAWN })
+    }
+
+    private fun buildStartGamePacket(p: BedrockPlayer): StartGamePacket {
         val startGame = StartGamePacket()
         startGame.uniqueEntityId = p.runtimeEntityId
         startGame.runtimeEntityId = p.runtimeEntityId
@@ -198,9 +223,9 @@ class BedrockSessionHandler(
         startGame.customBiomeName = ""
         startGame.educationProductionId = ""
         startGame.forceExperimentalGameplay = OptionalBoolean.empty()
-        startGame.authoritativeMovementMode = AuthoritativeMovementMode.SERVER_WITH_REWIND
+        startGame.authoritativeMovementMode = AuthoritativeMovementMode.CLIENT
         startGame.rewindHistorySize = 0
-        startGame.isServerAuthoritativeBlockBreaking = true
+        startGame.isServerAuthoritativeBlockBreaking = false
         startGame.vanillaVersion = "*"
         startGame.isInventoriesServerAuthoritative = true
         startGame.serverEngine = ""
@@ -221,35 +246,7 @@ class BedrockSessionHandler(
         startGame.isExportedFromEditor = false
         startGame.isEmoteChatMuted = false
         startGame.isHardcore = false
-        session.sendPacket(startGame)
-
-        session.sendPacket(ItemComponentPacket())
-        session.sendPacket(CreativeContentPacket())
-
-        // Empty chunks 6x6 grid
-        for (x in -3 until 3) {
-            for (z in -3 until 3) {
-                val chunk = LevelChunkPacket()
-                chunk.chunkX = x
-                chunk.chunkZ = z
-                chunk.subChunksLength = 0
-                chunk.data = Unpooled.wrappedBuffer(EMPTY_LEVEL_CHUNK_DATA)
-                session.sendPacket(chunk)
-            }
-        }
-
-        // PlayStatus PLAYER_SPAWN
-        session.sendPacket(PlayStatusPacket().apply {
-            status = PlayStatusPacket.Status.PLAYER_SPAWN
-        })
-
-        // UpdateAttributes
-        val attributes = UpdateAttributesPacket()
-        attributes.runtimeEntityId = 0
-        attributes.attributes = listOf(
-            AttributeData("minecraft:movement", 0.0f, 1024f, 0.1f, 0.1f)
-        )
-        session.sendPacket(attributes)
+        return startGame
     }
 
     private fun extractUsername(clientJwt: String): String? {
@@ -257,8 +254,7 @@ class BedrockSessionHandler(
             val parts = clientJwt.split(".")
             if (parts.size < 2) return null
             val payload = String(Base64.getUrlDecoder().decode(parts[1]))
-            val match = Regex("\"DisplayName\"\\s*:\\s*\"([^\"]+)\"").find(payload)
-            match?.groupValues?.get(1)
+            Regex("\"DisplayName\"\\s*:\\s*\"([^\"]+)\"").find(payload)?.groupValues?.get(1)
         } catch (e: Exception) {
             null
         }

@@ -36,6 +36,8 @@ class BedrockServer(
             .channelFactory(RakChannelFactory.server(NioDatagramChannel::class.java))
             .group(NioEventLoopGroup())
             .option(RakChannelOption.RAK_ADVERTISEMENT, buildPong())
+            .option(RakChannelOption.RAK_PACKET_LIMIT, 300)
+            .option(RakChannelOption.RAK_GLOBAL_PACKET_LIMIT, 1000)
             .childHandler(object : BedrockServerInitializer() {
                 override fun initSession(session: BedrockServerSession) {
                     log.info("Bedrock client connected: {}", session.socketAddress)
