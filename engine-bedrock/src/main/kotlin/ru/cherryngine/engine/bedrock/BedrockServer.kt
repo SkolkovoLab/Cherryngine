@@ -16,15 +16,11 @@ import org.slf4j.LoggerFactory
 import ru.cherryngine.engine.core.player.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerRouter
-import ru.cherryngine.engine.core.services.PlayerService
-import ru.cherryngine.engine.core.services.WorldService
 import java.net.InetSocketAddress
 
 @Singleton
 class BedrockServer(
     private val playerManager: PlayerManager,
-    private val playerService: PlayerService,
-    private val worldService: WorldService,
     private val instanceRouter: InstanceRouter,
     private val playerRouter: PlayerRouter,
     private val config: BedrockConfig,
@@ -46,7 +42,7 @@ class BedrockServer(
                 override fun initSession(session: BedrockServerSession) {
                     log.info("Bedrock client connected: {}", session.socketAddress)
                     session.packetHandler = BedrockSessionHandler(
-                        session, playerManager, playerService, worldService, instanceRouter, playerRouter
+                        session, playerManager, instanceRouter, playerRouter
                     ) { /* onReady callback */ }
                 }
             })

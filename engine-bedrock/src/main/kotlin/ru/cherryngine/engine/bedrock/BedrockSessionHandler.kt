@@ -17,8 +17,6 @@ import org.cloudburstmc.protocol.common.util.OptionalBoolean
 import ru.cherryngine.engine.core.player.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerRouter
-import ru.cherryngine.engine.core.services.PlayerService
-import ru.cherryngine.engine.core.services.WorldService
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import java.io.ByteArrayOutputStream
@@ -27,8 +25,6 @@ import java.util.*
 class BedrockSessionHandler(
     private val session: BedrockServerSession,
     private val playerManager: PlayerManager,
-    private val playerService: PlayerService,
-    private val worldService: WorldService,
     private val instanceRouter: InstanceRouter,
     private val playerRouter: PlayerRouter,
     private val onReady: (BedrockPlayer) -> Unit,
@@ -124,8 +120,6 @@ class BedrockSessionHandler(
     override fun handle(packet: SetLocalPlayerAsInitializedPacket): PacketSignal {
         val p = player ?: return PacketSignal.HANDLED
         playerManager.register(p)
-        playerService.onPlayerJoin(p)
-        worldService.onPlayerJoin(p)
         instanceRouter.routePlayer(p.uuid, playerRouter.getInitialInstance(p))
         onReady(p)
         return PacketSignal.HANDLED
@@ -151,9 +145,7 @@ class BedrockSessionHandler(
 
     override fun onDisconnect(reason: CharSequence) {
         val p = player ?: return
-        instanceRouter.removePlayer(p.uuid)
-        worldService.onPlayerLeave(p)
-        playerService.onPlayerLeave(p)
+        instanceRouter.removePlayer(p)
         playerManager.unregister(p.uuid)
     }
 

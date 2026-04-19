@@ -26,7 +26,6 @@ import kotlin.time.Duration
 class McProtocolLibViewTickable(
     private val playerManager: PlayerManager,
     private val chunkPool: McProtocolLibChunkPool,
-    private val worldServiceHandler: McProtocolLibWorldServiceHandler,
     private val entityRegistry: McProtocolLibEntityRegistry,
     private val serverWorld: ServerWorld,
 ) : Tickable {
@@ -39,7 +38,7 @@ class McProtocolLibViewTickable(
     override fun tick(delta: Duration) {
         for (player in playerManager.onlinePlayers()) {
             val mcplPlayer = player as? McProtocolLibPlayer ?: continue
-            val playerContextIDs = worldServiceHandler.getContextsForPlayer(player.uuid)
+            val playerContextIDs = mcplPlayer.viewContextIDs
             val layers = serverWorld.getLayersForContexts(playerContextIDs)
             val dimensionType = serverWorld.dimensionType
 

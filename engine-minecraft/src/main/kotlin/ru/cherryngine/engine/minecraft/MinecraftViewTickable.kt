@@ -27,7 +27,6 @@ import kotlin.time.Duration
 class MinecraftViewTickable(
     private val playerManager: PlayerManager,
     private val chunkPool: ChunkPool,
-    private val worldServiceHandler: MinecraftWorldServiceHandler,
     private val mcEntityRegistry: McEntityRegistry,
     private val serverWorld: ServerWorld,
 ) : Tickable {
@@ -40,7 +39,7 @@ class MinecraftViewTickable(
     override fun tick(delta: Duration) {
         for (player in playerManager.onlinePlayers()) {
             val mcPlayer = player as? MinecraftPlayer ?: continue
-            val playerContextIDs = worldServiceHandler.getContextsForPlayer(player.uuid)
+            val playerContextIDs = mcPlayer.viewContextIDs
             val layers = serverWorld.getLayersForContexts(playerContextIDs)
             val dimensionType = serverWorld.dimensionType
             val viewables = mcEntityRegistry.allEntities()

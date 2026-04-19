@@ -8,7 +8,6 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.network.Connection
-import java.util.concurrent.ConcurrentLinkedQueue
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundPlayerPositionPacket
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSystemChatPacket
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
@@ -17,6 +16,7 @@ import ru.cherryngine.lib.minecraft.network.protocol.types.TeleportFlags
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.world.ImmutableLayerKey
+import java.util.concurrent.ConcurrentLinkedQueue
 
 class MinecraftPlayer(
     val connection: Connection,
@@ -38,6 +38,8 @@ class MinecraftPlayer(
     var sentChunksBase: ImmutableLayerKey? = null
     var sentChunkCacheCenter: ChunkPos? = null
     val sentChunks: MutableSet<ChunkPos> = mutableSetOf()
+
+    var viewContextIDs: Set<String> = emptySet()
 
     fun getBlockId(pos: Vec3I): Int {
         val chunkPos = ChunkUtils.chunkPosFromVec3I(pos)

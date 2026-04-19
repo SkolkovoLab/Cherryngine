@@ -23,6 +23,8 @@ class BedrockPlayer(
     var sentChunkCacheCenter: Long = Long.MIN_VALUE
     val visibleEntities: MutableSet<ru.cherryngine.engine.bedrock.entity.BedrockEntity> = mutableSetOf()
 
+    var viewContextIDs: Set<String> = emptySet()
+
     override fun sendMessage(message: Component) {
         val packet = TextPacket().apply {
             type = TextPacket.Type.RAW

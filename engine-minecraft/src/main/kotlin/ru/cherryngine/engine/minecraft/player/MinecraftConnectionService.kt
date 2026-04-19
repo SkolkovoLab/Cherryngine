@@ -7,8 +7,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import ru.cherryngine.engine.core.player.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerRouter
-import ru.cherryngine.engine.core.services.PlayerService
-import ru.cherryngine.engine.core.services.WorldService
 import ru.cherryngine.engine.minecraft.events.DisconnectEvent
 import ru.cherryngine.engine.minecraft.events.PacketEvent
 import ru.cherryngine.engine.minecraft.events.PlayerConfigurationAsyncEvent
@@ -34,8 +32,6 @@ import java.util.*
 @Singleton
 class MinecraftConnectionService(
     private val playerManager: PlayerManager,
-    private val playerService: PlayerService,
-    private val worldService: WorldService,
     private val instanceRouter: InstanceRouter,
     private val playerRouter: PlayerRouter,
     val playerCreatedEventPublisher: ApplicationEventPublisher<PlayerCreatedEvent>,
@@ -90,8 +86,6 @@ class MinecraftConnectionService(
 
             is ServerboundFinishConfigurationPacket -> {
                 val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) ?: return
-                playerService.onPlayerJoin(player)
-                worldService.onPlayerJoin(player)
                 instanceRouter.routePlayer(player.uuid, playerRouter.getInitialInstance(player))
             }
 
@@ -149,11 +143,9 @@ class MinecraftConnectionService(
         val connection = event.connection
         if (connection.state == ProtocolState.PLAY || connection.state == ProtocolState.CONFIGURATION) {
             val uuid = connection.gameProfile.uuid
-            instanceRouter.removePlayer(uuid)
             val player = playerManager.getPlayerNullable(uuid)
             if (player != null) {
-                worldService.onPlayerLeave(player)
-                playerService.onPlayerLeave(player)
+                instanceRouter.removePlayer(player)
             }
             playerManager.unregister(uuid)
         }

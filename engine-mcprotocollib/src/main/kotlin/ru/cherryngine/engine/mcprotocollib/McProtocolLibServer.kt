@@ -15,15 +15,11 @@ import org.slf4j.LoggerFactory
 import ru.cherryngine.engine.core.player.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerRouter
-import ru.cherryngine.engine.core.services.PlayerService
-import ru.cherryngine.engine.core.services.WorldService
 import java.net.InetSocketAddress
 
 @Singleton
 class McProtocolLibServer(
     private val playerManager: PlayerManager,
-    private val playerService: PlayerService,
-    private val worldService: WorldService,
     private val instanceRouter: InstanceRouter,
     private val playerRouter: PlayerRouter,
     private val config: McProtocolLibConfig,
@@ -49,8 +45,6 @@ class McProtocolLibServer(
 
             val player = McProtocolLibPlayer(session)
             playerManager.register(player)
-            playerService.onPlayerJoin(player)
-            worldService.onPlayerJoin(player)
             instanceRouter.routePlayer(player.uuid, playerRouter.getInitialInstance(player))
         })
 
@@ -62,11 +56,11 @@ class McProtocolLibServer(
 
             override fun sessionRemoved(event: SessionRemovedEvent) {
                 val profile = event.session.getFlag(MinecraftConstants.PROFILE_KEY) as? GameProfile ?: return
-                val player = playerManager.getPlayerNullable(profile.id) ?: return
                 log.info("McProtocolLib player disconnected: {} ({})", profile.name, profile.id)
-                instanceRouter.removePlayer(profile.id)
-                worldService.onPlayerLeave(player)
-                playerService.onPlayerLeave(player)
+                val player = playerManager.getPlayerNullable(profile.id)
+                if (player != null) {
+                    instanceRouter.removePlayer(player)
+                }
                 playerManager.unregister(profile.id)
             }
         })

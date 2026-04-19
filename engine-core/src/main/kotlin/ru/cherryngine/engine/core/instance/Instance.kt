@@ -41,7 +41,7 @@ class Instance(
         return appContext.getBeanDefinitions(type)
             .filter { definition ->
                 val platform = definition
-                    .stringValue(InstanceSingleton::class.java, "platform")
+                    .stringValue(InstanceSingleton::class.java, InstanceSingleton::platform.name)
                     .orElse("")
                 platform.isEmpty() || platform in platformIds
             }
@@ -60,7 +60,7 @@ class Instance(
         appContext.getBeanDefinitions(
             Qualifiers.byStereotype<Any>(InstanceSingleton::class.java)
         ).filter {
-            it.booleanValue(InstanceSingleton::class.java, "eagerInit").orElse(false)
+            it.booleanValue(InstanceSingleton::class.java, InstanceSingleton::eagerInit.name).orElse(false)
         }.forEach {
             @Suppress("UNCHECKED_CAST")
             get(it.beanType as Class<Any>)
@@ -74,7 +74,7 @@ class Instance(
             .filter { definition ->
                 if (!definition.hasStereotype(InstanceSingleton::class.java)) return@filter false
                 val platform = definition
-                    .stringValue(InstanceSingleton::class.java, "platform")
+                    .stringValue(InstanceSingleton::class.java, InstanceSingleton::platform.name)
                     .orElse("")
                 platform.isEmpty() || platform in platformIds
             }
@@ -82,7 +82,7 @@ class Instance(
         stagedTickables = TickStage.entries.flatMap { stage ->
             allTickables.filter { definition ->
                 val beanStage = definition
-                    .enumValue(InstanceSingleton::class.java, "stage", TickStage::class.java)
+                    .enumValue(InstanceSingleton::class.java, InstanceSingleton::stage.name, TickStage::class.java)
                     .orElse(TickStage.GAME)
                 beanStage == stage
             }.map { definition ->

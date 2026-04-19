@@ -4,7 +4,6 @@ import org.cloudburstmc.math.vector.Vector3i
 import org.cloudburstmc.protocol.bedrock.packet.LevelChunkPacket
 import org.cloudburstmc.protocol.bedrock.packet.NetworkChunkPublisherUpdatePacket
 import ru.cherryngine.engine.bedrock.BedrockPlayer
-import ru.cherryngine.engine.bedrock.BedrockWorldServiceHandler
 import ru.cherryngine.engine.bedrock.entity.BedrockEntityRegistry
 import ru.cherryngine.engine.core.instance.InstanceSingleton
 import ru.cherryngine.engine.core.instance.ServerWorld
@@ -19,7 +18,6 @@ import kotlin.time.Duration
 @InstanceSingleton(platform = "bedrock", stage = TickStage.POST)
 class BedrockViewTickable(
     private val playerManager: PlayerManager,
-    private val worldServiceHandler: BedrockWorldServiceHandler,
     private val blockMapping: BedrockBlockMapping,
     private val serverWorld: ServerWorld,
     private val entityRegistry: BedrockEntityRegistry,
@@ -34,7 +32,7 @@ class BedrockViewTickable(
     override fun tick(delta: Duration) {
         for (player in playerManager.onlinePlayers()) {
             val bp = player as? BedrockPlayer ?: continue
-            val contextIDs = worldServiceHandler.getContextsForPlayer(player.uuid)
+            val contextIDs = bp.viewContextIDs
             val layers = serverWorld.getLayersForContexts(contextIDs)
             val dimensionType = serverWorld.dimensionType ?: continue
 

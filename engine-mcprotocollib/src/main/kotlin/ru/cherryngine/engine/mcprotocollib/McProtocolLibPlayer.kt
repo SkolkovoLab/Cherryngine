@@ -35,6 +35,8 @@ class McProtocolLibPlayer(
     val currentVisibleEntities: MutableSet<McProtocolLibEntity> = hashSetOf()
     val chunksToRefresh: MutableSet<ChunkPos> = hashSetOf()
 
+    var viewContextIDs: Set<String> = emptySet()
+
     override fun sendMessage(message: Component) {
         session.send(ClientboundSystemChatPacket(message, false))
     }

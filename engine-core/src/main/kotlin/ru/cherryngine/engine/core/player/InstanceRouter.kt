@@ -2,7 +2,7 @@ package ru.cherryngine.engine.core.player
 
 import jakarta.inject.Singleton
 import kotlinx.coroutines.channels.Channel
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 @Singleton
@@ -10,13 +10,13 @@ class InstanceRouter {
     private data class InstanceEntry(
         val id: String,
         val joinChannel: Channel<UUID>,
-        val leaveChannel: Channel<UUID>,
+        val leaveChannel: Channel<Player>,
     )
 
     private val instances = ConcurrentHashMap<String, InstanceEntry>()
     private val playerInstance = ConcurrentHashMap<UUID, String>()
 
-    fun register(id: String, joinChannel: Channel<UUID>, leaveChannel: Channel<UUID>) {
+    fun register(id: String, joinChannel: Channel<UUID>, leaveChannel: Channel<Player>) {
         instances[id] = InstanceEntry(id, joinChannel, leaveChannel)
     }
 
@@ -30,17 +30,17 @@ class InstanceRouter {
         entry.joinChannel.trySend(uuid)
     }
 
-    fun transferPlayer(uuid: UUID, targetInstanceId: String) {
-        val currentId = playerInstance[uuid]
+    fun transferPlayer(player: Player, targetInstanceId: String) {
+        val currentId = playerInstance[player.uuid]
         val current = currentId?.let { instances[it] }
         val target = instances[targetInstanceId] ?: error("Instance $targetInstanceId not found")
-        current?.leaveChannel?.trySend(uuid)
-        playerInstance[uuid] = targetInstanceId
-        target.joinChannel.trySend(uuid)
+        current?.leaveChannel?.trySend(player)
+        playerInstance[player.uuid] = targetInstanceId
+        target.joinChannel.trySend(player.uuid)
     }
 
-    fun removePlayer(uuid: UUID) {
-        val instanceId = playerInstance.remove(uuid) ?: return
-        instances[instanceId]?.leaveChannel?.trySend(uuid)
+    fun removePlayer(player: Player) {
+        val instanceId = playerInstance.remove(player.uuid) ?: return
+        instances[instanceId]?.leaveChannel?.trySend(player)
     }
 }
