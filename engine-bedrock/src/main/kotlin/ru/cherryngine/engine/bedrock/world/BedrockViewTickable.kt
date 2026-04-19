@@ -5,9 +5,10 @@ import org.cloudburstmc.protocol.bedrock.packet.LevelChunkPacket
 import org.cloudburstmc.protocol.bedrock.packet.NetworkChunkPublisherUpdatePacket
 import ru.cherryngine.engine.bedrock.BedrockPlayer
 import ru.cherryngine.engine.bedrock.BedrockWorldServiceHandler
-import ru.cherryngine.engine.bedrock.entity.BedrockEntity
 import ru.cherryngine.engine.bedrock.entity.BedrockEntityRegistry
+import ru.cherryngine.engine.core.instance.InstanceSingleton
 import ru.cherryngine.engine.core.instance.ServerWorld
+import ru.cherryngine.engine.core.instance.TickStage
 import ru.cherryngine.engine.core.instance.Tickable
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
@@ -15,12 +16,13 @@ import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.world.LayeredWorld
 import kotlin.time.Duration
 
+@InstanceSingleton(platform = "bedrock", stage = TickStage.POST)
 class BedrockViewTickable(
     private val playerManager: PlayerManager,
     private val worldServiceHandler: BedrockWorldServiceHandler,
     private val blockMapping: BedrockBlockMapping,
     private val serverWorld: ServerWorld,
-    private val entityRegistry: BedrockEntityRegistry? = null,
+    private val entityRegistry: BedrockEntityRegistry,
 ) : Tickable {
 
     companion object {
@@ -85,7 +87,7 @@ class BedrockViewTickable(
             }
 
             // Entities
-            if (entityRegistry != null) {
+            run {
                 val entityChunks = ChunkUtils.getChunksInRange(clientChunkPos, ENTITY_RENDER_DISTANCE).toSet()
                 val visibleEntities = entityRegistry.allEntities().filter { entity ->
                     entity.chunkPos in entityChunks &&

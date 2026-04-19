@@ -6,7 +6,9 @@ import org.geysermc.mcprotocollib.protocol.data.game.level.block.BlockChangeEntr
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.level.ClientboundLevelChunkWithLightPacket
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.level.ClientboundSectionBlocksUpdatePacket
 import org.geysermc.mcprotocollib.protocol.packet.ingame.clientbound.level.ClientboundSetChunkCacheCenterPacket
+import ru.cherryngine.engine.core.instance.InstanceSingleton
 import ru.cherryngine.engine.core.instance.ServerWorld
+import ru.cherryngine.engine.core.instance.TickStage
 import ru.cherryngine.engine.core.instance.Tickable
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
@@ -20,14 +22,16 @@ import ru.cherryngine.lib.world.MutableLayerChangeTracker
 import java.util.*
 import kotlin.time.Duration
 
+@InstanceSingleton(platform = "mcprotocollib", stage = TickStage.POST)
 class McProtocolLibViewTickable(
     private val playerManager: PlayerManager,
     private val chunkPool: McProtocolLibChunkPool,
     private val worldServiceHandler: McProtocolLibWorldServiceHandler,
     private val entityRegistry: McProtocolLibEntityRegistry,
     private val serverWorld: ServerWorld,
-    private val changeTracker: MutableLayerChangeTracker? = null,
 ) : Tickable {
+    private val changeTracker: MutableLayerChangeTracker? = null
+
     companion object {
         const val DEFAULT_RENDER_DISTANCE = 2
     }

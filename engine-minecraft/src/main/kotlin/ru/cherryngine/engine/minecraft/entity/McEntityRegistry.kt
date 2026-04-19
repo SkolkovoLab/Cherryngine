@@ -1,5 +1,8 @@
 package ru.cherryngine.engine.minecraft.entity
 
+import ru.cherryngine.engine.core.instance.InstanceSingleton
+
+@InstanceSingleton(platform = "minecraft")
 class McEntityRegistry {
     private val entities = mutableSetOf<McEntity>()
 

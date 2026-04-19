@@ -14,10 +14,12 @@ import org.incendo.cloud.meta.CommandMeta
 import org.incendo.cloud.meta.SimpleCommandMeta
 import org.incendo.cloud.parser.ArgumentParser
 import org.slf4j.LoggerFactory
+import ru.cherryngine.engine.core.instance.InstanceSingleton
 import ru.cherryngine.engine.core.utils.component
 
+@InstanceSingleton
 class CherryngineCommandManager(
-    parsers: List<SArgumentParser<*>> = emptyList(),
+    parsers: List<SArgumentParser<*>>,
 ) : CommandManager<CommandSender>(
     ExecutionCoordinator.coordinatorFor(ExecutionCoordinator.nonSchedulingExecutor()),
     CommandRegistrationHandler.nullCommandRegistrationHandler()

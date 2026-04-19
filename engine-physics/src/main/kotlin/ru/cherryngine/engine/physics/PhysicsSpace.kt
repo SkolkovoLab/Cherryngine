@@ -1,12 +1,8 @@
 package ru.cherryngine.engine.physics
 
 import com.github.stephengold.joltjni.*
-import com.github.stephengold.joltjni.enumerate.EActivation
-import com.github.stephengold.joltjni.enumerate.EMotionQuality
-import com.github.stephengold.joltjni.enumerate.EMotionType
-import com.github.stephengold.joltjni.enumerate.EOverrideMassProperties
-import com.github.stephengold.joltjni.enumerate.EPhysicsUpdateError
-import com.github.stephengold.joltjni.enumerate.ValidateResult
+import com.github.stephengold.joltjni.enumerate.*
+import ru.cherryngine.engine.core.instance.InstanceSingleton
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Transform
 import ru.cherryngine.lib.math.Vec3D
@@ -14,9 +10,9 @@ import ru.cherryngine.lib.math.Vec3I
 import java.util.*
 
 
-class PhysicsSpace(
-    val linearCastSpeedThreshold: Float = 10f,
-) {
+@InstanceSingleton
+class PhysicsSpace {
+    val linearCastSpeedThreshold: Float = 10f
     val physicsSystem: PhysicsSystem
     val tempAllocator: TempAllocator
     val jobSystem: JobSystem

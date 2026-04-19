@@ -1,6 +1,8 @@
 package ru.cherryngine.engine.minecraft
 
+import ru.cherryngine.engine.core.instance.InstanceSingleton
 import ru.cherryngine.engine.core.instance.ServerWorld
+import ru.cherryngine.engine.core.instance.TickStage
 import ru.cherryngine.engine.core.instance.Tickable
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.minecraft.entity.McEntityRegistry
@@ -21,14 +23,16 @@ import ru.cherryngine.lib.world.LayerEntry
 import ru.cherryngine.lib.world.MutableLayerChangeTracker
 import kotlin.time.Duration
 
+@InstanceSingleton(platform = "minecraft", stage = TickStage.POST)
 class MinecraftViewTickable(
     private val playerManager: PlayerManager,
     private val chunkPool: ChunkPool,
     private val worldServiceHandler: MinecraftWorldServiceHandler,
     private val mcEntityRegistry: McEntityRegistry,
     private val serverWorld: ServerWorld,
-    private val changeTracker: MutableLayerChangeTracker? = null,
 ) : Tickable {
+    private val changeTracker: MutableLayerChangeTracker? = null
+
     companion object {
         const val DEFAULT_RENDER_DISTANCE = 2
     }

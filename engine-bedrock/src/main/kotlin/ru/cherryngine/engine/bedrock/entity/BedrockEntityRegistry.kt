@@ -1,5 +1,8 @@
 package ru.cherryngine.engine.bedrock.entity
 
+import ru.cherryngine.engine.core.instance.InstanceSingleton
+
+@InstanceSingleton(platform = "bedrock")
 class BedrockEntityRegistry {
     private val entities = mutableMapOf<Long, BedrockEntity>()
 

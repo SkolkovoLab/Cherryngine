@@ -1,5 +1,6 @@
 package ru.cherryngine.engine.physics.terrain
 
+import ru.cherryngine.engine.core.instance.InstanceSingleton
 import ru.cherryngine.engine.physics.PhysicsSpace
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Vec3I
@@ -9,6 +10,7 @@ import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.max
 
+@InstanceSingleton
 class TerrainGenerator(
     private val physicsSpace: PhysicsSpace
 ) {

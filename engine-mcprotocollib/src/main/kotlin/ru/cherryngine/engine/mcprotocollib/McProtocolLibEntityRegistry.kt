@@ -1,5 +1,8 @@
 package ru.cherryngine.engine.mcprotocollib
 
+import ru.cherryngine.engine.core.instance.InstanceSingleton
+
+@InstanceSingleton(platform = "mcprotocollib")
 class McProtocolLibEntityRegistry {
     private val entities = mutableSetOf<McProtocolLibEntity>()
 
