@@ -126,12 +126,14 @@ class PhysicsSpace {
     }
 
     fun addPlayer(position: Vec3D): PhysicsBody {
+        val translationOnly =
+            EAllowedDofs.TranslationX or EAllowedDofs.TranslationY or EAllowedDofs.TranslationZ
         val bodySettings = BodyCreationSettings()
             .setMotionType(EMotionType.Dynamic)
             .setObjectLayer(Layers.MOVING)
-            .setShape(CapsuleShape(0.6f, 0.3f))
+            .setShape(BoxShape(Vec3(0.3f, 0.9f, 0.3f)))
+            .setAllowedDofs(translationOnly)
             .setGravityFactor(0f)
-            .setAngularDamping(999f)
             .setLinearDamping(0f)
             .setMassPropertiesOverride(
                 MassProperties().apply { setMass(500f) }
