@@ -22,6 +22,46 @@ class PhysicsSpace {
     private val bodyByPhysicsId = HashMap<UUID, PhysicsBody>()
     private val seenThisTick = HashSet<UUID>()
 
+    fun getBodyBottomPosition(physicsId: UUID): Vec3D? {
+        val body = bodyByPhysicsId[physicsId] ?: return null
+        val center = body.getTransform().translation
+        val bounds = body.getWorldBounds()
+        return Vec3D(center.x, bounds.min.y, center.z)
+    }
+
+    /**
+     * Кастит форму хитбокса игрока вниз и возвращает Y верхней плоскости пола,
+     * если она в пределах [maxDistance] блоков ниже ног. Иначе — null.
+     * Старт луча — на 1 блок выше ног игрока: это даёт запас, если игрок уже
+     * частично внутри блока, и shape-cast начинает выше проблемной зоны.
+     * Terrain (static NON_MOVING) исключается — с ним игрок и так коллайдится.
+     */
+    fun castFloorBelow(physicsId: UUID, maxDistance: Double): Double? {
+        val physicsBody = bodyByPhysicsId[physicsId] ?: return null
+        val body = physicsBody.body
+        val shape = body.shape
+        val centerOfMass = body.centerOfMassPosition
+        val bounds = physicsBody.getWorldBounds()
+        val halfHeight = (bounds.max.y - bounds.min.y) * 0.5
+        val feetY = centerOfMass.yy() - halfHeight
+        val startShapeBottomY = feetY + 1.0
+        val startCenterY = startShapeBottomY + halfHeight
+        val shiftedStart = RVec3(centerOfMass.xx(), startCenterY, centerOfMass.zz())
+        val comStart = RMat44.sTranslation(shiftedStart)
+        val totalDist = 1.0 + maxDistance
+        val offset = Vec3(0f, -totalDist.toFloat(), 0f)
+        val shapeCast = RShapeCast(shape, Vec3(1f, 1f, 1f), comStart, offset)
+        val collector = ClosestHitCastShapeCollector()
+        val ignoreFilter = IgnoreMultipleBodiesFilter().apply { ignoreBody(body.getId()) }
+        physicsSystem.narrowPhaseQuery.castShape(
+            shapeCast, ShapeCastSettings(), shiftedStart, collector,
+            BroadPhaseLayerFilter(), SpecifiedObjectLayerFilter(Layers.MOVING), ignoreFilter
+        )
+        if (!collector.hadHit()) return null
+        val fraction = collector.hit.fraction.toDouble()
+        return startShapeBottomY - fraction * totalDist
+    }
+
     init {
         JoltLoader.checkAndInit()
 
@@ -136,7 +176,7 @@ class PhysicsSpace {
             .setGravityFactor(0f)
             .setLinearDamping(0f)
             .setMassPropertiesOverride(
-                MassProperties().apply { setMass(500f) }
+                MassProperties().apply { setMass(100f) }
             )
             .setOverrideMassProperties(EOverrideMassProperties.CalculateInertia)
             .setPosition(position.joltRVec3())
