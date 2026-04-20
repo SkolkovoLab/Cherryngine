@@ -4,8 +4,8 @@ plugins {
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(25)
-    sourceCompatibility = JavaVersion.toVersion("24")
-    targetCompatibility = JavaVersion.toVersion("24")
+    sourceCompatibility = JavaVersion.toVersion("25")
+    targetCompatibility = JavaVersion.toVersion("25")
 }
 
 // Kotlin 2.2 can only target bytecode up to JVM 24, but Minestom requires JVM 25 at runtime.

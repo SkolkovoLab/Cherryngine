@@ -1,10 +1,10 @@
 [versions]
 
 # main
-kotlin = "2.2.21"
+kotlin = "2.3.20"
 kotlinx-coroutines = "1.10.2"
-kotlinx-serialization = "1.9.0"
-ksp = "2.3.2"
+kotlinx-serialization = "1.11.0"
+ksp = "2.3.6"
 micronaut = "4.10.1"
 micronaut-plugin = "4.6.1"
 shadow = "9.2.2"

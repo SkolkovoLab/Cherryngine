@@ -8,7 +8,7 @@ plugins {
 kotlin {
     jvmToolchain(25)
     compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_24
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
     }
 }
 
