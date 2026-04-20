@@ -22,7 +22,6 @@ include(
     "lib-jackson",
     "lib-math",
     "lib-minecraft",
-    "lib-minecraft:generator",
     "lib-polar",
     "lib-viaversion",
     "lib-world",
