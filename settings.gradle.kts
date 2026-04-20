@@ -18,7 +18,6 @@ include(
     "engine-integration:viaversion",
     "engine-physics",
 
-    "lib-adventure-serializer-nbt",
     "lib-jackson",
     "lib-math",
     "lib-minecraft",
