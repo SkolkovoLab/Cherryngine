@@ -1,7 +1,7 @@
 package ru.cherryngine.lib.minecraft.network.protocol
 
+import net.minestom.server.utils.ObjectPool
 import org.slf4j.LoggerFactory
-import ru.cherryngine.lib.minecraft.utils.ObjectPool
 import java.io.ByteArrayOutputStream
 import java.util.zip.Deflater
 import java.util.zip.Inflater
@@ -9,8 +9,8 @@ import java.util.zip.Inflater
 object NetworkCompression {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    private val INFLATER_POOL = ObjectPool(::Inflater)
-    private val DEFLATER_POOL = ObjectPool(::Deflater)
+    private val INFLATER_POOL: ObjectPool<Inflater> = ObjectPool.pool({ Inflater() })
+    private val DEFLATER_POOL: ObjectPool<Deflater> = ObjectPool.pool({ Deflater() })
 
     fun decompress(input: ByteArray): ByteArray {
         val inflater = INFLATER_POOL.get()
