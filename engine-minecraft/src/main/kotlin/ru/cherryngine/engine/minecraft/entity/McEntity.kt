@@ -2,9 +2,9 @@ package ru.cherryngine.engine.minecraft.entity
 
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.coordinate.Vec
+import net.minestom.server.entity.EntityType
 import net.minestom.server.entity.Metadata
-import net.minestom.server.entity.attribute.Attribute as MinestomAttribute
-import net.minestom.server.entity.EntityType as MinestomEntityType
+import net.minestom.server.entity.attribute.Attribute
 import net.minestom.server.network.packet.server.play.DestroyEntitiesPacket
 import net.minestom.server.network.packet.server.play.EntityAttributesPacket
 import net.minestom.server.network.packet.server.play.EntityMetaDataPacket
@@ -14,18 +14,19 @@ import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
 import ru.cherryngine.engine.minecraft.view.Viewable
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
-import ru.cherryngine.lib.minecraft.entity.MetadataContainer
-import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.registry.types.Attribute
-import ru.cherryngine.lib.minecraft.registry.types.EntityType
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
+import ru.cherryngine.lib.minecraft.world.ChunkPos
 import java.util.UUID
 
 class McEntity(
     val entityId: Int,
     val entityType: EntityType,
 ) : Viewable {
-    val metadata = MetadataContainer()
+    /**
+     * Сырые entity-метаданные по индексам Minestom-а.
+     * TODO: тонкая обёртка поверх Minestom MetadataHolder для типизированного доступа.
+     */
+    val metadata: MutableMap<Int, Metadata.Entry<*>> = mutableMapOf()
     var position = Vec3D.ZERO
     var yawPitch = YawPitch.ZERO
     private val viewers = mutableSetOf<MinecraftPlayer>()
@@ -37,12 +38,6 @@ class McEntity(
         get() = ChunkUtils.chunkPosFromVec3D(position)
 
     val attributes: MutableMap<Attribute, Double> = mutableMapOf()
-
-    private val minestomEntityType: MinestomEntityType by lazy {
-        requireNotNull(MinestomEntityType.fromKey(entityType.key)) {
-            "Unknown Minestom EntityType for key: ${entityType.key}"
-        }
-    }
 
     fun teleport(position: Vec3D, yawPitch: YawPitch) {
         this.position = position
@@ -59,7 +54,7 @@ class McEntity(
     }
 
     fun resendMeta() {
-        val packet = EntityMetaDataPacket(entityId, convertMetadata())
+        val packet = EntityMetaDataPacket(entityId, metadata.toMap())
         viewers.forEach { it.connection.sendPacket(packet) }
     }
 
@@ -67,20 +62,19 @@ class McEntity(
         player.connection.sendPacket(
             SpawnEntityPacket(
                 entityId, UUID.randomUUID(),
-                minestomEntityType,
+                entityType,
                 Pos(position.x, position.y, position.z, yawPitch.yaw, yawPitch.pitch),
                 yawPitch.yaw,
                 0,
                 Vec.ZERO
             )
         )
-        player.connection.sendPacket(EntityMetaDataPacket(entityId, convertMetadata()))
+        player.connection.sendPacket(EntityMetaDataPacket(entityId, metadata.toMap()))
         if (attributes.isNotEmpty()) player.connection.sendPacket(
             EntityAttributesPacket(
                 entityId,
-                attributes.entries.mapNotNull { (attr, value) ->
-                    val minestomAttr = MinestomAttribute.fromKey(attr.key) ?: return@mapNotNull null
-                    EntityAttributesPacket.Property(minestomAttr, value, emptyList())
+                attributes.entries.map { (attr, value) ->
+                    EntityAttributesPacket.Property(attr, value, emptyList())
                 }
             )
         )
@@ -91,8 +85,4 @@ class McEntity(
         player.connection.sendPacket(DestroyEntitiesPacket(listOf(entityId)))
         viewers.remove(player)
     }
-
-    // TODO: миграция MetadataContainer на Minestom Metadata.Entry<*>.
-    // Сейчас метаданные не сериализуются — пакет улетает пустым.
-    private fun convertMetadata(): Map<Int, Metadata.Entry<*>> = emptyMap()
 }

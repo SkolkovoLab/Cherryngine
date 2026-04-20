@@ -10,11 +10,11 @@ import ru.cherryngine.engine.minecraft.view.Viewable
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.math.YawPitch
+import net.minestom.server.instance.block.Block
 import ru.cherryngine.lib.minecraft.network.Connection
-import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.network.protocol.types.MovePlayerFlags
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
-import ru.cherryngine.lib.minecraft.world.block.Block
+import ru.cherryngine.lib.minecraft.world.ChunkPos
+import ru.cherryngine.lib.minecraft.world.MovePlayerFlags
 import ru.cherryngine.lib.world.ImmutableLayerKey
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -56,7 +56,7 @@ class MinecraftPlayer(
     }
 
     fun getBlock(pos: Vec3I): Block {
-        return Block.getBlockByStateId(getBlockId(pos))
+        return Block.fromStateId(getBlockId(pos)) ?: Block.AIR
     }
 
     fun teleport(position: Vec3D, yawPitch: YawPitch) {
