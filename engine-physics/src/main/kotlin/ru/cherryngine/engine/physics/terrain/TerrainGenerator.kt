@@ -1,10 +1,11 @@
 package ru.cherryngine.engine.physics.terrain
 
+import net.minestom.server.instance.block.Block
 import ru.cherryngine.engine.core.instance.InstanceSingleton
 import ru.cherryngine.engine.physics.PhysicsSpace
 import ru.cherryngine.lib.math.Cuboid
+import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.world.LayeredWorld
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -34,8 +35,6 @@ class TerrainGenerator(
             val dimensionType = relevantLayers.first().dimensionType
             val layeredWorld = LayeredWorld(dimensionType, relevantLayers.map { it.entry })
 
-            // Расширяем AABB в направлении движения, чтобы быстрые тела не пролетали сквозь блоки
-            // На практике 0.25 от этого значения вполне хватает, так что уменьшаем
             val d = bodyInfo.velocity * delta.toDouble() * 0.25
             val aabb = bodyInfo.aabb.expand(0.5).expand(
                 max(0.0, -d.x), max(0.0, -d.y), max(0.0, -d.z),
@@ -44,14 +43,14 @@ class TerrainGenerator(
 
             forEachBlockInAABB(aabb) { pos ->
                 val block = layeredWorld.getBlock(pos)
-                if (block.isAir()) return@forEachBlockInAABB
+                if (block.isAir) return@forEachBlockInAABB
 
                 val collisionCuboids = getCollisionCuboids(block)
                 if (collisionCuboids.isEmpty()) return@forEachBlockInAABB
 
                 val key = TerrainKey(pos, bodyInfo.physContextIDs)
                 keep.add(key)
-                val stateId = block.getStateId()
+                val stateId = block.stateId()
                 val existing = terrainBodies[key]
                 if (existing != null && existing.blockStateId == stateId) return@forEachBlockInAABB
 
@@ -71,17 +70,12 @@ class TerrainGenerator(
         }
     }
 
+    // TODO: восстановить точную форму коллизий. Наш старый RegistryBlock.collisionShape.cuboids
+    //  исчез вместе с кастомным реестром; в Minestom форма — Shape, из которого AABB-cuboids
+    //  напрямую не достать. Временно: любой солидный блок — полный единичный куб.
     private fun getCollisionCuboids(block: Block): List<Cuboid> {
-        val registryBlock = block.registryBlock
-        val stateId = block.getStateId()
-        val stateString = registryBlock.possibleStatesReversed[stateId]
-        if (stateString != null) {
-            val idx = stateString.indexOf('[')
-            val stateKey = if (idx != -1) stateString.substring(idx) else "[]"
-            val stateCollision = registryBlock.states[stateKey]?.collisionShape
-            if (stateCollision != null) return stateCollision.cuboids
-        }
-        return registryBlock.collisionShape.cuboids
+        val reg = block.registry() ?: return emptyList()
+        return if (reg.isSolid) listOf(UNIT_CUBE) else emptyList()
     }
 
     private inline fun forEachBlockInAABB(aabb: Cuboid, action: (Vec3I) -> Unit) {
@@ -99,5 +93,9 @@ class TerrainGenerator(
                 }
             }
         }
+    }
+
+    companion object {
+        private val UNIT_CUBE = Cuboid(Vec3D(0.0, 0.0, 0.0), Vec3D(1.0, 1.0, 1.0))
     }
 }

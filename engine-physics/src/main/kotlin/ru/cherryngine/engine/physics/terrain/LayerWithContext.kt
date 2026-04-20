@@ -1,6 +1,6 @@
 package ru.cherryngine.engine.physics.terrain
 
-import ru.cherryngine.lib.minecraft.registry.types.DimensionType
+import net.minestom.server.world.DimensionType
 import ru.cherryngine.lib.world.LayerEntry
 
 data class LayerWithContext(
