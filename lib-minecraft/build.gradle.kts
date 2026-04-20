@@ -18,7 +18,7 @@ dependencies {
     api(libs.kyori.adventure.nbt)
     api(project(":lib-adventure-serializer-nbt"))
     api(libs.kyori.adventure.text.serializer.gson)
-    implementation(libs.minestom.data)
+    api(libs.minestom)
 
     // Networking
     api(libs.netty.all)

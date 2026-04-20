@@ -6,7 +6,10 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(25)
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_24
+    }
 }
 
 tasks.withType<KotlinCompile> {
