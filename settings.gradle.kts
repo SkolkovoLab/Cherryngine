@@ -23,5 +23,4 @@ include(
     "lib-minecraft",
     "lib-polar",
     "lib-viaversion",
-    "lib-world",
 )

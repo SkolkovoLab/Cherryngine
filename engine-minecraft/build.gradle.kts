@@ -5,7 +5,6 @@ plugins {
 dependencies {
     api(project(":engine-core"))
     api(project(":lib-minecraft"))
-    api(project(":lib-world"))
     api(project(":lib-jackson"))
 
     api(libs.kotlinx.coroutines.core)
