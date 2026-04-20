@@ -1,5 +1,6 @@
 package ru.cherryngine.engine.physics.terrain
 
+import net.minestom.server.collision.ShapeImpl
 import net.minestom.server.instance.block.Block
 import ru.cherryngine.engine.core.instance.InstanceSingleton
 import ru.cherryngine.engine.physics.PhysicsSpace
@@ -70,11 +71,26 @@ class TerrainGenerator(
         }
     }
 
-    // TODO: восстановить точную форму коллизий. Наш старый RegistryBlock.collisionShape.cuboids
-    //  исчез вместе с кастомным реестром; в Minestom форма — Shape, из которого AABB-cuboids
-    //  напрямую не достать. Временно: любой солидный блок — полный единичный куб.
+    /**
+     * Отдаёт AABB-кубойды коллизии блока в локальных координатах [0..1]^3.
+     * Берёт `ShapeImpl.boundingBoxes()` из registry-shape — это даёт точную форму
+     * для лестниц/плит/заборов и т.п. Если shape не `ShapeImpl` или пуст, для
+     * солидных блоков падаем в единичный куб, иначе — нет коллизии.
+     */
     private fun getCollisionCuboids(block: Block): List<Cuboid> {
         val reg = block.registry() ?: return emptyList()
+        val shape = reg.collisionShape()
+        if (shape is ShapeImpl) {
+            val boxes = shape.boundingBoxes()
+            if (boxes.isNotEmpty()) {
+                return boxes.map { bb ->
+                    Cuboid(
+                        Vec3D(bb.minX(), bb.minY(), bb.minZ()),
+                        Vec3D(bb.maxX(), bb.maxY(), bb.maxZ()),
+                    )
+                }
+            }
+        }
         return if (reg.isSolid) listOf(UNIT_CUBE) else emptyList()
     }
 
