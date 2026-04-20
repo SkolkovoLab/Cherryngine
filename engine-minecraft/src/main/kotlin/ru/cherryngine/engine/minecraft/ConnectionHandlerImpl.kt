@@ -2,6 +2,8 @@ package ru.cherryngine.engine.minecraft
 
 import io.micronaut.context.event.ApplicationEventPublisher
 import jakarta.inject.Singleton
+import net.minestom.server.network.packet.client.ClientPacket
+import net.minestom.server.network.player.GameProfile
 import ru.cherryngine.engine.minecraft.events.ConnectEvent
 import ru.cherryngine.engine.minecraft.events.DisconnectEvent
 import ru.cherryngine.engine.minecraft.events.PacketEvent
@@ -16,7 +18,7 @@ class ConnectionHandlerImpl(
     val disconnectEventPublisher: ApplicationEventPublisher<DisconnectEvent>,
     val setGameProfileEventPublisher: ApplicationEventPublisher<SetGameProfileEvent>,
 ) : ConnectionHandler {
-    override fun onPacket(connection: Connection, packet: ru.cherryngine.lib.minecraft.network.protocol.packets.ServerboundPacket) {
+    override fun onPacket(connection: Connection, packet: ClientPacket) {
         packetEventPublisher.publishEvent(PacketEvent(connection, packet))
     }
 
@@ -30,9 +32,9 @@ class ConnectionHandlerImpl(
 
     override fun setGameProfile(
         connection: Connection,
-        helloGameProfile: ru.cherryngine.lib.minecraft.network.protocol.types.GameProfile,
-        onlineGameProfile: ru.cherryngine.lib.minecraft.network.protocol.types.GameProfile?,
-    ): ru.cherryngine.lib.minecraft.network.protocol.types.GameProfile {
+        helloGameProfile: GameProfile,
+        onlineGameProfile: GameProfile?,
+    ): GameProfile {
         val event = SetGameProfileEvent(
             connection,
             helloGameProfile,
