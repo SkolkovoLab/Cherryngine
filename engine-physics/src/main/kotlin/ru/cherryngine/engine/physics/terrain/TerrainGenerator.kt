@@ -1,41 +1,41 @@
 package ru.cherryngine.engine.physics.terrain
 
-import net.minestom.server.collision.ShapeImpl
-import net.minestom.server.instance.block.Block
 import ru.cherryngine.engine.core.instance.InstanceSingleton
+import ru.cherryngine.engine.core.instance.ServerWorld
+import ru.cherryngine.engine.core.world.TerrainCollisionProvider
 import ru.cherryngine.engine.physics.PhysicsSpace
 import ru.cherryngine.lib.math.Cuboid
-import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.world.LayeredWorld
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.max
 
+/**
+ * Генерирует terrain-тела вокруг активных physics-тел. Платформенная специфика
+ * (какой блок → какой список AABB) полностью инкапсулирована в
+ * [TerrainCollisionProvider] — инстанс сам выбирает подходящий через
+ * `canHandle(serverWorld)` из списка глобальных provider'ов.
+ */
 @InstanceSingleton
 class TerrainGenerator(
-    private val physicsSpace: PhysicsSpace
+    private val physicsSpace: PhysicsSpace,
+    private val allProviders: List<TerrainCollisionProvider>,
+    private val serverWorld: ServerWorld,
 ) {
-    private data class TerrainKey(val pos: Vec3I, val contextKey: Set<String>)
+    private val provider: TerrainCollisionProvider by lazy {
+        allProviders.firstOrNull { it.canHandle(serverWorld) }
+            ?: error("No TerrainCollisionProvider for ${serverWorld::class.simpleName}")
+    }
 
-    private data class TerrainBodyEntry(
-        val body: PhysicsSpace.PhysicsBody,
-        val blockStateId: Int,
-    )
+    private data class TerrainKey(val pos: Vec3I, val contextKey: Set<String>)
+    private data class TerrainBodyEntry(val body: PhysicsSpace.PhysicsBody, val cuboids: List<Cuboid>)
 
     private val terrainBodies = HashMap<TerrainKey, TerrainBodyEntry>()
 
-    fun step(delta: Float, activeBodies: List<ActiveBodyInfo>, layers: List<LayerWithContext>) {
+    fun step(delta: Float, activeBodies: List<ActiveBodyInfo>) {
         val keep = HashSet<TerrainKey>()
 
         for (bodyInfo in activeBodies) {
-            val relevantLayers = layers
-                .filter { lc -> lc.contextIDs.any { it in bodyInfo.physContextIDs } }
-            if (relevantLayers.isEmpty()) continue
-
-            val dimensionType = relevantLayers.first().dimensionType
-            val layeredWorld = LayeredWorld(dimensionType, relevantLayers.map { it.entry })
-
             val d = bodyInfo.velocity * delta.toDouble() * 0.25
             val aabb = bodyInfo.aabb.expand(0.5).expand(
                 max(0.0, -d.x), max(0.0, -d.y), max(0.0, -d.z),
@@ -43,22 +43,18 @@ class TerrainGenerator(
             )
 
             forEachBlockInAABB(aabb) { pos ->
-                val block = layeredWorld.getBlock(pos)
-                if (block.isAir) return@forEachBlockInAABB
-
-                val collisionCuboids = getCollisionCuboids(block)
-                if (collisionCuboids.isEmpty()) return@forEachBlockInAABB
+                val cuboids = provider.getCollisionCuboids(pos, serverWorld, bodyInfo.physContextIDs)
+                if (cuboids.isEmpty()) return@forEachBlockInAABB
 
                 val key = TerrainKey(pos, bodyInfo.physContextIDs)
                 keep.add(key)
-                val stateId = block.stateId()
                 val existing = terrainBodies[key]
-                if (existing != null && existing.blockStateId == stateId) return@forEachBlockInAABB
+                if (existing != null && existing.cuboids == cuboids) return@forEachBlockInAABB
 
                 existing?.let { physicsSpace.unregisterBodyContexts(it.body); it.body.remove() }
-                val body = physicsSpace.addTerrain(pos, collisionCuboids)
+                val body = physicsSpace.addTerrain(pos, cuboids)
                 physicsSpace.registerBodyContexts(body, key.contextKey)
-                terrainBodies[key] = TerrainBodyEntry(body, stateId)
+                terrainBodies[key] = TerrainBodyEntry(body, cuboids)
             }
         }
 
@@ -69,29 +65,6 @@ class TerrainGenerator(
                 true
             } else false
         }
-    }
-
-    /**
-     * Отдаёт AABB-кубойды коллизии блока в локальных координатах [0..1]^3.
-     * Берёт `ShapeImpl.boundingBoxes()` из registry-shape — это даёт точную форму
-     * для лестниц/плит/заборов и т.п. Если shape не `ShapeImpl` или пуст, для
-     * солидных блоков падаем в единичный куб, иначе — нет коллизии.
-     */
-    private fun getCollisionCuboids(block: Block): List<Cuboid> {
-        val reg = block.registry() ?: return emptyList()
-        val shape = reg.collisionShape()
-        if (shape is ShapeImpl) {
-            val boxes = shape.boundingBoxes()
-            if (boxes.isNotEmpty()) {
-                return boxes.map { bb ->
-                    Cuboid(
-                        Vec3D(bb.minX(), bb.minY(), bb.minZ()),
-                        Vec3D(bb.maxX(), bb.maxY(), bb.maxZ()),
-                    )
-                }
-            }
-        }
-        return if (reg.isSolid) listOf(UNIT_CUBE) else emptyList()
     }
 
     private inline fun forEachBlockInAABB(aabb: Cuboid, action: (Vec3I) -> Unit) {
@@ -109,9 +82,5 @@ class TerrainGenerator(
                 }
             }
         }
-    }
-
-    companion object {
-        private val UNIT_CUBE = Cuboid(Vec3D(0.0, 0.0, 0.0), Vec3D(1.0, 1.0, 1.0))
     }
 }

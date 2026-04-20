@@ -8,7 +8,6 @@ import net.minestom.server.network.packet.server.play.data.LightData
 import net.minestom.server.registry.Registries
 import net.minestom.server.world.DimensionType
 import ru.cherryngine.engine.core.instance.InstanceSingleton
-import ru.cherryngine.engine.core.instance.ServerWorld
 import ru.cherryngine.engine.core.instance.TickStage
 import ru.cherryngine.engine.core.instance.Tickable
 import ru.cherryngine.engine.core.player.PlayerManager
@@ -30,7 +29,7 @@ class MinecraftViewTickable(
     private val playerManager: PlayerManager,
     private val chunkPool: ChunkPool,
     private val mcEntityRegistry: McEntityRegistry,
-    private val serverWorld: ServerWorld,
+    private val serverWorld: MinecraftServerWorld,
     private val registries: Registries,
 ) : Tickable {
     private val changeTracker: MutableLayerChangeTracker? = null

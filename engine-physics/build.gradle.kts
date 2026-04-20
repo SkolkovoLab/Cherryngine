@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     api(project(":engine-core"))
-    api(project(":engine-minecraft"))
 
     implementation("com.github.stephengold:jolt-jni-Windows64:3.5.0")
     runtimeOnly("com.github.stephengold:jolt-jni-Linux64:3.5.0:ReleaseSp")

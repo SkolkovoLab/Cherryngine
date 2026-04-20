@@ -6,10 +6,10 @@ import org.cloudburstmc.protocol.bedrock.packet.NetworkChunkPublisherUpdatePacke
 import ru.cherryngine.engine.bedrock.BedrockPlayer
 import ru.cherryngine.engine.bedrock.entity.BedrockEntityRegistry
 import ru.cherryngine.engine.core.instance.InstanceSingleton
-import ru.cherryngine.engine.core.instance.ServerWorld
 import ru.cherryngine.engine.core.instance.TickStage
 import ru.cherryngine.engine.core.instance.Tickable
 import ru.cherryngine.engine.core.player.PlayerManager
+import ru.cherryngine.engine.minecraft.MinecraftServerWorld
 import ru.cherryngine.lib.minecraft.world.ChunkPos
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.world.LayeredWorld
@@ -19,7 +19,7 @@ import kotlin.time.Duration
 class BedrockViewTickable(
     private val playerManager: PlayerManager,
     private val blockMapping: BedrockBlockMapping,
-    private val serverWorld: ServerWorld,
+    private val serverWorld: MinecraftServerWorld,
     private val entityRegistry: BedrockEntityRegistry,
 ) : Tickable {
 
