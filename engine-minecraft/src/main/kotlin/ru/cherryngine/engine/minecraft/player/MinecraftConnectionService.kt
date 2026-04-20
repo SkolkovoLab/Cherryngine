@@ -15,7 +15,7 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.ServerConsts
 import ru.cherryngine.lib.minecraft.network.Connection
-import ru.cherryngine.lib.minecraft.network.protocol.packets.ProtocolState
+import net.minestom.server.network.ConnectionState
 import ru.cherryngine.lib.minecraft.network.protocol.packets.common.ClientboundUpdateTagsPacket
 import ru.cherryngine.lib.minecraft.network.protocol.packets.configurations.ClientboundFinishConfigurationPacket
 import ru.cherryngine.lib.minecraft.network.protocol.packets.configurations.ClientboundRegistryDataPacket
@@ -141,7 +141,7 @@ class MinecraftConnectionService(
     @EventListener
     fun onDisconnect(event: DisconnectEvent) {
         val connection = event.connection
-        if (connection.state == ProtocolState.PLAY || connection.state == ProtocolState.CONFIGURATION) {
+        if (connection.state == ConnectionState.PLAY || connection.state == ConnectionState.CONFIGURATION) {
             val uuid = connection.gameProfile.uuid
             val player = playerManager.getPlayerNullable(uuid)
             if (player != null) {

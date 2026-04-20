@@ -10,7 +10,7 @@ import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
 import ru.cherryngine.engine.minecraft.view.Viewable
 import ru.cherryngine.engine.minecraft.world.LayerClassification
 import ru.cherryngine.engine.minecraft.world.MutableOverlay
-import ru.cherryngine.lib.minecraft.network.protocol.packets.ProtocolState
+import net.minestom.server.network.ConnectionState
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSectionBlocksUpdatePacket
 import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSetChunkCacheCenterPacket
@@ -60,7 +60,7 @@ class MinecraftViewTickable(
         dimensionType: DimensionType?,
     ) {
         val connection = player.connection
-        if (connection.state != ProtocolState.PLAY) return
+        if (connection.state != ConnectionState.PLAY) return
         val distance = DEFAULT_RENDER_DISTANCE
 
         val clientChunkPos = ChunkUtils.chunkPosFromVec3D(player.clientPosition)
