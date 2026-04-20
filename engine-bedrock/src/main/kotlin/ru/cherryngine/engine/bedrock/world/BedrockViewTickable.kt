@@ -10,7 +10,7 @@ import ru.cherryngine.engine.core.instance.ServerWorld
 import ru.cherryngine.engine.core.instance.TickStage
 import ru.cherryngine.engine.core.instance.Tickable
 import ru.cherryngine.engine.core.player.PlayerManager
-import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.world.ChunkPos
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
 import ru.cherryngine.lib.world.LayeredWorld
 import kotlin.time.Duration

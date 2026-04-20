@@ -5,7 +5,7 @@ import io.netty.buffer.Unpooled
 import org.cloudburstmc.nbt.NbtMap
 import org.cloudburstmc.nbt.NbtUtils
 import org.cloudburstmc.protocol.common.util.VarInts
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
+import net.minestom.server.instance.Section
 import java.io.ByteArrayOutputStream
 
 object BedrockChunkSerializer {
@@ -20,12 +20,12 @@ object BedrockChunkSerializer {
     private const val OVERWORLD_SECTIONS = 24
 
     fun serialize(
-        sections: List<ChunkSection>,
+        sections: List<Section>,
         blockMapping: BedrockBlockMapping,
     ): Pair<Int, ByteBuf> {
         // Find topmost non-empty section
         var topSection = sections.size - 1
-        while (topSection >= 0 && sections[topSection].hasOnlyAir()) {
+        while (topSection >= 0 && sections[topSection].blockPalette().isEmpty) {
             topSection--
         }
         val subChunkCount = topSection + 1
@@ -52,7 +52,7 @@ object BedrockChunkSerializer {
         return subChunkCount to buf
     }
 
-    private fun writeBlockStorage(buf: ByteBuf, section: ChunkSection, blockMapping: BedrockBlockMapping) {
+    private fun writeBlockStorage(buf: ByteBuf, section: Section, blockMapping: BedrockBlockMapping) {
         val bedrockPalette = mutableListOf<Int>()
         val paletteIndex = HashMap<Int, Int>()
         val indices = IntArray(4096)
@@ -60,7 +60,7 @@ object BedrockChunkSerializer {
         for (x in 0 until 16) {
             for (y in 0 until 16) {
                 for (z in 0 until 16) {
-                    val javaStateId = section.getBlock(x, y, z)
+                    val javaStateId = section.blockPalette().get(x, y, z)
                     val bedrockRuntimeId = blockMapping.getBedrockRuntimeId(javaStateId)
                     val idx = paletteIndex.getOrPut(bedrockRuntimeId) {
                         bedrockPalette.add(bedrockRuntimeId)
