@@ -94,8 +94,8 @@ object PluginMessageRegistry {
 //        if (event.cancelled) return
 
         val state = when (networkManager.state) {
-            ProtocolState.PLAY -> Type.PLAY
-            ProtocolState.CONFIGURATION -> Type.CONFIGURATION
+            net.minestom.server.network.ConnectionState.PLAY -> Type.PLAY
+            net.minestom.server.network.ConnectionState.CONFIGURATION -> Type.CONFIGURATION
             else -> throw IllegalStateException("Received plugin message in protocol state that does not accept plugin messages (${networkManager.state})")
         }
 

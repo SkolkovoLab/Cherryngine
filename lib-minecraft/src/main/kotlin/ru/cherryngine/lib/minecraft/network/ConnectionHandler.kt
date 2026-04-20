@@ -1,10 +1,10 @@
 package ru.cherryngine.lib.minecraft.network
 
-import ru.cherryngine.lib.minecraft.network.protocol.packets.ServerboundPacket
-import ru.cherryngine.lib.minecraft.network.protocol.types.GameProfile
+import net.minestom.server.network.packet.client.ClientPacket
+import net.minestom.server.network.player.GameProfile
 
 interface ConnectionHandler {
-    fun onPacket(connection: Connection, packet: ServerboundPacket) = Unit
+    fun onPacket(connection: Connection, packet: ClientPacket) = Unit
     fun onConnect(connection: Connection) = Unit
     fun onDisconnect(connection: Connection) = Unit
     fun setGameProfile(

@@ -4,13 +4,13 @@ import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
+import ru.cherryngine.lib.minecraft.network.ByteBufVarInt
 import ru.cherryngine.lib.minecraft.network.protocol.NetworkCompression
-import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
-class CompressionDecoder() : ByteToMessageDecoder() {
+class CompressionDecoder : ByteToMessageDecoder() {
     public override fun decode(connection: ChannelHandlerContext, buffer: ByteBuf, out: MutableList<Any>) {
         if (!connection.channel().isActive) return
-        val dataLength = StreamCodec.VAR_INT.read(buffer)
+        val dataLength = ByteBufVarInt.read(buffer)
 
         if (dataLength == 0) {
             out.add(buffer.retainedSlice())
@@ -18,7 +18,8 @@ class CompressionDecoder() : ByteToMessageDecoder() {
             return
         }
 
-        val compressed = StreamCodec.RAW_BYTES_ARRAY.read(buffer)
+        val compressed = ByteArray(buffer.readableBytes())
+        buffer.readBytes(compressed)
         val uncompressed = Unpooled.wrappedBuffer(NetworkCompression.decompress(compressed))
         out.add(uncompressed)
     }

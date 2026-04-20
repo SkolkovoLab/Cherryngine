@@ -2,8 +2,8 @@ package ru.cherryngine.lib.minecraft.utils
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import net.minestom.server.network.player.GameProfile
 import org.slf4j.LoggerFactory
-import ru.cherryngine.lib.minecraft.network.protocol.types.GameProfile
 import java.io.IOException
 import java.net.URI
 import java.net.URLEncoder
@@ -11,7 +11,7 @@ import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.nio.charset.StandardCharsets
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.CompletableFuture
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
@@ -101,17 +101,23 @@ object MojangUtil {
                 return@thenAccept
             }
             val decodedResponse = json.decodeFromString<GameProfileResponse>(response.body())
-            val property = GameProfile.Property(
-                "textures",
-                decodedResponse.properties[0].value,
-                decodedResponse.properties[0].signature
-            )
+            val raw = decodedResponse.properties[0]
+            val property = GameProfile.Property("textures", raw.value, raw.signature)
             uuidToSkinCache[uuid] = property
             future.complete(property)
 
         }.exceptionally { throwable -> future.complete(null); null }
 
         return future
+    }
+
+    @Serializable
+    data class SerializableProperty(
+        val name: String,
+        val value: String,
+        val signature: String? = null,
+    ) {
+        fun toMinestom(): GameProfile.Property = GameProfile.Property(name, value, signature)
     }
 
     @Serializable
@@ -126,7 +132,7 @@ object MojangUtil {
     data class GameProfileResponse(
         val id: String,
         val name: String,
-        val properties: List<GameProfile.Property>,
+        val properties: List<SerializableProperty>,
     ) {
         fun getUUID() = uuidFromNoDashes(id)
     }

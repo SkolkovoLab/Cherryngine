@@ -6,18 +6,16 @@ import io.netty.channel.MultiThreadIoEventLoopGroup
 import io.netty.channel.nio.NioIoHandler
 import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
+import net.minestom.server.registry.Registries
 import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.minecraft.network.protocol.decoders.PacketLengthDecoder
 import ru.cherryngine.lib.minecraft.network.protocol.decoders.RawPacketDecoder
 import ru.cherryngine.lib.minecraft.network.protocol.encoders.PacketLengthEncoder
 import ru.cherryngine.lib.minecraft.network.protocol.encoders.RawPacketEncoder
-import ru.cherryngine.lib.minecraft.network.protocol.packets.registry.ClientboundPacketRegistry
-import ru.cherryngine.lib.minecraft.network.protocol.packets.registry.ServerboundPacketRegistry
 import java.net.InetSocketAddress
 
 class NettyServer(
-    val clientboundPacketRegistry: ClientboundPacketRegistry,
-    val serverboundPacketRegistry: ServerboundPacketRegistry,
+    val registries: Registries? = null,
 ) {
     private val logger = LoggerFactory.getLogger(NettyServer::class.java)
     val bossGroup = MultiThreadIoEventLoopGroup(NioIoHandler.newFactory())
@@ -41,14 +39,13 @@ class NettyServer(
             override fun initChannel(channel: SocketChannel) {
                 val connection = Connection(connectionHandler, mojangAuth, compressionThreshold)
                 channel.pipeline()
-                    //encoders
                     .addFirst(
                         ChannelHandlers.RAW_PACKET_ENCODER,
-                        RawPacketEncoder(connection, clientboundPacketRegistry)
+                        RawPacketEncoder(connection, registries)
                     )
                     .addFirst(
                         ChannelHandlers.RAW_PACKET_DECODER,
-                        RawPacketDecoder(connection, serverboundPacketRegistry)
+                        RawPacketDecoder(connection, registries)
                     )
                     .addBefore(
                         ChannelHandlers.RAW_PACKET_DECODER,

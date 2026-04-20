@@ -3,35 +3,34 @@ package ru.cherryngine.lib.minecraft.network.protocol.encoders
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToByteEncoder
+import net.minestom.server.network.NetworkBuffer
+import net.minestom.server.network.packet.PacketRegistry
+import net.minestom.server.network.packet.PacketVanilla
+import net.minestom.server.network.packet.server.ServerPacket
+import net.minestom.server.registry.Registries
 import org.slf4j.LoggerFactory
+import ru.cherryngine.lib.minecraft.network.ByteBufVarInt
 import ru.cherryngine.lib.minecraft.network.Connection
-import ru.cherryngine.lib.minecraft.network.protocol.packets.CachedPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.registry.ClientboundPacketRegistry
-import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 class RawPacketEncoder(
-    val processor: Connection,
-    val clientboundPacketRegistry: ClientboundPacketRegistry,
-) : MessageToByteEncoder<ClientboundPacket>() {
+    val connection: Connection,
+    val registries: Registries?,
+) : MessageToByteEncoder<ServerPacket>() {
     private val logger = LoggerFactory.getLogger(this::class.java)
+    private val parser = PacketVanilla.SERVER_PACKET_PARSER
 
-    override fun encode(connection: ChannelHandlerContext, packet: ClientboundPacket, out: ByteBuf) {
+    override fun encode(ctx: ChannelHandlerContext, packet: ServerPacket, out: ByteBuf) {
         try {
-            if (packet is CachedPacket<*>) {
-                val packetId = clientboundPacketRegistry.getId(processor.state, packet.original::class)!!
-                StreamCodec.VAR_INT.write(out, packetId)
-                out.writeBytes(packet.byteArray)
-            } else {
-                val packetId = clientboundPacketRegistry.getId(processor.state, packet::class) ?: throw IllegalStateException("Unknown packet type: ${packet::class.simpleName} for state: ${processor.state}")
-
-                @Suppress("UNCHECKED_CAST")
-                val streamCodec = clientboundPacketRegistry.getStreamCodec(packet::class) as StreamCodec<ClientboundPacket>
-                StreamCodec.VAR_INT.write(out, packetId)
-                streamCodec.write(out, packet)
-            }
+            val registry = parser.stateRegistry(connection.state)
+            @Suppress("UNCHECKED_CAST")
+            val info = registry.packetInfo(packet) as PacketRegistry.PacketInfo<ServerPacket>
+            val bodyBytes = NetworkBuffer.makeArray({ buf ->
+                buf.write(NetworkBuffer.VAR_INT, info.id())
+                buf.write(info.serializer(), packet)
+            }, registries)
+            out.writeBytes(bodyBytes)
         } catch (t: Throwable) {
-            logger.error("There was an error while encoding packet", t)
+            logger.error("There was an error while encoding packet ${packet::class.simpleName}", t)
             throw t
         }
     }
