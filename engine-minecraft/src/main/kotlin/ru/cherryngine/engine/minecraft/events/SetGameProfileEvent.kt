@@ -1,7 +1,7 @@
 package ru.cherryngine.engine.minecraft.events
 
+import net.minestom.server.network.player.GameProfile
 import ru.cherryngine.lib.minecraft.network.Connection
-import ru.cherryngine.lib.minecraft.network.protocol.types.GameProfile
 
 data class SetGameProfileEvent(
     val connection: Connection,

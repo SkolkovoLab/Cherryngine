@@ -1,10 +1,10 @@
 package ru.cherryngine.engine.minecraft
 
 import jakarta.inject.Singleton
-import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.registry.types.DimensionType
+import net.minestom.server.network.packet.server.play.data.LightData
+import net.minestom.server.world.DimensionType
+import ru.cherryngine.lib.minecraft.world.ChunkPos
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
-import ru.cherryngine.lib.minecraft.world.light.LightData
 import ru.cherryngine.lib.world.ImmutableLayerKey
 import ru.cherryngine.lib.world.LayerEntry
 import ru.cherryngine.lib.world.LayeredWorld

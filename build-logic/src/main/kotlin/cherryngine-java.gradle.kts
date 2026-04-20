@@ -3,7 +3,20 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("21")
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
+    sourceCompatibility = JavaVersion.toVersion("25")
+    targetCompatibility = JavaVersion.toVersion("25")
+}
+
+// Kotlin 2.2 can only target bytecode up to JVM 24, but Minestom requires JVM 25 at runtime.
+// Override the consumer's org.gradle.jvm.version so Gradle accepts JVM-25 artifacts;
+// we run on JDK 25 (see toolchain above), so 24-bytecode code executes fine alongside 25-bytecode deps.
+configurations.configureEach {
+    if (isCanBeResolved) {
+        attributes {
+            attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, 25)
+        }
+    }
 }
 
 repositories {

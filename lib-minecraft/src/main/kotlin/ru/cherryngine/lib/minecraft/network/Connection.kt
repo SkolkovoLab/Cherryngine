@@ -8,24 +8,29 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.kyori.adventure.text.Component
+import net.minestom.server.network.ConnectionState
+import net.minestom.server.network.packet.client.ClientPacket
+import net.minestom.server.network.packet.client.configuration.ClientFinishConfigurationPacket
+import net.minestom.server.network.packet.client.common.ClientPingRequestPacket
+import net.minestom.server.network.packet.client.handshake.ClientHandshakePacket
+import net.minestom.server.network.packet.client.login.ClientEncryptionResponsePacket
+import net.minestom.server.network.packet.client.login.ClientLoginAcknowledgedPacket
+import net.minestom.server.network.packet.client.login.ClientLoginStartPacket
+import net.minestom.server.network.packet.server.ServerPacket
+import net.minestom.server.network.packet.server.common.DisconnectPacket
+import net.minestom.server.network.packet.server.common.KeepAlivePacket
+import net.minestom.server.network.packet.server.common.PingResponsePacket
+import net.minestom.server.network.packet.server.login.EncryptionRequestPacket
+import net.minestom.server.network.packet.server.login.LoginDisconnectPacket
+import net.minestom.server.network.packet.server.login.LoginSuccessPacket
+import net.minestom.server.network.packet.server.login.SetCompressionPacket
+import net.minestom.server.network.player.GameProfile
 import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.minecraft.network.protocol.cryptography.EncryptionUtil
 import ru.cherryngine.lib.minecraft.network.protocol.decoders.CompressionDecoder
 import ru.cherryngine.lib.minecraft.network.protocol.decoders.PacketDecryptionHandler
 import ru.cherryngine.lib.minecraft.network.protocol.encoders.CompressionEncoder
 import ru.cherryngine.lib.minecraft.network.protocol.encoders.PacketEncryptionHandler
-import ru.cherryngine.lib.minecraft.network.protocol.packets.ClientboundPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.ProtocolState
-import ru.cherryngine.lib.minecraft.network.protocol.packets.ServerboundPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.common.ClientboundDisconnectPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.common.ClientboundKeepAlivePacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.common.ClientboundPongResponsePacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.common.ServerboundPingRequestPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.configurations.ServerboundFinishConfigurationPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.handshake.ServerboundIntentionPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.handshake.ServerboundIntentionPacket.Intent
-import ru.cherryngine.lib.minecraft.network.protocol.packets.login.*
-import ru.cherryngine.lib.minecraft.network.protocol.types.GameProfile
 import ru.cherryngine.lib.minecraft.utils.MojangUtil
 import java.math.BigInteger
 import java.net.SocketAddress
@@ -36,14 +41,14 @@ class Connection(
     val connectionHandler: ConnectionHandler,
     val mojangAuth: Boolean,
     val compressionThreshold: Int,
-) : SimpleChannelInboundHandler<ServerboundPacket>() {
+) : SimpleChannelInboundHandler<ClientPacket>() {
     companion object {
         private val logger = LoggerFactory.getLogger(Connection::class.java)
     }
 
     private val crypto = EncryptionUtil.getNewPlayerCrypto()
 
-    var state: ProtocolState = ProtocolState.HANDSHAKE
+    var state: ConnectionState = ConnectionState.HANDSHAKE
         private set
     private lateinit var context: ChannelHandlerContext
     val channel: Channel get() = context.channel()
@@ -56,9 +61,9 @@ class Connection(
         private set
     lateinit var serverAddress: String
         private set
-    var serverPort: Short = -1
+    var serverPort: Int = -1
         private set
-    lateinit var intent: Intent
+    lateinit var intent: ClientHandshakePacket.Intent
         private set
 
     lateinit var helloGameProfile: GameProfile
@@ -77,8 +82,8 @@ class Connection(
 
         CoroutineScope(Dispatchers.IO).launch {
             while (isActive) {
-                if (state == ProtocolState.PLAY || state == ProtocolState.CONFIGURATION) {
-                    sendPacket(ClientboundKeepAlivePacket(currentKeepAlive))
+                if (state == ConnectionState.PLAY || state == ConnectionState.CONFIGURATION) {
+                    sendPacket(KeepAlivePacket(currentKeepAlive))
                     currentKeepAlive++
                 }
 
@@ -94,50 +99,50 @@ class Connection(
 
     override fun channelRead0(
         ctx: ChannelHandlerContext,
-        packet: ServerboundPacket,
+        packet: ClientPacket,
     ) {
         when (packet) {
-            is ServerboundIntentionPacket -> handleIntention(packet)
-            is ServerboundHelloPacket -> handleHello(packet)
-            is ServerboundEncryptionResponsePacket -> handleEncryptionResponse(packet)
-            is ServerboundLoginAcknowledgedPacket -> state = ProtocolState.CONFIGURATION
-            is ServerboundFinishConfigurationPacket -> state = ProtocolState.PLAY
-            is ServerboundPingRequestPacket -> sendPacket(ClientboundPongResponsePacket(packet.time))
+            is ClientHandshakePacket -> handleIntention(packet)
+            is ClientLoginStartPacket -> handleHello(packet)
+            is ClientEncryptionResponsePacket -> handleEncryptionResponse(packet)
+            is ClientLoginAcknowledgedPacket -> state = ConnectionState.CONFIGURATION
+            is ClientFinishConfigurationPacket -> state = ConnectionState.PLAY
+            is ClientPingRequestPacket -> sendPacket(PingResponsePacket(packet.number))
         }
 
         connectionHandler.onPacket(this, packet)
     }
 
-    private fun handleIntention(packet: ServerboundIntentionPacket) {
+    private fun handleIntention(packet: ClientHandshakePacket) {
         protocolVersion = packet.protocolVersion
         serverAddress = packet.serverAddress
         serverPort = packet.serverPort
         intent = packet.intent
         state = when (packet.intent) {
-            Intent.STATUS -> ProtocolState.STATUS
-            Intent.LOGIN -> ProtocolState.LOGIN
-            Intent.TRANSFER -> ProtocolState.LOGIN
+            ClientHandshakePacket.Intent.STATUS -> ConnectionState.STATUS
+            ClientHandshakePacket.Intent.LOGIN -> ConnectionState.LOGIN
+            ClientHandshakePacket.Intent.TRANSFER -> ConnectionState.LOGIN
         }
     }
 
-    private fun handleHello(packet: ServerboundHelloPacket) {
-        helloGameProfile = GameProfile(packet.uuid, packet.username, mutableListOf())
+    private fun handleHello(packet: ClientLoginStartPacket) {
+        helloGameProfile = GameProfile(packet.profileId, packet.username, emptyList())
         if (mojangAuth) {
-            sendPacket(ClientboundEncryptionRequestPacket("", crypto.publicKey.encoded, crypto.verifyToken, true))
+            sendPacket(EncryptionRequestPacket("", crypto.publicKey.encoded, crypto.verifyToken, true))
         } else {
             finishLogin()
         }
     }
 
-    private fun handleEncryptionResponse(packet: ServerboundEncryptionResponsePacket) {
+    private fun handleEncryptionResponse(packet: ClientEncryptionResponsePacket) {
         val cipher = Cipher.getInstance("RSA")
         cipher.init(Cipher.DECRYPT_MODE, crypto.privateKey)
 
-        val verifyToken = cipher.doFinal(packet.verifyToken)
+        val verifyToken = cipher.doFinal(packet.encryptedVerifyToken)
         val sharedSecret = cipher.doFinal(packet.sharedSecret)
 
         if (!verifyToken.contentEquals(crypto.verifyToken)) {
-            logger.error("Verify Token of player ${this@Connection.helloGameProfile.username} does not match!")
+            logger.error("Verify Token of player ${this@Connection.helloGameProfile.name()} does not match!")
             kick("Your encryption verify token does not match!")
             return
         }
@@ -148,10 +153,10 @@ class Connection(
         val serverId = BigInteger(digestedData).toString(16)
 
         onlineGameProfile = try {
-            val profileResponse = MojangUtil.authenticateSession(this@Connection.helloGameProfile.username, serverId)
+            val profileResponse = MojangUtil.authenticateSession(this@Connection.helloGameProfile.name(), serverId)
             val uuid = profileResponse.getUUID()
             val name = profileResponse.name
-            val properties = profileResponse.properties.toMutableList()
+            val properties = profileResponse.properties.map { it.toMinestom() }
 
             GameProfile(uuid, name, properties)
         } catch (ex: Exception) {
@@ -180,7 +185,7 @@ class Connection(
 
     private fun finishLogin() {
         if (compressionThreshold > -1) {
-            sendPacket(ClientboundLoginCompressionPacket(compressionThreshold))
+            sendPacket(SetCompressionPacket(compressionThreshold))
             channel.pipeline()
                 .addAfter(
                     ChannelHandlers.PACKET_LENGTH_DECODER, ChannelHandlers.PACKET_COMPRESSION_DECODER,
@@ -193,7 +198,7 @@ class Connection(
         }
 
         gameProfile = connectionHandler.setGameProfile(this, helloGameProfile, onlineGameProfile)
-        sendPacket(ClientboundLoginFinishedPacket(gameProfile))
+        sendPacket(LoginSuccessPacket(gameProfile))
     }
 
     override fun channelReadComplete(context: ChannelHandlerContext) {
@@ -201,26 +206,38 @@ class Connection(
     }
 
     override fun exceptionCaught(context: ChannelHandlerContext, cause: Throwable) {
-        LoggerFactory.getLogger(Connection::class.java).error("Connection closed", cause)
+        logger.error("Connection closed", cause)
         context.flush()
         context.close()
     }
 
-    fun sendPacket(packet: ClientboundPacket) {
+    fun sendPacket(packet: ServerPacket) {
         channel.writeAndFlush(packet)
+    }
+
+    /**
+     * Отправляет пакет-обёртку Minestom (`CachedPacket`/`LazyPacket`/`FramedPacket`).
+     * Распаковывает до `ServerPacket` (с учётом текущего состояния для CachedPacket)
+     * и шлёт через `sendPacket(ServerPacket)`. `BufferedPacket` пока не поддерживаем
+     * (он требует записи сырых байт напрямую в буфер).
+     */
+    fun sendPacket(packet: net.minestom.server.network.packet.server.SendablePacket) {
+        val server = net.minestom.server.network.packet.server.SendablePacket.extractServerPacket(state, packet)
+            ?: throw UnsupportedOperationException("BufferedPacket не поддерживается в Cherryngine pipeline")
+        sendPacket(server)
     }
 
     fun kick(message: String) {
         val formattedMessage = Component.text("Disconnected").appendNewline().append(Component.text(message))
-        val packet = when (state) {
-            ProtocolState.HANDSHAKE,
-            ProtocolState.STATUS,
-            ProtocolState.LOGIN,
-                -> ClientboundLoginDisconnectPacket(formattedMessage)
+        val packet: ServerPacket = when (state) {
+            ConnectionState.HANDSHAKE,
+            ConnectionState.STATUS,
+            ConnectionState.LOGIN,
+                -> LoginDisconnectPacket(formattedMessage)
 
-            ProtocolState.CONFIGURATION,
-            ProtocolState.PLAY,
-                -> ClientboundDisconnectPacket(formattedMessage)
+            ConnectionState.CONFIGURATION,
+            ConnectionState.PLAY,
+                -> DisconnectPacket(formattedMessage)
         }
 
         sendPacket(packet)

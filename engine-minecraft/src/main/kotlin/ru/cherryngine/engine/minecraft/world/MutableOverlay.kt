@@ -1,14 +1,14 @@
 package ru.cherryngine.engine.minecraft.world
 
-import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.network.protocol.types.SectionPos
-import ru.cherryngine.lib.minecraft.registry.types.DimensionType
+import net.minestom.server.world.DimensionType
+import ru.cherryngine.lib.minecraft.world.ChunkPos
+import ru.cherryngine.lib.minecraft.world.SectionPos
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
 import ru.cherryngine.lib.world.LayeredWorld
 
 /**
  * Вычисляет diff между полной композицией (immutable + mutable) и immutable base.
- * Результат — блоки для отправки через SectionBlocksUpdatePacket.
+ * Результат — блоки для отправки через MultiBlockChangePacket.
  */
 object MutableOverlay {
 
@@ -24,8 +24,8 @@ object MutableOverlay {
     ): Map<SectionPos, List<Long>> {
         if (classification.mutableLayers.isEmpty()) return emptyMap()
 
-        val minSection = dimensionType.minY / 16
-        val sectionCount = dimensionType.height / 16
+        val minSection = dimensionType.minY() / 16
+        val sectionCount = dimensionType.height() / 16
         val result = mutableMapOf<SectionPos, List<Long>>()
 
         val fullWorld = LayeredWorld(dimensionType, classification.allLayersSorted)
@@ -47,9 +47,9 @@ object MutableOverlay {
             val baseZ = chunkPos.z * 16
 
             for (x in 0 until 16) for (y in 0 until 16) for (z in 0 until 16) {
-                val baseStateId = baseSection.getBlock(x, y, z)
+                val baseStateId = baseSection.blockPalette().get(x, y, z)
                 val fullBlock = fullWorld.getBlock(baseX + x, baseY + y, baseZ + z)
-                val fullStateId = fullBlock.getStateId()
+                val fullStateId = fullBlock.stateId()
 
                 if (fullStateId != baseStateId) {
                     val encoded = (fullStateId.toLong() shl 12) or

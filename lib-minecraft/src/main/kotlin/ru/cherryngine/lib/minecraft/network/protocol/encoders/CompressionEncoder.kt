@@ -4,8 +4,8 @@ import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToByteEncoder
 import org.slf4j.LoggerFactory
+import ru.cherryngine.lib.minecraft.network.ByteBufVarInt
 import ru.cherryngine.lib.minecraft.network.protocol.NetworkCompression
-import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 class CompressionEncoder(
     val compressionThreshold: Int,
@@ -16,11 +16,13 @@ class CompressionEncoder(
         try {
             val dataLength = buffer.readableBytes()
             if (dataLength < compressionThreshold) {
-                StreamCodec.VAR_INT.write(out, 0)
+                ByteBufVarInt.write(out, 0)
                 out.writeBytes(buffer)
             } else {
-                StreamCodec.VAR_INT.write(out, dataLength)
-                out.writeBytes(NetworkCompression.compress(StreamCodec.RAW_BYTES_ARRAY.read(buffer)))
+                ByteBufVarInt.write(out, dataLength)
+                val uncompressed = ByteArray(dataLength)
+                buffer.readBytes(uncompressed)
+                out.writeBytes(NetworkCompression.compress(uncompressed))
             }
         } catch (exception: Exception) {
             logger.error("There was an error while compressing packet", exception)

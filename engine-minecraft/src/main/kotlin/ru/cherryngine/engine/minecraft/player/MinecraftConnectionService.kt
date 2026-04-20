@@ -3,7 +3,23 @@ package ru.cherryngine.engine.minecraft.player
 import io.micronaut.context.event.ApplicationEventPublisher
 import io.micronaut.runtime.event.annotation.EventListener
 import jakarta.inject.Singleton
-import net.kyori.adventure.text.minimessage.MiniMessage
+import net.minestom.server.coordinate.Pos
+import net.minestom.server.network.ConnectionState
+import net.minestom.server.network.packet.client.common.ClientPingRequestPacket
+import net.minestom.server.network.packet.client.configuration.ClientFinishConfigurationPacket
+import net.minestom.server.network.packet.client.login.ClientLoginAcknowledgedPacket
+import net.minestom.server.network.packet.client.play.ClientCommandChatPacket
+import net.minestom.server.network.packet.client.play.ClientInputPacket
+import net.minestom.server.network.packet.client.play.ClientPlayerPositionAndRotationPacket
+import net.minestom.server.network.packet.client.play.ClientPlayerPositionPacket
+import net.minestom.server.network.packet.client.play.ClientPlayerPositionStatusPacket
+import net.minestom.server.network.packet.client.play.ClientPlayerRotationPacket
+import net.minestom.server.network.packet.client.play.ClientTabCompletePacket
+import net.minestom.server.network.packet.client.status.StatusRequestPacket
+import net.minestom.server.network.packet.server.common.TagsPacket
+import net.minestom.server.network.packet.server.configuration.FinishConfigurationPacket
+import net.minestom.server.network.packet.server.status.ResponsePacket
+import net.minestom.server.registry.Registries
 import ru.cherryngine.engine.core.player.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerRouter
@@ -15,115 +31,168 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.lib.minecraft.ServerConsts
 import ru.cherryngine.lib.minecraft.network.Connection
-import ru.cherryngine.lib.minecraft.network.protocol.packets.ProtocolState
-import ru.cherryngine.lib.minecraft.network.protocol.packets.common.ClientboundUpdateTagsPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.configurations.ClientboundFinishConfigurationPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.configurations.ClientboundRegistryDataPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.configurations.ServerboundFinishConfigurationPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.login.ServerboundLoginAcknowledgedPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.play.serverbound.*
-import ru.cherryngine.lib.minecraft.network.protocol.packets.status.ClientboundStatusResponsePacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.status.ServerboundStatusRequestPacket
-import ru.cherryngine.lib.minecraft.network.protocol.types.MovePlayerFlags
-import ru.cherryngine.lib.minecraft.network.protocol.types.ServerStatus
-import ru.cherryngine.lib.minecraft.registry.Registries
-import java.util.*
+import ru.cherryngine.lib.minecraft.world.MovePlayerFlags
 
 @Singleton
 class MinecraftConnectionService(
     private val playerManager: PlayerManager,
     private val instanceRouter: InstanceRouter,
     private val playerRouter: PlayerRouter,
+    private val registries: Registries,
     val playerCreatedEventPublisher: ApplicationEventPublisher<PlayerCreatedEvent>,
     val playerConfigurationAsyncEventPublisher: ApplicationEventPublisher<PlayerConfigurationAsyncEvent>,
 ) {
+    companion object {
+        private const val STATUS_JSON_TEMPLATE = """{"version":{"name":"%s","protocol":%d},"players":{"online":13,"max":37,"sample":[]},"description":{"text":"Cherryngine"}}"""
+    }
+
     @EventListener
     fun onPacket(event: PacketEvent) {
         val (connection, packet) = event
         when (packet) {
-            is ServerboundStatusRequestPacket -> {
-                val status = ServerStatus(
-                    version = ServerStatus.Version(
-                        name = ServerConsts.MINECRAFT_VERSION,
-                        protocol = ServerConsts.PROTOCOL_VERSION
-                    ),
-                    players = ServerStatus.Players(
-                        online = 13,
-                        max = 37,
-                        sample = listOf(
-                            ServerStatus.ServerListPlayer("test", UUID.randomUUID())
-                        )
-                    ),
-                    description = MiniMessage.miniMessage().deserialize("<rainbow>Cherryngine</rainbow>")
-                )
-                connection.sendPacket(ClientboundStatusResponsePacket(status))
+            is StatusRequestPacket -> {
+                val json = STATUS_JSON_TEMPLATE.format(ServerConsts.MINECRAFT_VERSION, ServerConsts.PROTOCOL_VERSION)
+                connection.sendPacket(ResponsePacket(json))
             }
 
-            is ServerboundLoginAcknowledgedPacket -> {
-                val cachedTagPacket = ClientboundUpdateTagsPacket(Registries.tagRegistries)
-                connection.sendPacket(cachedTagPacket)
+            is ClientLoginAcknowledgedPacket -> {
+                sendRegistryData(connection)
 
-                Registries.dataDrivenRegistries.forEach { registry ->
-                    connection.sendPacket(ClientboundRegistryDataPacket(registry))
-                }
-
-                val uuid = connection.gameProfile.uuid
+                val uuid = connection.gameProfile.uuid()
                 val existing = playerManager.getPlayerNullable(uuid)
-                val player: MinecraftPlayer
-                if (existing == null) {
-                    player = MinecraftPlayer(connection)
-                    playerManager.register(player)
-                    playerCreatedEventPublisher.publishEvent(PlayerCreatedEvent(player))
+                val player: MinecraftPlayer = if (existing == null) {
+                    val created = MinecraftPlayer(connection)
+                    playerManager.register(created)
+                    playerCreatedEventPublisher.publishEvent(PlayerCreatedEvent(created))
+                    created
                 } else {
-                    player = existing as MinecraftPlayer
+                    existing as MinecraftPlayer
                 }
 
                 Thread.startVirtualThread {
                     playerConfigurationAsyncEventPublisher.publishEvent(PlayerConfigurationAsyncEvent(player))
-                    connection.sendPacket(ClientboundFinishConfigurationPacket())
+                    connection.sendPacket(FinishConfigurationPacket())
                 }
             }
 
-            is ServerboundFinishConfigurationPacket -> {
-                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) ?: return
+            is ClientFinishConfigurationPacket -> {
+                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) ?: return
                 instanceRouter.routePlayer(player.uuid, playerRouter.getInitialInstance(player))
             }
 
-            is ServerboundMovePlayerPosPacket -> onMove(
+            is ClientPlayerPositionPacket -> onMove(
                 connection,
-                packet.pos, null, packet.flags
+                Vec3D(packet.position.x(), packet.position.y(), packet.position.z()),
+                null,
+                flagsFromByte(packet.flags),
             )
 
-            is ServerboundMovePlayerPosRotPacket -> onMove(
-                connection,
-                packet.pos, packet.yawPitch, packet.flags
-            )
-
-            is ServerboundMovePlayerRotPacket -> onMove(
-                connection,
-                null, packet.yawPitch, packet.flags
-            )
-
-            is ServerboundMovePlayerStatusOnlyPacket -> onMove(
-                connection,
-                null, null, packet.flags
-            )
-
-            is ServerboundChatCommandPacket -> {
-                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) as? MinecraftPlayer ?: return
-                player.pendingCommands.offer(packet.command)
+            is ClientPlayerPositionAndRotationPacket -> {
+                val p: Pos = packet.position
+                onMove(
+                    connection,
+                    Vec3D(p.x(), p.y(), p.z()),
+                    YawPitch(p.yaw(), p.pitch()),
+                    flagsFromByte(packet.flags),
+                )
             }
 
-            is ServerboundCommandSuggestionPacket -> {
-                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) as? MinecraftPlayer ?: return
+            is ClientPlayerRotationPacket -> onMove(
+                connection,
+                null,
+                YawPitch(packet.yaw, packet.pitch),
+                flagsFromByte(packet.flags),
+            )
+
+            is ClientPlayerPositionStatusPacket -> onMove(
+                connection,
+                null, null, flagsFromByte(packet.flags),
+            )
+
+            is ClientCommandChatPacket -> {
+                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
+                player.pendingCommands.offer(packet.message)
+            }
+
+            is ClientTabCompletePacket -> {
+                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
                 player.pendingSuggestions.offer(Pair(packet.transactionId, packet.text.removePrefix("/")))
             }
 
-            is ServerboundPlayerInputPacket -> {
-                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) as? MinecraftPlayer ?: return
+            is ClientInputPacket -> {
+                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
                 player.isSneaking = true
             }
+
+            is ClientPingRequestPacket -> {
+                // отвечает за Connection, игнорируем здесь
+            }
         }
+    }
+
+    /**
+     * Шлёт все RegistryData- и TagsPacket, которые клиент ждёт в CONFIGURATION-фазе.
+     * Зеркалит `ConnectionManager.doConfiguration` из Minestom, excludeVanilla=false
+     * — не используем knownPacks-optimization, клиент получит полные данные реестров.
+     */
+    private fun sendRegistryData(connection: Connection) {
+        val excludeVanilla = false
+        connection.sendPacket(registries.chatType().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.biome().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.dialog().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.damageType().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.trimMaterial().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.trimPattern().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.bannerPattern().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.enchantment().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.paintingVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.jukeboxSong().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.instrument().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.wolfVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.wolfSoundVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.catVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.chickenVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.cowVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.frogVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.pigVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.zombieNautilusVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.timeline().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.dimensionType().registryDataPacket(registries, excludeVanilla))
+
+        val tagEntries = listOf(
+            registries.blocks().tagRegistry(),
+            registries.entityType().tagRegistry(),
+            registries.fluid().tagRegistry(),
+            registries.gameEvent().tagRegistry(),
+            registries.material().tagRegistry(),
+            registries.chatType().tagRegistry(),
+            registries.biome().tagRegistry(),
+            registries.dialog().tagRegistry(),
+            registries.damageType().tagRegistry(),
+            registries.trimMaterial().tagRegistry(),
+            registries.trimPattern().tagRegistry(),
+            registries.bannerPattern().tagRegistry(),
+            registries.enchantment().tagRegistry(),
+            registries.paintingVariant().tagRegistry(),
+            registries.jukeboxSong().tagRegistry(),
+            registries.instrument().tagRegistry(),
+            registries.wolfVariant().tagRegistry(),
+            registries.wolfSoundVariant().tagRegistry(),
+            registries.catVariant().tagRegistry(),
+            registries.chickenVariant().tagRegistry(),
+            registries.cowVariant().tagRegistry(),
+            registries.frogVariant().tagRegistry(),
+            registries.pigVariant().tagRegistry(),
+            registries.zombieNautilusVariant().tagRegistry(),
+            registries.timeline().tagRegistry(),
+            registries.dimensionType().tagRegistry(),
+        )
+        connection.sendPacket(TagsPacket(tagEntries))
+    }
+
+    private fun flagsFromByte(flags: Byte): MovePlayerFlags {
+        val i = flags.toInt()
+        return MovePlayerFlags(isOnGround = (i and 0x01) != 0, horizontalCollision = (i and 0x02) != 0)
     }
 
     private fun onMove(
@@ -132,7 +201,7 @@ class MinecraftConnectionService(
         yawPitch: YawPitch?,
         flags: MovePlayerFlags,
     ) {
-        val player = playerManager.getPlayerNullable(connection.gameProfile.uuid) as? MinecraftPlayer ?: return
+        val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
         if (pos != null) player.clientPosition = pos
         if (yawPitch != null) player.clientYawPitch = yawPitch
         player.clientMovePlayerFlags = flags
@@ -141,8 +210,8 @@ class MinecraftConnectionService(
     @EventListener
     fun onDisconnect(event: DisconnectEvent) {
         val connection = event.connection
-        if (connection.state == ProtocolState.PLAY || connection.state == ProtocolState.CONFIGURATION) {
-            val uuid = connection.gameProfile.uuid
+        if (connection.state == ConnectionState.PLAY || connection.state == ConnectionState.CONFIGURATION) {
+            val uuid = connection.gameProfile.uuid()
             val player = playerManager.getPlayerNullable(uuid)
             if (player != null) {
                 instanceRouter.removePlayer(player)

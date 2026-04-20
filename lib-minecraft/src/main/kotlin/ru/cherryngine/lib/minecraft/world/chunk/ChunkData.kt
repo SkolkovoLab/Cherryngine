@@ -1,33 +1,38 @@
 package ru.cherryngine.lib.minecraft.world.chunk
 
+import net.minestom.server.coordinate.CoordConversion
+import net.minestom.server.instance.Section
+import net.minestom.server.instance.block.Block
+import net.minestom.server.instance.heightmap.Heightmap
+import net.minestom.server.instance.palette.Palette
+import net.minestom.server.network.NetworkBuffer
+import net.minestom.server.network.packet.server.play.data.ChunkData as MinestomChunkData
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.network.stream_codec.MapStreamCodec
-import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.types.DimensionType
-import ru.cherryngine.lib.minecraft.world.block.BlockEntity
-import java.util.*
 
+/**
+ * Данные чанка, подготовленные для отправки клиенту.
+ * Внутри используются Minestom `Section` и `Block`, а на момент сериализации
+ * секции пакуются в byte[] через Minestom-овские codec'и палитр.
+ */
 class ChunkData(
-    val heightmaps: Map<ChunkHeightmapType, LongArray>,
-    val sections: List<ChunkSection>,
-    val blockEntities: Map<Vec3I, BlockEntity>,
+    val heightmaps: Map<Heightmap.Type, LongArray>,
+    val sections: List<Section>,
+    val blockEntities: Map<Vec3I, Block>,
 ) {
-    companion object {
-        fun empty(dimensionType: DimensionType) = ChunkData(
-            emptyMap(),
-            List(dimensionType.height / 16) { ChunkSection.empty() },
-            emptyMap(),
-        )
-
-        val HEIGHTMAPS_STREAM_CODEC = MapStreamCodec(ChunkHeightmapType.STREAM_CODEC, StreamCodec.LONG_ARRAY) {
-            EnumMap<ChunkHeightmapType, LongArray>(ChunkHeightmapType::class.java)
+    /**
+     * Упаковывает секции в byte[] и отдаёт Minestom [MinestomChunkData] для пакета.
+     * biomeCount нужен для корректного directBits у биомной палитры.
+     */
+    fun toMinestomChunkData(biomeCount: Int): MinestomChunkData {
+        val biomeSerializer = Palette.biomeSerializer(biomeCount)
+        val data = NetworkBuffer.makeArray { buffer ->
+            for (section in sections) {
+                buffer.write(NetworkBuffer.SHORT, section.blockPalette().count().toShort())
+                buffer.write(Palette.BLOCK_SERIALIZER, section.blockPalette())
+                buffer.write(biomeSerializer, section.biomePalette())
+            }
         }
-
-        val STREAM_CODEC = StreamCodec.of(
-            HEIGHTMAPS_STREAM_CODEC, ChunkData::heightmaps,
-            ChunkSection.STREAM_CODEC_LIST, ChunkData::sections,
-            BlockEntity.STREAM_CODEC_MAP, ChunkData::blockEntities,
-            ::ChunkData
-        )
+        val entries = blockEntities.mapKeys { (pos, _) -> CoordConversion.chunkBlockIndex(pos.x, pos.y, pos.z) }
+        return MinestomChunkData(heightmaps, data, entries)
     }
 }

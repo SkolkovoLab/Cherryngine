@@ -2,61 +2,35 @@ package ru.cherryngine.lib.minecraft.network.protocol.decoders
 
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
-import io.netty.handler.codec.DecoderException
 import io.netty.handler.codec.MessageToMessageDecoder
+import net.minestom.server.network.NetworkBuffer
+import net.minestom.server.network.packet.PacketVanilla
+import net.minestom.server.registry.Registries
 import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.minecraft.network.Connection
-import ru.cherryngine.lib.minecraft.network.protocol.packets.ProtocolState
-import ru.cherryngine.lib.minecraft.network.protocol.packets.ServerboundPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.registry.ServerboundPacketRegistry
-import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
 
 class RawPacketDecoder(
-    val processor: Connection,
-    val serverboundPacketRegistry: ServerboundPacketRegistry,
+    val connection: Connection,
+    val registries: Registries?,
 ) : MessageToMessageDecoder<ByteBuf>() {
     private val logger = LoggerFactory.getLogger(this::class.java)
+    private val parser = PacketVanilla.CLIENT_PACKET_PARSER
 
-    private fun parse(id: Int, buffer: ByteBuf, protocolState: ProtocolState): ServerboundPacket? {
-        try {
-            val packetClass = serverboundPacketRegistry.getFromId(protocolState, id) ?: return null
-            val streamCodec = serverboundPacketRegistry.getStreamCodec(packetClass) ?: return null
-            return streamCodec.read(buffer) as ServerboundPacket
-        } catch (ex: Exception) {
-            logger.error("Failed to read packet. Packet id: $id, protocol state: $protocolState", ex)
-            return null
-        }
-    }
+    override fun decode(ctx: ChannelHandlerContext, buffer: ByteBuf, out: MutableList<Any>) {
+        if (!ctx.channel().isActive) return
 
-    @OptIn(ExperimentalStdlibApi::class)
-    override fun decode(connection: ChannelHandlerContext, buffer: ByteBuf, out: MutableList<Any>) {
-        if (!connection.channel().isActive) return // the connection was closed
+        val bytes = ByteArray(buffer.readableBytes())
+        buffer.readBytes(bytes)
+        val netBuf = NetworkBuffer.wrap(bytes, 0, bytes.size, registries)
+
+        val packetId = netBuf.read(NetworkBuffer.VAR_INT)
+        val state = connection.state
 
         try {
-            val packetId = StreamCodec.VAR_INT.read(buffer)
-            val packetIdByteRep = "0x${packetId.toByte().toHexString()}"
-            val state = processor.state
-
-            val packet = parse(packetId, buffer, state)
-
-            // no packet class was found to handle this packet, so we skip the bytes and log error
-            if (packet == null) {
-                logger.warn(
-                    "Received unknown packet with id $packetId ($packetIdByteRep) during phase: ${state.name} [${
-                        serverboundPacketRegistry.getSkippedFromId(state, packetId)
-                    }]"
-                )
-                buffer.skipBytes(buffer.readableBytes())
-                return
-            }
-
-            // if the buffer is still readable, there are leftover bytes we didn't read
-            if (buffer.isReadable) throw DecoderException("Packet ${packet::class.simpleName} ($packetIdByteRep) was larger than expected, extra bytes: ${buffer.readableBytes()}")
-
+            val packet = parser.parse(state, packetId, netBuf)
             out.add(packet)
-
         } catch (ex: Exception) {
-            logger.error("Error occurred while decoding packet", ex)
+            logger.error("Failed to read packet. Packet id: 0x${packetId.toString(16)}, state: $state", ex)
         }
     }
 }

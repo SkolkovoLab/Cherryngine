@@ -1,13 +1,15 @@
 package ru.cherryngine.lib.world
 
+import net.minestom.server.instance.Section
+import net.minestom.server.instance.block.Block
+import net.minestom.server.network.packet.server.play.data.LightData
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.world.block.Block
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
-import ru.cherryngine.lib.minecraft.world.light.LightData
-import java.util.*
+import java.util.ArrayDeque
+import java.util.BitSet
+import java.util.Queue
 
 class LightEngine(
-    val sections: List<ChunkSection>,
+    val sections: List<Section>,
 ) {
     companion object {
         const val ARRAY_SIZE = 2048
@@ -26,11 +28,9 @@ class LightEngine(
         val skyLight = mutableListOf<ByteArray>()
         val blockLight = mutableListOf<ByteArray>()
 
-        // first section is below the world. how awesome. we love minecraft
         emptySkyMask.set(0)
         emptyBlockMask.set(0)
 
-        // last section is one section above the world. why.
         emptySkyMask.set(this.skyLight.size + 1)
         emptyBlockMask.set(this.skyLight.size + 1)
 
@@ -59,16 +59,15 @@ class LightEngine(
         }
     }
 
-    fun recalculateSection(section: ChunkSection, sectionIndex: Int) {
+    fun recalculateSection(section: Section, sectionIndex: Int) {
         recalcArray = ByteArray(ARRAY_SIZE)
 
         for (x in 0..15) for (z in 0..15) {
             var foundSolid = false
             for (y in 15 downTo 0) {
-//                var light = 0
                 var light = 15
 
-                foundSolid = foundSolid || section.getBlock(x, y, z) != 0
+                foundSolid = foundSolid || section.blockPalette().get(x, y, z) != 0
 
                 if (foundSolid) {
                     light = 0
@@ -81,7 +80,7 @@ class LightEngine(
         recalculateBlockLight(section, sectionIndex)
     }
 
-    fun recalculateBlockLight(section: ChunkSection, sectionIndex: Int) {
+    fun recalculateBlockLight(section: Section, sectionIndex: Int) {
         recalcArray = ByteArray(ARRAY_SIZE)
         val lightQueue: Queue<Vec3I> = ArrayDeque()
 
@@ -89,11 +88,12 @@ class LightEngine(
             for (y in 15 downTo 0) {
                 var light = 0
 
-                val blockId = section.getBlock(x, y, z)
-                val block = Block.getBlockByStateId(blockId).registryBlock
+                val blockId = section.blockPalette().get(x, y, z)
+                val block = Block.fromStateId(blockId) ?: Block.AIR
+                val lightEmission = block.registry()!!.lightEmission()
 
-                if (block.lightEmission > 0) {
-                    light = block.lightEmission
+                if (lightEmission > 0) {
+                    light = lightEmission
                     lightQueue.add(Vec3I(x, y, z))
                 }
 
@@ -105,7 +105,7 @@ class LightEngine(
         blockLight[sectionIndex] = recalcArray
     }
 
-    fun lightPropagation(queue: Queue<Vec3I>, section: ChunkSection, sectionIndex: Int) {
+    fun lightPropagation(queue: Queue<Vec3I>, section: Section, sectionIndex: Int) {
         val directions = arrayOf(
             Vec3I(1, 0, 0), Vec3I(-1, 0, 0),
             Vec3I(0, 1, 0), Vec3I(0, -1, 0),
@@ -128,10 +128,10 @@ class LightEngine(
                 val neighborZ = z + dZ
 
                 if (neighborX in 0..15 && neighborY in 0..15 && neighborZ in 0..15) {
-                    val neighborBlockId = section.getBlock(neighborX, neighborY, neighborZ)
-                    val neighborBlock = Block.getBlockByStateId(neighborBlockId).registryBlock
+                    val neighborBlockId = section.blockPalette().get(neighborX, neighborY, neighborZ)
+                    val neighborBlock = Block.fromStateId(neighborBlockId) ?: Block.AIR
 
-                    if (!neighborBlock.occludes) {
+                    if (!neighborBlock.registry()!!.occludes()) {
                         val neighborCurrentLight = get(neighborX, neighborY, neighborZ)
 
                         if (newLightLevel > neighborCurrentLight) {
@@ -147,28 +147,13 @@ class LightEngine(
     }
 
     private fun propagateToNeighborChunk(x: Int, y: Int, z: Int, lightLevel: Int, sectionIndex: Int) {
-//        val neighborChunk = when {
-//            x < 0 -> chunk.world.getChunk(ChunkPos(chunk.chunkX - 1, chunk.chunkZ))
-//            x > 15 -> chunk.world.getChunk(ChunkPos(chunk.chunkX + 1, chunk.chunkZ))
-//            z < 0 -> chunk.world.getChunk(ChunkPos(chunk.chunkX, chunk.chunkZ - 1))
-//            z > 15 -> chunk.world.getChunk(ChunkPos(chunk.chunkX, chunk.chunkZ + 1))
-//            else -> return // shouldn't happen
-//        } ?: return
-//
-//        val neighborLight = neighborChunk.lightEngine
-//        neighborLight[x, y, z] = lightLevel
-
-//        neighborLight.recalculateChunk()
-        // Just tell the neighbor to recalculate this section
-//        neighborChunk.lightEngine?.recalculateSection(neighborChunk.sections[sectionIndex], sectionIndex)
+        // неподдерживаемое соседнее распространение света; оставлено как TODO
     }
 
     operator fun set(x: Int, y: Int, z: Int, value: Int) {
         this[x or (z shl 4) or (y shl 8)] = value
     }
 
-    // https://github.com/PaperMC/Starlight/blob/6503621c6fe1b798328a69f1bca784c6f3ffcee3/src/main/java/ca/spottedleaf/starlight/common/light/SWMRNibbleArray.java#L410
-    // operation type: updating
     operator fun set(index: Int, value: Int) {
         val shift = index and 1 shl 2
         val i = index ushr 1

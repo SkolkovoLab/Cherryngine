@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToByteEncoder
 import org.slf4j.LoggerFactory
-import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
+import ru.cherryngine.lib.minecraft.network.ByteBufVarInt
 
 class PacketLengthEncoder : MessageToByteEncoder<ByteBuf>() {
     private val logger = LoggerFactory.getLogger(this::class.java)
@@ -12,7 +12,7 @@ class PacketLengthEncoder : MessageToByteEncoder<ByteBuf>() {
     override fun encode(connection: ChannelHandlerContext, buffer: ByteBuf, out: ByteBuf) {
         try {
             val size = buffer.readableBytes()
-            StreamCodec.VAR_INT.write(out, size)
+            ByteBufVarInt.write(out, size)
             out.writeBytes(buffer)
         } catch (exception: Exception) {
             logger.error("There was an error while encoding packet length", exception)

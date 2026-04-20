@@ -1,7 +1,7 @@
 package ru.cherryngine.engine.minecraft.view
 
+import net.minestom.server.instance.block.Block
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.world.block.Block
 
 /**
  * В отличие от обычного Viewable, этот подразумевает, что chunkPos иммутабельный

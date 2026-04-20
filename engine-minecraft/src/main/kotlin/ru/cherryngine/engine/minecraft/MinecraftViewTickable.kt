@@ -1,5 +1,12 @@
 package ru.cherryngine.engine.minecraft
 
+import net.minestom.server.network.ConnectionState
+import net.minestom.server.network.packet.server.play.ChunkDataPacket
+import net.minestom.server.network.packet.server.play.MultiBlockChangePacket
+import net.minestom.server.network.packet.server.play.UpdateViewPositionPacket
+import net.minestom.server.network.packet.server.play.data.LightData
+import net.minestom.server.registry.Registries
+import net.minestom.server.world.DimensionType
 import ru.cherryngine.engine.core.instance.InstanceSingleton
 import ru.cherryngine.engine.core.instance.ServerWorld
 import ru.cherryngine.engine.core.instance.TickStage
@@ -10,17 +17,12 @@ import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
 import ru.cherryngine.engine.minecraft.view.Viewable
 import ru.cherryngine.engine.minecraft.world.LayerClassification
 import ru.cherryngine.engine.minecraft.world.MutableOverlay
-import ru.cherryngine.lib.minecraft.network.protocol.packets.ProtocolState
-import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundLevelChunkWithLightPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSectionBlocksUpdatePacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSetChunkCacheCenterPacket
-import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.registry.types.DimensionType
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
+import ru.cherryngine.lib.minecraft.world.ChunkPos
 import ru.cherryngine.lib.minecraft.world.chunk.ChunkData
-import ru.cherryngine.lib.minecraft.world.light.LightData
 import ru.cherryngine.lib.world.LayerEntry
 import ru.cherryngine.lib.world.MutableLayerChangeTracker
+import java.util.BitSet
 import kotlin.time.Duration
 
 @InstanceSingleton(platform = "minecraft", stage = TickStage.POST)
@@ -29,11 +31,18 @@ class MinecraftViewTickable(
     private val chunkPool: ChunkPool,
     private val mcEntityRegistry: McEntityRegistry,
     private val serverWorld: ServerWorld,
+    private val registries: Registries,
 ) : Tickable {
     private val changeTracker: MutableLayerChangeTracker? = null
+    private val biomeCount: Int = registries.biome().size()
 
     companion object {
         const val DEFAULT_RENDER_DISTANCE = 2
+
+        private val EMPTY_LIGHT_DATA = LightData(
+            BitSet(), BitSet(), BitSet(), BitSet(),
+            emptyList(), emptyList()
+        )
     }
 
     override fun tick(delta: Duration) {
@@ -60,14 +69,14 @@ class MinecraftViewTickable(
         dimensionType: DimensionType?,
     ) {
         val connection = player.connection
-        if (connection.state != ProtocolState.PLAY) return
+        if (connection.state != ConnectionState.PLAY) return
         val distance = DEFAULT_RENDER_DISTANCE
 
         val clientChunkPos = ChunkUtils.chunkPosFromVec3D(player.clientPosition)
 
         if (player.sentChunkCacheCenter != clientChunkPos) {
             player.sentChunkCacheCenter = clientChunkPos
-            connection.sendPacket(ClientboundSetChunkCacheCenterPacket(clientChunkPos))
+            connection.sendPacket(UpdateViewPositionPacket(clientChunkPos.x, clientChunkPos.z))
         }
 
         val currentVisibleViewables = player.currentVisibleViewables
@@ -112,8 +121,15 @@ class MinecraftViewTickable(
                 val baseChunkData = chunkPool.get(
                     classification.immutableKey, chunkPos, dimensionType, classification.immutableLayers
                 )
-                val lightData = chunkPool.getLightData(classification.immutableLayers, chunkPos) ?: LightData.EMPTY
-                player.connection.sendPacket(ClientboundLevelChunkWithLightPacket(chunkPos, baseChunkData, lightData))
+                val lightData = chunkPool.getLightData(classification.immutableLayers, chunkPos) ?: EMPTY_LIGHT_DATA
+                player.connection.sendPacket(
+                    ChunkDataPacket(
+                        chunkPos.x,
+                        chunkPos.z,
+                        baseChunkData.toMinestomChunkData(biomeCount),
+                        lightData,
+                    )
+                )
 
                 sendMutableOverlay(player, classification, dimensionType, chunkPos, baseChunkData)
                 playerSentChunks.add(chunkPos)
@@ -150,7 +166,9 @@ class MinecraftViewTickable(
         if (classification.mutableLayers.isEmpty()) return
         val overlay = MutableOverlay.computeOverlay(classification, dimensionType, chunkPos, baseChunkData)
         for ((sectionPos, blockChanges) in overlay) {
-            player.connection.sendPacket(ClientboundSectionBlocksUpdatePacket(sectionPos, blockChanges))
+            player.connection.sendPacket(
+                MultiBlockChangePacket(sectionPos.x, sectionPos.y, sectionPos.z, blockChanges.toLongArray())
+            )
         }
     }
 }

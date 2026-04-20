@@ -1,20 +1,20 @@
 package ru.cherryngine.engine.minecraft.player
 
 import net.kyori.adventure.text.Component
+import net.minestom.server.coordinate.Vec
+import net.minestom.server.network.packet.server.play.PlayerPositionAndLookPacket
+import net.minestom.server.network.packet.server.play.SystemChatPacket
 import ru.cherryngine.engine.core.player.Player
 import ru.cherryngine.engine.minecraft.view.BlocksViewable
 import ru.cherryngine.engine.minecraft.view.Viewable
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.math.YawPitch
+import net.minestom.server.instance.block.Block
 import ru.cherryngine.lib.minecraft.network.Connection
-import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundPlayerPositionPacket
-import ru.cherryngine.lib.minecraft.network.protocol.packets.play.clientbound.ClientboundSystemChatPacket
-import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.network.protocol.types.MovePlayerFlags
-import ru.cherryngine.lib.minecraft.network.protocol.types.TeleportFlags
 import ru.cherryngine.lib.minecraft.utils.ChunkUtils
-import ru.cherryngine.lib.minecraft.world.block.Block
+import ru.cherryngine.lib.minecraft.world.ChunkPos
+import ru.cherryngine.lib.minecraft.world.MovePlayerFlags
 import ru.cherryngine.lib.world.ImmutableLayerKey
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -22,7 +22,7 @@ class MinecraftPlayer(
     val connection: Connection,
 ) : Player {
     override val uuid get() = connection.gameProfile.uuid
-    override val username get() = connection.gameProfile.username
+    override val username get() = connection.gameProfile.name()
 
     var clientPosition: Vec3D = Vec3D.ZERO
     var clientYawPitch: YawPitch = YawPitch.ZERO
@@ -56,7 +56,7 @@ class MinecraftPlayer(
     }
 
     fun getBlock(pos: Vec3I): Block {
-        return Block.getBlockByStateId(getBlockId(pos))
+        return Block.fromStateId(getBlockId(pos)) ?: Block.AIR
     }
 
     fun teleport(position: Vec3D, yawPitch: YawPitch) {
@@ -64,17 +64,18 @@ class MinecraftPlayer(
         clientYawPitch = yawPitch
 
         connection.sendPacket(
-            ClientboundPlayerPositionPacket(
+            PlayerPositionAndLookPacket(
                 0,
-                position,
-                Vec3D.ZERO,
-                yawPitch,
-                TeleportFlags.EMPTY
+                Vec(position.x, position.y, position.z),
+                Vec.ZERO,
+                yawPitch.yaw.toFloat(),
+                yawPitch.pitch.toFloat(),
+                0
             )
         )
     }
 
     override fun sendMessage(message: Component) {
-        connection.sendPacket(ClientboundSystemChatPacket(message, false))
+        connection.sendPacket(SystemChatPacket(message, false))
     }
 }

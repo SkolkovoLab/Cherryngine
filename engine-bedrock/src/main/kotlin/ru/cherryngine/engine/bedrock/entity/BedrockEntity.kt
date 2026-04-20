@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.bedrock.packet.SetEntityDataPacket
 import ru.cherryngine.engine.bedrock.BedrockPlayer
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
-import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
+import ru.cherryngine.lib.minecraft.world.ChunkPos
 import java.util.concurrent.atomic.AtomicLong
 
 class BedrockEntity(

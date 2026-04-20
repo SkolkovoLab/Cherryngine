@@ -1,14 +1,9 @@
 package ru.cherryngine.lib.polar
 
 import com.github.luben.zstd.Zstd
-import io.netty.buffer.ByteBuf
-import io.netty.buffer.Unpooled
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.nbt.CompoundBinaryTag
-import ru.cherryngine.lib.minecraft.network.stream_codec.BinaryTagStreamCodecs
-import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.network.stream_codec.StringStreamCodec
-import ru.cherryngine.lib.minecraft.world.palette.PaletteUtils
+import net.minestom.server.network.NetworkBuffer
 import kotlin.math.ceil
 import kotlin.math.ln
 
@@ -17,38 +12,35 @@ object PolarReader {
     const val MAX_BIOME_PALETTE_SIZE: Int = 8 * 8 * 8
 
     fun read(data: ByteArray, dataConverter: PolarDataConverter = PolarDataConverter.NOOP): PolarWorld {
-        var buffer = Unpooled.copiedBuffer(data)
-        buffer.writerIndex(data.size) // Set write index to end so readableBytes returns remaining bytes
+        var buffer: NetworkBuffer = NetworkBuffer.wrap(data, 0, data.size)
 
-        val magicNumber = buffer.readInt()
+        val magicNumber = buffer.read(NetworkBuffer.INT)
         require(magicNumber == PolarWorld.MAGIC_NUMBER) { "Invalid magic number" }
 
-        val version = buffer.readShort()
+        val version = buffer.read(NetworkBuffer.SHORT)
         validateVersion(version.toInt())
 
         val dataVersion = if (version >= PolarWorld.VERSION_DATA_CONVERTER)
-            StreamCodec.VAR_INT.read(buffer)
+            buffer.read(NetworkBuffer.VAR_INT)
         else
             dataConverter.defaultDataVersion()
 
-        val compression = PolarWorld.CompressionType.fromId(buffer.readByte().toInt())
+        val compression = PolarWorld.CompressionType.fromId(buffer.read(NetworkBuffer.BYTE).toInt())
         require(compression != null) { "Invalid compression type" }
-        val compressedDataLength = StreamCodec.VAR_INT.read(buffer)
+        val compressedDataLength = buffer.read(NetworkBuffer.VAR_INT)
 
-        // Replace the buffer with a "decompressed" version. This is a no-op if compression is NONE.
         buffer = decompressBuffer(buffer, compression, compressedDataLength)
 
-        val minSection = buffer.readByte()
-        val maxSection = buffer.readByte()
+        val minSection = buffer.read(NetworkBuffer.BYTE)
+        val maxSection = buffer.read(NetworkBuffer.BYTE)
         require(minSection < maxSection) { "Invalid section range" }
 
-        // User (world) data
         var userData = ByteArray(0)
         if (version > PolarWorld.VERSION_WORLD_USERDATA) {
-            userData = StreamCodec.BYTE_ARRAY.read(buffer)
+            userData = buffer.read(NetworkBuffer.BYTE_ARRAY)
         }
 
-        val chunkCount = StreamCodec.VAR_INT.read(buffer)
+        val chunkCount = buffer.read(NetworkBuffer.VAR_INT)
         val chunks = ArrayList<PolarChunk>(chunkCount)
         repeat(chunkCount) {
             chunks.add(readChunk(dataConverter, version, dataVersion, buffer, maxSection - minSection + 1))
@@ -61,27 +53,26 @@ object PolarReader {
         dataConverter: PolarDataConverter,
         version: Short,
         dataVersion: Int,
-        buffer: ByteBuf,
+        buffer: NetworkBuffer,
         sectionCount: Int,
     ): PolarChunk {
-        val chunkX = StreamCodec.VAR_INT.read(buffer)
-        val chunkZ = StreamCodec.VAR_INT.read(buffer)
+        val chunkX = buffer.read(NetworkBuffer.VAR_INT)
+        val chunkZ = buffer.read(NetworkBuffer.VAR_INT)
 
         val sections = Array(sectionCount) {
             readSection(dataConverter, version, dataVersion, buffer)
         }
 
-        val blockEntityCount = StreamCodec.VAR_INT.read(buffer)
+        val blockEntityCount = buffer.read(NetworkBuffer.VAR_INT)
         val blockEntities = List(blockEntityCount) {
             readBlockEntity(dataConverter, version.toInt(), dataVersion, buffer)
         }
 
         val heightmaps = readHeightmapData(buffer, true)
 
-        // Objects
         var userData = ByteArray(0)
         if (version > PolarWorld.VERSION_USERDATA_OPT_BLOCK_ENT_NBT) {
-            userData = StreamCodec.BYTE_ARRAY.read(buffer)
+            userData = buffer.read(NetworkBuffer.BYTE_ARRAY)
         }
 
         return PolarChunk(
@@ -93,17 +84,17 @@ object PolarReader {
         )
     }
 
+    private val STRING_LIST = NetworkBuffer.STRING.list()
+
     private fun readSection(
         dataConverter: PolarDataConverter,
         version: Short,
         dataVersion: Int,
-        buffer: ByteBuf,
+        buffer: NetworkBuffer,
     ): PolarSection {
-        // If section is empty exit immediately
-        if (buffer.readBoolean()) return PolarSection()
+        if (buffer.read(NetworkBuffer.BOOLEAN)) return PolarSection()
 
-
-        val blockPalette: Array<String> = StringStreamCodec(MAX_BIOME_PALETTE_SIZE).list().read(buffer).toTypedArray()
+        val blockPalette: Array<String> = buffer.read(STRING_LIST).toTypedArray()
         if (dataVersion < dataConverter.dataVersion()) {
             dataConverter.convertBlockPalette(blockPalette, dataVersion, dataConverter.dataVersion())
         }
@@ -111,21 +102,18 @@ object PolarReader {
         var blockData: IntArray? = null
         if (blockPalette.size > 1) {
             blockData = IntArray(PolarSection.BLOCK_PALETTE_SIZE)
-
-            val rawBlockData = StreamCodec.LONG_ARRAY.read(buffer)
+            val rawBlockData = buffer.read(NetworkBuffer.LONG_ARRAY)
             val bitsPerEntry = ceil(ln(blockPalette.size.toDouble()) / ln(2.0)).toInt()
-            PaletteUtils.unpack(blockData, rawBlockData, bitsPerEntry)
+            unpackPalette(blockData, rawBlockData, bitsPerEntry)
         }
 
-        
-        val biomePalette: Array<String> = StringStreamCodec(MAX_BIOME_PALETTE_SIZE).list().read(buffer).toTypedArray()
+        val biomePalette: Array<String> = buffer.read(STRING_LIST).toTypedArray()
         var biomeData: IntArray? = null
         if (biomePalette.size > 1) {
             biomeData = IntArray(PolarSection.BIOME_PALETTE_SIZE)
-
-            val rawBiomeData = StreamCodec.LONG_ARRAY.read(buffer)
+            val rawBiomeData = buffer.read(NetworkBuffer.LONG_ARRAY)
             val bitsPerEntry = ceil(ln(biomePalette.size.toDouble()) / ln(2.0)).toInt()
-            PaletteUtils.unpack(biomeData, rawBiomeData, bitsPerEntry)
+            unpackPalette(biomeData, rawBiomeData, bitsPerEntry)
         }
 
         var blockLightContent = PolarSection.LightContent.MISSING
@@ -134,20 +122,20 @@ object PolarReader {
         var skyLight: ByteArray? = null
         if (version > PolarWorld.VERSION_UNIFIED_LIGHT) {
             blockLightContent = if (version >= PolarWorld.VERSION_IMPROVED_LIGHT)
-                PolarSection.LightContent.VALUES[buffer.readByte().toInt()]
+                PolarSection.LightContent.VALUES[buffer.read(NetworkBuffer.BYTE).toInt()]
             else
-                (if (buffer.readBoolean()) PolarSection.LightContent.PRESENT else PolarSection.LightContent.MISSING)
-            if (blockLightContent == PolarSection.LightContent.PRESENT) blockLight = buffer.readLightData()
+                (if (buffer.read(NetworkBuffer.BOOLEAN)) PolarSection.LightContent.PRESENT else PolarSection.LightContent.MISSING)
+            if (blockLightContent == PolarSection.LightContent.PRESENT) blockLight = readLightData(buffer)
             skyLightContent = if (version >= PolarWorld.VERSION_IMPROVED_LIGHT)
-                PolarSection.LightContent.VALUES[buffer.readByte().toInt()]
+                PolarSection.LightContent.VALUES[buffer.read(NetworkBuffer.BYTE).toInt()]
             else
-                (if (buffer.readBoolean()) PolarSection.LightContent.PRESENT else PolarSection.LightContent.MISSING)
-            if (skyLightContent == PolarSection.LightContent.PRESENT) skyLight = buffer.readLightData()
-        } else if (buffer.readBoolean()) {
+                (if (buffer.read(NetworkBuffer.BOOLEAN)) PolarSection.LightContent.PRESENT else PolarSection.LightContent.MISSING)
+            if (skyLightContent == PolarSection.LightContent.PRESENT) skyLight = readLightData(buffer)
+        } else if (buffer.read(NetworkBuffer.BOOLEAN)) {
             blockLightContent = PolarSection.LightContent.PRESENT
-            blockLight = buffer.readLightData()
+            blockLight = readLightData(buffer)
             skyLightContent = PolarSection.LightContent.PRESENT
-            skyLight = buffer.readLightData()
+            skyLight = readLightData(buffer)
         }
 
         return PolarSection(
@@ -158,9 +146,8 @@ object PolarReader {
         )
     }
 
-    fun ByteBuf.readLightData(): ByteArray {
-        return ByteArray(2048).apply { readBytes(this) }
-    }
+    private fun readLightData(buffer: NetworkBuffer): ByteArray =
+        buffer.read(NetworkBuffer.FixedRawBytes(2048))
 
     fun upgradeGrassInPalette(blockPalette: Array<String>, version: Int) {
         if (version <= PolarWorld.VERSION_SHORT_GRASS) {
@@ -176,23 +163,24 @@ object PolarReader {
         }
     }
 
-    fun readHeightmapData(buffer: ByteBuf, skip: Boolean): Array<IntArray?>? {
+    fun readHeightmapData(buffer: NetworkBuffer, skip: Boolean): Array<IntArray?>? {
         val heightmaps = if (!skip) arrayOfNulls<IntArray>(PolarChunk.MAX_HEIGHTMAPS) else null
-        val heightmapMask = buffer.readInt()
+        val heightmapMask = buffer.read(NetworkBuffer.INT)
         for (i in 0..<PolarChunk.MAX_HEIGHTMAPS) {
             if ((heightmapMask and (1 shl i)) == 0) continue
 
             if (!skip) {
-                val packed = StreamCodec.LONG_ARRAY.read(buffer)
+                val packed = buffer.read(NetworkBuffer.LONG_ARRAY)
                 if (packed.isEmpty()) {
                     heightmaps!![i] = IntArray(0)
                 } else {
                     val bitsPerEntry = packed.size * 64 / PolarChunk.HEIGHTMAP_SIZE
                     heightmaps!![i] = IntArray(PolarChunk.HEIGHTMAP_SIZE)
-                    PaletteUtils.unpack(heightmaps[i]!!, packed, bitsPerEntry)
+                    unpackPalette(heightmaps[i]!!, packed, bitsPerEntry)
                 }
             } else {
-                buffer.readBytes(StreamCodec.VAR_INT.read(buffer) * 8) // Skip a long array
+                val longCount = buffer.read(NetworkBuffer.VAR_INT)
+                repeat(longCount) { buffer.read(NetworkBuffer.LONG) }
             }
         }
         return heightmaps
@@ -202,14 +190,14 @@ object PolarReader {
         dataConverter: PolarDataConverter,
         version: Int,
         dataVersion: Int,
-        buffer: ByteBuf,
+        buffer: NetworkBuffer,
     ): PolarChunk.BlockEntity {
-        val posIndex = buffer.readInt()
-        var id: String = StreamCodec.STRING.optional().read(buffer) ?: ""
+        val posIndex = buffer.read(NetworkBuffer.INT)
+        var id: String = buffer.read(NetworkBuffer.STRING.optional()) ?: ""
 
         var nbt: CompoundBinaryTag = CompoundBinaryTag.empty()
-        if (version <= PolarWorld.VERSION_USERDATA_OPT_BLOCK_ENT_NBT || buffer.readBoolean()) {
-            nbt = BinaryTagStreamCodecs.COMPOUND_STREAM.read(buffer)
+        if (version <= PolarWorld.VERSION_USERDATA_OPT_BLOCK_ENT_NBT || buffer.read(NetworkBuffer.BOOLEAN)) {
+            nbt = buffer.read(NetworkBuffer.NBT_COMPOUND)
         }
 
         if (dataVersion < dataConverter.dataVersion()) {
@@ -241,33 +229,42 @@ object PolarReader {
     }
 
     private fun decompressBuffer(
-        buffer: ByteBuf,
+        buffer: NetworkBuffer,
         compression: PolarWorld.CompressionType,
         length: Int,
-    ): ByteBuf {
+    ): NetworkBuffer {
         return when (compression) {
             PolarWorld.CompressionType.NONE -> buffer
             PolarWorld.CompressionType.ZSTD -> {
-                val bytes = Zstd.decompress(StreamCodec.RAW_BYTES_ARRAY.read(buffer), length)
-                val newBuffer = Unpooled.copiedBuffer(bytes)
-                newBuffer.writerIndex(bytes.size)
-                newBuffer
+                val remaining = buffer.readableBytes().toInt()
+                val compressed = buffer.read(NetworkBuffer.FixedRawBytes(remaining))
+                val bytes = Zstd.decompress(compressed, length)
+                NetworkBuffer.wrap(bytes, 0, bytes.size)
             }
         }
     }
 
-    fun chunkBlockIndexGetX(index: Int): Int {
-        return index and 0xF // bits 0-3
-    }
-
+    fun chunkBlockIndexGetX(index: Int): Int = index and 0xF
     fun chunkBlockIndexGetY(index: Int): Int {
         var y = (index and 0x07FFFFF0) ushr 4
-        if ((index and 0x08000000) != 0) y = -y // Sign bit set, invert sign
-
-        return y // 4-28 bits
+        if ((index and 0x08000000) != 0) y = -y
+        return y
     }
+    fun chunkBlockIndexGetZ(index: Int): Int = (index ushr 28) and 0xF
 
-    fun chunkBlockIndexGetZ(index: Int): Int {
-        return (index ushr 28) and 0xF // bits 28-31
+    /**
+     * Распаковывает long-array, где каждая entry занимает [bitsPerEntry] бит без пересечения границ long.
+     */
+    private fun unpackPalette(out: IntArray, packed: LongArray, bitsPerEntry: Int) {
+        if (bitsPerEntry == 0) return
+        val mask = (1L shl bitsPerEntry) - 1
+        val entriesPerLong = 64 / bitsPerEntry
+        var index = 0
+        for (word in packed) {
+            for (i in 0 until entriesPerLong) {
+                if (index >= out.size) return
+                out[index++] = ((word ushr (i * bitsPerEntry)) and mask).toInt()
+            }
+        }
     }
 }

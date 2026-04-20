@@ -3,7 +3,7 @@ package ru.cherryngine.lib.minecraft.network.protocol.decoders
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
-import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
+import ru.cherryngine.lib.minecraft.network.ByteBufVarInt
 import java.io.IOException
 
 class PacketLengthDecoder : ByteToMessageDecoder() {
@@ -11,9 +11,8 @@ class PacketLengthDecoder : ByteToMessageDecoder() {
         if (!ctx.channel().isActive) return
 
         buffer.markReaderIndex()
-        val length = StreamCodec.VAR_INT.read(buffer)
+        val length = ByteBufVarInt.read(buffer)
 
-        // reset the reader index if we don't have enough bytes and wait for next part of the message to arrive and check again
         if (length > buffer.readableBytes()) {
             buffer.resetReaderIndex()
             return

@@ -90,6 +90,14 @@ class MicronautViaBackwardsConfig(
         return resolverWrapper.section("dialog-style").loadDialogStyleConfig()
     }
 
+    override fun codeOfConductAsDialog(): Boolean {
+        return resolverWrapper.getBoolean("code-of-conduct-as-dialog", true)
+    }
+
+    override fun passOriginalItemNameToResourcePacks(): Boolean {
+        return resolverWrapper.getBoolean("pass-original-item-name-to-resource-packs", true)
+    }
+
     // --- Управление ---
     override fun reload() = Unit
     override fun save() = Unit

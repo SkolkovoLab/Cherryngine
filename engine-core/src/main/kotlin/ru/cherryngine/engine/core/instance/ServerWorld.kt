@@ -1,9 +1,9 @@
 package ru.cherryngine.engine.core.instance
 
+import net.minestom.server.instance.block.Block
+import net.minestom.server.world.DimensionType
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.registry.types.DimensionType
-import ru.cherryngine.lib.minecraft.world.block.Block
 import ru.cherryngine.lib.world.LayerEntry
 import ru.cherryngine.lib.world.LayeredWorld
 
@@ -38,7 +38,7 @@ class ServerWorld {
     }
 
     fun isSolid(pos: Vec3I, contextIDs: Set<String>): Boolean {
-        return !getBlock(pos, contextIDs).isAir()
+        return !getBlock(pos, contextIDs).isAir
     }
 
     fun raycast(
@@ -58,7 +58,7 @@ class ServerWorld {
                 Math.floor(pos.y).toInt(),
                 Math.floor(pos.z).toInt(),
             )
-            if (!world.getBlock(blockPos).isAir()) {
+            if (!world.getBlock(blockPos).isAir) {
                 return RaycastResult(pos, blockPos)
             }
             distance += stepSize
