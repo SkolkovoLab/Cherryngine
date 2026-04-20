@@ -1,25 +1,18 @@
 package ru.cherryngine.lib.polar
 
-import io.netty.buffer.Unpooled
 import net.kyori.adventure.key.Key
+import net.kyori.adventure.nbt.CompoundBinaryTag
+import net.minestom.server.instance.Section
+import net.minestom.server.instance.block.Block
+import net.minestom.server.network.packet.server.play.data.LightData
+import net.minestom.server.world.DimensionType
 import org.slf4j.LoggerFactory
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.network.protocol.types.BlockEntityType
-import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.network.protocol.types.SectionPos
-import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.registry.Registries
-import ru.cherryngine.lib.minecraft.registry.keys.Biomes
-import ru.cherryngine.lib.minecraft.registry.types.Biome
-import ru.cherryngine.lib.minecraft.registry.types.DimensionType
-import ru.cherryngine.lib.minecraft.world.block.Block
-import ru.cherryngine.lib.minecraft.world.block.BlockEntity
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
-import ru.cherryngine.lib.minecraft.world.light.LightData
-import ru.cherryngine.lib.minecraft.world.palette.Palette
+import ru.cherryngine.lib.minecraft.world.ChunkPos
+import ru.cherryngine.lib.minecraft.world.SectionPos
 import ru.cherryngine.lib.world.ImmutableLayer
 import ru.cherryngine.lib.world.MutableLayer
-import java.util.*
+import java.util.BitSet
 
 object PolarWorldGenerator {
     private val logger = LoggerFactory.getLogger(PolarWorldGenerator::class.java)
@@ -29,12 +22,13 @@ object PolarWorldGenerator {
         dimensionType: DimensionType,
         id: String,
         voidMarker: Block? = Block.STRUCTURE_VOID,
+        biomeIdLookup: (String) -> Int = { 0 },
     ): ImmutableLayer {
         val layer = ImmutableLayer(dimensionType, id, voidMarker)
-        loadChunks(worldBytes).forEach { (chunkPos, result) ->
+        loadChunks(worldBytes, biomeIdLookup).forEach { (chunkPos, result) ->
             layer.lightDataMap[chunkPos.pack()] = result.lightData
             result.sections.forEachIndexed { i, section ->
-                layer.sectionsMap[SectionPos(chunkPos.x, i + dimensionType.minY / 16, chunkPos.z).pack()] = section
+                layer.sectionsMap[SectionPos(chunkPos.x, i + dimensionType.minY() / 16, chunkPos.z).pack()] = section
             }
         }
         return layer
@@ -45,18 +39,22 @@ object PolarWorldGenerator {
         dimensionType: DimensionType,
         id: String,
         voidMarker: Block? = Block.STRUCTURE_VOID,
+        biomeIdLookup: (String) -> Int = { 0 },
     ): MutableLayer {
         val layer = MutableLayer(id, voidMarker)
-        loadChunks(worldBytes).forEach { (chunkPos, result) ->
+        loadChunks(worldBytes, biomeIdLookup).forEach { (chunkPos, result) ->
             result.sections.forEachIndexed { i, section ->
-                val sectionPos = SectionPos(chunkPos.x, i + dimensionType.minY / 16, chunkPos.z)
+                val sectionPos = SectionPos(chunkPos.x, i + dimensionType.minY() / 16, chunkPos.z)
                 layer.putSection(sectionPos, section)
             }
         }
         return layer
     }
 
-    fun loadChunks(worldBytes: ByteArray): Map<ChunkPos, PolarChunkResult> {
+    fun loadChunks(
+        worldBytes: ByteArray,
+        biomeIdLookup: (String) -> Int = { 0 },
+    ): Map<ChunkPos, PolarChunkResult> {
         val polarWorld = PolarReader.read(worldBytes)
 
         return polarWorld.chunks().associate { polarChunk ->
@@ -64,37 +62,36 @@ object PolarWorldGenerator {
             val sections = List(sectionsCount) {
                 val polarSection = polarChunk.sections[it]
 
-                val blockStateIds = polarSection.blockPalette().map { parseBlockState(it).getStateId() }.toIntArray()
+                val blockStateIds = polarSection.blockPalette().map { parseBlockState(it).stateId() }.toIntArray()
                 val blockData = polarSection.blockData()
-                val blockPalette = Palette.blocks()
-                blockPalette.setAll { x, y, z ->
+                val section = Section()
+                section.blockPalette().setAll { x, y, z ->
                     if (blockData == null) {
-                        blockStateIds[0]
+                        if (blockStateIds.isEmpty()) 0 else blockStateIds[0]
                     } else {
                         val blockIndex = (y shl 8) or (z shl 4) or x
-                        blockStateIds[blockData[blockIndex]]
+                        val paletteIdx = blockData[blockIndex]
+                        if (paletteIdx in blockStateIds.indices) blockStateIds[paletteIdx] else 0
                     }
                 }
 
-                val biomeIds = polarSection.biomePalette().map { Registries.biome[it].id }.toIntArray()
-                val defaultBiomeId = Registries.biome[Biomes.PLAINS].id
+                val biomeIds = polarSection.biomePalette().map(biomeIdLookup).toIntArray()
                 val biomeData = polarSection.biomeData()
-                val biomePalette = Palette.biomes()
-                biomePalette.setAll { x, y, z ->
+                section.biomePalette().setAll { x, y, z ->
                     if (biomeData == null) {
-                        biomeIds[0]
+                        if (biomeIds.isEmpty()) 0 else biomeIds[0]
                     } else {
                         val biomeIndex = (y shl 8) or (z shl 4) or x
                         val paletteIndex = biomeData.getOrNull(biomeIndex)
                         if (paletteIndex != null && paletteIndex in biomeIds.indices) {
                             biomeIds[paletteIndex]
                         } else {
-                            defaultBiomeId
+                            0
                         }
                     }
                 }
 
-                ChunkSection(blockPalette, biomePalette)
+                section
             }
 
             val skyLight = getLightData(polarChunk) { it.skyLight() }
@@ -108,14 +105,11 @@ object PolarWorldGenerator {
                 blockLight.light
             )
 
-            val blockEntities = polarChunk.blockEntities.mapNotNull { polarBlockEntity ->
-                if (polarBlockEntity.id == null) return@mapNotNull null
-                if (polarBlockEntity.data == null) return@mapNotNull null
-
-                Vec3I(polarBlockEntity.x, polarBlockEntity.y, polarBlockEntity.z) to BlockEntity(
-                    BlockEntityType.fromKey(Key.key(polarBlockEntity.id)),
-                    polarBlockEntity.data
-                )
+            val blockEntities: Map<Vec3I, Block> = polarChunk.blockEntities.mapNotNull { polarBlockEntity ->
+                val id = polarBlockEntity.id ?: return@mapNotNull null
+                val nbt: CompoundBinaryTag = polarBlockEntity.data ?: return@mapNotNull null
+                val baseBlock = Block.fromKey(Key.key(id)) ?: return@mapNotNull null
+                Vec3I(polarBlockEntity.x, polarBlockEntity.y, polarBlockEntity.z) to baseBlock.withNbt(nbt)
             }.toMap()
 
             ChunkPos(polarChunk.x, polarChunk.z) to PolarChunkResult(sections, blockEntities, lightData)
@@ -123,8 +117,8 @@ object PolarWorldGenerator {
     }
 
     data class PolarChunkResult(
-        val sections: List<ChunkSection>,
-        val blockEntities: Map<Vec3I, BlockEntity>,
+        val sections: List<Section>,
+        val blockEntities: Map<Vec3I, Block>,
         val lightData: LightData,
     )
 
@@ -141,8 +135,6 @@ object PolarWorldGenerator {
                 emptyMask.set(i)
             }
         }
-        val buffer = Unpooled.buffer()
-        StreamCodec.RAW_BYTES_ARRAY.list().write(buffer, list)
         return PolarLightData(mask, emptyMask, list)
     }
 
@@ -152,57 +144,31 @@ object PolarWorldGenerator {
         var light: List<ByteArray>,
     )
 
-    private fun getId(palette: Array<String>, data: IntArray?, x: Int, y: Int, z: Int): String? {
-        if (data == null) return palette[0]
-
-        val blockIndex = (y shl 8) or (z shl 4) or x
-        val paletteIndex = data.getOrNull(blockIndex) ?: return null
-
-        if (paletteIndex < 0 || paletteIndex >= palette.size) {
-            return null
-        }
-
-        return palette[paletteIndex]
-    }
-
-    private fun getBiome(polarSection: PolarSection, x: Int, y: Int, z: Int): Biome {
-        val biomeId = getId(polarSection.biomePalette(), polarSection.biomeData(), x, y, z)
-            ?: return Registries.biome[Biomes.PLAINS].value
-        return Registries.biome[biomeId].value
-    }
-
-    private fun getBlock(polarSection: PolarSection, x: Int, y: Int, z: Int): Block {
-        val blockId = getId(polarSection.blockPalette(), polarSection.blockData(), x, y, z)
-            ?: return Block.AIR
-        return parseBlockState(blockId)
-    }
-
     private fun parseBlockState(blockId: String): Block {
         try {
-            var blockId = blockId
-            if (!blockId.startsWith("minecraft:")) blockId = "minecraft:$blockId"
+            var blockKey = blockId
+            if (!blockKey.startsWith("minecraft:")) blockKey = "minecraft:$blockKey"
 
             var propertiesStr = ""
-            val bracketPos = blockId.indexOf('[')
+            val bracketPos = blockKey.indexOf('[')
             if (bracketPos != -1) {
-                propertiesStr = blockId.substring(bracketPos + 1, blockId.length - 1)
-                blockId = blockId.take(bracketPos)
+                propertiesStr = blockKey.substring(bracketPos + 1, blockKey.length - 1)
+                blockKey = blockKey.take(bracketPos)
             }
 
-            if (blockId == "minecraft:chain") blockId = "minecraft:iron_chain"
+            if (blockKey == "minecraft:chain") blockKey = "minecraft:iron_chain"
 
-            val registryBlock = Registries.block[blockId].value
+            val base = Block.fromKey(Key.key(blockKey)) ?: return Block.AIR
 
-            // Парсим свойства
             if (propertiesStr.isNotEmpty()) {
                 val states = propertiesStr.split(",").associate {
                     val (key, value) = it.split("=")
                     key to value
                 }
-                return registryBlock.withBlockStates(states)
+                return base.withProperties(states)
             }
 
-            return registryBlock.toBlock()
+            return base
         } catch (e: Exception) {
             logger.error("Failed to parse block state: $blockId", e)
             return Block.AIR

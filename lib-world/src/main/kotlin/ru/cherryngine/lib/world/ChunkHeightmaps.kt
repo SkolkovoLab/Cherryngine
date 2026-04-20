@@ -1,14 +1,15 @@
 package ru.cherryngine.lib.world
 
-import ru.cherryngine.lib.minecraft.registry.types.DimensionType
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkHeightmapType
-import java.util.*
+import net.minestom.server.instance.heightmap.Heightmap
+import net.minestom.server.world.DimensionType
+import java.util.EnumMap
 
 class ChunkHeightmaps(
-    val heightmaps: EnumMap<ChunkHeightmapType, ChunkHeightmap> = EnumMap(ChunkHeightmapType::class.java),
+    val heightmaps: EnumMap<Heightmap.Type, ChunkHeightmap> = EnumMap(Heightmap.Type::class.java),
 ) {
-    fun getOrCreateHeightmap(dimensionType: DimensionType, type: ChunkHeightmapType): ChunkHeightmap =
+    fun getOrCreateHeightmap(dimensionType: DimensionType, type: Heightmap.Type): ChunkHeightmap =
         heightmaps.computeIfAbsent(type) { ChunkHeightmap(dimensionType, type) }
 
-    val rawDataMap get() = heightmaps.mapValues { (_, value) -> value.getRawData() }
+    val rawDataMap: Map<Heightmap.Type, LongArray>
+        get() = heightmaps.mapValues { (_, value) -> value.getRawData() }
 }

@@ -1,13 +1,12 @@
 package ru.cherryngine.lib.world
 
+import net.minestom.server.instance.Section
+import net.minestom.server.instance.block.Block
+import net.minestom.server.instance.heightmap.Heightmap
+import net.minestom.server.network.packet.server.play.data.LightData
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.network.protocol.types.SectionPos
-import ru.cherryngine.lib.minecraft.world.block.Block
-import ru.cherryngine.lib.minecraft.world.block.BlockEntity
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkHeightmapType
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
-import ru.cherryngine.lib.minecraft.world.light.LightData
+import ru.cherryngine.lib.minecraft.world.ChunkPos
+import ru.cherryngine.lib.minecraft.world.SectionPos
 
 interface Layer {
     val id: String
@@ -24,10 +23,10 @@ interface Layer {
      */
     fun getBlock(pos: Vec3I): Block?
 
-    fun getSectionOrNull(pos: SectionPos): ChunkSection?
+    fun getSectionOrNull(pos: SectionPos): Section?
     fun getLightData(pos: ChunkPos): LightData?
-    fun getBlockEntities(pos: ChunkPos): Map<Vec3I, BlockEntity>
-    fun getHeightMaps(pos: ChunkPos): Map<ChunkHeightmapType, LongArray>
+    fun getBlockEntities(pos: ChunkPos): Map<Vec3I, Block>
+    fun getHeightMaps(pos: ChunkPos): Map<Heightmap.Type, LongArray>
 }
 
 data class LayerEntry(val layer: Layer, val priority: Int)

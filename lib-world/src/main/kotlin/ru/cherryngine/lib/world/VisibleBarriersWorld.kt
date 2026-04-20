@@ -1,16 +1,13 @@
 package ru.cherryngine.lib.world
 
+import net.minestom.server.instance.Section
+import net.minestom.server.instance.block.Block
+import net.minestom.server.instance.heightmap.Heightmap
+import net.minestom.server.network.packet.server.play.data.LightData
+import net.minestom.server.world.DimensionType
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.network.protocol.types.SectionPos
-import ru.cherryngine.lib.minecraft.registry.Registries
-import ru.cherryngine.lib.minecraft.registry.keys.Blocks
-import ru.cherryngine.lib.minecraft.registry.types.DimensionType
-import ru.cherryngine.lib.minecraft.world.block.Block
-import ru.cherryngine.lib.minecraft.world.block.BlockEntity
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkHeightmapType
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
-import ru.cherryngine.lib.minecraft.world.light.LightData
+import ru.cherryngine.lib.minecraft.world.ChunkPos
+import ru.cherryngine.lib.minecraft.world.SectionPos
 
 class VisibleBarriersWorld(
     val world: World,
@@ -25,19 +22,19 @@ class VisibleBarriersWorld(
         return world.getLightData(pos)
     }
 
-    override fun getSectionOrNull(position: SectionPos): ChunkSection? {
+    override fun getSectionOrNull(position: SectionPos): Section? {
         val section = world.getSectionOrNull(position)?.clone() ?: return null
-        val barrierId = Registries.block[Blocks.BARRIER].value.defaultStateId
-        val redGlassId = Registries.block[Blocks.RED_STAINED_GLASS].value.defaultStateId
-        section.blockPalette.replace(barrierId, redGlassId)
+        val barrierId = Block.BARRIER.stateId()
+        val redGlassId = Block.RED_STAINED_GLASS.stateId()
+        section.blockPalette().replace(barrierId, redGlassId)
         return section
     }
 
-    override fun getHeightMaps(pos: ChunkPos): Map<ChunkHeightmapType, LongArray> {
+    override fun getHeightMaps(pos: ChunkPos): Map<Heightmap.Type, LongArray> {
         return world.getHeightMaps(pos)
     }
 
-    override fun getBlockEntities(pos: ChunkPos): Map<Vec3I, BlockEntity> {
+    override fun getBlockEntities(pos: ChunkPos): Map<Vec3I, Block> {
         return world.getBlockEntities(pos)
     }
 }

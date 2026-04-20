@@ -1,16 +1,30 @@
 package ru.cherryngine.lib.minecraft.world.chunk
 
-import ru.cherryngine.lib.minecraft.network.stream_codec.StreamCodec
-import ru.cherryngine.lib.minecraft.world.block.Block
+import net.minestom.server.instance.block.Block
+import net.minestom.server.instance.heightmap.Heightmap
 import java.util.function.Predicate
 
-enum class ChunkHeightmapType(val id: Int, val predicate: Predicate<Block>) {
-    WORLD_SURFACE(1, { block -> !block.isAir() }),
-    MOTION_BLOCKING(4, { block -> block.registryBlock.solid || block.registryBlock.liquid }),
-    MOTION_BLOCKING_NO_LEAVES(5, { block -> block.registryBlock.solid && !block.identifier.endsWith("_leaves") });
+/**
+ * Тонкая обёртка над `Heightmap.Type` из Minestom с предикатом для пересчёта.
+ * Индексы `toMinestom()` совпадают с перечислением Minestom.
+ */
+enum class ChunkHeightmapType(val predicate: Predicate<Block>) {
+    WORLD_SURFACE({ !it.isAir }),
+    MOTION_BLOCKING({ val r = it.registry()!!; r.isSolid || r.isLiquid }),
+    MOTION_BLOCKING_NO_LEAVES({ it.registry()!!.isSolid && !it.key().value().endsWith("_leaves") });
+
+    fun toMinestom(): Heightmap.Type = when (this) {
+        WORLD_SURFACE -> Heightmap.Type.WORLD_SURFACE
+        MOTION_BLOCKING -> Heightmap.Type.MOTION_BLOCKING
+        MOTION_BLOCKING_NO_LEAVES -> Heightmap.Type.MOTION_BLOCKING_NO_LEAVES
+    }
 
     companion object {
-        val BY_ID = entries.associateBy { it.id }
-        val STREAM_CODEC = StreamCodec.VAR_INT.transform<ChunkHeightmapType>({ BY_ID[it]!! }, { it.id })
+        fun fromMinestom(type: Heightmap.Type): ChunkHeightmapType? = when (type) {
+            Heightmap.Type.WORLD_SURFACE -> WORLD_SURFACE
+            Heightmap.Type.MOTION_BLOCKING -> MOTION_BLOCKING
+            Heightmap.Type.MOTION_BLOCKING_NO_LEAVES -> MOTION_BLOCKING_NO_LEAVES
+            else -> null
+        }
     }
 }

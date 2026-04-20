@@ -1,14 +1,13 @@
 package ru.cherryngine.lib.world
 
+import net.minestom.server.instance.Section
+import net.minestom.server.instance.block.Block
+import net.minestom.server.instance.heightmap.Heightmap
+import net.minestom.server.network.packet.server.play.data.LightData
+import net.minestom.server.world.DimensionType
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.minecraft.network.protocol.types.ChunkPos
-import ru.cherryngine.lib.minecraft.network.protocol.types.SectionPos
-import ru.cherryngine.lib.minecraft.registry.types.DimensionType
-import ru.cherryngine.lib.minecraft.world.block.Block
-import ru.cherryngine.lib.minecraft.world.block.BlockEntity
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkHeightmapType
-import ru.cherryngine.lib.minecraft.world.chunk.ChunkSection
-import ru.cherryngine.lib.minecraft.world.light.LightData
+import ru.cherryngine.lib.minecraft.world.ChunkPos
+import ru.cherryngine.lib.minecraft.world.SectionPos
 
 /**
  * Композитный мир из слоёв (LayerEntry). Реализует World для отправки клиенту.
@@ -47,17 +46,17 @@ class LayeredWorld(
         return Block.AIR
     }
 
-    override fun getSectionOrNull(position: SectionPos): ChunkSection? {
+    override fun getSectionOrNull(position: SectionPos): Section? {
         val sorted = layersSorted
         if (sorted.none { it.layer.getSectionOrNull(position) != null }) return null
 
-        val result = ChunkSection.empty()
+        val result = Section()
         val baseX = position.x * 16
         val baseY = position.y * 16
         val baseZ = position.z * 16
         for (x in 0..<16) for (y in 0..<16) for (z in 0..<16) {
             val block = getBlock(baseX + x, baseY + y, baseZ + z)
-            result.setBlock(x, y, z, block.getStateId())
+            result.blockPalette().set(x, y, z, block.stateId())
         }
         return result
     }
@@ -65,11 +64,11 @@ class LayeredWorld(
     override fun getLightData(pos: ChunkPos): LightData? =
         layersSorted.firstNotNullOfOrNull { it.layer.getLightData(pos) }
 
-    override fun getHeightMaps(pos: ChunkPos): Map<ChunkHeightmapType, LongArray> =
+    override fun getHeightMaps(pos: ChunkPos): Map<Heightmap.Type, LongArray> =
         layersSorted.firstNotNullOfOrNull { it.layer.getHeightMaps(pos).takeIf { it.isNotEmpty() } } ?: emptyMap()
 
-    override fun getBlockEntities(pos: ChunkPos): Map<Vec3I, BlockEntity> {
-        val result = mutableMapOf<Vec3I, BlockEntity>()
+    override fun getBlockEntities(pos: ChunkPos): Map<Vec3I, Block> {
+        val result = mutableMapOf<Vec3I, Block>()
         layersSorted.forEach { result.putAll(it.layer.getBlockEntities(pos)) }
         return result
     }
