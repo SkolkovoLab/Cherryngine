@@ -23,7 +23,7 @@ gson = "2.13.2"
 kyori-adventure = "4.25.0"
 cloud = "2.0.0"
 creative = "1.7.3"
-viaversion = "5.7.1"
+viaversion = "5.9.0"
 minestom = "2026.04.13-1.21.11"
 mcprotocollib = "1.21.11-SNAPSHOT"
 

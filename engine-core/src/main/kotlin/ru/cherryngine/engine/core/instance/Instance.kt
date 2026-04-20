@@ -59,8 +59,15 @@ class Instance(
     fun initEager() {
         appContext.getBeanDefinitions(
             Qualifiers.byStereotype<Any>(InstanceSingleton::class.java)
-        ).filter {
-            it.booleanValue(InstanceSingleton::class.java, InstanceSingleton::eagerInit.name).orElse(false)
+        ).filter { definition ->
+            val eager = definition
+                .booleanValue(InstanceSingleton::class.java, InstanceSingleton::eagerInit.name)
+                .orElse(false)
+            if (!eager) return@filter false
+            val platform = definition
+                .stringValue(InstanceSingleton::class.java, InstanceSingleton::platform.name)
+                .orElse("")
+            platform.isEmpty() || platform in platformIds
         }.forEach {
             @Suppress("UNCHECKED_CAST")
             get(it.beanType as Class<Any>)
