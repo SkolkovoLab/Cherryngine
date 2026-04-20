@@ -5,6 +5,7 @@ import net.minestom.server.network.packet.server.play.ChunkDataPacket
 import net.minestom.server.network.packet.server.play.MultiBlockChangePacket
 import net.minestom.server.network.packet.server.play.UpdateViewPositionPacket
 import net.minestom.server.network.packet.server.play.data.LightData
+import net.minestom.server.registry.Registries
 import net.minestom.server.world.DimensionType
 import ru.cherryngine.engine.core.instance.InstanceSingleton
 import ru.cherryngine.engine.core.instance.ServerWorld
@@ -30,15 +31,13 @@ class MinecraftViewTickable(
     private val chunkPool: ChunkPool,
     private val mcEntityRegistry: McEntityRegistry,
     private val serverWorld: ServerWorld,
+    private val registries: Registries,
 ) : Tickable {
     private val changeTracker: MutableLayerChangeTracker? = null
+    private val biomeCount: Int = registries.biome().size()
 
     companion object {
         const val DEFAULT_RENDER_DISTANCE = 2
-
-        // Пока у нас нет заполненного DynamicRegistry<Biome>, используем дефолтное
-        // число биомов = 64 (соответствует Palette.BIOME_PALETTE_DIRECT_BITS = 6).
-        private const val BIOME_COUNT = 64
 
         private val EMPTY_LIGHT_DATA = LightData(
             BitSet(), BitSet(), BitSet(), BitSet(),
@@ -127,7 +126,7 @@ class MinecraftViewTickable(
                     ChunkDataPacket(
                         chunkPos.x,
                         chunkPos.z,
-                        baseChunkData.toMinestomChunkData(BIOME_COUNT),
+                        baseChunkData.toMinestomChunkData(biomeCount),
                         lightData,
                     )
                 )

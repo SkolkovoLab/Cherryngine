@@ -215,6 +215,18 @@ class Connection(
         channel.writeAndFlush(packet)
     }
 
+    /**
+     * Отправляет пакет-обёртку Minestom (`CachedPacket`/`LazyPacket`/`FramedPacket`).
+     * Распаковывает до `ServerPacket` (с учётом текущего состояния для CachedPacket)
+     * и шлёт через `sendPacket(ServerPacket)`. `BufferedPacket` пока не поддерживаем
+     * (он требует записи сырых байт напрямую в буфер).
+     */
+    fun sendPacket(packet: net.minestom.server.network.packet.server.SendablePacket) {
+        val server = net.minestom.server.network.packet.server.SendablePacket.extractServerPacket(state, packet)
+            ?: throw UnsupportedOperationException("BufferedPacket не поддерживается в Cherryngine pipeline")
+        sendPacket(server)
+    }
+
     fun kick(message: String) {
         val formattedMessage = Component.text("Disconnected").appendNewline().append(Component.text(message))
         val packet: ServerPacket = when (state) {

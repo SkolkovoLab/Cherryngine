@@ -16,8 +16,10 @@ import net.minestom.server.network.packet.client.play.ClientPlayerPositionStatus
 import net.minestom.server.network.packet.client.play.ClientPlayerRotationPacket
 import net.minestom.server.network.packet.client.play.ClientTabCompletePacket
 import net.minestom.server.network.packet.client.status.StatusRequestPacket
+import net.minestom.server.network.packet.server.common.TagsPacket
 import net.minestom.server.network.packet.server.configuration.FinishConfigurationPacket
 import net.minestom.server.network.packet.server.status.ResponsePacket
+import net.minestom.server.registry.Registries
 import ru.cherryngine.engine.core.player.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerRouter
@@ -36,6 +38,7 @@ class MinecraftConnectionService(
     private val playerManager: PlayerManager,
     private val instanceRouter: InstanceRouter,
     private val playerRouter: PlayerRouter,
+    private val registries: Registries,
     val playerCreatedEventPublisher: ApplicationEventPublisher<PlayerCreatedEvent>,
     val playerConfigurationAsyncEventPublisher: ApplicationEventPublisher<PlayerConfigurationAsyncEvent>,
 ) {
@@ -53,9 +56,8 @@ class MinecraftConnectionService(
             }
 
             is ClientLoginAcknowledgedPacket -> {
-                // TODO: отправка TagsPacket / RegistryDataPacket требует заполненных Minestom Registries.
-                //  Пока шлём сразу FinishConfigurationPacket, что работает только при очень
-                //  снисходительном клиенте/прокси. В задаче #6 поднимем дефолтные registries.
+                sendRegistryData(connection)
+
                 val uuid = connection.gameProfile.uuid()
                 val existing = playerManager.getPlayerNullable(uuid)
                 val player: MinecraftPlayer = if (existing == null) {
@@ -126,6 +128,66 @@ class MinecraftConnectionService(
                 // отвечает за Connection, игнорируем здесь
             }
         }
+    }
+
+    /**
+     * Шлёт все RegistryData- и TagsPacket, которые клиент ждёт в CONFIGURATION-фазе.
+     * Зеркалит `ConnectionManager.doConfiguration` из Minestom, excludeVanilla=false
+     * — не используем knownPacks-optimization, клиент получит полные данные реестров.
+     */
+    private fun sendRegistryData(connection: Connection) {
+        val excludeVanilla = false
+        connection.sendPacket(registries.chatType().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.biome().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.dialog().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.damageType().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.trimMaterial().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.trimPattern().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.bannerPattern().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.enchantment().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.paintingVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.jukeboxSong().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.instrument().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.wolfVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.wolfSoundVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.catVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.chickenVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.cowVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.frogVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.pigVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.zombieNautilusVariant().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.timeline().registryDataPacket(registries, excludeVanilla))
+        connection.sendPacket(registries.dimensionType().registryDataPacket(registries, excludeVanilla))
+
+        val tagEntries = listOf(
+            registries.blocks().tagRegistry(),
+            registries.entityType().tagRegistry(),
+            registries.fluid().tagRegistry(),
+            registries.gameEvent().tagRegistry(),
+            registries.material().tagRegistry(),
+            registries.chatType().tagRegistry(),
+            registries.biome().tagRegistry(),
+            registries.dialog().tagRegistry(),
+            registries.damageType().tagRegistry(),
+            registries.trimMaterial().tagRegistry(),
+            registries.trimPattern().tagRegistry(),
+            registries.bannerPattern().tagRegistry(),
+            registries.enchantment().tagRegistry(),
+            registries.paintingVariant().tagRegistry(),
+            registries.jukeboxSong().tagRegistry(),
+            registries.instrument().tagRegistry(),
+            registries.wolfVariant().tagRegistry(),
+            registries.wolfSoundVariant().tagRegistry(),
+            registries.catVariant().tagRegistry(),
+            registries.chickenVariant().tagRegistry(),
+            registries.cowVariant().tagRegistry(),
+            registries.frogVariant().tagRegistry(),
+            registries.pigVariant().tagRegistry(),
+            registries.zombieNautilusVariant().tagRegistry(),
+            registries.timeline().tagRegistry(),
+            registries.dimensionType().tagRegistry(),
+        )
+        connection.sendPacket(TagsPacket(tagEntries))
     }
 
     private fun flagsFromByte(flags: Byte): MovePlayerFlags {
