@@ -11,13 +11,14 @@ import com.github.retrooper.packetevents.protocol.player.GameMode
 import com.github.retrooper.packetevents.util.Vector3d
 import net.kyori.adventure.text.Component
 import ru.cherryngine.engine.core.commandmanager.CommandSender
+import ru.cherryngine.engine.minecraft.player.MinecraftPlayer
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.CompletableFuture
 
 class PlatformPlayerImpl(
-    private val player: Player,
+    private val player: MinecraftPlayer,
     private val senderFactory: SenderFactory<CommandSender>,
 ) : PlatformPlayer {
     private val world = PlatformWorldImpl(player)
@@ -26,21 +27,15 @@ class PlatformPlayerImpl(
         player.connection.kick(textReason.toString())
     }
 
-    override fun isSneaking(): Boolean {
-        return player.isSneaking
-    }
+    override fun isSneaking(): Boolean = player.isSneaking
 
     override fun setSneaking(b: Boolean) {
         TODO("Not yet implemented")
     }
 
-    override fun hasPermission(s: String?): Boolean {
-        return false
-    }
+    override fun hasPermission(s: String?): Boolean = false
 
-    override fun hasPermission(s: String?, defaultIfUnset: Boolean): Boolean {
-        return false
-    }
+    override fun hasPermission(s: String?, defaultIfUnset: Boolean): Boolean = false
 
     override fun sendMessage(message: String) {
         player.sendMessage(message)
@@ -55,13 +50,11 @@ class PlatformPlayerImpl(
     }
 
     override fun getPosition(): Vector3d {
-        val (x, y, z) = player.clientPosition
-        return Vector3d(x, y, z)
+        val pos = player.clientPosition
+        return Vector3d(pos.x, pos.y, pos.z)
     }
 
-    override fun getInventory(): PlatformInventory {
-        return PlatformInventoryImpl()
-    }
+    override fun getInventory(): PlatformInventory = PlatformInventoryImpl()
 
     override fun getVehicle(): GrimEntity {
         TODO("Not yet implemented")
@@ -75,17 +68,13 @@ class PlatformPlayerImpl(
         TODO("Not yet implemented")
     }
 
-    override fun isExternalPlayer(): Boolean {
-        return false
-    }
+    override fun isExternalPlayer(): Boolean = false
 
     override fun sendPluginMessage(channelName: String?, byteArray: ByteArray?) {
         TODO("Not yet implemented")
     }
 
-    override fun getSender(): Sender {
-        return senderFactory.wrap(player)
-    }
+    override fun getSender(): Sender = senderFactory.wrap(player)
 
     override fun eject(): Boolean {
         TODO("Not yet implemented")
@@ -98,37 +87,26 @@ class PlatformPlayerImpl(
         return CompletableFuture.completedFuture(true)
     }
 
-    override fun getNative(): Any {
-        return player
-    }
+    override fun getNative(): Any = player
 
     override fun isDead(): Boolean {
         TODO("Not yet implemented")
     }
 
-    override fun getWorld(): PlatformWorld {
-        return world
-    }
+    override fun getWorld(): PlatformWorld = world
 
     override fun getLocation(): Location {
-        val (x, y, z) = player.clientPosition
-        val (yaw, pitch) = player.clientYawPitch
-        return Location(world, x, y, z, yaw, pitch)
+        val pos = player.clientPosition
+        val yp = player.clientYawPitch
+        return Location(world, pos.x, pos.y, pos.z, yp.yaw, yp.pitch)
     }
 
-    override fun distanceSquared(x: Double, y: Double, z: Double): Double {
-        return player.clientPosition.minus(x, y, z).lengthSquared()
-    }
+    override fun distanceSquared(x: Double, y: Double, z: Double): Double =
+        player.clientPosition.minus(x, y, z).lengthSquared()
 
-    override fun getUniqueId(): UUID {
-        return player.uuid
-    }
+    override fun getUniqueId(): UUID = player.uuid
 
-    override fun isOnline(): Boolean {
-        return player.connection.isActive
-    }
+    override fun isOnline(): Boolean = player.connection.isActive
 
-    override fun getName(): String {
-        return player.username
-    }
+    override fun getName(): String = player.username
 }

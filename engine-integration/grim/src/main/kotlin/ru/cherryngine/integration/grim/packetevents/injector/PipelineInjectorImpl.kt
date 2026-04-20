@@ -45,8 +45,8 @@ class PipelineInjectorImpl(
 
         val decoder = channel.pipeline().get(PacketEvents.DECODER_NAME) as PacketEventsDecoder
         decoder.player = player
-        decoder.user.profile.uuid = player.gameProfile.uuid
-        decoder.user.profile.name = player.gameProfile.username
+        decoder.user.profile.uuid = player.gameProfile.uuid()
+        decoder.user.profile.name = player.gameProfile.name()
 
         val encoder = channel.pipeline().get(PacketEvents.ENCODER_NAME) as PacketEventsEncoder
         encoder.player = player

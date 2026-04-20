@@ -21,8 +21,8 @@ import ru.cherryngine.engine.minecraft.events.PacketEvent
 import ru.cherryngine.engine.minecraft.events.PlayerCreatedEvent
 import ru.cherryngine.integration.grim.command.CommandManagerImpl
 import ru.cherryngine.integration.grim.packetevents.PacketEventsImpl
+import net.minestom.server.network.packet.client.play.ClientTickEndPacket
 import ru.cherryngine.lib.minecraft.network.NettyServer
-import ru.cherryngine.lib.minecraft.network.protocol.packets.play.serverbound.ServerboundClientTickEndPacket
 import java.io.File
 import java.util.logging.Logger
 import ac.grim.grimac.platform.api.sender.Sender as GrimSender
@@ -83,9 +83,9 @@ class PlatformLoaderImpl(
     @EventListener
     fun onPacket(event: PacketEvent) {
         when (event.packet) {
-            is ServerboundClientTickEndPacket -> {
+            is ClientTickEndPacket -> {
                 val grimPlayer =
-                    GrimAPI.INSTANCE.playerDataManager.getPlayer(event.connection.gameProfile.uuid) ?: return
+                    GrimAPI.INSTANCE.playerDataManager.getPlayer(event.connection.gameProfile.uuid()) ?: return
                 grimPlayer.checkManager.entityReplication.onEndOfTickEvent()
             }
         }
