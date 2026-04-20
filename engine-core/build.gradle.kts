@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     api(project(":lib-math"))
-    api(project(":lib-world"))
 
     api(libs.kotlinx.coroutines.core)
     api(libs.kotlinx.coroutines.jdk8)
