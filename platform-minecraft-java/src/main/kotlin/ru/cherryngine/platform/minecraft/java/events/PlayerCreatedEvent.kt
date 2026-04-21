@@ -1,0 +1,7 @@
+package ru.cherryngine.platform.minecraft.java.events
+
+import ru.cherryngine.platform.minecraft.java.player.MinecraftPlayer
+
+data class PlayerCreatedEvent(
+    val player: MinecraftPlayer,
+)

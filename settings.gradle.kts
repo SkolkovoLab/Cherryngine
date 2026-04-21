@@ -12,15 +12,12 @@ rootProject.name = "Cherryngine"
 include(
     "engine-core",
     "engine-ecs",
-    "engine-minecraft",
-    "engine-bedrock",
-    "engine-integration:grim",
-    "engine-integration:viaversion",
+    "platform-minecraft-java",
+    "platform-minecraft-bedrock",
+    "platform-minecraft-java:integration:grim",
+    "platform-minecraft-java:integration:viaversion",
     "engine-physics",
 
     "lib-jackson",
     "lib-math",
-    "lib-minecraft",
-    "lib-polar",
-    "lib-viaversion",
 )
