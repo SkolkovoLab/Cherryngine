@@ -108,7 +108,7 @@ healthComponent.onChange { updateUI(it) } // ❌ — через change detection
 | Слой | Где живёт | Что знает |
 |---|---|---|
 | Игровая логика | `impl-*` | Интерфейсы движка, опционально ECS |
-| Платформенные интерфейсы | `engine-core` или `impl-*` | Абстракции, не конкретные платформы |
-| Платформенные реализации | `engine-minecraft`, `engine-bedrock`, `impl-*:minecraft` | Конкретный протокол |
+| Платформенные контракты | `engine-core` (например `TerrainCollisionProvider`, `WorldRaycaster`, `ServerWorld` как маркер) | Абстракции, не конкретные платформы |
+| Платформенные реализации | `platform-minecraft-java` (+integration/{viaversion,grim}), `platform-minecraft-bedrock`, `impl-*:minecraft`, `impl-*:bedrock` | Конкретный протокол; Minestom используется как библиотека пакетов и данных, без серверной логики |
 | Общие кэши | `@Singleton` в DI | Данные без игрового состояния |
-| Per-instance объекты | Создаются через `InstanceFactory` | Данные конкретного инстанса |
+| Per-instance объекты | `@InstanceSingleton` либо `Instance.register(...)` | Данные конкретного инстанса |
