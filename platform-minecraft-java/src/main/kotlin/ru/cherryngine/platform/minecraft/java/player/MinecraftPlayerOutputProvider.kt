@@ -2,12 +2,12 @@ package ru.cherryngine.platform.minecraft.java.player
 
 import jakarta.inject.Singleton
 import net.kyori.adventure.text.Component
-import net.minestom.server.coordinate.Vec
 import net.minestom.server.network.packet.server.play.EntityVelocityPacket
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerOutputProvider
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
+import ru.cherryngine.platform.minecraft.java.utils.minestomVec
 import java.util.*
 
 @Singleton
@@ -24,7 +24,6 @@ class MinecraftPlayerOutputProvider(
 
     override fun setVelocity(uuid: UUID, velocity: Vec3D) {
         val player = playerManager.getPlayerNullable(uuid) as? MinecraftPlayer ?: return
-        val v = velocity.div(20.0)
-        player.connection.sendPacket(EntityVelocityPacket(0, Vec(v.x, v.y, v.z)))
+        player.connection.sendPacket(EntityVelocityPacket(0, velocity.div(20.0).minestomVec()))
     }
 }

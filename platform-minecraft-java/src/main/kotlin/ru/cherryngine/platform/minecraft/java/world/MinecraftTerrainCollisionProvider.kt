@@ -1,6 +1,7 @@
 package ru.cherryngine.platform.minecraft.java.world
 
 import jakarta.inject.Singleton
+import net.minestom.server.collision.BoundingBox
 import net.minestom.server.collision.ShapeImpl
 import ru.cherryngine.engine.core.instance.ServerWorld
 import ru.cherryngine.engine.core.world.TerrainCollisionProvider
@@ -8,6 +9,7 @@ import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.platform.minecraft.java.MinecraftServerWorld
+import ru.cherryngine.platform.minecraft.java.utils.cuboid
 
 /**
  * Реализация [TerrainCollisionProvider] поверх [MinecraftServerWorld]:
@@ -35,12 +37,7 @@ class MinecraftTerrainCollisionProvider : TerrainCollisionProvider {
         if (shape is ShapeImpl) {
             val boxes = shape.boundingBoxes()
             if (boxes.isNotEmpty()) {
-                return boxes.map { bb ->
-                    Cuboid(
-                        Vec3D(bb.minX(), bb.minY(), bb.minZ()),
-                        Vec3D(bb.maxX(), bb.maxY(), bb.maxZ()),
-                    )
-                }
+                return boxes.map(BoundingBox::cuboid)
             }
         }
         return if (reg.isSolid) listOf(UNIT_CUBE) else emptyList()

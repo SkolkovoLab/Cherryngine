@@ -1,6 +1,5 @@
 package ru.cherryngine.platform.minecraft.java.entity
 
-import net.minestom.server.coordinate.Pos
 import net.minestom.server.coordinate.Vec
 import net.minestom.server.entity.EntityType
 import net.minestom.server.entity.Metadata
@@ -10,6 +9,8 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.platform.minecraft.java.player.MinecraftPlayer
 import ru.cherryngine.platform.minecraft.java.utils.ChunkUtils
+import ru.cherryngine.platform.minecraft.java.utils.minestomPos
+import ru.cherryngine.platform.minecraft.java.utils.minestomVec
 import ru.cherryngine.platform.minecraft.java.view.Viewable
 import ru.cherryngine.platform.minecraft.java.world.ChunkPos
 import java.util.*
@@ -40,7 +41,7 @@ class McEntity(
         this.yawPitch = yawPitch
         val packet = EntityPositionSyncPacket(
             entityId,
-            Vec(position.x, position.y, position.z),
+            position.minestomVec(),
             Vec.ZERO,
             yawPitch.yaw,
             yawPitch.pitch,
@@ -59,7 +60,7 @@ class McEntity(
             SpawnEntityPacket(
                 entityId, UUID.randomUUID(),
                 entityType,
-                Pos(position.x, position.y, position.z, yawPitch.yaw, yawPitch.pitch),
+                position.minestomPos(yawPitch),
                 yawPitch.yaw,
                 0,
                 Vec.ZERO

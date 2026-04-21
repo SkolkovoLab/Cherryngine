@@ -10,6 +10,8 @@ data class Cuboid(
 ) {
     companion object {
         fun fromTwoPoints(v1: Vec3D, v2: Vec3D): Cuboid {
+            if (v1.x <= v2.x && v1.y <= v2.y && v1.z <= v2.z) return Cuboid(v1, v2)
+            if (v2.x <= v1.x && v2.y <= v1.y && v2.z <= v1.z) return Cuboid(v2, v1)
             val min = Vec3D(min(v1.x, v2.x), min(v1.y, v2.y), min(v1.z, v2.z))
             val max = Vec3D(max(v1.x, v2.x), max(v1.y, v2.y), max(v1.z, v2.z))
             return Cuboid(min, max)
@@ -23,6 +25,10 @@ data class Cuboid(
         fun fromSize(size: Vec3D): Cuboid {
             return fromCenterAndSize(Vec3D.ZERO, size)
         }
+    }
+
+    init {
+        require(min.x <= max.x && min.y <= max.y && min.z <= max.z)
     }
 
     val center: Vec3D

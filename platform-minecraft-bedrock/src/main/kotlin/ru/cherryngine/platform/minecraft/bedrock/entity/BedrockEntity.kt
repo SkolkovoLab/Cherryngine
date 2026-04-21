@@ -10,6 +10,7 @@ import org.cloudburstmc.protocol.bedrock.packet.SetEntityDataPacket
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.platform.minecraft.bedrock.BedrockPlayer
+import ru.cherryngine.platform.minecraft.bedrock.utils.cloudburstVector3f
 import ru.cherryngine.platform.minecraft.java.world.ChunkPos
 import java.util.concurrent.atomic.AtomicLong
 
@@ -31,7 +32,7 @@ class BedrockEntity(
         this.yawPitch = yawPitch
         val packet = MoveEntityAbsolutePacket()
         packet.runtimeEntityId = runtimeEntityId
-        packet.position = Vector3f.from(position.x.toFloat(), position.y.toFloat(), position.z.toFloat())
+        packet.position = position.cloudburstVector3f()
         packet.rotation = Vector3f.from(yawPitch.pitch, yawPitch.yaw, yawPitch.yaw)
         packet.isTeleported = true
         packet.isOnGround = false
@@ -51,7 +52,7 @@ class BedrockEntity(
         spawn.uniqueEntityId = runtimeEntityId
         spawn.runtimeEntityId = runtimeEntityId
         spawn.identifier = identifier
-        spawn.position = Vector3f.from(position.x.toFloat(), position.y.toFloat(), position.z.toFloat())
+        spawn.position = position.cloudburstVector3f()
         spawn.motion = Vector3f.ZERO
         spawn.rotation = Vector2f.from(yawPitch.pitch, yawPitch.yaw)
         spawn.headRotation = yawPitch.yaw

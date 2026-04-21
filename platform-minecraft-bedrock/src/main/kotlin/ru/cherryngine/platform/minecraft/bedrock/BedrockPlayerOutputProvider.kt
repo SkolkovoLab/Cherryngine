@@ -8,6 +8,7 @@ import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerOutputProvider
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
+import ru.cherryngine.platform.minecraft.bedrock.utils.cloudburstVector3f
 import java.util.*
 
 class BedrockPlayerOutputProvider(
@@ -19,11 +20,7 @@ class BedrockPlayerOutputProvider(
         player.clientYawPitch = yawPitch
         val packet = MovePlayerPacket()
         packet.runtimeEntityId = player.runtimeEntityId
-        packet.position = Vector3f.from(
-            position.x.toFloat(),
-            (position.y + 1.62).toFloat(),
-            position.z.toFloat()
-        )
+        packet.position = position.plus(0.0, 1.62, 0.0).cloudburstVector3f()
         packet.rotation = Vector3f.from(
             yawPitch.pitch,
             yawPitch.yaw,
@@ -42,11 +39,7 @@ class BedrockPlayerOutputProvider(
         val player = playerManager.getPlayerNullable(uuid) as? BedrockPlayer ?: return
         val packet = SetEntityMotionPacket()
         packet.runtimeEntityId = player.runtimeEntityId
-        packet.motion = Vector3f.from(
-            velocity.x / 20f,
-            velocity.y / 20f,
-            velocity.z / 20f
-        )
+        packet.motion = (velocity / 20.0).cloudburstVector3f()
         player.session.sendPacket(packet)
     }
 }

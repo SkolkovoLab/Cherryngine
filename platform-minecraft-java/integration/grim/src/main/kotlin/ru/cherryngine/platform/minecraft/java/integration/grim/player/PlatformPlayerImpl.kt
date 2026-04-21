@@ -11,8 +11,10 @@ import com.github.retrooper.packetevents.protocol.player.GameMode
 import com.github.retrooper.packetevents.util.Vector3d
 import net.kyori.adventure.text.Component
 import ru.cherryngine.engine.core.commandmanager.CommandSender
-import ru.cherryngine.lib.math.Vec3D
-import ru.cherryngine.lib.math.YawPitch
+import ru.cherryngine.platform.minecraft.java.integration.grim.utils.grimLocation
+import ru.cherryngine.platform.minecraft.java.integration.grim.utils.packeteventsVector3d
+import ru.cherryngine.platform.minecraft.java.integration.grim.utils.vec3D
+import ru.cherryngine.platform.minecraft.java.integration.grim.utils.yawPitch
 import ru.cherryngine.platform.minecraft.java.player.MinecraftPlayer
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -49,10 +51,7 @@ class PlatformPlayerImpl(
         TODO("Not yet implemented")
     }
 
-    override fun getPosition(): Vector3d {
-        val pos = player.clientPosition
-        return Vector3d(pos.x, pos.y, pos.z)
-    }
+    override fun getPosition(): Vector3d = player.clientPosition.packeteventsVector3d()
 
     override fun getInventory(): PlatformInventory = PlatformInventoryImpl()
 
@@ -81,9 +80,7 @@ class PlatformPlayerImpl(
     }
 
     override fun teleportAsync(location: Location): CompletableFuture<Boolean> {
-        val vec3D = Vec3D(location.x, location.y, location.z)
-        val yawPitch = YawPitch(location.yaw, location.pitch)
-        player.teleport(vec3D, yawPitch)
+        player.teleport(location.vec3D(), location.yawPitch())
         return CompletableFuture.completedFuture(true)
     }
 
@@ -95,11 +92,7 @@ class PlatformPlayerImpl(
 
     override fun getWorld(): PlatformWorld = world
 
-    override fun getLocation(): Location {
-        val pos = player.clientPosition
-        val yp = player.clientYawPitch
-        return Location(world, pos.x, pos.y, pos.z, yp.yaw, yp.pitch)
-    }
+    override fun getLocation(): Location = player.clientPosition.grimLocation(world, player.clientYawPitch)
 
     override fun distanceSquared(x: Double, y: Double, z: Double): Double =
         player.clientPosition.minus(x, y, z).lengthSquared()

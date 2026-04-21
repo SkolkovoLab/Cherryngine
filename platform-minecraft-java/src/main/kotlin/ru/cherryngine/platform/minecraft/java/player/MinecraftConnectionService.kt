@@ -25,6 +25,8 @@ import ru.cherryngine.platform.minecraft.java.events.PacketEvent
 import ru.cherryngine.platform.minecraft.java.events.PlayerConfigurationAsyncEvent
 import ru.cherryngine.platform.minecraft.java.events.PlayerCreatedEvent
 import ru.cherryngine.platform.minecraft.java.network.Connection
+import ru.cherryngine.platform.minecraft.java.utils.vec3D
+import ru.cherryngine.platform.minecraft.java.utils.yawPitch
 import ru.cherryngine.platform.minecraft.java.world.MovePlayerFlags
 
 @Singleton
@@ -76,7 +78,7 @@ class MinecraftConnectionService(
 
             is ClientPlayerPositionPacket -> onMove(
                 connection,
-                Vec3D(packet.position.x(), packet.position.y(), packet.position.z()),
+                packet.position.vec3D(),
                 null,
                 flagsFromByte(packet.flags),
             )
@@ -85,8 +87,8 @@ class MinecraftConnectionService(
                 val p: Pos = packet.position
                 onMove(
                     connection,
-                    Vec3D(p.x(), p.y(), p.z()),
-                    YawPitch(p.yaw(), p.pitch()),
+                    p.vec3D(),
+                    p.yawPitch(),
                     flagsFromByte(packet.flags),
                 )
             }

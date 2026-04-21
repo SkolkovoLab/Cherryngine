@@ -11,6 +11,7 @@ import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.platform.minecraft.java.network.Connection
 import ru.cherryngine.platform.minecraft.java.utils.ChunkUtils
+import ru.cherryngine.platform.minecraft.java.utils.minestomVec
 import ru.cherryngine.platform.minecraft.java.view.BlocksViewable
 import ru.cherryngine.platform.minecraft.java.view.Viewable
 import ru.cherryngine.platform.minecraft.java.world.ChunkPos
@@ -66,7 +67,7 @@ class MinecraftPlayer(
         connection.sendPacket(
             PlayerPositionAndLookPacket(
                 0,
-                Vec(position.x, position.y, position.z),
+                position.minestomVec(),
                 Vec.ZERO,
                 yawPitch.yaw.toFloat(),
                 yawPitch.pitch.toFloat(),

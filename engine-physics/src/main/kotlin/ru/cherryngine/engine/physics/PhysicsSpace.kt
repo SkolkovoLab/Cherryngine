@@ -278,10 +278,7 @@ class PhysicsSpace {
             return body.getLinearVelocity().vec3D()
         }
 
-        fun getWorldBounds(): Cuboid {
-            val bounds = body.getWorldSpaceBounds()
-            return Cuboid(bounds.getMin().vec3D(), bounds.getMax().vec3D())
-        }
+        fun getWorldBounds(): Cuboid = body.getWorldSpaceBounds().cuboid()
 
         fun remove() {
             physicsSystem.getBodyInterface().removeBody(body.id)
