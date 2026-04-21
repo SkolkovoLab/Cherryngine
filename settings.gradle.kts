@@ -14,6 +14,7 @@ include(
     "engine-ecs",
     "platform-minecraft-java",
     "platform-minecraft-bedrock",
+    "platform-minecraft-bedrock:java-to-bedrock",
     "platform-minecraft-java:integration:grim",
     "platform-minecraft-java:integration:viaversion",
     "engine-physics",

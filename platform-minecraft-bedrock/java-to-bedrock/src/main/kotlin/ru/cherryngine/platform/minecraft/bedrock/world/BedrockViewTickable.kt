@@ -18,7 +18,7 @@ import kotlin.time.Duration
 @InstanceSingleton(platform = "bedrock", stage = TickStage.POST)
 class BedrockViewTickable(
     private val playerManager: PlayerManager,
-    private val blockMapping: BedrockBlockMapping,
+    private val blockMapping: JavaToBedrockBlockMapping,
     private val serverWorld: MinecraftServerWorld,
     private val entityRegistry: BedrockEntityRegistry,
 ) : Tickable {
@@ -88,7 +88,8 @@ class BedrockViewTickable(
             run {
                 val entityChunks = ChunkUtils.getChunksInRange(clientChunkPos, ENTITY_RENDER_DISTANCE).toSet()
                 val visibleEntities = entityRegistry.allEntities().filter { entity ->
-                    entity.chunkPos in entityChunks &&
+                    val entityChunkPos = ChunkPos(entity.position.x.toInt() shr 4, entity.position.z.toInt() shr 4)
+                    entityChunkPos in entityChunks &&
                     (entity.viewContextIDs.isEmpty() || entity.viewContextIDs.any { it in contextIDs }) &&
                     entity.viewerPredicate(bp)
                 }.toSet()

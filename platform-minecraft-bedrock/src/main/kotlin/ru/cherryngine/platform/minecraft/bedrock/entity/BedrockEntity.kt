@@ -11,7 +11,6 @@ import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.platform.minecraft.bedrock.BedrockPlayer
 import ru.cherryngine.platform.minecraft.bedrock.utils.cloudburstVector3f
-import ru.cherryngine.platform.minecraft.java.world.ChunkPos
 import java.util.concurrent.atomic.AtomicLong
 
 class BedrockEntity(
@@ -24,8 +23,6 @@ class BedrockEntity(
     val viewers = mutableSetOf<BedrockPlayer>()
     var viewerPredicate: (BedrockPlayer) -> Boolean = { true }
     var viewContextIDs: Set<String> = emptySet()
-
-    val chunkPos: ChunkPos get() = ChunkPos(position.x.toInt() shr 4, position.z.toInt() shr 4)
 
     fun teleport(position: Vec3D, yawPitch: YawPitch) {
         this.position = position

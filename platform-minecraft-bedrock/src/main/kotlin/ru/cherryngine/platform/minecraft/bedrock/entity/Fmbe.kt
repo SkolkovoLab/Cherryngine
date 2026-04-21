@@ -6,7 +6,7 @@ import org.cloudburstmc.protocol.bedrock.packet.AnimateEntityPacket
 import org.cloudburstmc.protocol.bedrock.packet.MobEquipmentPacket
 import ru.cherryngine.lib.math.Transform
 import ru.cherryngine.lib.math.rotation.AxisSequence
-import ru.cherryngine.platform.minecraft.bedrock.world.BedrockBlockMapping
+import ru.cherryngine.platform.minecraft.bedrock.world.BedrockItemMapping
 import kotlin.math.sqrt
 
 /**
@@ -51,10 +51,10 @@ object Fmbe {
         return entity
     }
 
-    fun sendEquipment(entity: BedrockEntity, material: String, blockMapping: BedrockBlockMapping) {
+    fun sendEquipment(entity: BedrockEntity, material: String, itemMapping: BedrockItemMapping) {
         val packet = MobEquipmentPacket()
         packet.runtimeEntityId = entity.runtimeEntityId
-        packet.item = blockMapping.createItemData(material)
+        packet.item = itemMapping.createItemData(material)
         packet.inventorySlot = 0
         packet.hotbarSlot = 0
         packet.containerId = 0

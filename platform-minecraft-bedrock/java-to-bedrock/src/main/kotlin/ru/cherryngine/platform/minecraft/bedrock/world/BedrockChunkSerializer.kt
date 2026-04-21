@@ -21,7 +21,7 @@ object BedrockChunkSerializer {
 
     fun serialize(
         sections: List<Section>,
-        blockMapping: BedrockBlockMapping,
+        blockMapping: JavaToBedrockBlockMapping,
     ): Pair<Int, ByteBuf> {
         // Find topmost non-empty section
         var topSection = sections.size - 1
@@ -52,7 +52,7 @@ object BedrockChunkSerializer {
         return subChunkCount to buf
     }
 
-    private fun writeBlockStorage(buf: ByteBuf, section: Section, blockMapping: BedrockBlockMapping) {
+    private fun writeBlockStorage(buf: ByteBuf, section: Section, blockMapping: JavaToBedrockBlockMapping) {
         val bedrockPalette = mutableListOf<Int>()
         val paletteIndex = HashMap<Int, Int>()
         val indices = IntArray(4096)
