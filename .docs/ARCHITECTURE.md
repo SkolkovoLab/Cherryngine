@@ -46,7 +46,7 @@ lib-math       lib-jackson
 ### engine-core
 Платформенно-независимое ядро.
 - `instance.{Instance, InstanceSingleton, InstanceSingletonScope, InstanceBeansFactory, ServerWorld, Tickable, TickStage, InstanceSetup}`
-- `player.{Player, PlayerManager, InstanceRouter, PlayerRouter, PlayerInputProvider, PlayerOutputProvider}`
+- `player.{Player, PlayerManager, InstanceRouter, PlayerRouter, PlayerPositionSource, PositionSnapshot, PlayerPositionShadow, PlayerPositionPreSyncTickable, PlayerPositionPostSyncTickable}`. `Player` имеет `clientPosition`/`clientYawPitch` (правда о положении клиента, пишет сеть платформы) и методы `teleport(...)`/`setVelocity(...)` (команды клиенту)
 - `commandmanager.{CherryngineCommandManager (@InstanceSingleton), CommandSender, SArgumentParser, args/*}`
 - `world.{TerrainCollisionProvider, WorldRaycaster, RaycastHit}` — кросс-платформенные контракты, реализуются `@Singleton`-ами в платформенных модулях с `canHandle(world)`
 - `utils.{KyoriComponentExt, StableTicker}`, `Main`, `LoggerProvider`, `BeanCreationTimeLogger`
@@ -57,8 +57,9 @@ lib-math       lib-jackson
 Fleks-based ECS, опциональный.
 - `EcsWorldTickable`, `EcsWorldBeanFactory`, `FleksTypes`, `Utils`
 - Базовые компоненты: `PlayerComponent`, `PositionComponent`, `ViewableComponent`
-- Базовые системы: `ReadClientPositionSystem`, `WriteClientPositionSystem`, `CommandActionsSystem`, `ClearEventsSystem`
-- Events: `EcsEvent`, `LastPlayerPositionEvent`
+- Базовые системы: `CommandActionsSystem`, `ClearEventsSystem`
+- Events: `EcsEvent`
+- `EcsPlayerPositionSource` — реализация `PlayerPositionSource` через `PositionComponent` (мост между ECS и платформенным sync позиции)
 
 ### engine-physics
 Jolt Physics обёртка. Знает только `engine-core`.
@@ -68,7 +69,7 @@ Jolt Physics обёртка. Знает только `engine-core`.
 ### platform-minecraft-java
 Minecraft Java Edition. Содержит:
 - **Сеть:** `network.{Connection, NettyServer, ConnectionHandler, ChannelHandlers, ChannelInjector, ByteBufVarInt}`, `network.protocol.{NetworkCompression, decoders/*, encoders/*, cryptography/*}`. `Connection` — `SimpleChannelInboundHandler<ClientPacket>`. Encoder/decoder ходят через `PacketVanilla.{CLIENT,SERVER}_PACKET_PARSER`, `NetworkBuffer.wrap/makeArray`, `PacketRegistry.PacketInfo`.
-- **Player:** `player.{MinecraftPlayer, MinecraftConnectionService, MinecraftPlayerInputProvider, MinecraftPlayerOutputProvider}`
+- **Player:** `player.{MinecraftPlayer, MinecraftConnectionService}`. `MinecraftPlayer` реализует `Player` — `clientPosition`/`clientYawPitch` обновляются в `MinecraftConnectionService.onMove()` при получении движения от клиента; `teleport()` шлёт `PlayerPositionAndLookPacket`; `setVelocity()` шлёт `EntityVelocityPacket` (с делением на 20)
 - **Entity:** `entity.{McEntity, McEntityRegistry}`
 - **World/мир:** `MinecraftServerWorld` (per-instance, реализует `ServerWorld`), `world.{Layer, ImmutableLayer, MutableLayer, LayeredWorld, LayerEntry, LayerClassification, LayeredWorld, MutableOverlay, World, VisibleBarriersWorld, ChunkPos, SectionPos, ChunkHeightmap, ChunkHeightmaps, MovePlayerFlags, MutableLayerChangeTracker, LightEngine, ImmutableLayerKey, MinecraftTerrainCollisionProvider, MinecraftWorldRaycaster}`, `world.chunk.ChunkData`, `world.utils.{BitStorage, SimpleBitStorage}`, `world.polar.{PolarReader, PolarWorldGenerator, PolarChunk, PolarSection, PolarWorld, PolarDataConverter, WorldHeightUtil}`
 - **View:** `MinecraftViewTickable`, `view.{Viewable, BlocksViewable, ViewableProvider, StaticViewableProvider}`, `ChunkPool`
@@ -86,7 +87,7 @@ GrimAC anti-cheat + PacketEvents. Опциональный. Per-instance рег�
 ### platform-minecraft-bedrock
 Bedrock Edition через CloudburstMC. Зависит от `platform-minecraft-java` (использует `MinecraftServerWorld` для общего реестра слоёв — Bedrock рендерит данные того же мира).
 - `BedrockServer`, `BedrockSessionHandler`, `BedrockConfig`
-- `BedrockPlayer`, `BedrockPlayerInputProvider`, `BedrockPlayerOutputProvider`
+- `BedrockPlayer` — реализует `Player`; `teleport()` шлёт `MovePlayerPacket` с `+1.62 Y` offset; `setVelocity()` шлёт `SetEntityMotionPacket` (с делением на 20)
 - `entity.{BedrockEntity, BedrockEntityRegistry}`
 - `world.{BedrockBlockMapping, BedrockChunkSerializer, BedrockViewTickable}`
 
@@ -156,11 +157,10 @@ class Instance(
 2. Создаёт `MinecraftServerWorld`, регистрирует слои из `prefab.worlds` (грузит `.polar` из ресурсов через `PolarWorldGenerator.loadAsLayer/loadAsMutableLayer`, биомы резолвятся через `Registries.biome().getId(...)`)
 3. Регистрирует `joinChannel`/`leaveChannel` в `InstanceRouter`
 4. Создаёт `Instance`, кладёт в его cache: `InstancePrefab`, `ServerWorld` + `MinecraftServerWorld`, channels
-5. Резолвит `PlatformModule`-ы для `prefab.platformIds`, собирает composite `PlayerInputProvider`/`PlayerOutputProvider`
-6. `instance.initEager()` — поднимает eager-бины (например `GrimCommandBootstrap`)
-7. Создаёт ECS-мир из `prefab.systems`
-8. Регистрирует команды
-9. `instance.startTicking()`
+5. `instance.initEager()` — поднимает eager-бины (например `GrimCommandBootstrap`)
+6. Создаёт ECS-мир из `prefab.systems`
+7. Регистрирует команды
+8. `instance.startTicking()`
 
 ---
 
@@ -197,17 +197,25 @@ class PhysicsSystem(...) {
 - **Системы не хранят состояние в полях.** Всё состояние между тиками — в компонентах.
 - **Явный порядок систем.** Никаких приоритетов слушателей.
 
-**Порядок систем в тике (демо):**
+**Порядок stages/tickables (демо):**
 ```
-1. ReadClientPositionSystem    — позиция клиента → PositionComponent + LastSentPositionComponent
-2. PlayerInitSystem            — join/leave из каналов → ECS entity
-3. CommandActionsSystem        — выполнение команд из очереди
-4. [Геймплейные системы]       — игровая логика
-5. PhysicsSystem               — симуляция физики
-6. ViewContextSyncSystem       — PlayerComponent.viewContextIDs → ServerWorld
-7. WriteClientPositionSystem   — телепорт если PositionComponent != LastSentPositionComponent
-8. ClearEventsSystem           — очистка event-компонентов
+PRE:
+  PlayerPositionPreSyncTickable  — клиент → PositionComponent (если источник его не трогал)
+GAME:
+  EcsWorldTickable, прогоняющий ECS-системы в явном порядке:
+    1. PlayerInitSystem            — join/leave из каналов → ECS entity
+    2. CommandActionsSystem        — выполнение команд из очереди
+    3. [Геймплейные системы]       — игровая логика
+    4. PhysicsSystem               — симуляция физики
+    5. ViewContextSyncSystem       — PlayerComponent.viewContextIDs → ServerWorld
+    6. ClearEventsSystem           — очистка event-компонентов
+POST:
+  PlayerPositionPostSyncTickable — если PositionComponent != player.clientPosition → player.teleport(...)
+  MinecraftViewTickable          — отправка чанков и видимостей
+  MinecraftPlayerPlatformTickable — демо-синхронизация платформы под игроком
 ```
+
+Sync позиции вынесен в `engine-core` и работает через `PlayerPositionSource` (аналогичен dispatcher'у рендереров): `PlayerPositionPreSyncTickable` и `PostSyncTickable` инжектят `List<PlayerPositionSource>`, делегируют по `canHandle(player)`. Shadow-state `PlayerPositionShadow` (`@InstanceSingleton`) хранит последнюю применённую позицию для каждого игрока; он **не сериализуется** — при restore ECS-компонентов из бэкапа shadow≠desired → POST автоматически отправит `teleport`.
 
 `PlayerIndex` — O(1) поиск ECS entity по UUID через Fleks `FamilyHook`.
 

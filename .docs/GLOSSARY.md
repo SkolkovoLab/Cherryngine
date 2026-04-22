@@ -39,8 +39,8 @@ Per-instance объект, отвечающий за визуальное пре
 ## TickStage
 Порядок исполнения tickables в кадре: `PRE`, `GAME`, `POST`. Внутри стадии порядок не гарантирован — дополнительной упорядоченности добиваются через ECS-системы.
 
-## PlatformModule
-Фабрика per-instance провайдеров для конкретной платформы. Создаёт `PlayerInputProvider`, `PlayerOutputProvider`, рендереры, tickables для одного инстанса. Регистрируется в `InstanceFactory` по `prefab.platformIds`.
+## PlayerPositionSource
+Источник «желаемой» позиции игрока для платформенного sync-механизма. `canHandle(player) + getDesired(player) + acceptClientMovement(player, pos, yaw)`. `@InstanceSingleton`, инжектится в `PlayerPositionPre/PostSyncTickable` как `List<PlayerPositionSource>` — паттерн аналогичен диспетчеру рендереров. Реализации: `EcsPlayerPositionSource` (через `PositionComponent`), возможны и другие для мод'ов без ECS.
 
 ## Registries
 `net.minestom.server.registry.Registries` — Minestom-овский набор `DynamicRegistry`-и (Biome, DimensionType, ChatType, DamageType и т.д.). Используется как `@Singleton`-бин (через `MinecraftServer.updateProcess()` в `MinecraftModule`). Никаких сокетов и тиков Minestom-а при этом не запускается.

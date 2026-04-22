@@ -3,6 +3,7 @@ package ru.cherryngine.platform.minecraft.java.player
 import net.kyori.adventure.text.Component
 import net.minestom.server.coordinate.Vec
 import net.minestom.server.instance.block.Block
+import net.minestom.server.network.packet.server.play.EntityVelocityPacket
 import net.minestom.server.network.packet.server.play.PlayerPositionAndLookPacket
 import net.minestom.server.network.packet.server.play.SystemChatPacket
 import ru.cherryngine.engine.core.player.Player
@@ -25,8 +26,8 @@ class MinecraftPlayer(
     override val uuid get() = connection.gameProfile.uuid
     override val username get() = connection.gameProfile.name()
 
-    var clientPosition: Vec3D = Vec3D.ZERO
-    var clientYawPitch: YawPitch = YawPitch.ZERO
+    override var clientPosition: Vec3D = Vec3D.ZERO
+    override var clientYawPitch: YawPitch = YawPitch.ZERO
     var clientMovePlayerFlags: MovePlayerFlags = MovePlayerFlags(false, false)
     var isSneaking: Boolean = false
     val pendingCommands: ConcurrentLinkedQueue<String> = ConcurrentLinkedQueue()
@@ -60,7 +61,7 @@ class MinecraftPlayer(
         return Block.fromStateId(getBlockId(pos)) ?: Block.AIR
     }
 
-    fun teleport(position: Vec3D, yawPitch: YawPitch) {
+    override fun teleport(position: Vec3D, yawPitch: YawPitch) {
         clientPosition = position
         clientYawPitch = yawPitch
 
@@ -74,6 +75,10 @@ class MinecraftPlayer(
                 0
             )
         )
+    }
+
+    override fun setVelocity(velocity: Vec3D) {
+        connection.sendPacket(EntityVelocityPacket(0, velocity.div(20.0).minestomVec()))
     }
 
     override fun sendMessage(message: Component) {
