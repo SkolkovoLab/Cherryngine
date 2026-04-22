@@ -42,6 +42,9 @@ Per-instance объект, отвечающий за визуальное пре
 ## PlayerPositionSource
 Источник «желаемой» позиции игрока для платформенного sync-механизма. `canHandle(player) + getDesired(player) + acceptClientMovement(player, pos, yaw)`. `@InstanceSingleton`, инжектится в `PlayerPositionPre/PostSyncTickable` как `List<PlayerPositionSource>` — паттерн аналогичен диспетчеру рендереров. Реализации: `EcsPlayerPositionSource` (через `PositionComponent`), возможны и другие для мод'ов без ECS.
 
+## PlayerHitboxDriver
+Платформенно-специфичный драйвер серверного хитбокса игрока. `canHandle(player) + preSimulate(player, delta) + postSimulate(player, delta)`. Диспетчеризуется через `PlayerHitboxPreSyncTickable` (PRE) и `PlayerHitboxPostSyncTickable` (POST) — аналог `PlayerPositionSource`, но для физики. `preSimulate` делает lifecycle хитбокса и velocity pull к `player.clientPosition`; `postSimulate` — meeting-point и pushback через `player.setVelocity`. На платформе с нативными клиентскими коллизиями driver просто не регистрируется и диспетчер пропускает игрока. Единственная реализация сейчас — `DemoPlayerHitboxDriver` в `impl-demo/hitbox/`.
+
 ## Registries
 `net.minestom.server.registry.Registries` — Minestom-овский набор `DynamicRegistry`-и (Biome, DimensionType, ChatType, DamageType и т.д.). Используется как `@Singleton`-бин (через `MinecraftServer.updateProcess()` в `MinecraftModule`). Никаких сокетов и тиков Minestom-а при этом не запускается.
 

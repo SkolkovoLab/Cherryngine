@@ -201,21 +201,28 @@ class PhysicsSystem(...) {
 ```
 PRE:
   PlayerPositionPreSyncTickable  — клиент → PositionComponent (если источник его не трогал)
+  PlayerHitboxPreSyncTickable    — driver.preSimulate: lifecycle хитбокса + velocity pull
 GAME:
   EcsWorldTickable, прогоняющий ECS-системы в явном порядке:
     1. PlayerInitSystem            — join/leave из каналов → ECS entity
     2. CommandActionsSystem        — выполнение команд из очереди
     3. [Геймплейные системы]       — игровая логика
-    4. PhysicsSystem               — симуляция физики
-    5. ViewContextSyncSystem       — PlayerComponent.viewContextIDs → ServerWorld
-    6. ClearEventsSystem           — очистка event-компонентов
+    4. CubePhysicsLifecycleSystem  — keepAlive + getOrCreateBody для кубов
+    5. PhysicsSimulationSystem     — terrain.step + physicsSpace.update
+    6. CubePhysicsSyncSystem       — body.transform → PositionComponent + CubeModelComponent
+    7. HitboxVisualizationSystem   — hitbox position → HitboxVisualization entity
+    8. ViewContextSyncSystem       — PlayerComponent.viewContextIDs → ServerWorld
+    9. ClearEventsSystem           — очистка event-компонентов
 POST:
+  PlayerHitboxPostSyncTickable   — driver.postSimulate: meeting-point + player.setVelocity
   PlayerPositionPostSyncTickable — если PositionComponent != player.clientPosition → player.teleport(...)
   MinecraftViewTickable          — отправка чанков и видимостей
   MinecraftPlayerPlatformTickable — демо-синхронизация платформы под игроком
 ```
 
-Sync позиции вынесен в `engine-core` и работает через `PlayerPositionSource` (аналогичен dispatcher'у рендереров): `PlayerPositionPreSyncTickable` и `PostSyncTickable` инжектят `List<PlayerPositionSource>`, делегируют по `canHandle(player)`. Shadow-state `PlayerPositionShadow` (`@InstanceSingleton`) хранит последнюю применённую позицию для каждого игрока; он **не сериализуется** — при restore ECS-компонентов из бэкапа shadow≠desired → POST автоматически отправит `teleport`.
+**Sync позиции** вынесен в `engine-core` и работает через `PlayerPositionSource` (аналогичен dispatcher'у рендереров): `PlayerPositionPreSyncTickable` и `PostSyncTickable` инжектят `List<PlayerPositionSource>`, делегируют по `canHandle(player)`. Shadow-state `PlayerPositionShadow` (`@InstanceSingleton`) хранит последнюю применённую позицию для каждого игрока; он **не сериализуется** — при restore ECS-компонентов из бэкапа shadow≠desired → POST автоматически отправит `teleport`.
+
+**Серверный хитбокс игрока** вынесен из ECS в `impl-demo/hitbox/` через тот же паттерн: `PlayerHitboxDriver` (интерфейс в impl-demo, `canHandle + preSimulate + postSimulate`) + пара тикаблов-диспетчеров `PlayerHitboxPreSyncTickable` (PRE) и `PlayerHitboxPostSyncTickable` (POST). Единственная реализация — `DemoPlayerHitboxDriver` для `MinecraftPlayer`/`BedrockPlayer`: `preSimulate` отвечает за lifecycle хитбокса и velocity pull к `player.clientPosition`, `postSimulate` — за meeting-point и pushback через `player.setVelocity`. Гипотетическая платформа с нативными клиентскими коллизиями не попадает под `canHandle` → хитбокс не создаётся, pushback не отправляется. ECS занимается только lifecycle/sync физических тел-кубов.
 
 `PlayerIndex` — O(1) поиск ECS entity по UUID через Fleks `FamilyHook`.
 
@@ -273,9 +280,11 @@ block = layer.getBlock(pos)
 
 Jolt Physics через jolt-jni. Один `PhysicsSpace` на инстанс.
 
-- **Heartbeat:** `beginTick` → `keepAlive` → `endTick` — тела без `keepAlive` удаляются автоматически
+- **Heartbeat:** `keepAlive(id)` маркирует тело живым в текущем тике, `update(delta)` инкапсулирует симуляцию + unseen-cleanup: тела без `keepAlive` этого тика удаляются в конце `update`. Никаких явных `beginTick/endTick` в API.
+- **`collectActiveBodies(): List<ActiveBodyInfo>`** — снимок всех живых тел с их `physContextIDs`. Используется `PhysicsSimulationSystem` для передачи в `TerrainGenerator.step()`.
 - **Provider-based коллизии:** `TerrainGenerator` инжектит `List<TerrainCollisionProvider>`, при первом обращении выбирает того, у кого `canHandle(serverWorld) == true`. Это позволяет engine-physics не знать ни про Minecraft, ни про Bedrock. `MinecraftTerrainCollisionProvider` берёт реальные AABB-кубойды из `Block.registry().collisionShape()` (cast в `ShapeImpl.boundingBoxes()`) — точные коллизии лестниц/плит/заборов.
-- **`MotionQuality`** переключается динамически: `LinearCast` при скорости > порога, `Discrete` в остальных случаях
-- **Хитбокс игрока** — Dynamic тело без гравитации. Тянется к позиции игрока через velocity (механика "точки встречи" в `PhysicsSystem`). При расхождении — клиенту отправляется velocity для плавного возврата.
+- **`MotionQuality`** переключается динамически: `LinearCast` при скорости > порога, `Discrete` в остальных случаях.
+- **Хитбокс игрока** — Dynamic тело без гравитации. Создаётся и ведётся `DemoPlayerHitboxDriver` (`impl-demo/hitbox/`), не через ECS-компонент. `preSimulate` в PRE-stage делает velocity pull к `player.clientPosition`; `postSimulate` в POST-stage — meeting-point и `player.setVelocity` (pushback).
+- **Лайфцикл кубов** в ECS: `CubePhysicsLifecycleSystem` (keepAlive + getOrCreateBody) → `PhysicsSimulationSystem` (terrain.step + physicsSpace.update) → `CubePhysicsSyncSystem` (transform body → PositionComponent + CubeModelComponent).
 
 `WorldRaycaster` — аналогичный platform-agnostic контракт для raycast по блокам, возвращает `RaycastHit(hitPos, blockPos, blockMaterial: String)`.

@@ -3,6 +3,7 @@ package ru.cherryngine.engine.physics
 import com.github.stephengold.joltjni.*
 import com.github.stephengold.joltjni.enumerate.*
 import ru.cherryngine.engine.core.instance.InstanceSingleton
+import ru.cherryngine.engine.physics.terrain.ActiveBodyInfo
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Transform
 import ru.cherryngine.lib.math.Vec3D
@@ -28,6 +29,9 @@ class PhysicsSpace {
         val bounds = body.getWorldBounds()
         return Vec3D(center.x, bounds.min.y, center.z)
     }
+
+    fun getBodyTransform(physicsId: UUID): Transform? =
+        bodyByPhysicsId[physicsId]?.getTransform()
 
     /**
      * Кастит форму хитбокса игрока вниз и возвращает Y верхней плоскости пола,
@@ -126,18 +130,19 @@ class PhysicsSpace {
         seenThisTick.add(physicsId)
     }
 
-    fun beginTick() {
-        seenThisTick.clear()
-    }
-
-    fun endTick() {
-        val toRemove = bodyByPhysicsId.keys.filter { it !in seenThisTick }
-        toRemove.forEach { uuid ->
-            val body = bodyByPhysicsId.remove(uuid)!!
-            unregisterBodyContexts(body)
-            body.remove()
+    /**
+     * Собирает AABB + velocity + контексты всех живых тел в этом тике.
+     * Используется для [TerrainGenerator] и других consumer'ов, которым нужен
+     * снимок активных тел.
+     */
+    fun collectActiveBodies(): List<ActiveBodyInfo> =
+        bodyByPhysicsId.values.map { body ->
+            ActiveBodyInfo(
+                aabb = body.getWorldBounds(),
+                velocity = body.getLinearVelocity(),
+                physContextIDs = bodyContexts[body.body.va()] ?: emptySet(),
+            )
         }
-    }
 
     fun addTerrain(pos: Vec3I, collisionCuboids: List<Cuboid>): PhysicsBody {
         if (collisionCuboids.size == 1) {
@@ -208,6 +213,15 @@ class PhysicsSpace {
         physicsSystem.update(delta, steps, tempAllocator, jobSystem).also { errors ->
             check(errors == EPhysicsUpdateError.None) { errors }
         }
+
+        // Unseen-cleanup: тела, которым не звали keepAlive в этом тике, удаляются
+        val toRemove = bodyByPhysicsId.keys.filter { it !in seenThisTick }
+        toRemove.forEach { uuid ->
+            val body = bodyByPhysicsId.remove(uuid)!!
+            unregisterBodyContexts(body)
+            body.remove()
+        }
+        seenThisTick.clear()
     }
 
     fun createBody(bodyCreationSettings: BodyCreationSettings, eActivation: EActivation): PhysicsBody {
