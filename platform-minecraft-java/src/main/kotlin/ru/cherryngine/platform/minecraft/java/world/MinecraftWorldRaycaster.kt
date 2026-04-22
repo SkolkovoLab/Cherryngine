@@ -1,7 +1,7 @@
 package ru.cherryngine.platform.minecraft.java.world
 
 import jakarta.inject.Singleton
-import ru.cherryngine.engine.core.instance.ServerWorld
+import ru.cherryngine.engine.core.world.ServerWorld
 import ru.cherryngine.engine.core.world.RaycastHit
 import ru.cherryngine.engine.core.world.WorldRaycaster
 import ru.cherryngine.lib.math.Vec3D
@@ -15,18 +15,17 @@ import kotlin.math.floor
  * `"minecraft:<block>"`.
  */
 @Singleton
-class MinecraftWorldRaycaster : WorldRaycaster {
+class MinecraftWorldRaycaster : WorldRaycaster<MinecraftServerWorld> {
 
-    override fun canHandle(world: ServerWorld): Boolean = world is MinecraftServerWorld
+    override fun canHandle(target: ServerWorld): Boolean = target is MinecraftServerWorld
 
     override fun raycast(
         from: Vec3D,
         direction: Vec3D,
         maxDistance: Double,
-        world: ServerWorld,
+        world: MinecraftServerWorld,
         contextIDs: Set<String>,
     ): RaycastHit? {
-        val mcWorld = world as MinecraftServerWorld
         val stepSize = 0.1
         var distance = 0.0
         val dir = direction.normalize()
@@ -37,7 +36,7 @@ class MinecraftWorldRaycaster : WorldRaycaster {
                 floor(pos.y).toInt(),
                 floor(pos.z).toInt(),
             )
-            val block = mcWorld.getBlock(blockPos, contextIDs)
+            val block = world.getBlock(blockPos, contextIDs)
             if (!block.isAir) {
                 return RaycastHit(pos, blockPos, block.key().asString())
             }

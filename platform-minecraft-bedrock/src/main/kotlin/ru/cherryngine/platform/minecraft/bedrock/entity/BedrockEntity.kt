@@ -21,8 +21,8 @@ class BedrockEntity(
     var position: Vec3D = Vec3D.ZERO
     var yawPitch: YawPitch = YawPitch.ZERO
     val viewers = mutableSetOf<BedrockPlayer>()
+    val subscribers = mutableSetOf<BedrockPlayer>()
     var viewerPredicate: (BedrockPlayer) -> Boolean = { true }
-    var viewContextIDs: Set<String> = emptySet()
 
     fun teleport(position: Vec3D, yawPitch: YawPitch) {
         this.position = position

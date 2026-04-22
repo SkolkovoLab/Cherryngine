@@ -1,8 +1,7 @@
 package ru.cherryngine.engine.physics.terrain
 
 import ru.cherryngine.engine.core.instance.InstanceSingleton
-import ru.cherryngine.engine.core.instance.ServerWorld
-import ru.cherryngine.engine.core.world.TerrainCollisionProvider
+import ru.cherryngine.engine.core.world.TerrainCollisionDispatcher
 import ru.cherryngine.engine.physics.PhysicsSpace
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Vec3I
@@ -12,21 +11,13 @@ import kotlin.math.max
 
 /**
  * Генерирует terrain-тела вокруг активных physics-тел. Платформенная специфика
- * (какой блок → какой список AABB) полностью инкапсулирована в
- * [TerrainCollisionProvider] — инстанс сам выбирает подходящий через
- * `canHandle(serverWorld)` из списка глобальных provider'ов.
+ * (какой блок → какой список AABB) инкапсулирована в [TerrainCollisionDispatcher].
  */
 @InstanceSingleton
 class TerrainGenerator(
     private val physicsSpace: PhysicsSpace,
-    private val allProviders: List<TerrainCollisionProvider>,
-    private val serverWorld: ServerWorld,
+    private val terrainCollision: TerrainCollisionDispatcher,
 ) {
-    private val provider: TerrainCollisionProvider by lazy {
-        allProviders.firstOrNull { it.canHandle(serverWorld) }
-            ?: error("No TerrainCollisionProvider for ${serverWorld::class.simpleName}")
-    }
-
     private data class TerrainKey(val pos: Vec3I, val contextKey: Set<String>)
     private data class TerrainBodyEntry(val body: PhysicsSpace.PhysicsBody, val cuboids: List<Cuboid>)
 
@@ -43,7 +34,7 @@ class TerrainGenerator(
             )
 
             forEachBlockInAABB(aabb) { pos ->
-                val cuboids = provider.getCollisionCuboids(pos, serverWorld, bodyInfo.physContextIDs)
+                val cuboids = terrainCollision.getCollisionCuboids(pos, bodyInfo.physContextIDs)
                 if (cuboids.isEmpty()) return@forEachBlockInAABB
 
                 val key = TerrainKey(pos, bodyInfo.physContextIDs)

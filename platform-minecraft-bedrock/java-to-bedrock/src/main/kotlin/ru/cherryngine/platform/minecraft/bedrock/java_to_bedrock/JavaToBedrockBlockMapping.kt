@@ -1,4 +1,4 @@
-package ru.cherryngine.platform.minecraft.bedrock.world
+package ru.cherryngine.platform.minecraft.bedrock.java_to_bedrock
 
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import jakarta.inject.Singleton

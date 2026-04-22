@@ -14,7 +14,7 @@ import net.minestom.server.network.packet.server.common.TagsPacket
 import net.minestom.server.network.packet.server.configuration.FinishConfigurationPacket
 import net.minestom.server.network.packet.server.status.ResponsePacket
 import net.minestom.server.registry.Registries
-import ru.cherryngine.engine.core.player.InstanceRouter
+import ru.cherryngine.engine.core.instance.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerRouter
 import ru.cherryngine.lib.math.Vec3D

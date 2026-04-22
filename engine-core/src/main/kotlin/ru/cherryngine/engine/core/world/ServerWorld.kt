@@ -1,4 +1,4 @@
-package ru.cherryngine.engine.core.instance
+package ru.cherryngine.engine.core.world
 
 /**
  * Маркерный интерфейс серверного мира.

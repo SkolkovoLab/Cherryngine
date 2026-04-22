@@ -1,21 +1,20 @@
 package ru.cherryngine.engine.core.world
 
-import ru.cherryngine.engine.core.instance.ServerWorld
+import ru.cherryngine.engine.core.platform.PlatformHandler
+import ru.cherryngine.engine.core.world.ServerWorld
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
 
 /**
  * Платформенный raycaster по блокам мира. Реализации — `@Singleton`-ы
- * в платформенных модулях, выбираются через `canHandle(world)`.
+ * в платформенных модулях, резолвятся через [canHandle] из [WorldRaycasterDispatcher].
  */
-interface WorldRaycaster {
-    fun canHandle(world: ServerWorld): Boolean
-
+interface WorldRaycaster<in W : ServerWorld> : PlatformHandler<ServerWorld> {
     fun raycast(
         from: Vec3D,
         direction: Vec3D,
         maxDistance: Double,
-        world: ServerWorld,
+        world: W,
         contextIDs: Set<String>,
     ): RaycastHit?
 }

@@ -1,4 +1,4 @@
-package ru.cherryngine.platform.minecraft.bedrock.world
+package ru.cherryngine.platform.minecraft.bedrock.java_to_bedrock
 
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
@@ -8,7 +8,7 @@ import org.cloudburstmc.nbt.NbtUtils
 import org.cloudburstmc.protocol.common.util.VarInts
 import java.io.ByteArrayOutputStream
 
-object BedrockChunkSerializer {
+object JavaToBedrockChunkSerializer {
 
     private val EMPTY_CHUNK_DATA: ByteArray = run {
         val out = ByteArrayOutputStream()

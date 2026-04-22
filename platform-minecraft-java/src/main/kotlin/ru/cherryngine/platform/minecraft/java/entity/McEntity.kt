@@ -26,10 +26,10 @@ class McEntity(
     val metadata: MutableMap<Int, Metadata.Entry<*>> = mutableMapOf()
     var position = Vec3D.ZERO
     var yawPitch = YawPitch.ZERO
-    private val viewers = mutableSetOf<MinecraftPlayer>()
+    val viewers = mutableSetOf<MinecraftPlayer>()
+    val subscribers = mutableSetOf<MinecraftPlayer>()
 
     override var viewerPredicate: (MinecraftPlayer) -> Boolean = { true }
-    var viewContextIDs: Set<String> = emptySet()
 
     override val chunkPos: ChunkPos
         get() = ChunkUtils.chunkPosFromVec3D(position)

@@ -40,7 +40,7 @@ class MinecraftPlayer(
     var sentChunkCacheCenter: ChunkPos? = null
     val sentChunks: MutableSet<ChunkPos> = mutableSetOf()
 
-    var viewContextIDs: Set<String> = emptySet()
+    override var viewContextIDs: Set<String> = emptySet()
 
     fun getBlockId(pos: Vec3I): Int {
         val chunkPos = ChunkUtils.chunkPosFromVec3I(pos)

@@ -14,7 +14,7 @@ import org.cloudburstmc.protocol.bedrock.packet.*
 import org.cloudburstmc.protocol.bedrock.util.EncryptionUtils
 import org.cloudburstmc.protocol.common.PacketSignal
 import org.cloudburstmc.protocol.common.util.OptionalBoolean
-import ru.cherryngine.engine.core.player.InstanceRouter
+import ru.cherryngine.engine.core.instance.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerRouter
 import ru.cherryngine.lib.math.Vec3D

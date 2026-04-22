@@ -13,7 +13,7 @@ import org.cloudburstmc.protocol.bedrock.BedrockServerSession
 import org.cloudburstmc.protocol.bedrock.codec.v944.Bedrock_v944
 import org.cloudburstmc.protocol.bedrock.netty.initializer.BedrockServerInitializer
 import org.slf4j.LoggerFactory
-import ru.cherryngine.engine.core.player.InstanceRouter
+import ru.cherryngine.engine.core.instance.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerRouter
 import java.net.InetSocketAddress

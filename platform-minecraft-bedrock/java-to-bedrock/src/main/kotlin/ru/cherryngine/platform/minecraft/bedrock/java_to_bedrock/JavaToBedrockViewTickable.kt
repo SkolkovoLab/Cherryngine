@@ -1,4 +1,4 @@
-package ru.cherryngine.platform.minecraft.bedrock.world
+package ru.cherryngine.platform.minecraft.bedrock.java_to_bedrock
 
 import org.cloudburstmc.math.vector.Vector3i
 import org.cloudburstmc.protocol.bedrock.packet.LevelChunkPacket
@@ -16,7 +16,7 @@ import ru.cherryngine.platform.minecraft.java.world.LayeredWorld
 import kotlin.time.Duration
 
 @InstanceSingleton(platform = "bedrock", stage = TickStage.POST)
-class BedrockViewTickable(
+class JavaToBedrockViewTickable(
     private val playerManager: PlayerManager,
     private val blockMapping: JavaToBedrockBlockMapping,
     private val serverWorld: MinecraftServerWorld,
@@ -66,7 +66,7 @@ class BedrockViewTickable(
                 if (packed in bp.sentChunks) continue
 
                 val chunkData = world.getChunkData(chunkPos)
-                val (subChunksLength, dataBuf) = BedrockChunkSerializer.serialize(
+                val (subChunksLength, dataBuf) = JavaToBedrockChunkSerializer.serialize(
                     chunkData.sections, blockMapping
                 )
 
@@ -90,7 +90,7 @@ class BedrockViewTickable(
                 val visibleEntities = entityRegistry.allEntities().filter { entity ->
                     val entityChunkPos = ChunkPos(entity.position.x.toInt() shr 4, entity.position.z.toInt() shr 4)
                     entityChunkPos in entityChunks &&
-                    (entity.viewContextIDs.isEmpty() || entity.viewContextIDs.any { it in contextIDs }) &&
+                    bp in entity.subscribers &&
                     entity.viewerPredicate(bp)
                 }.toSet()
 

@@ -7,5 +7,6 @@ import java.util.*
 interface Player : CommandSender {
     val uuid: UUID
     val username: String
+    val viewContextIDs: Set<String>
     override fun sendMessage(message: Component)
 }

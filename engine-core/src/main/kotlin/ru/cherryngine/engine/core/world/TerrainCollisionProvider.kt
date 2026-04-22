@@ -1,6 +1,7 @@
 package ru.cherryngine.engine.core.world
 
-import ru.cherryngine.engine.core.instance.ServerWorld
+import ru.cherryngine.engine.core.platform.PlatformHandler
+import ru.cherryngine.engine.core.world.ServerWorld
 import ru.cherryngine.lib.math.Cuboid
 import ru.cherryngine.lib.math.Vec3I
 
@@ -10,24 +11,22 @@ import ru.cherryngine.lib.math.Vec3I
  *
  * Реализации объявляются `@Singleton`-ами в платформенных модулях
  * (`MinecraftTerrainCollisionProvider`, `BedrockTerrainCollisionProvider`
- * и т.п.) и резолвятся через `canHandle(world)`.
+ * и т.п.) и резолвятся через [canHandle] из [TerrainCollisionDispatcher].
  */
-interface TerrainCollisionProvider {
-    fun canHandle(world: ServerWorld): Boolean
-
+interface TerrainCollisionProvider<in W : ServerWorld> : PlatformHandler<ServerWorld> {
     /**
      * Кубоиды коллизии блока в локальных координатах `[0..1]^3`.
      * Пустой список = нет коллизии (воздух, jelly и т.п.).
      */
     fun getCollisionCuboids(
         pos: Vec3I,
-        world: ServerWorld,
+        world: W,
         contextIDs: Set<String>,
     ): List<Cuboid>
 
     fun getSurfaceProperties(
         pos: Vec3I,
-        world: ServerWorld,
+        world: W,
         contextIDs: Set<String>,
     ): SurfaceProperties = SurfaceProperties()
 

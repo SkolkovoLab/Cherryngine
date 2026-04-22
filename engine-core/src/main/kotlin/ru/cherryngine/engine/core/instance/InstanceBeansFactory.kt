@@ -1,6 +1,7 @@
 package ru.cherryngine.engine.core.instance
 
 import io.micronaut.context.annotation.Factory
+import ru.cherryngine.engine.core.world.ServerWorld
 
 @Factory
 class InstanceBeansFactory {

@@ -2,7 +2,7 @@ package ru.cherryngine.engine.core.instance
 
 import io.micronaut.context.ApplicationContext
 import io.micronaut.inject.qualifiers.Qualifiers
-import ru.cherryngine.engine.core.utils.StableTicker
+import ru.cherryngine.engine.core.instance.StableTicker
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.time.Duration
 

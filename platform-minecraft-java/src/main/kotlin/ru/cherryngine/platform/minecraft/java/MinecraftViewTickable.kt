@@ -47,10 +47,7 @@ class MinecraftViewTickable(
             val layers = serverWorld.getLayersForContexts(playerContextIDs)
             val dimensionType = serverWorld.dimensionType
             val viewables = mcEntityRegistry.allEntities()
-                .filter { entity ->
-                    val ctx = entity.viewContextIDs
-                    ctx.isEmpty() || ctx.any { it in playerContextIDs }
-                }
+                .filter { entity -> mcPlayer in entity.subscribers }
                 .toSet()
 
             update(mcPlayer, viewables, layers, dimensionType)

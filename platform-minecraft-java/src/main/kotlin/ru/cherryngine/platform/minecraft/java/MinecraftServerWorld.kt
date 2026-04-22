@@ -2,7 +2,7 @@ package ru.cherryngine.platform.minecraft.java
 
 import net.minestom.server.instance.block.Block
 import net.minestom.server.world.DimensionType
-import ru.cherryngine.engine.core.instance.ServerWorld
+import ru.cherryngine.engine.core.world.ServerWorld
 import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.platform.minecraft.java.world.LayerEntry
 import ru.cherryngine.platform.minecraft.java.world.LayeredWorld
