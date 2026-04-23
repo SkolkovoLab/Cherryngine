@@ -45,6 +45,23 @@ class BedrockPlayer(
         session.sendPacket(packet)
     }
 
+    override fun correctClientPosition(position: Vec3D) {
+        // Bedrock MovePlayerPacket не имеет relative-флагов — эмулируем Java-аналог
+        // через absolute teleport с сохранённым clientYawPitch: камера визуально не поворачивается.
+        clientPosition = position
+        val packet = MovePlayerPacket()
+        packet.runtimeEntityId = runtimeEntityId
+        packet.position = position.plus(0.0, 1.62, 0.0).cloudburstVector3f()
+        packet.rotation = Vector3f.from(
+            clientYawPitch.pitch,
+            clientYawPitch.yaw,
+            clientYawPitch.yaw
+        )
+        packet.mode = MovePlayerPacket.Mode.TELEPORT
+        packet.teleportationCause = MovePlayerPacket.TeleportationCause.COMMAND
+        session.sendPacket(packet)
+    }
+
     override fun setVelocity(velocity: Vec3D) {
         val packet = SetEntityMotionPacket()
         packet.runtimeEntityId = runtimeEntityId

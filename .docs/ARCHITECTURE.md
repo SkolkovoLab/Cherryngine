@@ -46,7 +46,7 @@ lib-math       lib-jackson
 ### engine-core
 Платформенно-независимое ядро.
 - `instance.{Instance, InstanceSingleton, InstanceSingletonScope, InstanceBeansFactory, ServerWorld, Tickable, TickStage, InstanceSetup}`
-- `player.{Player, PlayerManager, InstanceRouter, PlayerRouter, PlayerPositionSource, PositionSnapshot, PlayerPositionShadow, PlayerPositionPreSyncTickable, PlayerPositionPostSyncTickable}`. `Player` имеет `clientPosition`/`clientYawPitch` (правда о положении клиента, пишет сеть платформы) и методы `teleport(...)`/`setVelocity(...)` (команды клиенту)
+- `player.{Player, PlayerManager, InstanceRouter, PlayerRouter, PlayerPositionSource, PositionSnapshot, PlayerPositionShadow, PlayerPositionPreSyncTickable, PlayerPositionPostSyncTickable}`. `Player` имеет `clientPosition`/`clientYawPitch` (правда о положении клиента, пишет сеть платформы) и методы `teleport(pos, yaw)` (абсолютный телепорт со сменой камеры), `correctClientPosition(pos)` (мягкая коррекция позиции без изменения направления взгляда — Java использует relative flags, Bedrock — absolute с сохранённым yawPitch), `setVelocity(...)` (команды клиенту)
 - `commandmanager.{CherryngineCommandManager (@InstanceSingleton), CommandSender, SArgumentParser, args/*}`
 - `world.{TerrainCollisionProvider, WorldRaycaster, RaycastHit}` — кросс-платформенные контракты, реализуются `@Singleton`-ами в платформенных модулях с `canHandle(world)`
 - `utils.{KyoriComponentExt, StableTicker}`, `Main`, `LoggerProvider`, `BeanCreationTimeLogger`
@@ -69,7 +69,7 @@ Jolt Physics обёртка. Знает только `engine-core`.
 ### platform-minecraft-java
 Minecraft Java Edition. Содержит:
 - **Сеть:** `network.{Connection, NettyServer, ConnectionHandler, ChannelHandlers, ChannelInjector, ByteBufVarInt}`, `network.protocol.{NetworkCompression, decoders/*, encoders/*, cryptography/*}`. `Connection` — `SimpleChannelInboundHandler<ClientPacket>`. Encoder/decoder ходят через `PacketVanilla.{CLIENT,SERVER}_PACKET_PARSER`, `NetworkBuffer.wrap/makeArray`, `PacketRegistry.PacketInfo`.
-- **Player:** `player.{MinecraftPlayer, MinecraftConnectionService}`. `MinecraftPlayer` реализует `Player` — `clientPosition`/`clientYawPitch` обновляются в `MinecraftConnectionService.onMove()` при получении движения от клиента; `teleport()` шлёт `PlayerPositionAndLookPacket`; `setVelocity()` шлёт `EntityVelocityPacket` (с делением на 20)
+- **Player:** `player.{MinecraftPlayer, MinecraftConnectionService}`. `MinecraftPlayer` реализует `Player` — `clientPosition`/`clientYawPitch` обновляются в `MinecraftConnectionService.onMove()` при получении движения от клиента; `teleport()` шлёт `PlayerPositionAndLookPacket` с абсолютными координатами; `correctClientPosition()` шлёт тот же пакет, но с `RelativeFlags.ALL` (delta position + нулевые yaw/pitch/velocity) — клиент получает подвижку без поворота камеры; `setVelocity()` шлёт `EntityVelocityPacket` (с делением на 20)
 - **Entity:** `entity.{McEntity, McEntityRegistry}`
 - **World/мир:** `MinecraftServerWorld` (per-instance, реализует `ServerWorld`), `world.{Layer, ImmutableLayer, MutableLayer, LayeredWorld, LayerEntry, LayerClassification, LayeredWorld, MutableOverlay, World, VisibleBarriersWorld, ChunkPos, SectionPos, ChunkHeightmap, ChunkHeightmaps, MovePlayerFlags, MutableLayerChangeTracker, LightEngine, ImmutableLayerKey, MinecraftTerrainCollisionProvider, MinecraftWorldRaycaster}`, `world.chunk.ChunkData`, `world.utils.{BitStorage, SimpleBitStorage}`, `world.polar.{PolarReader, PolarWorldGenerator, PolarChunk, PolarSection, PolarWorld, PolarDataConverter, WorldHeightUtil}`
 - **View:** `MinecraftViewTickable`, `view.{Viewable, BlocksViewable, ViewableProvider, StaticViewableProvider}`, `ChunkPool`
@@ -87,7 +87,7 @@ GrimAC anti-cheat + PacketEvents. Опциональный. Per-instance рег�
 ### platform-minecraft-bedrock
 Bedrock Edition через CloudburstMC. Зависит от `platform-minecraft-java` (использует `MinecraftServerWorld` для общего реестра слоёв — Bedrock рендерит данные того же мира).
 - `BedrockServer`, `BedrockSessionHandler`, `BedrockConfig`
-- `BedrockPlayer` — реализует `Player`; `teleport()` шлёт `MovePlayerPacket` с `+1.62 Y` offset; `setVelocity()` шлёт `SetEntityMotionPacket` (с делением на 20)
+- `BedrockPlayer` — реализует `Player`; `teleport()` шлёт `MovePlayerPacket` с `+1.62 Y` offset и переданным yawPitch; `correctClientPosition()` — тот же пакет, но с сохранённым `clientYawPitch` (Bedrock-протокол не поддерживает relative-флаги, эмулируем); `setVelocity()` шлёт `SetEntityMotionPacket` (с делением на 20)
 - `entity.{BedrockEntity, BedrockEntityRegistry}`
 - `world.{BedrockBlockMapping, BedrockChunkSerializer, BedrockViewTickable}`
 

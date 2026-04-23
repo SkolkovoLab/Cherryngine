@@ -2,6 +2,7 @@ package ru.cherryngine.platform.minecraft.java.player
 
 import net.kyori.adventure.text.Component
 import net.minestom.server.coordinate.Vec
+import net.minestom.server.entity.RelativeFlags
 import net.minestom.server.instance.block.Block
 import net.minestom.server.network.packet.server.play.EntityVelocityPacket
 import net.minestom.server.network.packet.server.play.PlayerPositionAndLookPacket
@@ -64,7 +65,6 @@ class MinecraftPlayer(
     override fun teleport(position: Vec3D, yawPitch: YawPitch) {
         clientPosition = position
         clientYawPitch = yawPitch
-
         connection.sendPacket(
             PlayerPositionAndLookPacket(
                 0,
@@ -73,6 +73,24 @@ class MinecraftPlayer(
                 yawPitch.yaw.toFloat(),
                 yawPitch.pitch.toFloat(),
                 0
+            )
+        )
+    }
+
+    override fun correctClientPosition(position: Vec3D) {
+        // Java Edition поддерживает relative-флаги — передаём position как delta от текущей
+        // клиентской позиции, yaw/pitch/delta-velocity = 0 с RelativeFlags.ALL: клиент
+        // не меняет направление камеры и не получает дополнительный импульс.
+        val delta = position - clientPosition
+        clientPosition = position
+        connection.sendPacket(
+            PlayerPositionAndLookPacket(
+                0,
+                delta.minestomVec(),
+                Vec.ZERO,
+                0f,
+                0f,
+                RelativeFlags.ALL
             )
         )
     }

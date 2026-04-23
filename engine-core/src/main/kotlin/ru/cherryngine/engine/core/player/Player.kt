@@ -14,7 +14,16 @@ interface Player : CommandSender {
     val clientPosition: Vec3D
     val clientYawPitch: YawPitch
 
+    /** Абсолютный телепорт: position + yawPitch применяются как есть, камера клиента поворачивается. */
     fun teleport(position: Vec3D, yawPitch: YawPitch)
+
+    /**
+     * Мягко переместить клиента в [position] без смены направления взгляда и без модификации velocity.
+     * Каждая платформа выбирает оптимальный путь (Java Edition — relative teleport через RelativeFlags.ALL,
+     * Bedrock — absolute teleport с сохранённым clientYawPitch).
+     */
+    fun correctClientPosition(position: Vec3D)
+
     fun setVelocity(velocity: Vec3D)
 
     override fun sendMessage(message: Component)
