@@ -57,6 +57,8 @@ class PhysicsSpace {
         val shapeCast = RShapeCast(shape, Vec3(1f, 1f, 1f), comStart, offset)
         val collector = ClosestHitCastShapeCollector()
         val ignoreFilter = IgnoreMultipleBodiesFilter().apply { ignoreBody(body.getId()) }
+        // Ищем только MOVING тела (кубы и другие хитбоксы игроков) — НЕ terrain.
+        // Шалкер-платформа смысл имеет только для "искусственных" поверхностей поверх terrain.
         physicsSystem.narrowPhaseQuery.castShape(
             shapeCast, ShapeCastSettings(), shiftedStart, collector,
             BroadPhaseLayerFilter(), SpecifiedObjectLayerFilter(Layers.MOVING), ignoreFilter
@@ -64,6 +66,28 @@ class PhysicsSpace {
         if (!collector.hadHit()) return null
         val fraction = collector.hit.fraction.toDouble()
         return startShapeBottomY - fraction * totalDist
+    }
+
+    /**
+     * Swept shape-cast формой тела [physicsId] из точки [from] на вектор [offset].
+     * Возвращает fraction хита [0.0..1.0] (какую долю пути тело прошло до столкновения),
+     * либо `null` если путь свободен. Само тело исключается из cast'а.
+     * Используется для детекции "впереди препятствие" в step-up логике хитбокса.
+     */
+    fun castShapeFrom(physicsId: UUID, from: Vec3D, offset: Vec3D): Double? {
+        val physicsBody = bodyByPhysicsId[physicsId] ?: return null
+        val body = physicsBody.body
+        val shape = body.shape
+        val startR = RVec3(from.x, from.y, from.z)
+        val shapeCast = RShapeCast(shape, Vec3(1f, 1f, 1f), RMat44.sTranslation(startR), offset.joltVec3())
+        val collector = ClosestHitCastShapeCollector()
+        val ignoreFilter = IgnoreMultipleBodiesFilter().apply { ignoreBody(body.getId()) }
+        physicsSystem.narrowPhaseQuery.castShape(
+            shapeCast, ShapeCastSettings(), startR, collector,
+            BroadPhaseLayerFilter(), ObjectLayerFilter(), ignoreFilter
+        )
+        if (!collector.hadHit()) return null
+        return collector.hit.fraction.toDouble()
     }
 
     init {
