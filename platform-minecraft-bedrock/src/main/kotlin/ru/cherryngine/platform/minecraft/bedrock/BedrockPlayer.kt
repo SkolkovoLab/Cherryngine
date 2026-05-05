@@ -13,6 +13,7 @@ import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.platform.minecraft.bedrock.utils.cloudburstVector3f
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.atomic.AtomicInteger
 
 class BedrockPlayer(
     val session: BedrockServerSession,
@@ -23,6 +24,14 @@ class BedrockPlayer(
     override var clientYawPitch: YawPitch = YawPitch.ZERO
     val runtimeEntityId: Long = uuid.leastSignificantBits and Long.MAX_VALUE
     val pendingCommands: ConcurrentLinkedQueue<String> = ConcurrentLinkedQueue()
+
+    var heldItemSlot: Int = 0
+    val pendingSlotDeltas: ConcurrentLinkedQueue<Int> = ConcurrentLinkedQueue()
+    val pendingSwings: AtomicInteger = AtomicInteger(0)
+    val pendingUseItems: AtomicInteger = AtomicInteger(0)
+    var prevMissedSwing: Boolean = false
+    var prevStartUsingItem: Boolean = false
+
     val sentChunks: MutableSet<Long> = mutableSetOf()
     var sentChunkCacheCenter: Long = Long.MIN_VALUE
     val visibleEntities: MutableSet<ru.cherryngine.platform.minecraft.bedrock.entity.BedrockEntity> = mutableSetOf()

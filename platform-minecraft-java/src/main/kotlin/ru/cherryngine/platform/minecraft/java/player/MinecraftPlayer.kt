@@ -20,6 +20,7 @@ import ru.cherryngine.platform.minecraft.java.world.ChunkPos
 import ru.cherryngine.platform.minecraft.java.world.ImmutableLayerKey
 import ru.cherryngine.platform.minecraft.java.world.MovePlayerFlags
 import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.atomic.AtomicInteger
 
 class MinecraftPlayer(
     val connection: Connection,
@@ -33,6 +34,11 @@ class MinecraftPlayer(
     var isSneaking: Boolean = false
     val pendingCommands: ConcurrentLinkedQueue<String> = ConcurrentLinkedQueue()
     val pendingSuggestions: ConcurrentLinkedQueue<Pair<Int, String>> = ConcurrentLinkedQueue()
+
+    var heldItemSlot: Int = 0
+    val pendingSlotDeltas: ConcurrentLinkedQueue<Int> = ConcurrentLinkedQueue()
+    val pendingSwings: AtomicInteger = AtomicInteger(0)
+    val pendingUseItems: AtomicInteger = AtomicInteger(0)
 
     val currentVisibleViewables: MutableSet<Viewable> = hashSetOf()
     val currentVisibleBlocksViewables: MutableList<BlocksViewable> = mutableListOf()

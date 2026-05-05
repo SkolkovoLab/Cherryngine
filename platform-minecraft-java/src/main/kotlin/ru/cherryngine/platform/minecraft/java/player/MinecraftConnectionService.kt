@@ -17,6 +17,7 @@ import net.minestom.server.registry.Registries
 import ru.cherryngine.engine.core.instance.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerRouter
+import ru.cherryngine.engine.core.utils.scrollAmount
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.platform.minecraft.java.ServerConsts
@@ -118,6 +119,24 @@ class MinecraftConnectionService(
             is ClientInputPacket -> {
                 val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
                 player.isSneaking = true
+            }
+
+            is ClientHeldItemChangePacket -> {
+                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
+                val newSlot = packet.slot.toInt()
+                val delta = scrollAmount(player.heldItemSlot, newSlot)
+                player.heldItemSlot = newSlot
+                if (delta != 0) player.pendingSlotDeltas.offer(delta)
+            }
+
+            is ClientAnimationPacket -> {
+                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
+                player.pendingSwings.incrementAndGet()
+            }
+
+            is ClientUseItemPacket -> {
+                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
+                player.pendingUseItems.incrementAndGet()
             }
 
             is ClientPingRequestPacket -> {

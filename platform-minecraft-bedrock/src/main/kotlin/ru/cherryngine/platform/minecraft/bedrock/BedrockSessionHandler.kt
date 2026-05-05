@@ -17,6 +17,7 @@ import org.cloudburstmc.protocol.common.util.OptionalBoolean
 import ru.cherryngine.engine.core.instance.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerRouter
+import ru.cherryngine.engine.core.utils.scrollAmount
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import java.io.ByteArrayOutputStream
@@ -132,6 +133,17 @@ class BedrockSessionHandler(
         return PacketSignal.HANDLED
     }
 
+    override fun handle(packet: MobEquipmentPacket): PacketSignal {
+        // Приходит и при свопе предметов в инвентаре, не только при скролле — scrollAmount
+        // корректно отрабатывает любую смену hotbarSlot, поэтому фильтровать не нужно.
+        val p = player ?: return PacketSignal.HANDLED
+        val newSlot = packet.hotbarSlot
+        val delta = scrollAmount(p.heldItemSlot, newSlot)
+        p.heldItemSlot = newSlot
+        if (delta != 0) p.pendingSlotDeltas.offer(delta)
+        return PacketSignal.HANDLED
+    }
+
     override fun handle(packet: PlayerAuthInputPacket): PacketSignal {
         val p = player ?: return PacketSignal.HANDLED
         p.clientPosition = Vec3D(
@@ -140,6 +152,17 @@ class BedrockSessionHandler(
             packet.position.z.toDouble()
         )
         p.clientYawPitch = YawPitch(packet.rotation.y, packet.rotation.x)
+
+        // Свинг рукой / start using item — инкрементим по rising-edge,
+        // т.к. флаги в inputData могут висеть несколько тиков подряд.
+        val inputs = packet.inputData
+        val nowMissed = PlayerAuthInputData.MISSED_SWING in inputs
+        val nowUseItem = PlayerAuthInputData.START_USING_ITEM in inputs
+        if (nowMissed && !p.prevMissedSwing) p.pendingSwings.incrementAndGet()
+        if (nowUseItem && !p.prevStartUsingItem) p.pendingUseItems.incrementAndGet()
+        p.prevMissedSwing = nowMissed
+        p.prevStartUsingItem = nowUseItem
+
         return PacketSignal.HANDLED
     }
 
