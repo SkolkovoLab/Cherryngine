@@ -17,7 +17,6 @@ import net.minestom.server.registry.Registries
 import ru.cherryngine.engine.core.instance.InstanceRouter
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.engine.core.player.PlayerRouter
-import ru.cherryngine.engine.core.utils.scrollAmount
 import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.platform.minecraft.java.ServerConsts
@@ -77,73 +76,46 @@ class MinecraftConnectionService(
                 instanceRouter.routePlayer(player.uuid, playerRouter.getInitialInstance(player))
             }
 
-            is ClientPlayerPositionPacket -> onMove(
-                connection,
-                packet.position.vec3D(),
-                null,
-                flagsFromByte(packet.flags),
-            )
+            // Движение — обновляем live-стейт (нужен view/chunk culling), плюс пакет в очередь
+            // для потребителей, которым важна сама последовательность апдейтов.
+            is ClientPlayerPositionPacket -> {
+                onMove(connection, packet.position.vec3D(), null, flagsFromByte(packet.flags))
+                playerOf(connection)?.enqueuePacket(packet)
+            }
 
             is ClientPlayerPositionAndRotationPacket -> {
                 val p: Pos = packet.position
-                onMove(
-                    connection,
-                    p.vec3D(),
-                    p.yawPitch(),
-                    flagsFromByte(packet.flags),
-                )
+                onMove(connection, p.vec3D(), p.yawPitch(), flagsFromByte(packet.flags))
+                playerOf(connection)?.enqueuePacket(packet)
             }
 
-            is ClientPlayerRotationPacket -> onMove(
-                connection,
-                null,
-                YawPitch(packet.yaw, packet.pitch),
-                flagsFromByte(packet.flags),
-            )
-
-            is ClientPlayerPositionStatusPacket -> onMove(
-                connection,
-                null, null, flagsFromByte(packet.flags),
-            )
-
-            is ClientCommandChatPacket -> {
-                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
-                player.pendingCommands.offer(packet.message)
+            is ClientPlayerRotationPacket -> {
+                onMove(connection, null, YawPitch(packet.yaw, packet.pitch), flagsFromByte(packet.flags))
+                playerOf(connection)?.enqueuePacket(packet)
             }
 
-            is ClientTabCompletePacket -> {
-                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
-                player.pendingSuggestions.offer(Pair(packet.transactionId, packet.text.removePrefix("/")))
+            is ClientPlayerPositionStatusPacket -> {
+                onMove(connection, null, null, flagsFromByte(packet.flags))
+                playerOf(connection)?.enqueuePacket(packet)
             }
 
-            is ClientInputPacket -> {
-                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
-                player.isSneaking = true
-            }
-
-            is ClientHeldItemChangePacket -> {
-                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
-                val newSlot = packet.slot.toInt()
-                val delta = scrollAmount(player.heldItemSlot, newSlot)
-                player.heldItemSlot = newSlot
-                if (delta != 0) player.pendingSlotDeltas.offer(delta)
-            }
-
-            is ClientAnimationPacket -> {
-                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
-                player.pendingSwings.incrementAndGet()
-            }
-
-            is ClientUseItemPacket -> {
-                val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
-                player.pendingUseItems.incrementAndGet()
-            }
+            // Все остальные игровые пакеты — просто в очередь. Семантику разворачивает Source.
+            is ClientCommandChatPacket,
+            is ClientTabCompletePacket,
+            is ClientInputPacket,
+            is ClientHeldItemChangePacket,
+            is ClientAnimationPacket,
+            is ClientUseItemPacket,
+                -> playerOf(connection)?.enqueuePacket(packet)
 
             is ClientPingRequestPacket -> {
                 // отвечает за Connection, игнорируем здесь
             }
         }
     }
+
+    private fun playerOf(connection: Connection): MinecraftPlayer? =
+        playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer
 
     /**
      * Шлёт все RegistryData- и TagsPacket, которые клиент ждёт в CONFIGURATION-фазе.
@@ -216,7 +188,7 @@ class MinecraftConnectionService(
         yawPitch: YawPitch?,
         flags: MovePlayerFlags,
     ) {
-        val player = playerManager.getPlayerNullable(connection.gameProfile.uuid()) as? MinecraftPlayer ?: return
+        val player = playerOf(connection) ?: return
         if (pos != null) player.clientPosition = pos
         if (yawPitch != null) player.clientYawPitch = yawPitch
         player.clientMovePlayerFlags = flags

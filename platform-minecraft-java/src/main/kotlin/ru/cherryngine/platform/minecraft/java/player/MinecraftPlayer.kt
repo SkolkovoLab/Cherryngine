@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component
 import net.minestom.server.coordinate.Vec
 import net.minestom.server.entity.RelativeFlags
 import net.minestom.server.instance.block.Block
+import net.minestom.server.network.packet.client.ClientPacket
 import net.minestom.server.network.packet.server.play.EntityVelocityPacket
 import net.minestom.server.network.packet.server.play.PlayerPositionAndLookPacket
 import net.minestom.server.network.packet.server.play.SystemChatPacket
@@ -20,7 +21,6 @@ import ru.cherryngine.platform.minecraft.java.world.ChunkPos
 import ru.cherryngine.platform.minecraft.java.world.ImmutableLayerKey
 import ru.cherryngine.platform.minecraft.java.world.MovePlayerFlags
 import java.util.concurrent.ConcurrentLinkedQueue
-import java.util.concurrent.atomic.AtomicInteger
 
 class MinecraftPlayer(
     val connection: Connection,
@@ -32,13 +32,14 @@ class MinecraftPlayer(
     override var clientYawPitch: YawPitch = YawPitch.ZERO
     var clientMovePlayerFlags: MovePlayerFlags = MovePlayerFlags(false, false)
     var isSneaking: Boolean = false
-    val pendingCommands: ConcurrentLinkedQueue<String> = ConcurrentLinkedQueue()
-    val pendingSuggestions: ConcurrentLinkedQueue<Pair<Int, String>> = ConcurrentLinkedQueue()
 
-    var heldItemSlot: Int = 0
-    val pendingSlotDeltas: ConcurrentLinkedQueue<Int> = ConcurrentLinkedQueue()
-    val pendingSwings: AtomicInteger = AtomicInteger(0)
-    val pendingUseItems: AtomicInteger = AtomicInteger(0)
+    // Пишется с сетевого потока на каждый входящий игровой пакет.
+    private val incomingPackets = ConcurrentLinkedQueue<ClientPacket>()
+
+    // Читается только с игрового потока. Перекладывается из incomingPackets через snapshotPackets()
+    // в начале PRE-стадии тика. Все Source'ы читают именно отсюда.
+    var tickPackets: List<ClientPacket> = emptyList()
+        private set
 
     val currentVisibleViewables: MutableSet<Viewable> = hashSetOf()
     val currentVisibleBlocksViewables: MutableList<BlocksViewable> = mutableListOf()
@@ -49,6 +50,20 @@ class MinecraftPlayer(
     val sentChunks: MutableSet<ChunkPos> = mutableSetOf()
 
     override var viewContextIDs: Set<String> = emptySet()
+
+    fun enqueuePacket(packet: ClientPacket) {
+        incomingPackets.add(packet)
+    }
+
+    /** Атомарно перекладывает входящую очередь в tickPackets. Вызывается раз за тик в PRE. */
+    fun snapshotPackets() {
+        val snapshot = mutableListOf<ClientPacket>()
+        while (true) snapshot.add(incomingPackets.poll() ?: break)
+        tickPackets = snapshot
+    }
+
+    inline fun <reified P : ClientPacket> packets(): List<P> =
+        tickPackets.filterIsInstance<P>()
 
     fun getBlockId(pos: Vec3I): Int {
         val chunkPos = ChunkUtils.chunkPosFromVec3I(pos)

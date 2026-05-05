@@ -6,10 +6,10 @@ import java.util.concurrent.ConcurrentHashMap
 
 @InstanceSingleton
 class PlayerPositionShadow {
-    private val map = ConcurrentHashMap<UUID, PositionSnapshot>()
+    private val map = ConcurrentHashMap<UUID, MovementSnapshot>()
 
-    operator fun get(uuid: UUID): PositionSnapshot? = map[uuid]
-    operator fun set(uuid: UUID, snapshot: PositionSnapshot) {
+    operator fun get(uuid: UUID): MovementSnapshot? = map[uuid]
+    operator fun set(uuid: UUID, snapshot: MovementSnapshot) {
         map[uuid] = snapshot
     }
 
