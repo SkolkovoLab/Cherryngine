@@ -27,7 +27,6 @@ import ru.cherryngine.platform.minecraft.java.events.PlayerCreatedEvent
 import ru.cherryngine.platform.minecraft.java.network.Connection
 import ru.cherryngine.platform.minecraft.java.utils.vec3D
 import ru.cherryngine.platform.minecraft.java.utils.yawPitch
-import ru.cherryngine.platform.minecraft.java.world.MovePlayerFlags
 
 @Singleton
 class MinecraftConnectionService(
@@ -35,6 +34,7 @@ class MinecraftConnectionService(
     private val instanceRouter: InstanceRouter,
     private val playerRouter: PlayerRouter,
     private val registries: Registries,
+    private val clientState: MinecraftClientState,
     val playerCreatedEventPublisher: ApplicationEventPublisher<PlayerCreatedEvent>,
     val playerConfigurationAsyncEventPublisher: ApplicationEventPublisher<PlayerConfigurationAsyncEvent>,
 ) {
@@ -76,26 +76,26 @@ class MinecraftConnectionService(
                 instanceRouter.routePlayer(player.uuid, playerRouter.getInitialInstance(player))
             }
 
-            // Движение — обновляем live-стейт (нужен view/chunk culling), плюс пакет в очередь
-            // для потребителей, которым важна сама последовательность апдейтов.
+            // Движение — обновляем кеш (нужен view/chunk culling и потребителям-Source'ам),
+            // плюс пакет в очередь для тех, кому важна сама последовательность апдейтов.
             is ClientPlayerPositionPacket -> {
-                onMove(connection, packet.position.vec3D(), null, flagsFromByte(packet.flags))
+                onMove(connection, packet.position.vec3D(), null, isOnGroundFromFlags(packet.flags))
                 playerOf(connection)?.enqueuePacket(packet)
             }
 
             is ClientPlayerPositionAndRotationPacket -> {
                 val p: Pos = packet.position
-                onMove(connection, p.vec3D(), p.yawPitch(), flagsFromByte(packet.flags))
+                onMove(connection, p.vec3D(), p.yawPitch(), isOnGroundFromFlags(packet.flags))
                 playerOf(connection)?.enqueuePacket(packet)
             }
 
             is ClientPlayerRotationPacket -> {
-                onMove(connection, null, YawPitch(packet.yaw, packet.pitch), flagsFromByte(packet.flags))
+                onMove(connection, null, YawPitch(packet.yaw, packet.pitch), isOnGroundFromFlags(packet.flags))
                 playerOf(connection)?.enqueuePacket(packet)
             }
 
             is ClientPlayerPositionStatusPacket -> {
-                onMove(connection, null, null, flagsFromByte(packet.flags))
+                onMove(connection, null, null, isOnGroundFromFlags(packet.flags))
                 playerOf(connection)?.enqueuePacket(packet)
             }
 
@@ -177,21 +177,18 @@ class MinecraftConnectionService(
         connection.sendPacket(TagsPacket(tagEntries))
     }
 
-    private fun flagsFromByte(flags: Byte): MovePlayerFlags {
-        val i = flags.toInt()
-        return MovePlayerFlags(isOnGround = (i and 0x01) != 0, horizontalCollision = (i and 0x02) != 0)
-    }
+    private fun isOnGroundFromFlags(flags: Byte): Boolean = (flags.toInt() and 0x01) != 0
 
     private fun onMove(
         connection: Connection,
         pos: Vec3D?,
         yawPitch: YawPitch?,
-        flags: MovePlayerFlags,
+        onGround: Boolean,
     ) {
-        val player = playerOf(connection) ?: return
-        if (pos != null) player.clientPosition = pos
-        if (yawPitch != null) player.clientYawPitch = yawPitch
-        player.clientMovePlayerFlags = flags
+        val uuid = connection.gameProfile.uuid()
+        if (pos != null) clientState.setPosition(uuid, pos)
+        if (yawPitch != null) clientState.setYawPitch(uuid, yawPitch)
+        clientState.setOnGround(uuid, onGround)
     }
 
     @EventListener
@@ -204,6 +201,7 @@ class MinecraftConnectionService(
                 instanceRouter.removePlayer(player)
             }
             playerManager.unregister(uuid)
+            clientState.forget(uuid)
         }
     }
 }

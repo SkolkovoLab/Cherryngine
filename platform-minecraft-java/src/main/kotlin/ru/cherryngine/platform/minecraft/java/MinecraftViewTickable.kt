@@ -12,6 +12,7 @@ import ru.cherryngine.engine.core.instance.TickStage
 import ru.cherryngine.engine.core.instance.Tickable
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.platform.minecraft.java.entity.McEntityRegistry
+import ru.cherryngine.platform.minecraft.java.player.MinecraftClientState
 import ru.cherryngine.platform.minecraft.java.player.MinecraftPlayer
 import ru.cherryngine.platform.minecraft.java.utils.ChunkUtils
 import ru.cherryngine.platform.minecraft.java.view.Viewable
@@ -27,6 +28,7 @@ class MinecraftViewTickable(
     private val mcEntityRegistry: McEntityRegistry,
     private val serverWorld: MinecraftServerWorld,
     private val registries: Registries,
+    private val clientState: MinecraftClientState,
 ) : Tickable {
     private val changeTracker: MutableLayerChangeTracker? = null
     private val biomeCount: Int = registries.biome().size()
@@ -64,7 +66,8 @@ class MinecraftViewTickable(
         if (connection.state != ConnectionState.PLAY) return
         val distance = DEFAULT_RENDER_DISTANCE
 
-        val clientChunkPos = ChunkUtils.chunkPosFromVec3D(player.clientPosition)
+        val clientPos = clientState.position(player.uuid) ?: return
+        val clientChunkPos = ChunkUtils.chunkPosFromVec3D(clientPos)
 
         if (player.sentChunkCacheCenter != clientChunkPos) {
             player.sentChunkCacheCenter = clientChunkPos

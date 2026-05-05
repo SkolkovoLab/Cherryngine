@@ -1,25 +1,17 @@
 package ru.cherryngine.platform.minecraft.java.player
 
 import net.kyori.adventure.text.Component
-import net.minestom.server.coordinate.Vec
-import net.minestom.server.entity.RelativeFlags
 import net.minestom.server.instance.block.Block
 import net.minestom.server.network.packet.client.ClientPacket
-import net.minestom.server.network.packet.server.play.EntityVelocityPacket
-import net.minestom.server.network.packet.server.play.PlayerPositionAndLookPacket
 import net.minestom.server.network.packet.server.play.SystemChatPacket
 import ru.cherryngine.engine.core.player.Player
-import ru.cherryngine.lib.math.Vec3D
 import ru.cherryngine.lib.math.Vec3I
-import ru.cherryngine.lib.math.YawPitch
 import ru.cherryngine.platform.minecraft.java.network.Connection
 import ru.cherryngine.platform.minecraft.java.utils.ChunkUtils
-import ru.cherryngine.platform.minecraft.java.utils.minestomVec
 import ru.cherryngine.platform.minecraft.java.view.BlocksViewable
 import ru.cherryngine.platform.minecraft.java.view.Viewable
 import ru.cherryngine.platform.minecraft.java.world.ChunkPos
 import ru.cherryngine.platform.minecraft.java.world.ImmutableLayerKey
-import ru.cherryngine.platform.minecraft.java.world.MovePlayerFlags
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class MinecraftPlayer(
@@ -28,16 +20,11 @@ class MinecraftPlayer(
     override val uuid get() = connection.gameProfile.uuid
     override val username get() = connection.gameProfile.name()
 
-    var clientPosition: Vec3D = Vec3D.ZERO
-    var clientYawPitch: YawPitch = YawPitch.ZERO
-    var clientMovePlayerFlags: MovePlayerFlags = MovePlayerFlags(false, false)
-    var isSneaking: Boolean = false
-
     // Пишется с сетевого потока на каждый входящий игровой пакет.
     private val incomingPackets = ConcurrentLinkedQueue<ClientPacket>()
 
     // Читается только с игрового потока. Перекладывается из incomingPackets через snapshotPackets()
-    // в начале PRE-стадии тика. Все Source'ы читают именно отсюда.
+    // в начале INPUT-стадии тика. Все Source'ы читают именно отсюда.
     var tickPackets: List<ClientPacket> = emptyList()
         private set
 
@@ -55,7 +42,7 @@ class MinecraftPlayer(
         incomingPackets.add(packet)
     }
 
-    /** Атомарно перекладывает входящую очередь в tickPackets. Вызывается раз за тик в PRE. */
+    /** Атомарно перекладывает входящую очередь в tickPackets. Вызывается раз за тик в INPUT. */
     fun snapshotPackets() {
         val snapshot = mutableListOf<ClientPacket>()
         while (true) snapshot.add(incomingPackets.poll() ?: break)
@@ -81,43 +68,6 @@ class MinecraftPlayer(
 
     fun getBlock(pos: Vec3I): Block {
         return Block.fromStateId(getBlockId(pos)) ?: Block.AIR
-    }
-
-    override fun teleport(position: Vec3D, yawPitch: YawPitch) {
-        clientPosition = position
-        clientYawPitch = yawPitch
-        connection.sendPacket(
-            PlayerPositionAndLookPacket(
-                0,
-                position.minestomVec(),
-                Vec.ZERO,
-                yawPitch.yaw.toFloat(),
-                yawPitch.pitch.toFloat(),
-                0
-            )
-        )
-    }
-
-    override fun correctClientPosition(position: Vec3D) {
-        // Java Edition поддерживает relative-флаги — передаём position как delta от текущей
-        // клиентской позиции, yaw/pitch/delta-velocity = 0 с RelativeFlags.ALL: клиент
-        // не меняет направление камеры и не получает дополнительный импульс.
-        val delta = position - clientPosition
-        clientPosition = position
-        connection.sendPacket(
-            PlayerPositionAndLookPacket(
-                0,
-                delta.minestomVec(),
-                Vec.ZERO,
-                0f,
-                0f,
-                RelativeFlags.ALL
-            )
-        )
-    }
-
-    override fun setVelocity(velocity: Vec3D) {
-        connection.sendPacket(EntityVelocityPacket(0, velocity.div(20.0).minestomVec()))
     }
 
     override fun sendMessage(message: Component) {

@@ -15,7 +15,7 @@ include(
     "platform-minecraft-java",
     "platform-minecraft-bedrock",
     "platform-minecraft-bedrock:java-to-bedrock",
-    "platform-minecraft-java:integration:grim",
+    // "platform-minecraft-java:integration:grim", — отключён: ломан и ещё не обновлён под новый Player API
     "platform-minecraft-java:integration:viaversion",
     "engine-physics",
 
