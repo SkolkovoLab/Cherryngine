@@ -11,9 +11,6 @@ interface Player : CommandSender {
     val username: String
     val viewContextIDs: Set<String>
 
-    val clientPosition: Vec3D
-    val clientYawPitch: YawPitch
-
     /** Абсолютный телепорт: position + yawPitch применяются как есть, камера клиента поворачивается. */
     fun teleport(position: Vec3D, yawPitch: YawPitch)
 

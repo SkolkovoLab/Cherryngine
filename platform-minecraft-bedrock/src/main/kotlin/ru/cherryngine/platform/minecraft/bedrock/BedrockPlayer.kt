@@ -20,8 +20,8 @@ class BedrockPlayer(
     override val uuid: UUID,
     override val username: String,
 ) : Player {
-    override var clientPosition: Vec3D = Vec3D.ZERO
-    override var clientYawPitch: YawPitch = YawPitch.ZERO
+    var clientPosition: Vec3D = Vec3D.ZERO
+    var clientYawPitch: YawPitch = YawPitch.ZERO
     val runtimeEntityId: Long = uuid.leastSignificantBits and Long.MAX_VALUE
     val pendingCommands: ConcurrentLinkedQueue<String> = ConcurrentLinkedQueue()
 
