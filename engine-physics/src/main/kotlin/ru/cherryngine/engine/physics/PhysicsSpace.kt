@@ -21,6 +21,7 @@ class PhysicsSpace {
     val bodyContexts = HashMap<Long, Set<String>>()
 
     private val bodyByPhysicsId = HashMap<UUID, PhysicsBody>()
+    private val vehicleByPhysicsId = HashMap<UUID, VehicleBody>()
     private val seenThisTick = HashSet<UUID>()
 
     fun getBodyBottomPosition(physicsId: UUID): Vec3D? {
@@ -32,6 +33,28 @@ class PhysicsSpace {
 
     fun getBodyTransform(physicsId: UUID): Transform? =
         bodyByPhysicsId[physicsId]?.getTransform()
+            ?: vehicleByPhysicsId[physicsId]?.getTransform()
+
+    fun getVehicleBody(physicsId: UUID): VehicleBody? = vehicleByPhysicsId[physicsId]
+
+    /** Унифицированный сеттер velocity для тела ИЛИ машины по physicsId. */
+    fun setLinearVelocity(physicsId: UUID, velocity: Vec3D) {
+        bodyByPhysicsId[physicsId]?.setLinearVelocity(velocity)
+            ?: vehicleByPhysicsId[physicsId]?.setLinearVelocity(velocity)
+    }
+
+    fun setAngularVelocity(physicsId: UUID, velocity: Vec3D) {
+        bodyByPhysicsId[physicsId]?.setAngularVelocity(velocity)
+            ?: vehicleByPhysicsId[physicsId]?.setAngularVelocity(velocity)
+    }
+
+    fun getOrCreateVehicleBody(physicsId: UUID, physContextIDs: Set<String>, factory: () -> VehicleBody): VehicleBody {
+        return vehicleByPhysicsId.getOrPut(physicsId) {
+            factory().also { vehicle ->
+                if (physContextIDs.isNotEmpty()) bodyContexts[vehicle.body.va()] = physContextIDs
+            }
+        }
+    }
 
     /**
      * Кастит форму хитбокса игрока вниз и возвращает Y верхней плоскости пола,
@@ -159,14 +182,26 @@ class PhysicsSpace {
      * Используется для [TerrainGenerator] и других consumer'ов, которым нужен
      * снимок активных тел.
      */
-    fun collectActiveBodies(): List<ActiveBodyInfo> =
-        bodyByPhysicsId.values.map { body ->
-            ActiveBodyInfo(
+    fun collectActiveBodies(): List<ActiveBodyInfo> {
+        val result = ArrayList<ActiveBodyInfo>(bodyByPhysicsId.size + vehicleByPhysicsId.size)
+        for (body in bodyByPhysicsId.values) {
+            result += ActiveBodyInfo(
                 aabb = body.getWorldBounds(),
                 velocity = body.getLinearVelocity(),
                 physContextIDs = bodyContexts[body.body.va()] ?: emptySet(),
             )
         }
+        // Машины тоже должны попадать в TerrainGenerator — иначе вокруг них не
+        // создаётся коллизионный terrain и колёса проваливаются в пустоту.
+        for (vehicle in vehicleByPhysicsId.values) {
+            result += ActiveBodyInfo(
+                aabb = vehicle.getWorldBounds(),
+                velocity = vehicle.getLinearVelocity(),
+                physContextIDs = bodyContexts[vehicle.body.va()] ?: emptySet(),
+            )
+        }
+        return result
+    }
 
     fun addTerrain(pos: Vec3I, collisionCuboids: List<Cuboid>): PhysicsBody {
         if (collisionCuboids.size == 1) {
@@ -212,6 +247,92 @@ class PhysicsSpace {
         return createBody(bodySettings, EActivation.Activate)
     }
 
+    /**
+     * Создаёт колёсный автомобиль через Jolt VehicleConstraint:
+     * шасси-box + 4 колеса, передние с рулением, задние ведущие.
+     * Колёса как отдельные тела не создаются — Jolt управляет их транформами
+     * через VehicleConstraint. Внешним консьюмерам — только чтение через
+     * [VehicleBody.getWheelTransform].
+     */
+    fun addCar(
+        position: Vec3D,
+        chassisSize: Vec3D,
+        chassisMass: Float = 1500f,
+    ): VehicleBody {
+        // Все wheel-размеры пропорциональны chassisSize — иначе на крупном шасси
+        // (1.5м высотой) дефолтные wheelRadius=0.3 и attachment=chassisBottom дают
+        // wheels-bottom едва ниже chassis-bottom, чассис ложится «на пузо».
+        val halfWidth = chassisSize.x.toFloat() * 0.5f
+        val halfHeight = chassisSize.y.toFloat() * 0.5f
+        val halfLength = chassisSize.z.toFloat() * 0.5f
+        val wheelRadius = minOf(chassisSize.y, chassisSize.x).toFloat() * 0.25f
+        val wheelHalfWidth = wheelRadius * 0.3f
+        val suspensionMin = wheelRadius * 1.0f
+        val suspensionMax = wheelRadius * 2.0f
+        val attachY = -halfHeight + wheelRadius  // wheel-radius выше дна — wheels высовываются ниже
+        val wheelInset = wheelRadius * 0.5f
+        val maxSteer = Math.toRadians(25.0).toFloat()
+
+        // Шасси
+        val halfExtents = chassisSize.joltVec3().apply { scaleInPlace(0.5f) }
+        val chassisShape = BoxShape(halfExtents)
+        val chassisSettings = BodyCreationSettings()
+            .setMotionType(EMotionType.Dynamic)
+            .setObjectLayer(Layers.MOVING)
+            .setShape(chassisShape)
+            .setPosition(position.joltRVec3())
+            .setLinearDamping(0.05f)
+            .setAngularDamping(0.05f)
+            .setMassPropertiesOverride(MassProperties().apply { setMass(chassisMass) })
+            .setOverrideMassProperties(EOverrideMassProperties.CalculateInertia)
+
+        // 4 колеса в углах: 0=FL, 1=FR, 2=RL, 3=RR
+        fun makeWheel(localX: Float, localZ: Float, steerable: Boolean): WheelSettingsWv {
+            val wheel = WheelSettingsWv()
+            wheel.setPosition(Vec3(localX, attachY, localZ))
+            wheel.setRadius(wheelRadius)
+            wheel.setWidth(wheelHalfWidth * 2f)
+            wheel.setSuspensionMinLength(suspensionMin)
+            wheel.setSuspensionMaxLength(suspensionMax)
+            wheel.setSuspensionDirection(Vec3(0f, -1f, 0f))
+            wheel.setSteeringAxis(Vec3(0f, 1f, 0f))
+            wheel.setWheelForward(Vec3(0f, 0f, 1f))
+            wheel.setWheelUp(Vec3(0f, 1f, 0f))
+            wheel.setMaxSteerAngle(if (steerable) maxSteer else 0f)
+            wheel.setMaxBrakeTorque(3000f)
+            wheel.setMaxHandBrakeTorque(if (steerable) 0f else 4000f)
+            // Дефолтная Jolt-suspension ~1.5Hz слишком мягкая для тяжёлой машины при g=−17:
+            // компресс к min'у, чассис проседает почти до пуза. 2.5Hz держит лучше.
+            wheel.suspensionSpring.setFrequency(2.5f)
+            wheel.suspensionSpring.setDamping(0.5f)
+            return wheel
+        }
+
+        val frontLeft  = makeWheel( halfWidth - wheelInset, halfLength - wheelInset, steerable = true)
+        val frontRight = makeWheel(-halfWidth + wheelInset, halfLength - wheelInset, steerable = true)
+        val rearLeft   = makeWheel( halfWidth - wheelInset, -halfLength + wheelInset, steerable = false)
+        val rearRight  = makeWheel(-halfWidth + wheelInset, -halfLength + wheelInset, steerable = false)
+
+        // Контроллер: задний привод (диф 2/3)
+        val controllerSettings = WheeledVehicleControllerSettings()
+        controllerSettings.engine.setMaxTorque(500f)
+        controllerSettings.engine.setMinRpm(1000f)
+        controllerSettings.engine.setMaxRpm(6000f)
+        controllerSettings.setNumDifferentials(1)
+        val diff = controllerSettings.getDifferential(0)
+        diff.setLeftWheel(2)
+        diff.setRightWheel(3)
+        diff.setEngineTorqueRatio(1f)
+
+        val constraintSettings = VehicleConstraintSettings()
+        constraintSettings.setForward(Vec3(0f, 0f, 1f))
+        constraintSettings.setUp(Vec3(0f, 1f, 0f))
+        constraintSettings.addWheels(frontLeft, frontRight, rearLeft, rearRight)
+        constraintSettings.setController(controllerSettings)
+
+        return VehicleBody(chassisSettings, constraintSettings)
+    }
+
     fun addCube(position: Vec3D, size: Vec3D): PhysicsBody {
         val bodyCreationSettings = BodyCreationSettings()
             .setMotionType(EMotionType.Dynamic)
@@ -232,18 +353,29 @@ class PhysicsSpace {
             val quality = if (speed > linearCastSpeedThreshold) EMotionQuality.LinearCast else EMotionQuality.Discrete
             bodyInterface.setMotionQuality(body.body.id, quality)
         }
+        for (vehicle in vehicleByPhysicsId.values) {
+            val speed = vehicle.body.getLinearVelocity().length()
+            val quality = if (speed > linearCastSpeedThreshold) EMotionQuality.LinearCast else EMotionQuality.Discrete
+            bodyInterface.setMotionQuality(vehicle.body.id, quality)
+        }
 
         val steps = 1
         physicsSystem.update(delta, steps, tempAllocator, jobSystem).also { errors ->
             check(errors == EPhysicsUpdateError.None) { errors }
         }
 
-        // Unseen-cleanup: тела, которым не звали keepAlive в этом тике, удаляются
+        // Unseen-cleanup: тела/машины, которым не звали keepAlive в этом тике, удаляются
         val toRemove = bodyByPhysicsId.keys.filter { it !in seenThisTick }
         toRemove.forEach { uuid ->
             val body = bodyByPhysicsId.remove(uuid)!!
             unregisterBodyContexts(body)
             body.remove()
+        }
+        val toRemoveVehicles = vehicleByPhysicsId.keys.filter { it !in seenThisTick }
+        toRemoveVehicles.forEach { uuid ->
+            val vehicle = vehicleByPhysicsId.remove(uuid)!!
+            bodyContexts.remove(vehicle.body.va())
+            vehicle.remove()
         }
         seenThisTick.clear()
     }
@@ -319,6 +451,82 @@ class PhysicsSpace {
         fun getWorldBounds(): Cuboid = body.getWorldSpaceBounds().cuboid()
 
         fun remove() {
+            physicsSystem.getBodyInterface().removeBody(body.id)
+            physicsSystem.getBodyInterface().destroyBody(body.id)
+            bodyContexts.remove(body.va())
+        }
+    }
+
+    /**
+     * Колёсный автомобиль: chassis Body + VehicleConstraint + WheeledVehicleController.
+     * Колёса — собственность constraint'а, отдельных тел не имеют. Чтение трансформов
+     * через [getWheelTransform]; запись driver-input через [setDriverInput].
+     */
+    inner class VehicleBody(
+        chassisSettings: BodyCreationSettings,
+        constraintSettings: VehicleConstraintSettings,
+    ) {
+        val body: Body
+        val constraint: VehicleConstraint
+        val controller: WheeledVehicleController
+        private val stepListener: VehicleStepListener
+        private val collisionTester: VehicleCollisionTesterCastCylinder
+
+        init {
+            val bodyInterface = physicsSystem.getBodyInterface()
+            body = bodyInterface.createBody(chassisSettings)
+            bodyInterface.addBody(body, EActivation.Activate)
+
+            constraint = VehicleConstraint(body, constraintSettings)
+            // CastCylinder использует реальную геометрию колеса (radius+width из WheelSettings).
+            // Layer аргумент = "слой который представляет колесо как тестируемый объект"; через
+            // ObjectLayerPairFilter из этого выводится какие слои тестировать. У нас MOVING↔NON_MOVING
+            // включена, поэтому передача MOVING заставит фильтр находить NON_MOVING-тела (terrain).
+            // С NON_MOVING фильтр бы исключил terrain (NON_MOVING↔NON_MOVING выключена) и колёса
+            // искали бы только MOVING-тела (другие машины/кубы) — отсюда «проваливаются».
+            collisionTester = VehicleCollisionTesterCastCylinder(Layers.MOVING, 0f)
+            constraint.setVehicleCollisionTester(collisionTester)
+            physicsSystem.addConstraint(constraint)
+            stepListener = constraint.getStepListener()
+            physicsSystem.addStepListener(stepListener)
+
+            controller = constraint.getController() as WheeledVehicleController
+        }
+
+        fun getTransform(): Transform {
+            val rVec3 = RVec3()
+            val quat = Quat()
+            body.getPositionAndRotation(rVec3, quat)
+            return Transform(rVec3.vec3D(), quat.qRot())
+        }
+
+        fun setDriverInput(forward: Float, right: Float, brake: Float, handBrake: Float) {
+            controller.setDriverInput(forward, right, brake, handBrake)
+        }
+
+        fun getLinearVelocity(): Vec3D = body.getLinearVelocity().vec3D()
+
+        fun setLinearVelocity(velocity: Vec3D) {
+            physicsSystem.getBodyInterface().setLinearVelocity(body.id, velocity.joltVec3())
+        }
+
+        fun setAngularVelocity(velocity: Vec3D) {
+            physicsSystem.getBodyInterface().setAngularVelocity(body.id, velocity.joltVec3())
+        }
+
+        fun getWorldBounds(): Cuboid = body.getWorldSpaceBounds().cuboid()
+
+        /** World-transform колеса по индексу. wheelRight/wheelUp в локальном фрейме шасси (стандартные). */
+        fun getWheelTransform(wheelIndex: Int): Transform {
+            val mat = constraint.getWheelWorldTransform(wheelIndex, Vec3(0f, 1f, 0f), Vec3(0f, 0f, 1f))
+            val translation = mat.getTranslation()
+            val rotation = mat.getQuaternion()
+            return Transform(translation.vec3D(), rotation.qRot())
+        }
+
+        fun remove() {
+            physicsSystem.removeStepListener(stepListener)
+            physicsSystem.removeConstraint(constraint)
             physicsSystem.getBodyInterface().removeBody(body.id)
             physicsSystem.getBodyInterface().destroyBody(body.id)
             bodyContexts.remove(body.va())
