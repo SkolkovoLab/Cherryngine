@@ -9,16 +9,23 @@ import ru.cherryngine.lib.math.Vec3I
 import ru.cherryngine.platform.minecraft.java.network.Connection
 import ru.cherryngine.platform.minecraft.java.utils.ChunkUtils
 import ru.cherryngine.platform.minecraft.java.view.BlocksViewable
-import ru.cherryngine.platform.minecraft.java.view.Viewable
 import ru.cherryngine.platform.minecraft.java.world.ChunkPos
 import ru.cherryngine.platform.minecraft.java.world.ImmutableLayerKey
 import java.util.concurrent.ConcurrentLinkedQueue
+import kotlin.random.Random
 
 class MinecraftPlayer(
     val connection: Connection,
 ) : Player {
     override val uuid get() = connection.gameProfile.uuid
     override val username get() = connection.gameProfile.name()
+
+    /**
+     * Minecraft-side entity ID для этого игрока. Нужен для пакетов, которые
+     * адресуют игрока как entity (SetPassengersPacket и т.п.). Range [1, 1_000_000)
+     * — disjoint с серверными [McEntity] ID ([1_000_000, 9_000_000)).
+     */
+    val entityId: Int = Random.nextInt(1, 1_000_000)
 
     // Пишется с сетевого потока на каждый входящий игровой пакет.
     private val incomingPackets = ConcurrentLinkedQueue<ClientPacket>()
@@ -28,7 +35,6 @@ class MinecraftPlayer(
     var tickPackets: List<ClientPacket> = emptyList()
         private set
 
-    val currentVisibleViewables: MutableSet<Viewable> = hashSetOf()
     val currentVisibleBlocksViewables: MutableList<BlocksViewable> = mutableListOf()
     val chunksToRefresh: MutableSet<ChunkPos> = hashSetOf()
 

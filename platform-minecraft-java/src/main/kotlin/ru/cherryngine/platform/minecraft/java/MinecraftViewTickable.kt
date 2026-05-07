@@ -15,7 +15,6 @@ import ru.cherryngine.platform.minecraft.java.entity.McEntityRegistry
 import ru.cherryngine.platform.minecraft.java.player.MinecraftClientState
 import ru.cherryngine.platform.minecraft.java.player.MinecraftPlayer
 import ru.cherryngine.platform.minecraft.java.utils.ChunkUtils
-import ru.cherryngine.platform.minecraft.java.view.Viewable
 import ru.cherryngine.platform.minecraft.java.world.*
 import ru.cherryngine.platform.minecraft.java.world.chunk.ChunkData
 import java.util.*
@@ -48,17 +47,12 @@ class MinecraftViewTickable(
             val playerContextIDs = mcPlayer.viewContextIDs
             val layers = serverWorld.getLayersForContexts(playerContextIDs)
             val dimensionType = serverWorld.dimensionType
-            val viewables = mcEntityRegistry.allEntities()
-                .filter { entity -> mcPlayer in entity.subscribers }
-                .toSet()
-
-            update(mcPlayer, viewables, layers, dimensionType)
+            update(mcPlayer, layers, dimensionType)
         }
     }
 
     private fun update(
         player: MinecraftPlayer,
-        viewables: Set<Viewable>,
         layers: List<LayerEntry>,
         dimensionType: DimensionType?,
     ) {
@@ -74,7 +68,6 @@ class MinecraftViewTickable(
             connection.sendPacket(UpdateViewPositionPacket(clientChunkPos.x, clientChunkPos.z))
         }
 
-        val currentVisibleViewables = player.currentVisibleViewables
         val currentVisibleStaticViewables = player.currentVisibleBlocksViewables
 
         val chunks = ChunkUtils.getChunksInRange(clientChunkPos, distance).toSet()
@@ -85,11 +78,19 @@ class MinecraftViewTickable(
             shouldHide
         }
 
-        currentVisibleViewables.removeIf { viewable ->
-            val shouldHide =
-                viewable !in viewables || viewable.chunkPos !in chunks || !viewable.viewerPredicate(player)
-            if (shouldHide) viewable.hide(player)
-            shouldHide
+        // Single-pass diff видимости entity. Источник истины — `entity.viewers`
+        // (per-entity), отдельный per-player кэш `currentVisibleViewables` убран как
+        // дублирование. show/hide идемпотентны через эти проверки: если игрок уже
+        // в `viewers` — show не зовётся, если уже не в `viewers` — hide не зовётся.
+        mcEntityRegistry.allEntities().forEach { entity ->
+            val isCurrentlyVisible = player in entity.viewers
+            val shouldBeVisible = player in entity.subscribers &&
+                    entity.chunkPos in chunks &&
+                    entity.viewerPredicate(player)
+            when {
+                isCurrentlyVisible && !shouldBeVisible -> entity.hide(player)
+                !isCurrentlyVisible && shouldBeVisible -> entity.show(player)
+            }
         }
 
         if (layers.isNotEmpty() && dimensionType != null) {
@@ -135,16 +136,6 @@ class MinecraftViewTickable(
                     classification.immutableKey, chunkPos, dimensionType, classification.immutableLayers
                 )
                 sendMutableOverlay(player, classification, dimensionType, chunkPos, baseChunkData)
-            }
-        }
-
-        viewables.forEach { viewable ->
-            val shouldShow = viewable !in currentVisibleViewables &&
-                    viewable.chunkPos in chunks &&
-                    viewable.viewerPredicate(player)
-            if (shouldShow) {
-                viewable.show(player)
-                currentVisibleViewables.add(viewable)
             }
         }
 
