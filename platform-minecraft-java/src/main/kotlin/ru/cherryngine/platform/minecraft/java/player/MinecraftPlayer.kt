@@ -6,13 +6,13 @@ import net.minestom.server.network.packet.client.ClientPacket
 import net.minestom.server.network.packet.server.play.SystemChatPacket
 import ru.cherryngine.engine.core.player.Player
 import ru.cherryngine.lib.math.Vec3I
+import ru.cherryngine.platform.minecraft.java.entity.McEntityIds
 import ru.cherryngine.platform.minecraft.java.network.Connection
 import ru.cherryngine.platform.minecraft.java.utils.ChunkUtils
 import ru.cherryngine.platform.minecraft.java.view.BlocksViewable
 import ru.cherryngine.platform.minecraft.java.world.ChunkPos
 import ru.cherryngine.platform.minecraft.java.world.ImmutableLayerKey
 import java.util.concurrent.ConcurrentLinkedQueue
-import kotlin.random.Random
 
 class MinecraftPlayer(
     val connection: Connection,
@@ -22,10 +22,11 @@ class MinecraftPlayer(
 
     /**
      * Minecraft-side entity ID для этого игрока. Нужен для пакетов, которые
-     * адресуют игрока как entity (SetPassengersPacket и т.п.). Range [1, 1_000_000)
-     * — disjoint с серверными [McEntity] ID ([1_000_000, 9_000_000)).
+     * адресуют игрока как entity (SetPassengersPacket и т.п.). Берётся из
+     * единого глобального счётчика [McEntityIds] — гарантированная уникальность
+     * с любыми [ru.cherryngine.platform.minecraft.java.entity.McEntity].
      */
-    val entityId: Int = Random.nextInt(1, 1_000_000)
+    val entityId: Int = McEntityIds.next()
 
     // Пишется с сетевого потока на каждый входящий игровой пакет.
     private val incomingPackets = ConcurrentLinkedQueue<ClientPacket>()
