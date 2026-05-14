@@ -254,83 +254,113 @@ class PhysicsSpace {
      * через VehicleConstraint. Внешним консьюмерам — только чтение через
      * [VehicleBody.getWheelTransform].
      */
-    fun addCar(
-        position: Vec3D,
-        chassisSize: Vec3D,
-        chassisMass: Float = 1500f,
-    ): VehicleBody {
-        // Все wheel-размеры пропорциональны chassisSize — иначе на крупном шасси
-        // (1.5м высотой) дефолтные wheelRadius=0.3 и attachment=chassisBottom дают
-        // wheels-bottom едва ниже chassis-bottom, чассис ложится «на пузо».
-        val halfWidth = chassisSize.x.toFloat() * 0.5f
-        val halfHeight = chassisSize.y.toFloat() * 0.5f
-        val halfLength = chassisSize.z.toFloat() * 0.5f
-        val wheelRadius = minOf(chassisSize.y, chassisSize.x).toFloat() * 0.25f
-        val wheelHalfWidth = wheelRadius * 0.3f
-        val suspensionMin = wheelRadius * 1.0f
-        val suspensionMax = wheelRadius * 2.0f
-        val attachY = -halfHeight + wheelRadius  // wheel-radius выше дна — wheels высовываются ниже
-        val wheelInset = wheelRadius * 0.5f
-        val maxSteer = Math.toRadians(25.0).toFloat()
+    fun addCar(position: Vec3D, settings: CarSettings): VehicleBody {
+        // RWD drift-spec купе. Все настраиваемые параметры — в [CarSettings];
+        // здесь только pure assembly через Jolt-API.
+        val halfWidth = settings.chassisSize.x.toFloat() * 0.5f
+        val halfHeight = settings.chassisSize.y.toFloat() * 0.5f
+        val halfWheelbase = settings.wheelbase * 0.5f
+        val attachY = 0f
+        val maxSteer = Math.toRadians(settings.maxSteerAngleDegrees.toDouble()).toFloat()
 
-        // Шасси
-        val halfExtents = chassisSize.joltVec3().apply { scaleInPlace(0.5f) }
-        val chassisShape = BoxShape(halfExtents)
+        // Шасси с OffsetCenterOfMassShape — центр масс опускается в дно chassis.
+        // Без этого высокая машина легко переворачивается на резком манёвре.
+        // linear/angularDamping не задаём — defaults (0.05/0.05) как у sample'а.
+        val halfExtents = settings.chassisSize.joltVec3().apply { scaleInPlace(0.5f) }
+        val boxShape = BoxShape(halfExtents)
+        val comOffset = Vec3(0f, -halfHeight, 0f)
+        val chassisShape = OffsetCenterOfMassShapeSettings(comOffset, boxShape).create().get()
         val chassisSettings = BodyCreationSettings()
             .setMotionType(EMotionType.Dynamic)
             .setObjectLayer(Layers.MOVING)
             .setShape(chassisShape)
             .setPosition(position.joltRVec3())
-            .setLinearDamping(0.05f)
-            .setAngularDamping(0.05f)
-            .setMassPropertiesOverride(MassProperties().apply { setMass(chassisMass) })
+            .setMassPropertiesOverride(MassProperties().apply { setMass(settings.chassisMass) })
             .setOverrideMassProperties(EOverrideMassProperties.CalculateInertia)
 
-        // 4 колеса в углах: 0=FL, 1=FR, 2=RL, 3=RR
+        // Lateral friction curve по slip-angle (degrees → coefficient).
+        // (0°, 0) → (3°, peak) → (20°, peak*0.85) → (90°, peak*0.7) — стандартная
+        // tire-curve: пик на малых углах, спад при высоком скольжении. sort()
+        // обязателен — Jolt LinearCurve не сортирует автоматически после addPoint.
+        fun lateralFrictionCurve(peak: Float): LinearCurve = LinearCurve().apply {
+            addPoint(0f, 0f)
+            addPoint(3f, peak)
+            addPoint(20f, peak * 0.85f)
+            addPoint(90f, peak * 0.7f)
+            sort()
+        }
+
+        // Longitudinal friction curve по slip-ratio (0..1 → coefficient).
+        val longitudinalFriction = LinearCurve().apply {
+            addPoint(0f, 0f)
+            addPoint(0.06f, settings.longitudinalFrictionPeak)
+            addPoint(0.2f, settings.longitudinalFrictionPeak * 0.9f)
+            sort()
+        }
+        val frontLateralFriction = lateralFrictionCurve(settings.frontLateralFrictionPeak)
+        val rearLateralFriction = lateralFrictionCurve(settings.rearLateralFrictionPeak)
+
+        // 4 колеса в углах: 0=FL, 1=FR, 2=RL, 3=RR. Передним handBrake отключаем
+        // (sample-конвенция), задним — settings.rearHandBrakeTorque.
         fun makeWheel(localX: Float, localZ: Float, steerable: Boolean): WheelSettingsWv {
             val wheel = WheelSettingsWv()
             wheel.setPosition(Vec3(localX, attachY, localZ))
-            wheel.setRadius(wheelRadius)
-            wheel.setWidth(wheelHalfWidth * 2f)
-            wheel.setSuspensionMinLength(suspensionMin)
-            wheel.setSuspensionMaxLength(suspensionMax)
+            wheel.setRadius(settings.wheelRadius)
+            wheel.setWidth(settings.wheelWidth)
+            wheel.setSuspensionMinLength(settings.suspensionMinLength)
+            wheel.setSuspensionMaxLength(settings.suspensionMaxLength)
             wheel.setSuspensionDirection(Vec3(0f, -1f, 0f))
             wheel.setSteeringAxis(Vec3(0f, 1f, 0f))
             wheel.setWheelForward(Vec3(0f, 0f, 1f))
             wheel.setWheelUp(Vec3(0f, 1f, 0f))
             wheel.setMaxSteerAngle(if (steerable) maxSteer else 0f)
-            wheel.setMaxBrakeTorque(3000f)
-            wheel.setMaxHandBrakeTorque(if (steerable) 0f else 4000f)
-            // Дефолтная Jolt-suspension ~1.5Hz слишком мягкая для тяжёлой машины при g=−17:
-            // компресс к min'у, чассис проседает почти до пуза. 2.5Hz держит лучше.
-            wheel.suspensionSpring.setFrequency(2.5f)
-            wheel.suspensionSpring.setDamping(0.5f)
+            wheel.setMaxHandBrakeTorque(if (steerable) 0f else settings.rearHandBrakeTorque)
+            wheel.suspensionSpring.setFrequency(settings.suspensionFrequency)
+            wheel.suspensionSpring.setDamping(settings.suspensionDamping)
+            wheel.setLongitudinalFriction(longitudinalFriction)
+            wheel.setLateralFriction(if (steerable) frontLateralFriction else rearLateralFriction)
             return wheel
         }
 
-        val frontLeft  = makeWheel( halfWidth - wheelInset, halfLength - wheelInset, steerable = true)
-        val frontRight = makeWheel(-halfWidth + wheelInset, halfLength - wheelInset, steerable = true)
-        val rearLeft   = makeWheel( halfWidth - wheelInset, -halfLength + wheelInset, steerable = false)
-        val rearRight  = makeWheel(-halfWidth + wheelInset, -halfLength + wheelInset, steerable = false)
+        val frontLeft  = makeWheel( halfWidth,  halfWheelbase, steerable = true)
+        val frontRight = makeWheel(-halfWidth,  halfWheelbase, steerable = true)
+        val rearLeft   = makeWheel( halfWidth, -halfWheelbase, steerable = false)
+        val rearRight  = makeWheel(-halfWidth, -halfWheelbase, steerable = false)
 
-        // Контроллер: задний привод (диф 2/3)
+        // RWD: один differential на задние колёса (2=RL, 3=RR).
         val controllerSettings = WheeledVehicleControllerSettings()
-        controllerSettings.engine.setMaxTorque(500f)
-        controllerSettings.engine.setMinRpm(1000f)
-        controllerSettings.engine.setMaxRpm(6000f)
+        controllerSettings.engine.setMaxTorque(settings.engineMaxTorque)
+        controllerSettings.engine.setMaxRpm(settings.engineMaxRpm)
         controllerSettings.setNumDifferentials(1)
-        val diff = controllerSettings.getDifferential(0)
-        diff.setLeftWheel(2)
-        diff.setRightWheel(3)
-        diff.setEngineTorqueRatio(1f)
+        val rearDiff = controllerSettings.getDifferential(0)
+        rearDiff.setLeftWheel(2)
+        rearDiff.setRightWheel(3)
+        rearDiff.setEngineTorqueRatio(1f)
+        rearDiff.setLimitedSlipRatio(settings.limitedSlipRatio)
 
         val constraintSettings = VehicleConstraintSettings()
         constraintSettings.setForward(Vec3(0f, 0f, 1f))
         constraintSettings.setUp(Vec3(0f, 1f, 0f))
+        constraintSettings.setMaxPitchRollAngle(
+            Math.toRadians(settings.maxPitchRollAngleDegrees.toDouble()).toFloat()
+        )
+        // Anti-roll bars asymmetric: передний жёсткий — стабильная реакция руля,
+        // задний помягче — даёт корме скользить в дрифте.
+        constraintSettings.setNumAntiRollBars(2)
+        constraintSettings.getAntiRollBar(0)
+            .setLeftWheel(0).setRightWheel(1).setStiffness(settings.antiRollBarFrontStiffness)
+        constraintSettings.getAntiRollBar(1)
+            .setLeftWheel(2).setRightWheel(3).setStiffness(settings.antiRollBarRearStiffness)
         constraintSettings.addWheels(frontLeft, frontRight, rearLeft, rearRight)
         constraintSettings.setController(controllerSettings)
 
-        return VehicleBody(chassisSettings, constraintSettings)
+        return VehicleBody(chassisSettings, constraintSettings).also { vehicle ->
+            vehicle.controller.setDifferentialLimitedSlipRatio(settings.limitedSlipRatio)
+            // setTireMaxImpulseCallback (longitudinal × 10) — sample-хак, нужен был
+            // в старых версиях Jolt (баг в impulse-баланса). В Jolt 4.3+ исправлено,
+            // overkill multiplier ломает lateral grip → машина едет как по льду.
+            // Оставляем default-балансировку Jolt.
+        }
     }
 
     fun addCube(position: Vec3D, size: Vec3D): PhysicsBody {
@@ -472,6 +502,9 @@ class PhysicsSpace {
         private val stepListener: VehicleStepListener
         private val collisionTester: VehicleCollisionTesterCastCylinder
 
+        /** Keep-alive ref — Jolt держит nativeptr на callback'е, GC не должен его собрать. */
+        var tireImpulseCallback: TireMaxImpulseCallback? = null
+
         init {
             val bodyInterface = physicsSystem.getBodyInterface()
             body = bodyInterface.createBody(chassisSettings)
@@ -513,6 +546,8 @@ class PhysicsSpace {
         fun setAngularVelocity(velocity: Vec3D) {
             physicsSystem.getBodyInterface().setAngularVelocity(body.id, velocity.joltVec3())
         }
+
+        fun getAngularVelocity(): Vec3D = body.getAngularVelocity().vec3D()
 
         fun getWorldBounds(): Cuboid = body.getWorldSpaceBounds().cuboid()
 
