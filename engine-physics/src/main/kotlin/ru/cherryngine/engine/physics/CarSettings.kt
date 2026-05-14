@@ -28,6 +28,13 @@ data class CarSettings(
     val maxPitchRollAngleDegrees: Float,
     val engineMaxTorque: Float,
     val engineMaxRpm: Float,
+    /** N·m. Тормозной torque передних колёс (foot brake). Большое значение
+     *  (~4000) даёт реалистичное замедление и удерживает машину при
+     *  одновременных газ+тормоз (burnout). */
+    val frontBrakeTorque: Float,
+    /** N·m. Тормозной torque задних колёс. 0 — чтобы engine мог крутить задние
+     *  даже при нажатом тормозе (burnout). Тормоз обеспечивается front-brake'ом. */
+    val rearBrakeTorque: Float,
     /** N·m. 4000 — Jolt/sample default. */
     val rearHandBrakeTorque: Float,
     /** Limited-slip ratio. 1.4 — sample default; передаёт torque на оба задних

@@ -328,6 +328,9 @@ class PhysicsSpace {
             wheel.setWheelForward(Vec3(0f, 0f, 1f))
             wheel.setWheelUp(Vec3(0f, 1f, 0f))
             wheel.setMaxSteerAngle(if (steerable) maxSteer else 0f)
+            // Foot-brake: per-axle. У drift-настройки rearBrakeTorque=0 → при газ+тормоз
+            // передние блокированы (держат машину), задние крутятся от engine (burnout).
+            wheel.setMaxBrakeTorque(if (steerable) settings.frontBrakeTorque else settings.rearBrakeTorque)
             wheel.setMaxHandBrakeTorque(if (steerable) 0f else settings.rearHandBrakeTorque)
             wheel.suspensionSpring.setFrequency(settings.suspensionFrequency)
             wheel.suspensionSpring.setDamping(settings.suspensionDamping)
@@ -552,6 +555,8 @@ class PhysicsSpace {
         fun setAngularVelocity(velocity: Vec3D) {
             physicsSystem.getBodyInterface().setAngularVelocity(body.id, velocity.joltVec3())
         }
+
+        fun getAngularVelocity(): Vec3D = body.getAngularVelocity().vec3D()
 
         fun getWorldBounds(): Cuboid = body.getWorldSpaceBounds().cuboid()
 
