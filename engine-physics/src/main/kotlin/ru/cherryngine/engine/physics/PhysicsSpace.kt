@@ -537,6 +537,11 @@ class PhysicsSpace {
             controller.setDriverInput(forward, right, brake, handBrake)
         }
 
+        /** Активирует chassis (вытягивает из sleep), чтобы driver-input применился. */
+        fun activate() {
+            physicsSystem.getBodyInterface().activateBody(body.id)
+        }
+
         fun getLinearVelocity(): Vec3D = body.getLinearVelocity().vec3D()
 
         fun setLinearVelocity(velocity: Vec3D) {
