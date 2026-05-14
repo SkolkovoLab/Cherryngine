@@ -24,6 +24,14 @@ class PhysicsSpace {
     private val vehicleByPhysicsId = HashMap<UUID, VehicleBody>()
     private val seenThisTick = HashSet<UUID>()
 
+    /** Body-va хитбоксов игроков. Используется [ContextContactListener] для
+     *  отбраковки пар player-hitbox ↔ terrain (клиент сам коллайдит с блоками,
+     *  а server-hitbox не должен дублировать → откидывает камеру назад). */
+    private val playerBodyVas: MutableSet<Long> = java.util.concurrent.ConcurrentHashMap.newKeySet()
+
+    /** Body-va terrain'а (статические блоки). Парная сторона для отбраковки. */
+    private val terrainBodyVas: MutableSet<Long> = java.util.concurrent.ConcurrentHashMap.newKeySet()
+
     fun getBodyBottomPosition(physicsId: UUID): Vec3D? {
         val body = bodyByPhysicsId[physicsId] ?: return null
         val center = body.getTransform().translation
@@ -212,7 +220,9 @@ class PhysicsSpace {
                 .setObjectLayer(Layers.NON_MOVING)
                 .setShape(BoxShape(halfExtents))
                 .setPosition(RVec3(pos.x + cuboid.centerX, pos.y + cuboid.centerY, pos.z + cuboid.centerZ))
-            return createBody(bodySettings, EActivation.DontActivate)
+            return createBody(bodySettings, EActivation.DontActivate).also {
+                terrainBodyVas.add(it.body.va())
+            }
         }
 
         val compoundSettings = StaticCompoundShapeSettings()
@@ -226,7 +236,9 @@ class PhysicsSpace {
             .setObjectLayer(Layers.NON_MOVING)
             .setShape(compoundSettings.create().get())
             .setPosition(RVec3(pos.x + 0.5, pos.y + 0.5, pos.z + 0.5))
-        return createBody(bodySettings, EActivation.DontActivate)
+        return createBody(bodySettings, EActivation.DontActivate).also {
+            terrainBodyVas.add(it.body.va())
+        }
     }
 
     fun addPlayer(position: Vec3D): PhysicsBody {
@@ -244,7 +256,9 @@ class PhysicsSpace {
             )
             .setOverrideMassProperties(EOverrideMassProperties.CalculateInertia)
             .setPosition(position.joltRVec3())
-        return createBody(bodySettings, EActivation.Activate)
+        return createBody(bodySettings, EActivation.Activate).also { body ->
+            playerBodyVas.add(body.body.va())
+        }
     }
 
     /**
@@ -426,10 +440,6 @@ class PhysicsSpace {
         bodyContexts.remove(body.body.va())
     }
 
-    fun destroy() {
-        // TODO
-    }
-
     inner class PhysicsBody(
         bodySettings: BodyCreationSettings,
         eActivation: EActivation,
@@ -457,15 +467,6 @@ class PhysicsSpace {
             )
         }
 
-        fun moveKinematic(position: Vec3D, delta: Float) {
-            physicsSystem.getBodyInterface().moveKinematic(
-                body.id,
-                position.joltRVec3(),
-                Quat.sIdentity(),
-                delta
-            )
-        }
-
         fun setLinearVelocity(velocity: Vec3D) {
             physicsSystem.getBodyInterface().setLinearVelocity(body.id, velocity.joltVec3())
         }
@@ -481,9 +482,12 @@ class PhysicsSpace {
         fun getWorldBounds(): Cuboid = body.getWorldSpaceBounds().cuboid()
 
         fun remove() {
+            val va = body.va()
             physicsSystem.getBodyInterface().removeBody(body.id)
             physicsSystem.getBodyInterface().destroyBody(body.id)
-            bodyContexts.remove(body.va())
+            bodyContexts.remove(va)
+            playerBodyVas.remove(va)
+            terrainBodyVas.remove(va)
         }
     }
 
@@ -501,9 +505,6 @@ class PhysicsSpace {
         val controller: WheeledVehicleController
         private val stepListener: VehicleStepListener
         private val collisionTester: VehicleCollisionTesterCastCylinder
-
-        /** Keep-alive ref — Jolt держит nativeptr на callback'е, GC не должен его собрать. */
-        var tireImpulseCallback: TireMaxImpulseCallback? = null
 
         init {
             val bodyInterface = physicsSystem.getBodyInterface()
@@ -552,8 +553,6 @@ class PhysicsSpace {
             physicsSystem.getBodyInterface().setAngularVelocity(body.id, velocity.joltVec3())
         }
 
-        fun getAngularVelocity(): Vec3D = body.getAngularVelocity().vec3D()
-
         fun getWorldBounds(): Cuboid = body.getWorldSpaceBounds().cuboid()
 
         /** World-transform колеса по индексу. wheelRight/wheelUp в локальном фрейме шасси (стандартные). */
@@ -582,6 +581,17 @@ class PhysicsSpace {
             baseOffsetZ: Double,
             manifoldVa: Long,
         ): Int {
+            // Player-hitbox ↔ terrain: клиент сам с terrain коллайдит, server-hitbox
+            // не должен дублировать — иначе hitbox задевает блок раньше клиента,
+            // diff > STUCK_THRESHOLD, correctClientPosition тянет камеру назад
+            // («откидывает» при ходьбе/полёте). Reject пару на этапе validate.
+            val pairIsPlayerAndTerrain =
+                (body1Va in playerBodyVas && body2Va in terrainBodyVas) ||
+                (body2Va in playerBodyVas && body1Va in terrainBodyVas)
+            if (pairIsPlayerAndTerrain) {
+                return ValidateResult.RejectAllContactsForThisBodyPair.ordinal
+            }
+
             val ctx1 = bodyContexts[body1Va]
             val ctx2 = bodyContexts[body2Va]
             // Оба тела зарегистрированы (динамические) — проверяем пересечение контекстов
