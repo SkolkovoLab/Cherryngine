@@ -17,7 +17,7 @@ class StableTicker(
     fun start() {
         if (started) throw IllegalStateException("Already started")
         started = true
-        val thread = Thread {
+        val thread = Thread({
             while (started) {
                 val tickStart: Long = System.currentTimeMillis()
                 tickFunction(tickCounter, tickStart)
@@ -36,7 +36,7 @@ class StableTicker(
                     }
                 }
             }
-        }
+        }, "StableTicker") // TODO
         thread.start()
         this.thread = thread
     }

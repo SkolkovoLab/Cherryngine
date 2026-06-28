@@ -2,7 +2,6 @@ package ru.cherryngine.engine.core.instance
 
 import io.micronaut.context.ApplicationContext
 import io.micronaut.inject.qualifiers.Qualifiers
-import ru.cherryngine.engine.core.instance.StableTicker
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.time.Duration
 
@@ -12,14 +11,14 @@ class Instance(
     private val appContext: ApplicationContext,
 ) : AutoCloseable {
 
-    private val cache = ConcurrentHashMap<Class<*>, Any>()
+    private val beans = ConcurrentHashMap<Class<*>, Any>()
 
     init {
-        cache[Instance::class.java] = this
+        beans[Instance::class.java] = this
     }
 
     fun <T : Any> register(type: Class<T>, instance: T) {
-        cache[type] = instance
+        beans[type] = instance
     }
 
     inline fun <reified T : Any> register(instance: T) = register(T::class.java, instance)
@@ -28,7 +27,7 @@ class Instance(
 
     fun <T : Any> get(type: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        (cache[type] as? T)?.let { return it }
+        (beans[type] as? T)?.let { return it }
         val definition = appContext.getBeanDefinition(type)
         return InstanceSingletonScope.withInstance(this) {
             appContext.getBean(definition)
@@ -54,7 +53,7 @@ class Instance(
 
     @Suppress("UNCHECKED_CAST")
     internal fun <T : Any> getOrCreate(type: Class<T>, factory: () -> T): T =
-        cache.getOrPut(type) { factory() } as T
+        beans.getOrPut(type) { factory() } as T
 
     fun initEager() {
         appContext.getBeanDefinitions(
@@ -110,7 +109,7 @@ class Instance(
 
     override fun close() {
         stop()
-        cache.values.filterIsInstance<AutoCloseable>().forEach { runCatching { it.close() } }
-        cache.clear()
+        beans.values.filterIsInstance<AutoCloseable>().forEach { runCatching { it.close() } }
+        beans.clear()
     }
 }
