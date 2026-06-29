@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     api(project(":engine-core"))
-    api("io.github.quillraven.fleks:Fleks:2.12")
+    api("io.github.quillraven.fleks:Fleks:2.13")
 }

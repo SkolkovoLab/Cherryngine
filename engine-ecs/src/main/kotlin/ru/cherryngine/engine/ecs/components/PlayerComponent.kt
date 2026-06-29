@@ -6,7 +6,7 @@ import java.util.*
 
 data class PlayerComponent(
     var uuid: UUID,
-    var viewContextIDs: Set<String>,
+    var presentInContextIds: Set<String>,
 ) : EcsComponent<PlayerComponent> {
     override fun type() = PlayerComponent
 

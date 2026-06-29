@@ -76,7 +76,8 @@ class Instance(
     private lateinit var stagedTickables: List<Tickable>
 
     fun startTicking() {
-        val allTickables = appContext.getBeanDefinitions(Tickable::class.java)
+        stagedTickables = appContext.getBeanDefinitions(Tickable::class.java)
+            .asSequence()
             .filter { definition ->
                 if (!definition.hasStereotype(InstanceSingleton::class.java)) return@filter false
                 val platform = definition
@@ -84,19 +85,16 @@ class Instance(
                     .orElse("")
                 platform.isEmpty() || platform in platformIds
             }
-
-        stagedTickables = TickStage.entries.flatMap { stage ->
-            allTickables.filter { definition ->
-                val beanStage = definition
-                    .enumValue(InstanceSingleton::class.java, InstanceSingleton::stage.name, TickStage::class.java)
+            .sortedBy {
+                it.intValue(TickablePriority::class.java, TickablePriority::stage.name)
                     .orElse(TickStage.GAME)
-                beanStage == stage
-            }.map { definition ->
+            }
+            .map { definition ->
                 InstanceSingletonScope.withInstance(this) {
                     appContext.getBean(definition)
                 }
             }
-        }
+            .toList()
 
         ticker.start()
     }

@@ -9,5 +9,4 @@ import kotlin.annotation.AnnotationRetention.RUNTIME
 annotation class InstanceSingleton(
     val eagerInit: Boolean = false,
     val platform: String = "",
-    val stage: TickStage = TickStage.GAME,
 )

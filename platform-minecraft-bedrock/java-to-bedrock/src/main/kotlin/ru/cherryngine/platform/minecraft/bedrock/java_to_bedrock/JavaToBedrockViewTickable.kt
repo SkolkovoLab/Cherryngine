@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.packet.NetworkChunkPublisherUpdatePacke
 import ru.cherryngine.engine.core.instance.InstanceSingleton
 import ru.cherryngine.engine.core.instance.TickStage
 import ru.cherryngine.engine.core.instance.Tickable
+import ru.cherryngine.engine.core.instance.TickablePriority
 import ru.cherryngine.engine.core.player.PlayerManager
 import ru.cherryngine.platform.minecraft.bedrock.BedrockPlayer
 import ru.cherryngine.platform.minecraft.bedrock.entity.BedrockEntityRegistry
@@ -15,7 +16,8 @@ import ru.cherryngine.platform.minecraft.java.world.ChunkPos
 import ru.cherryngine.platform.minecraft.java.world.LayeredWorld
 import kotlin.time.Duration
 
-@InstanceSingleton(platform = "bedrock", stage = TickStage.POST)
+@InstanceSingleton(platform = "bedrock")
+@TickablePriority(stage = TickStage.POST)
 class JavaToBedrockViewTickable(
     private val playerManager: PlayerManager,
     private val blockMapping: JavaToBedrockBlockMapping,
@@ -90,8 +92,8 @@ class JavaToBedrockViewTickable(
                 val visibleEntities = entityRegistry.allEntities().filter { entity ->
                     val entityChunkPos = ChunkPos(entity.position.x.toInt() shr 4, entity.position.z.toInt() shr 4)
                     entityChunkPos in entityChunks &&
-                    bp in entity.subscribers &&
-                    entity.viewerPredicate(bp)
+                            bp in entity.subscribers &&
+                            entity.viewerPredicate(bp)
                 }.toSet()
 
                 // Hide entities no longer visible
